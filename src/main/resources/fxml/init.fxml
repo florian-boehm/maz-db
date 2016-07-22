@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane alignment="center" hgap="10.0" vgap="15.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.InitController">
+	<padding>
+		<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+	</padding>
+   <children>
+   
+   	<Text style="-fx-font-weight: bold;" text="Initiale Konfiguration der Datenbank" GridPane.columnIndex="0" GridPane.columnSpan="2147483647" GridPane.rowIndex="0">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+   
+   	<Label text="Benutzername:" GridPane.rowIndex="3">
+         <tooltip>
+            <Tooltip text="Der erste Benutzer der Datenbank" />
+         </tooltip></Label>
+   
+   	<TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+   
+   	<Label text="Passwort:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+   
+   	<PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Button fx:id="setupButton" mnemonicParsing="false" onAction="#setupDatabase" text="Einrichtung abschließen" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Damit die Datenbank genutzt werden kann, wird mindestens ein Benutzer benötigt." wrappingWidth="300.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </Text>
+   </children>
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+
+	<fx:define>
+		<RequiredField fx:id="requiredField1" >
+			<srcControl>
+				<fx:reference source="userName"></fx:reference>
+			</srcControl>
+		</RequiredField>
+		<RequiredField fx:id="requiredField2" >
+			<srcControl>
+				<fx:reference source="password"></fx:reference>
+			</srcControl>
+		</RequiredField>
+	</fx:define>
+	<ErrorLabel message="Please enter your username">
+		<validator>
+			<fx:reference source="requiredField1"></fx:reference>
+		</validator>
+	</ErrorLabel>
+	<ErrorLabel message="Please enter your password">
+		<validator>
+			<fx:reference source="requiredField2"></fx:reference>
+		</validator>
+	</ErrorLabel>
+
+	<!--HBox spacing="10" alignment="bottom_right"
+	      GridPane.columnIndex="1" GridPane.rowIndex="4">
+		<Button text="Sign In"
+		        onAction="#handleSubmitButtonAction"/>
+	</HBox>
+
+	<Text fx:id="actiontarget"
+	      GridPane.columnIndex="1" GridPane.rowIndex="6"/-->
+</GridPane>
