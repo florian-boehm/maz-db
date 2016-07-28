@@ -57,12 +57,12 @@
 	<fx:define>
 		<RequiredField fx:id="requiredField1" >
 			<srcControl>
-				<fx:reference source="userName"></fx:reference>
+				<fx:reference source="usernameField"></fx:reference>
 			</srcControl>
 		</RequiredField>
 		<RequiredField fx:id="requiredField2" >
 			<srcControl>
-				<fx:reference source="password"></fx:reference>
+				<fx:reference source="passwordField"></fx:reference>
 			</srcControl>
 		</RequiredField>
 	</fx:define>

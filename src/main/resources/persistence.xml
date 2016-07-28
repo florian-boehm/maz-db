@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" >
+
+	<persistence-unit name="userDb" transaction-type="RESOURCE_LOCAL">
+		<!--
+
+		With <persistence-unit transaction-type="RESOURCE_LOCAL"> you are responsible for EntityManager (PersistenceContext/Cache) creating and tracking
+
+		You must use the EntityManagerFactory to get an EntityManager
+		The resulting EntityManager instance is a PersistenceContext/Cache An EntityManagerFactory can be injected via the @PersistenceUnit annotation only (not @PersistenceContext)
+		You are not allowed to use @PersistenceContext to refer to a unit of type RESOURCE_LOCAL
+		You must use the EntityTransaction API to begin/commit around every call to your EntityManger
+		Calling entityManagerFactory.createEntityManager() twice results in two separate EntityManager instances and therefor two separate PersistenceContexts/Caches.
+		It is almost never a good idea to have more than one instance of an EntityManager in use (don't create a second one unless you've destroyed the first)
+
+		-->
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<class>de.spiritaner.maz.model.Person</class>
+
+		<properties>
+			<property name="connection.driver_class" value="org.h2.Driver"/>
+			<property name="hibernate.connection.url" value="jdbc:h2:./dbfiles/users"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+			<property name="hibernate.show_sql" value="true" />
+		</properties>
+	</persistence-unit>
+</persistence>
