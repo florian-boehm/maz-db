@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+	<!--
+
+	With <persistence-unit transaction-type="RESOURCE_LOCAL"> you are responsible for EntityManager (PersistenceContext/Cache) creating and tracking
+
+	You must use the EntityManagerFactory to get an EntityManager
+	The resulting EntityManager instance is a PersistenceContext/Cache An EntityManagerFactory can be injected via the @PersistenceUnit annotation only (not @PersistenceContext)
+	You are not allowed to use @PersistenceContext to refer to a unit of type RESOURCE_LOCAL
+	You must use the EntityTransaction API to begin/commit around every call to your EntityManger
+	Calling entityManagerFactory.createEntityManager() twice results in two separate EntityManager instances and therefor two separate PersistenceContexts/Caches.
+	It is almost never a good idea to have more than one instance of an EntityManager in use (don't create a second one unless you've destroyed the first)
+
+	-->
+	<persistence-unit name="testUserDb" transaction-type="RESOURCE_LOCAL">
+
+		<class>de.spiritaner.maz.model.User</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+		<properties>
+			<property name="connection.driver_class" value="org.h2.Driver"/>
+			<property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+			<property name="hibernate.connection.url" value="jdbc:h2:./target/test/dbfiles/users"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+			<property name="hibernate.show_sql" value="true" />
+
+			<property name="hibernate.c3p0.min_size" value="5" />
+			<property name="hibernate.c3p0.max_size" value="20" />
+			<property name="hibernate.c3p0.timeout" value="300" />
+			<property name="hibernate.c3p0.max_statements" value="50" />
+			<property name="hibernate.c3p0.idle_test_period" value="3000" />
+		</properties>
+	</persistence-unit>
+
+	<persistence-unit name="testDataDb" transaction-type="RESOURCE_LOCAL">
+		<class>de.spiritaner.maz.model.Address</class>
+		<class>de.spiritaner.maz.model.Approval</class>
+		<class>de.spiritaner.maz.model.ApprovalType</class>
+		<class>de.spiritaner.maz.model.Gender</class>
+		<class>de.spiritaner.maz.model.Person</class>
+		<class>de.spiritaner.maz.model.Residence</class>
+		<class>de.spiritaner.maz.model.ResidenceType</class>
+
+		<properties>
+			<property name="connection.driver_class" value="org.h2.Driver"/>
+			<property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+			<property name="hibernate.connection.url" value="jdbc:h2:./target/test/dbfiles/data"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+			<property name="hibernate.show_sql" value="true" />
+
+			<property name="hibernate.c3p0.min_size" value="5" />
+			<property name="hibernate.c3p0.max_size" value="20" />
+			<property name="hibernate.c3p0.timeout" value="300" />
+			<property name="hibernate.c3p0.max_statements" value="50" />
+			<property name="hibernate.c3p0.idle_test_period" value="3000" />
+		</properties>
+	</persistence-unit>
+</persistence>

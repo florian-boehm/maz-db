@@ -32,12 +32,12 @@ public class UserDatabaseTest {
 		}
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void testIsPopulatedWithoutTable() throws Exception {
 		assert !UserDatabase.isPopulated();
 	}
 
-	@Test
+	@Test(enabled = false)
 	public void testIsPopulatedWithoutEntries() throws Exception {
 		try (Connection conn = getConnection()) {
 			Statement st = conn.createStatement();

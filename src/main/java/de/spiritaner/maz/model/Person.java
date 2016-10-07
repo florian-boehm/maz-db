@@ -1,77 +1,107 @@
 package de.spiritaner.maz.model;
 
+import javafx.beans.property.*;
+
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author Florian Schwab
  * @version 0.0.1
  */
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
+	//@NamedQuery(name="Person.fetchAllResidences",query="SELECT r FROM Residence where personId=:personId"),
+})
 public class Person {
+
+	private LongProperty id;
+	private StringProperty prename;
+	private StringProperty surname;
+	private ObjectProperty<LocalDate> birthday;
+	private StringProperty birthplace;
+	private Gender gender;
+	private List<Residence> residences;
+	private Address diocese;
+
+	public Person() {
+		id = new SimpleLongProperty();
+		prename = new SimpleStringProperty();
+		surname = new SimpleStringProperty();
+		birthday = new SimpleObjectProperty<>();
+		birthplace = new SimpleStringProperty();
+	}
 
 	@Id
 	@GeneratedValue
-	private Long id;
-
-	@Column(nullable = false)
-	private String prename;
-
-	@Column(nullable = false)
-	private String surname;
-
-	@Column(nullable = false)
-	private Date birthday;
-
-	private String birthplace;
-
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="genderId")
-	@Column(nullable = false)
-	private Gender gender;
-
-	private String diocese;
-
 	public Long getId() {
-		return id;
+		return id.get();
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id.set(id);
 	}
 
+	public LongProperty id() {
+		return id;
+	}
+
+	@Column(nullable = false)
 	public String getPrename() {
-		return prename;
+		return prename.get();
 	}
 
 	public void setPrename(String prename) {
-		this.prename = prename;
+		this.prename.set(prename);
 	}
 
+	public StringProperty prenameProperty() {
+		return prename;
+	}
+
+	@Column(nullable = false)
 	public String getSurname() {
-		return surname;
+		return surname.get();
 	}
 
 	public void setSurname(String surname) {
-		this.surname = surname;
+		this.surname.set(surname);
 	}
 
-	public Date getBirthday() {
+	public StringProperty surnameProperty() {
+		return surname;
+	}
+
+	@Column(nullable = false)
+	//@Temporal(TemporalType.TIMESTAMP)
+	public LocalDate getBirthday() {
+		return birthday.get();
+	}
+
+	public void setBirthday(LocalDate birthday) {
+		this.birthday.set(birthday);
+	}
+
+	public ObjectProperty<LocalDate> birthday() {
 		return birthday;
 	}
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-
 	public String getBirthplace() {
-		return birthplace;
+		return birthplace.get();
 	}
 
 	public void setBirthplace(String birthplace) {
-		this.birthplace = birthplace;
+		this.birthplace.set(birthplace);
 	}
 
+	public StringProperty birthplace() {
+		return birthplace;
+	}
+
+	@ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST})
+	@JoinColumn(name="genderId")
 	public Gender getGender() {
 		return gender;
 	}
@@ -80,11 +110,23 @@ public class Person {
 		this.gender = gender;
 	}
 
-	public String getDiocese() {
+	//	@Transient
+	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+	public List<Residence> getResidences() {
+		return residences;
+	}
+
+	public void setResidences(List<Residence> residences) {
+		this.residences = residences;
+	}
+
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="dioceseAddress")
+	public Address getDiocese() {
 		return diocese;
 	}
 
-	public void setDiocese(String diocese) {
+	public void setDiocese(Address diocese) {
 		this.diocese = diocese;
 	}
 }

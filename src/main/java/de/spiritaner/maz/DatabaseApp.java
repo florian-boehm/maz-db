@@ -1,9 +1,19 @@
 package de.spiritaner.maz;
 
+import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.dialog.LoginDialog;
+import de.spiritaner.maz.model.User;
+import de.spiritaner.maz.util.UserDatabase;
+import de.spiritaner.maz.view.InitView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import org.apache.log4j.Logger;
+
+import javax.crypto.KeyGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 /**
  * @author Florian Schwab
@@ -15,14 +25,16 @@ public class DatabaseApp extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
-		// If there are no users in the user database show the initialization dialog
-		LoginDialog.show();
-//		if(!UserDatabase.isPopulated()) {
-//			System.out.println("not populated");
-//		} else {
-//			LoginDialog.populateStage(primaryStage);
-//			primaryStage.show();
-//		}
+//		UserDatabase.createFirstUser("admin","admin");
+//		ExceptionDialog.show(new Exception("Just a test"));
+
+		if(!UserDatabase.isPopulated()) {
+			// If there are no users in the user database show the database initialization dialog.
+			InitView.populateStage(primaryStage);
+			primaryStage.show();
+		} else {
+			LoginDialog.showWaitAndExitOnFailure(primaryStage);
+		}
 	}
 
 	/**

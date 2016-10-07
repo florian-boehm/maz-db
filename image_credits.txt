@@ -1,3 +1,25 @@
-Icon(s) made by http://www.flaticon.com/authors/madebyoliver from www.flaticon.com:
+=== The following icons are licensed by Creative Commons BY 3.0 ===
+
+https://creativecommons.org/licenses/by/3.0/
+
+Some of the file names were renamed just for development purposes.
+
+Icons made by Madebyoliver (http://www.flaticon.com/authors/madebyoliver) from www.flaticon.com are licensed by Creative Commons BY 3.0:
     img/login_32.png
     img/database_64.png
+    img/play_16.png
+
+Icons made by Freepik (http://www.freepik.com) from www.flaticon.com are licensed by Creative Commons BY 3.0:
+    img/warning_32.png
+    img/map_32.png
+    img/people_32.png
+    img/manager_32.png
+    img/message_32.png
+    img/earth_32.png
+    img/analysis_32.png
+
+Icons made by SimpleIcon (http://www.flaticon.com/authors/simpleicon) from www.flaticon.com are licensed by Creative Commons BY 3.0:
+    img/magnifier_16.png
+
+Icons made by Dave Gandy (http://www.flaticon.com/authors/dave-gandy)  from www.flaticon.com are licensed by Creative Commons BY 3.0:
+    img/home_32.png
