@@ -1,16 +1,11 @@
 package de.spiritaner.maz.model;
 
-import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.type.descriptor.java.DateTypeDescriptor;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * @author Florian Schwab
@@ -48,14 +43,14 @@ public class PersonTest {
 	@Test
 	void createInvalidPerson() {
 		person = new Person();
-		person.setPrename(PERSON_PRENAME);
+		person.setFirstName(PERSON_PRENAME);
 		LocalDate now = LocalDate.now();
 		person.setBirthday(now);
 		person.setBirthplace("Any City");
 
 		Assert.assertNotNull(person);
-		Assert.assertEquals(person.getPrename(), PERSON_PRENAME);
-//		Assert.assertEquals(person.getSurname(),"Any");
+		Assert.assertEquals(person.getFirstName(), PERSON_PRENAME);
+//		Assert.assertEquals(person.getFamilyName(),"Any");
 		Assert.assertEquals(person.getBirthday(),now);
 		Assert.assertEquals(person.getBirthplace(),"Any City");
 	}
@@ -79,9 +74,9 @@ public class PersonTest {
 	@Test(dependsOnMethods = {"persistInvalidPerson"})
 	public void makePersonValid() {
 		EntityManager em = factory.createEntityManager();
-		person.setSurname("Any");
+		person.setFamilyName("Any");
 
-		Assert.assertEquals(person.getSurname(),"Any");
+		Assert.assertEquals(person.getFamilyName(),"Any");
 	}
 
 	@Test(dependsOnMethods = {"makePersonValid"})

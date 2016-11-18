@@ -1,46 +1,58 @@
 package de.spiritaner.maz.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.PrePersist;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.ObjectProperty;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
 /**
+ * The TemporalEntityKey represents a composite key of a long property and a date property.
+ * The long property is a surrogate key and does not change when the dataset is changed.
+ * The date property is a natural key and does change whenever the dataset is changed.
+ *
  * @author Florian Schwab
- * @version 0.0.1
+ * @version 0.0.2
  */
-@Deprecated
+@Embeddable
 public class TemporalEntityKey implements Serializable {
-	@Basic
-	private Long id;
 
+	private LongProperty id;
+	private ObjectProperty<LocalDate> validFromDate;
+
+	/**
+	 * @return The surrogate key
+	 */
+	@GeneratedValue
 	@Column(nullable = false, updatable = false)
-	private Date validFromDate;
-
 	public Long getId() {
+		return id.get();
+	}
+	public void setId(Long id) {
+		this.id.set(id);
+	}
+	public LongProperty idProperty() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	@Column(nullable = false, updatable = false)
+	public LocalDate getValidFromDate() {
+		return validFromDate.get();
 	}
-
-	public Date getValidFromDate() {
-		return validFromDate;
+	public void setValidFromDate(LocalDate validFromDate) {
+		this.validFromDate.set(validFromDate);
 	}
-
-	public void setValidFromDate(Date validFromDate) {
-		this.validFromDate = validFromDate;
-	}
+	public ObjectProperty<LocalDate> validFromDateProperty() { return validFromDate; }
 
 	@PrePersist
 	public void fillDates() {
-		this.validFromDate = Calendar.getInstance(Locale.GERMANY).getTime();
+		this.validFromDate.set(LocalDate.now(ZoneId.of("Europe/Berlin")));
 	}
 
 	@Override

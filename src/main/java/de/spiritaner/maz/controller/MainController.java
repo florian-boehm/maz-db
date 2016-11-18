@@ -1,12 +1,9 @@
 package de.spiritaner.maz.controller;
 
 import de.spiritaner.maz.dialog.PersonEditorDialog;
-import de.spiritaner.maz.model.Gender;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,11 +16,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.controlsfx.control.ToggleSwitch;
-import org.controlsfx.control.action.Action;
 
 import javax.persistence.EntityManager;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -37,8 +32,8 @@ public class MainController implements Initializable {
 	@FXML private ToggleSwitch personDetailsToggle;
 	@FXML private SplitPane personSplitPane;
 	@FXML private TableView<Person> personTable;
-	@FXML private TableColumn<Person, String> prenameColumn;
-	@FXML private TableColumn<Person, String> surnameColumn;
+	@FXML private TableColumn<Person, String> firstNameColumn;
+	@FXML private TableColumn<Person, String> birthNameColumn;
 	@FXML private TableColumn<Person, String> birthplaceColumn;
 	@FXML private TableColumn<Person, Long> idColumn;
 	@FXML private TableColumn<Person, LocalDate> birthdayColumn;
@@ -60,12 +55,12 @@ public class MainController implements Initializable {
 			}
 		});
 
-		prenameColumn.setCellValueFactory(cellData -> cellData.getValue().prenameProperty());
-		surnameColumn.setCellValueFactory(cellData -> cellData.getValue().surnameProperty());
-		genderColumn.setCellValueFactory(cellData -> cellData.getValue().getGender().description());
-		birthdayColumn.setCellValueFactory(cellData -> cellData.getValue().birthday());
-		birthplaceColumn.setCellValueFactory(cellData -> cellData.getValue().birthplace());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().id().asObject());
+		firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
+		birthNameColumn.setCellValueFactory(cellData -> cellData.getValue().birthNameProperty());
+		genderColumn.setCellValueFactory(cellData -> cellData.getValue().getGender().descriptionProperty());
+		birthdayColumn.setCellValueFactory(cellData -> cellData.getValue().birthdayProperty());
+		birthplaceColumn.setCellValueFactory(cellData -> cellData.getValue().birthplaceProperty());
+		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 
 		DateTimeFormatter myDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 		birthdayColumn.setCellFactory(column -> {

@@ -1,18 +1,23 @@
 package de.spiritaner.maz.model;
 
-import javafx.beans.property.*;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import javax.persistence.*;
 
 /**
+ * The salutation class is used for the T-V distinction. The level of politeness is necessary for the german language.
+ *
  * @author Florian Schwab
  * @version 0.0.1
  */
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "Gender.findAll", query = "SELECT g FROM Gender g"),
+	@NamedQuery(name = "Salutation.findAll", query = "SELECT s FROM Salutation s"),
 })
-public class Gender {
+public class Salutation {
 
 	private LongProperty id = new SimpleLongProperty();
 	private StringProperty description = new SimpleStringProperty();
@@ -25,7 +30,7 @@ public class Gender {
 	public void setId(Long id) {
 		this.id.set(id);
 	}
-	public LongProperty idProperty() {
+	public LongProperty id() {
 		return id;
 	}
 
@@ -36,7 +41,7 @@ public class Gender {
 	public void setDescription(String description) {
 		this.description.set(description);
 	}
-	public StringProperty descriptionProperty() {
+	public StringProperty description() {
 		return description;
 	}
 
@@ -44,14 +49,16 @@ public class Gender {
 	public String toString() {
 		return description.get();
 	}
+
 	@Override
 	public int hashCode() {
 		return id.hashCode()+description.hashCode();
 	}
+
 	@Override
 	public boolean equals(Object object) {
-		if(object instanceof Gender) {
-			return ((Gender) object).id.get() == id.get();
+		if(object instanceof Salutation) {
+			return ((Salutation) object).id.get() == id.get();
 		} else {
 			return false;
 		}

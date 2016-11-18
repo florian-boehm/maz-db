@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.*;
 
 /**
  * @author Florian Schwab
@@ -39,8 +38,8 @@ public class ResidenceTest {
 		gender.setDescription("Male");
 
 		Person person = new Person();
-		person.setPrename("Prename");
-		person.setSurname("Surname");
+		person.setFirstName("Prename");
+		person.setFamilyName("Surname");
 //		Date now = Calendar.getInstance(Locale.GERMANY).getTime();
 		person.setBirthday(LocalDate.now());
 		person.setBirthplace("Any City");

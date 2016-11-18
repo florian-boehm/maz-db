@@ -5,21 +5,22 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 /**
  * @author Florian Schwab
  * @version 0.0.1
  */
 @Entity
-public class ApprovalType {
+public class ParticipantType {
 
 	private LongProperty id;
 	private StringProperty description;
-	private List<Approval> approvals;
 
-	public ApprovalType() {
+	public ParticipantType() {
 		id = new SimpleLongProperty();
 		description = new SimpleStringProperty();
 	}
@@ -42,8 +43,4 @@ public class ApprovalType {
 		this.description.set(description);
 	}
 	public StringProperty descriptionProperty() { return description; }
-
-	@OneToMany(mappedBy = "approvalType", fetch = FetchType.LAZY)
-	public List<Approval> getApprovals() { return approvals; }
-	public void setApprovals(List<Approval> approvals) { this.approvals = approvals; }
 }

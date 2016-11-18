@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minWidth="330.0" prefHeight="272.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.PersonEditorController">
+<AnchorPane minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.PersonEditorController">
    <children>
       <GridPane alignment="center" hgap="10.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -43,12 +43,12 @@
    
             <TextField fx:id="surnameField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-            <Label text="Geburtsort:" GridPane.rowIndex="5" />
-            <TextField fx:id="birthplaceField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <DatePicker fx:id="birthdayDatePicker" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="NEVER" />
-            <Label text="Geburtstag:" GridPane.rowIndex="4" />
-            <Label text="Geschlecht:" GridPane.rowIndex="6" />
-            <HBox GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <Label text="Geburtsort:" GridPane.rowIndex="6" />
+            <TextField fx:id="birthplaceField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <DatePicker fx:id="birthdayDatePicker" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="NEVER" />
+            <Label text="Geburtstag:" GridPane.rowIndex="5" />
+            <Label text="Geschlecht:" GridPane.rowIndex="7" />
+            <HBox GridPane.columnIndex="1" GridPane.rowIndex="7">
                <children>
                   <ComboBox fx:id="genderComboBox" prefHeight="25.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <HBox.margin>
@@ -57,12 +57,14 @@
                   </ComboBox>
                </children>
             </HBox>
-            <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+            <ButtonBar prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
               <buttons>
                   <Button fx:id="savePersonButton" defaultButton="true" mnemonicParsing="false" onAction="#savePerson" text="Anlegen" />
                 <Button cancelButton="true" mnemonicParsing="false" onAction="#closeDialog" text="Abbrechen" />
               </buttons>
             </ButtonBar>
+            <Label text="Geburtsname:" GridPane.rowIndex="4" />
+            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
          <columnConstraints>
             <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0" />
@@ -73,6 +75,7 @@
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
+            <RowConstraints minHeight="-Infinity" />
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />

@@ -33,6 +33,8 @@ public class MainView extends Scene {
 			primaryStage.sizeToScene();
 			primaryStage.setMinHeight(600);
 			primaryStage.setMinWidth(800);
+			primaryStage.setMaxHeight(4000);
+			primaryStage.setMaxWidth(4000);
 			primaryStage.setTitle("MaZ-Datenbank");
 			primaryStage.getIcons().add(new Image(InitView.class.getClass().getResource("/img/db_32.png").toString()));
 

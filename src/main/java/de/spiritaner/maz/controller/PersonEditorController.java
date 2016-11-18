@@ -7,15 +7,12 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.persistence.EntityManager;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.ResourceBundle;
 
@@ -71,8 +68,8 @@ public class PersonEditorController implements Initializable {
 		if(person != null) {
 			titleText.setText("Person bearbeiten");
 			savePersonButton.setText("Speichern");
-			prenameField.setText(person.getPrename());
-			surnameField.setText(person.getSurname());
+			prenameField.setText(person.getFirstName());
+			surnameField.setText(person.getFamilyName());
 			birthdayDatePicker.setValue(person.getBirthday());
 			birthplaceField.setText(person.getBirthplace());
 			genderComboBox.getSelectionModel().select(person.getGender());

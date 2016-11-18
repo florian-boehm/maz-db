@@ -2,19 +2,15 @@ package de.spiritaner.maz.util;
 
 import de.spiritaner.maz.model.Gender;
 import de.spiritaner.maz.model.Person;
+import de.spiritaner.maz.model.Salutation;
 import de.spiritaner.maz.model.User;
 import org.apache.log4j.Logger;
-import org.apache.log4j.or.ObjectRenderer;
-import org.hibernate.SessionFactory;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.xml.bind.DatatypeConverter;
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,15 +44,25 @@ public class DataDatabase {
 		Gender female = new Gender();
 		female.setDescription("Weiblich");
 
+		// Create default salutations
+		Salutation du = new Salutation();
+		du.setDescription("Du");
+
+		Salutation sie = new Salutation();
+		sie.setDescription("Sie");
+
 		// Create default person
 		Person person = new Person();
 		person.setGender(female);
-		person.setPrename("Momo");
-		person.setSurname("Musterperson");
+		person.setFirstName("Momo");
+		person.setBirthName("Musterperson");
 		person.setBirthplace("Musterstadt");
+		person.setSalutation(du);
 		person.setBirthday(LocalDate.now());
 
 		em.getTransaction().begin();
+		em.persist(du);
+		em.persist(sie);
 		em.persist(person);
 		em.persist(male);
 		em.getTransaction().commit();

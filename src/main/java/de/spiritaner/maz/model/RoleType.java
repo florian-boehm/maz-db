@@ -1,9 +1,12 @@
 package de.spiritaner.maz.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Florian Schwab
@@ -12,26 +15,41 @@ import javax.persistence.Id;
 @Entity
 public class RoleType {
 
+	private LongProperty id;
+	private StringProperty description;
+	private List<Role> roles;
+
+	public RoleType() {
+		id = new SimpleLongProperty();
+		description = new SimpleStringProperty();
+	}
+
 	@Id
 	@GeneratedValue
-	private Long id;
-
-	@Column(nullable = false)
-	private String description;
-
 	public Long getId() {
-		return id;
+		return id.get();
 	}
-
 	public void setId(Long id) {
-		this.id = id;
+		this.id.set(id);
 	}
+	public LongProperty idProperty() { return id; }
 
+	/**
+	 * The description of the role type.
+	 */
+	@Column(nullable = false)
 	public String getDescription() {
-		return description;
+		return description.get();
 	}
-
 	public void setDescription(String description) {
-		this.description = description;
+		this.description.set(description);
 	}
+	public StringProperty descriptionProperty() { return description; }
+
+	/**
+	 * All roles that use this role type.
+	 */
+	@OneToMany(mappedBy = "roleType", fetch = FetchType.LAZY)
+	public List<Role> getRoles() { return roles; }
+	public void setRoles(List<Role> roles) { this.roles = roles; }
 }

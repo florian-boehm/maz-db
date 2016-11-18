@@ -1,5 +1,10 @@
 package de.spiritaner.maz.model;
 
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,24 +17,30 @@ import javax.persistence.Id;
 @Entity
 public class ResidenceType {
 
+	private LongProperty id;
+	private StringProperty description;
+
+	public ResidenceType() {
+		id = new SimpleLongProperty();
+		description = new SimpleStringProperty();
+	}
+
 	@Id
 	@GeneratedValue
-	private Long id;
-
-	@Column(nullable=false, updatable=false)
-	private String description;
-
-	public Long getId() { return id;	}
-
+	public Long getId() {
+		return id.get();
+	}
 	public void setId(Long id) {
-		this.id = id;
+		this.id.set(id);
 	}
+	public LongProperty idProperty() { return id; }
 
+	@Column(nullable = false, updatable = false)
 	public String getDescription() {
-		return description;
+		return description.get();
 	}
-
 	public void setDescription(String description) {
-		this.description = description;
+		this.description.set(description);
 	}
+	public StringProperty descriptionProperty() { return description; }
 }

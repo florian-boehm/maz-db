@@ -1,5 +1,10 @@
 package de.spiritaner.maz.model;
 
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,101 +17,105 @@ import javax.persistence.Id;
 @Entity
 public class Address {
 
+	private LongProperty id;
+	private StringProperty street;
+	private StringProperty houseNumber;
+	private StringProperty postCode;
+	private StringProperty city;
+	private StringProperty state;
+	private StringProperty country;
+	private StringProperty addition;
+
+	public Address() {
+		id = new SimpleLongProperty();
+		street = new SimpleStringProperty();
+		houseNumber = new SimpleStringProperty();
+		postCode = new SimpleStringProperty();
+		city = new SimpleStringProperty();
+		state = new SimpleStringProperty();
+		country = new SimpleStringProperty();
+		addition = new SimpleStringProperty();
+	}
+
 	@Id
 	@GeneratedValue
-	private Long id;
+	public Long getId() {
+		return id.get();
+	}
+	public void setId(Long id) {
+		this.id.set(id);
+	}
+	public LongProperty getIdProperty() { return id; }
 
 	@Column(nullable = false)
-	private String street;
+	public String getStreet() {
+		return street.get();
+	}
+	public void setStreet(String street) {
+		this.street.set(street);
+	}
+	public StringProperty getStreetProperty() { return street; }
 
 	@Column(nullable = false)
-	private String houseNumber;
+	public String getHouseNumber() {
+		return houseNumber.get();
+	}
+	public void setHouseNumber(String houseNumber) {
+		this.houseNumber.set(houseNumber);
+	}
+	public StringProperty getHouseNumberProperty() { return this.houseNumber; }
 
 	@Column(nullable = false, length = 10)
-	private String postCode;
+	public String getPostCode() {
+		return postCode.get();
+	}
+	public void setPostCode(String postCode) {
+		this.postCode.set(postCode);
+	}
+	public StringProperty getPostCodeProperty() { return this.postCode; }
 
 	@Column(nullable = false)
-	private String city;
-
-	@Column(nullable = true)
-	private String state;
-
-	@Column(nullable = true)
-	private String country;
-
-	private String addition;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public String getHouseNumber() {
-		return houseNumber;
-	}
-
-	public void setHouseNumber(String houseNumber) {
-		this.houseNumber = houseNumber;
-	}
-
-	public String getPostCode() {
-		return postCode;
-	}
-
-	public void setPostCode(String postCode) {
-		this.postCode = postCode;
-	}
-
 	public String getCity() {
-		return city;
+		return city.get();
 	}
-
 	public void setCity(String city) {
-		this.city = city;
+		this.city.set(city);
 	}
+	public StringProperty getCityProperty() { return city; }
 
 	/**
 	 * The state is not necessary for delivery of post in Germany
 	 *
 	 * @return The state of this address; might be null
 	 */
+	@Column(nullable = true)
 	public String getState() {
-		return state;
+		return state.get();
 	}
-
 	public void setState(String state) {
-		this.state = state;
+		this.state.set(state);
 	}
+	public StringProperty getStateProperty() { return this.state; }
 
 	/**
 	 * The country is not necessary for delivery of post in Germany
 	 *
 	 * @return The country of this address; might be null
 	 */
+	@Column(nullable = true)
 	public String getCountry() {
-		return country;
+		return country.get();
 	}
-
 	public void setCountry(String country) {
-		this.country = country;
+		this.country.set(country);
 	}
+	public StringProperty getCountryProperty() { return country; }
 
 	public String getAddition() {
-		return addition;
+		return addition.get();
 	}
-
 	public void setAddition(String addition) {
-		this.addition = addition;
+		this.addition.set(addition);
 	}
+	public StringProperty getAdditionProperty() { return addition; }
 }

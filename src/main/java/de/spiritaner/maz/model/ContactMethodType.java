@@ -1,5 +1,6 @@
 package de.spiritaner.maz.model;
 
+
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,13 +14,13 @@ import java.util.List;
  * @version 0.0.1
  */
 @Entity
-public class ApprovalType {
+public class ContactMethodType {
 
 	private LongProperty id;
 	private StringProperty description;
-	private List<Approval> approvals;
+	private List<ContactMethod> contactMethods;
 
-	public ApprovalType() {
+	public ContactMethodType() {
 		id = new SimpleLongProperty();
 		description = new SimpleStringProperty();
 	}
@@ -34,6 +35,9 @@ public class ApprovalType {
 	}
 	public LongProperty idProperty() { return id; }
 
+	/**
+	 * The description of the contact method type.
+	 */
 	@Column(nullable = false)
 	public String getDescription() {
 		return description.get();
@@ -43,7 +47,10 @@ public class ApprovalType {
 	}
 	public StringProperty descriptionProperty() { return description; }
 
-	@OneToMany(mappedBy = "approvalType", fetch = FetchType.LAZY)
-	public List<Approval> getApprovals() { return approvals; }
-	public void setApprovals(List<Approval> approvals) { this.approvals = approvals; }
+	/**
+	 * All contact methods that use this contact method type.
+	 */
+	@OneToMany(mappedBy = "contactMethodType", fetch = FetchType.LAZY)
+	public List<ContactMethod> getContactMethods() { return contactMethods; }
+	public void setContactMethods(List<ContactMethod> contactMethods) { this.contactMethods = contactMethods; }
 }

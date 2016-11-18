@@ -1,5 +1,8 @@
 package de.spiritaner.maz.model;
 
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
+
 import javax.persistence.*;
 
 /**
@@ -9,49 +12,45 @@ import javax.persistence.*;
 @Entity
 public class Role {
 
+	private LongProperty id;
+	private Person person;
+	private RoleType roleType;
+
+	public Role() {
+		id = new SimpleLongProperty();
+	}
+
 	@Id
 	@GeneratedValue
-	private Long id;
+	public Long getId() {
+		return id.get();
+	}
+	public void setId(Long id) {
+		this.id.set(id);
+	}
+	public LongProperty getIdProperty() { return id; }
 
+	/**
+	 * The person that owns this role.
+	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="personId", nullable = false)
-	private Person person;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "roleTypeId", nullable = false)
-	private ApprovalType roleType;
-
-	private Boolean isApproved;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public Person getPerson() {
 		return person;
 	}
-
 	public void setPerson(Person person) {
 		this.person = person;
 	}
 
-	public ApprovalType getRoleType() {
+	/**
+	 * The role type that this role is using.
+	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "roleTypeId", nullable = false)
+	public RoleType getRoleType() {
 		return roleType;
 	}
-
-	public void setRoleType(ApprovalType roleType) {
+	public void setRoleType(RoleType roleType) {
 		this.roleType = roleType;
-	}
-
-	public Boolean getApproved() {
-		return isApproved;
-	}
-
-	public void setApproved(Boolean approved) {
-		isApproved = approved;
 	}
 }
