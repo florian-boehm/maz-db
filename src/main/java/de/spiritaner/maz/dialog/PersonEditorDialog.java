@@ -24,6 +24,7 @@ public class PersonEditorDialog extends Scene {
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle((person == null) ? "Neue Person anlegen" : "Person bearbeiten");
 			dialogStage.initOwner(primaryStage);
+			// TODO Is the modality of this window really necessary
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.setResizable(true);
 			dialogStage.sizeToScene();

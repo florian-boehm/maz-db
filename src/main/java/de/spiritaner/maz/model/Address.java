@@ -45,7 +45,7 @@ public class Address {
 	public void setId(Long id) {
 		this.id.set(id);
 	}
-	public LongProperty getIdProperty() { return id; }
+	public LongProperty idProperty() { return id; }
 
 	@Column(nullable = false)
 	public String getStreet() {
@@ -54,7 +54,7 @@ public class Address {
 	public void setStreet(String street) {
 		this.street.set(street);
 	}
-	public StringProperty getStreetProperty() { return street; }
+	public StringProperty streetProperty() { return street; }
 
 	@Column(nullable = false)
 	public String getHouseNumber() {
@@ -63,7 +63,7 @@ public class Address {
 	public void setHouseNumber(String houseNumber) {
 		this.houseNumber.set(houseNumber);
 	}
-	public StringProperty getHouseNumberProperty() { return this.houseNumber; }
+	public StringProperty houseNumberProperty() { return this.houseNumber; }
 
 	@Column(nullable = false, length = 10)
 	public String getPostCode() {
@@ -72,7 +72,7 @@ public class Address {
 	public void setPostCode(String postCode) {
 		this.postCode.set(postCode);
 	}
-	public StringProperty getPostCodeProperty() { return this.postCode; }
+	public StringProperty postCodeProperty() { return this.postCode; }
 
 	@Column(nullable = false)
 	public String getCity() {
@@ -81,7 +81,7 @@ public class Address {
 	public void setCity(String city) {
 		this.city.set(city);
 	}
-	public StringProperty getCityProperty() { return city; }
+	public StringProperty cityProperty() { return city; }
 
 	/**
 	 * The state is not necessary for delivery of post in Germany
@@ -95,7 +95,7 @@ public class Address {
 	public void setState(String state) {
 		this.state.set(state);
 	}
-	public StringProperty getStateProperty() { return this.state; }
+	public StringProperty stateProperty() { return this.state; }
 
 	/**
 	 * The country is not necessary for delivery of post in Germany
@@ -109,7 +109,7 @@ public class Address {
 	public void setCountry(String country) {
 		this.country.set(country);
 	}
-	public StringProperty getCountryProperty() { return country; }
+	public StringProperty countryProperty() { return country; }
 
 	public String getAddition() {
 		return addition.get();
@@ -117,5 +117,5 @@ public class Address {
 	public void setAddition(String addition) {
 		this.addition.set(addition);
 	}
-	public StringProperty getAdditionProperty() { return addition; }
+	public StringProperty additionProperty() { return addition; }
 }

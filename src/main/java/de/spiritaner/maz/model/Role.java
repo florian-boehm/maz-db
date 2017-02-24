@@ -28,7 +28,7 @@ public class Role {
 	public void setId(Long id) {
 		this.id.set(id);
 	}
-	public LongProperty getIdProperty() { return id; }
+	public LongProperty idProperty() { return id; }
 
 	/**
 	 * The person that owns this role.

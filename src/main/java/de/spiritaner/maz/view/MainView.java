@@ -27,6 +27,7 @@ public class MainView extends Scene {
 
 			final MainView scene = new MainView(root);
 //			scene.getStylesheets().add(InitView.class.getClass().getResource("/css/validation.css").toExternalForm());
+			scene.getStylesheets().add(MainView.class.getClass().getResource("/css/side_tabs.css").toExternalForm());
 
 			primaryStage.setScene(scene);
 			primaryStage.setResizable(true);
@@ -38,7 +39,6 @@ public class MainView extends Scene {
 			primaryStage.setTitle("MaZ-Datenbank");
 			primaryStage.getIcons().add(new Image(InitView.class.getClass().getResource("/img/db_32.png").toString()));
 
-			controller.loadAllPersons();
 			return scene;
 		} catch (IOException e) {
 			ExceptionDialog.show(e);

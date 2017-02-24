@@ -1,5 +1,8 @@
 package de.spiritaner.maz.model;
 
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -11,62 +14,47 @@ import java.util.Date;
 @Entity
 public class Residence {
 
-	@Id
-	@GeneratedValue
-	private Long id;
-//	@EmbeddedId
-//	private TemporalEntityKey id;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="personId", nullable = false)
+	private LongProperty id;
 	private Person person;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="addressId", nullable = false)
 	private Address address;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "residenceTypeId", nullable = false)
 	private ResidenceType residenceType;
-
 	private Boolean isPreferredAddress;
 
-//	public TemporalEntityKey getId() {
-//		return id;
-//	}
-//
-//	public void setId(TemporalEntityKey id) {
-//		this.id = id;
-//	}
+	public Residence() {
+	    id = new SimpleLongProperty();
+    }
 
+	@Id
+	@GeneratedValue
 	public Long getId() {
-		return id;
+		return id.get();
 	}
+	public void setId(Long id) { this.id.set(id); }
+	public LongProperty idProperty() { return id; }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="personId", nullable = false)
 	public Person getPerson() {
 		return person;
 	}
-
 	public void setPerson(Person person) {
 		this.person = person;
 	}
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="addressId", nullable = false)
 	public Address getAddress() {
 		return address;
 	}
-
 	public void setAddress(Address address) {
 		this.address = address;
 	}
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "residenceTypeId", nullable = false)
 	public ResidenceType getResidenceType() {
 		return residenceType;
 	}
-
 	public void setResidenceType(ResidenceType residenceType) {
 		this.residenceType = residenceType;
 	}
@@ -74,7 +62,6 @@ public class Residence {
 	public Boolean getPreferredAddress() {
 		return isPreferredAddress;
 	}
-
 	public void setPreferredAddress(Boolean preferredAddress) {
 		isPreferredAddress = preferredAddress;
 	}

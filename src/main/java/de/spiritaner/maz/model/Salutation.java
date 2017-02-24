@@ -19,8 +19,13 @@ import javax.persistence.*;
 })
 public class Salutation {
 
-	private LongProperty id = new SimpleLongProperty();
-	private StringProperty description = new SimpleStringProperty();
+	private LongProperty id;
+	private StringProperty description;
+
+	public Salutation() {
+		id = new SimpleLongProperty();
+		description = new SimpleStringProperty();
+	}
 
 	@Id
 	@GeneratedValue

@@ -47,7 +47,7 @@ public class Site {
 	@Column(name="value")
 	@CollectionTable(name="SITE_EP_NUMBERS", joinColumns=@JoinColumn(name="epNumber"))
 	public Map<String, String> getEpNumbers() { return epNumbers; }
-	public void set(Map<String, String> epNumbers) { this.epNumbers = epNumbers; }
+	public void setEpNumbers(Map<String, String> epNumbers) { this.epNumbers = epNumbers; }
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="addressId", nullable = false)

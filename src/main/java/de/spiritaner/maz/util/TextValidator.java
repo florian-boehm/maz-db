@@ -110,6 +110,11 @@ public class TextValidator {
 
 		vbox.getChildren().clear();
 
+		if(textField == null) {
+			System.out.println("SOMETHING IS WRONG HERE");
+			return false;
+		}
+
 		if(justText != null && justText == true) {
 			String after = textField.getText().replaceAll("[^a-zA-Z0-9-_]","");
 			if(!after.equals(textField.getText())) {

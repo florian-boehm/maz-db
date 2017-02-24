@@ -21,6 +21,7 @@ import java.util.Objects;
  * @version 0.0.2
  */
 @Embeddable
+@Deprecated
 public class TemporalEntityKey implements Serializable {
 
 	private LongProperty id;

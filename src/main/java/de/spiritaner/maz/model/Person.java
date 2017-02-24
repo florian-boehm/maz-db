@@ -35,6 +35,8 @@ public class Person {
 	private List<Role> roles;
 	private List<Approval> approvals;
 
+    private List<ContactMethod> contactMethods;
+
 	public Person() {
 		id = new SimpleLongProperty();
 		firstName = new SimpleStringProperty();
@@ -69,7 +71,7 @@ public class Person {
 	 * @return The salutation of a person
 	 */
 	@ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST})
-	@JoinColumn(name="salutationId", nullable = false)
+	@JoinColumn(name="salutationId")
 	public Salutation getSalutation() {
 		return salutation;
 	}
@@ -93,7 +95,7 @@ public class Person {
 	}
 
 	/**
-	 * @return The persons first name
+	 * @return The persons first name.
 	 */
 	@Column(nullable = false)
 	public String getFirstName() {
@@ -167,12 +169,12 @@ public class Person {
 	}
 
 	/**
-	 * One person can only have on gender at a time. If the person has a specific (maybe mixed) gender,
+	 * One person can only have one gender at a time. If the person has a specific (maybe mixed) gender,
 	 * the gender can be created first and then be assigned to the person.
 	 *
 	 * @return The gender of the person
 	 */
-	@ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST})
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="genderId")
 	public Gender getGender() {
 		return gender;
@@ -208,14 +210,25 @@ public class Person {
 	/**
 	 * All the roles this specific person has.
 	 */
-	@OneToMany(mappedBy = "person")
+	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
 	public List<Role> getRoles() { return roles; }
 	public void setRoles(List<Role> roles) { this.roles = roles; }
 
 	/**
 	 * All the approvals this specific person has.
 	 */
-	@OneToMany(mappedBy = "person")
+	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
 	public List<Approval> getApprovals() { return approvals; }
 	public void setApprovals(List<Approval> approvals) { this.approvals = approvals; }
+
+    /**
+     * The contact methods by which this person can be contacted with.
+     */
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+    public List<ContactMethod> getContactMethods() {
+        return contactMethods;
+    }
+    public void setContactMethods(List<ContactMethod> contactMethods) {
+        this.contactMethods = contactMethods;
+    }
 }

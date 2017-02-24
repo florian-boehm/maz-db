@@ -1,16 +1,17 @@
 package de.spiritaner.maz.model;
 
 import javafx.beans.property.LongProperty;
-import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 /**
  * @author Florian Schwab
  * @version 0.0.1
  */
+@Entity
 public class ContactMethod {
 
 	private LongProperty id;
@@ -18,6 +19,11 @@ public class ContactMethod {
 
 	private Person person;
 	private ContactMethodType contactMethodType;
+
+	public ContactMethod() {
+	    id = new SimpleLongProperty();
+	    value = new SimpleStringProperty();
+    }
 
 	@Id
 	@GeneratedValue
