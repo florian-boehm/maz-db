@@ -17,12 +17,12 @@ public class ImageTab extends Tab {
 
     public ImageTab() {
         img = new SimpleStringProperty();
-        img.addListener((observableValue, s, t1) -> {
+        img.addListener((observableValue, oldValue, newValue) -> {
             super.setGraphic(new ImageView(getImg()));
         });
 
         name = new SimpleStringProperty();
-        name.addListener((observableValue, s, t1) -> {
+        name.addListener((observableValue, oldValue, newValue) -> {
             super.setTooltip(new Tooltip(name.get()));
         });
 

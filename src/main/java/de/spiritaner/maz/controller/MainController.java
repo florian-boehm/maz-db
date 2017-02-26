@@ -1,5 +1,6 @@
 package de.spiritaner.maz.controller;
 
+import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.view.components.ImageTab;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -44,8 +45,7 @@ public class MainController implements Initializable, Controller {
                         }
                     }
                 } catch (IOException e) {
-                    System.out.println("Could not load subscene because of:");
-                    e.printStackTrace();
+                    ExceptionDialog.show(e);
                 }
             }
         });

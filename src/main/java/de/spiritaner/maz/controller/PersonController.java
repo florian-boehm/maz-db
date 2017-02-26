@@ -5,11 +5,14 @@ import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.ToggleSwitch;
@@ -23,36 +26,24 @@ import java.util.ResourceBundle;
 
 public class PersonController implements Initializable, Controller {
 
-    @FXML private MaskerPane masker;
-    @FXML private Button doSomething;
-    @FXML private ToggleSwitch personDetailsToggle;
-    @FXML private SplitPane personSplitPane;
     @FXML private TableView<Person> personTable;
     @FXML private TableColumn<Person, String> firstNameColumn;
+    @FXML private TableColumn<Person, String> familyNameColumn;
     @FXML private TableColumn<Person, String> birthNameColumn;
     @FXML private TableColumn<Person, String> birthplaceColumn;
     @FXML private TableColumn<Person, Long> idColumn;
     @FXML private TableColumn<Person, LocalDate> birthdayColumn;
     @FXML private TableColumn<Person, String> genderColumn;
-    @FXML private GridPane address1;
-    @FXML private GridPane person1;
-
-    private double previousDividerPosition = -1;
+    @FXML private MaskerPane masker;
+    @FXML private ToggleSwitch personDetailsToggle;
+    @FXML private SplitPane personSplitPane;
 
     private Stage stage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        personDetailsToggle.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if(oldValue == false && newValue == true) {
-                personSplitPane.setDividerPosition(0,(previousDividerPosition >= 0) ? previousDividerPosition : 0.5);
-            } else if(oldValue == true && newValue == false) {
-                previousDividerPosition = personSplitPane.getDividerPositions()[0];
-                personSplitPane.setDividerPosition(0, 1.0);
-            }
-        });
-
         firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
+        familyNameColumn.setCellValueFactory(cellData -> cellData.getValue().familyNameProperty());
         birthNameColumn.setCellValueFactory(cellData -> cellData.getValue().birthNameProperty());
         genderColumn.setCellValueFactory(cellData -> cellData.getValue().getGender().descriptionProperty());
         birthdayColumn.setCellValueFactory(cellData -> cellData.getValue().birthdayProperty());
@@ -77,29 +68,13 @@ public class PersonController implements Initializable, Controller {
             };
         });
 
-
-        // TODO implement loading mechanism for persons
-//        masker.setProgress(0.0);
-//        masker.setVisible(true);
-//
-//        new Thread(() -> {
-//            for(int i = 0; i <= 100; i++) {
-//                try {
-//                    Thread.sleep(50);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                masker.setProgress(i/100.0);
-//            }
-//
-//            masker.setVisible(false);
-//        }).start();
-        loadAllPersons();
+        loadAllPersonsAsync();
     }
 
     public void createNewPerson(ActionEvent actionEvent) {
         boolean result = PersonEditorDialog.showAndWait(null, stage);
+
+        loadAllPersonsAsync();
     }
 
     public void editPerson(ActionEvent actionEvent) {
@@ -108,16 +83,25 @@ public class PersonController implements Initializable, Controller {
         if(selectedPersons.size() == 1) {
             PersonEditorDialog.showAndWait(selectedPersons.get(0), stage);
         }
+
+        loadAllPersonsAsync();
     }
 
-    public void loadAllPersons() {
-        EntityManager em = DataDatabase.getFactory().createEntityManager();
-        Collection<Person> result = em.createQuery("SELECT p FROM Person p").getResultList();
-        personTable.setItems(FXCollections.observableArrayList(result));
-    }
+    private void loadAllPersonsAsync() {
+        masker.setProgressVisible(true);
+        masker.setText("Lade Personen ...");
+        masker.setVisible(true);
 
-    public void doSomethingNow(ActionEvent actionEvent) {
-        System.out.println("ACTION BABY!");
+        new Thread(new Task() {
+            @Override
+            protected Collection<Person> call() throws Exception {
+                EntityManager em = DataDatabase.getFactory().createEntityManager();
+                Collection<Person> result = em.createQuery("SELECT p FROM Person p").getResultList();
+                personTable.setItems(FXCollections.observableArrayList(result));
+                masker.setVisible(false);
+                return result;
+            }
+        }).start();
     }
 
     public void setStage(Stage stage) {

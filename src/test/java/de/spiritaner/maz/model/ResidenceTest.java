@@ -1,5 +1,7 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.model.meta.Gender;
+import de.spiritaner.maz.model.meta.ResidenceType;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterTest;

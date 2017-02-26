@@ -1,5 +1,6 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.model.meta.Gender;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.*;

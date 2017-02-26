@@ -1,5 +1,6 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.model.meta.ApprovalType;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 

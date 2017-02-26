@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller;
 
-import de.spiritaner.maz.model.Gender;
+import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
 import de.spiritaner.maz.util.TextValidator;
@@ -37,7 +37,6 @@ public class PersonEditorController implements Initializable {
 
 	private TextValidator firstnameFieldValidator;
 	private TextValidator familynameFieldValidator;
-    private TextValidator birthnameFieldValidator;
 
 	private Person person;
 	private Stage stage;
@@ -45,7 +44,6 @@ public class PersonEditorController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
         firstnameFieldValidator = TextValidator.create(firstnameField).fieldName("Vorname").notEmpty(true).removeAll(" ").textChanged();
         familynameFieldValidator = TextValidator.create(familynameField).fieldName("Nachname").notEmpty(true).removeAll(" ").textChanged();
-        birthnameFieldValidator = TextValidator.create(birthnameField).fieldName("Geburtsname").notEmpty(true).removeAll(" ").textChanged();
 	}
 
 	public void setPerson(Person person) {
@@ -108,20 +106,27 @@ public class PersonEditorController implements Initializable {
 
         if(prenameValid && surnameValid) {
             EntityManager em = DataDatabase.getFactory().createEntityManager();
+			em.getTransaction().begin();
+
+			Person tmpPerson;
 
             if(person == null) {
-                person = new Person();
-                person.setFirstName(firstnameField.getText());
-                person.setFamilyName(familynameField.getText());
-                person.setBirthName(birthnameField.getText());
-                person.setBirthplace(birthplaceField.getText());
-                person.setBirthday(birthdayDatePicker.getValue());
-                person.setGender(genderComboBox.getValue());
+				tmpPerson = new Person();
+			} else {
+            	tmpPerson = em.find(Person.class, person.getId());
             }
 
+			tmpPerson.setFirstName(firstnameField.getText());
+			tmpPerson.setFamilyName(familynameField.getText());
+			tmpPerson.setBirthName(birthnameField.getText());
+			tmpPerson.setBirthplace(birthplaceField.getText());
+			tmpPerson.setBirthday(birthdayDatePicker.getValue());
+			tmpPerson.setGender(genderComboBox.getValue());
+
             try {
-                em.getTransaction().begin();
-                em.persist(person);
+            	// Persist only if the person has not existed before
+            	if(person == null) em.persist(tmpPerson);
+
                 em.getTransaction().commit();
                 stage.close();
             } catch (PersistenceException e) {

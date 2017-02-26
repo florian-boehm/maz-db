@@ -1,6 +1,6 @@
 package de.spiritaner.maz.util;
 
-import de.spiritaner.maz.model.Gender;
+import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Salutation;
 import de.spiritaner.maz.model.User;
@@ -55,7 +55,7 @@ public class DataDatabase {
 		Person person = new Person();
 		person.setGender(female);
 		person.setFirstName("Momo");
-		person.setBirthName("Musterperson");
+		person.setFamilyName("Musterperson");
 		person.setBirthplace("Musterstadt");
 		person.setSalutation(du);
 		person.setBirthday(LocalDate.now());

@@ -1,5 +1,6 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.model.meta.Gender;
 import javafx.beans.property.*;
 
 import javax.persistence.*;

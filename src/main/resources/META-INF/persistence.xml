@@ -20,6 +20,7 @@
 	<persistence-unit name="userDb" transaction-type="RESOURCE_LOCAL">
 
 		<class>de.spiritaner.maz.model.User</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 		<properties>
 			<property name="hibernate.connection.url" value="jdbc:h2:./dbfiles/users"/>
@@ -40,23 +41,23 @@
 	<persistence-unit name="dataDb" transaction-type="RESOURCE_LOCAL">
 		<class>de.spiritaner.maz.model.Address</class>
 		<class>de.spiritaner.maz.model.Approval</class>
-		<class>de.spiritaner.maz.model.ApprovalType</class>
+		<class>de.spiritaner.maz.model.meta.ApprovalType</class>
 		<class>de.spiritaner.maz.model.ContactMethod</class>
-		<class>de.spiritaner.maz.model.ContactMethodType</class>
+		<class>de.spiritaner.maz.model.meta.ContactMethodType</class>
 		<class>de.spiritaner.maz.model.Event</class>
-		<class>de.spiritaner.maz.model.EventType</class>
-		<class>de.spiritaner.maz.model.Gender</class>
+		<class>de.spiritaner.maz.model.meta.EventType</class>
+		<class>de.spiritaner.maz.model.meta.Gender</class>
 		<class>de.spiritaner.maz.model.Participant</class>
-		<class>de.spiritaner.maz.model.ParticipantType</class>
+		<class>de.spiritaner.maz.model.meta.ParticipantType</class>
 		<class>de.spiritaner.maz.model.Person</class>
 		<class>de.spiritaner.maz.model.Residence</class>
-		<class>de.spiritaner.maz.model.ResidenceType</class>
+		<class>de.spiritaner.maz.model.meta.ResidenceType</class>
 		<class>de.spiritaner.maz.model.Role</class>
-		<class>de.spiritaner.maz.model.RoleType</class>
+		<class>de.spiritaner.maz.model.meta.RoleType</class>
 		<class>de.spiritaner.maz.model.Salutation</class>
 		<class>de.spiritaner.maz.model.Site</class>
 		<class>de.spiritaner.maz.model.Participant</class>
-		<class>de.spiritaner.maz.model.ParticipantType</class>
+		<class>de.spiritaner.maz.model.meta.ParticipantType</class>
 		<class>de.spiritaner.maz.model.YearAbroad</class>
 		<class>de.spiritaner.maz.model.TemporalEntityKey</class>
 
@@ -65,7 +66,7 @@
 			<property name="connection.driver_class" value="org.h2.Driver"/>
 			<property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-			<property name="hibernate.hbm2ddl.auto" value="create"/>
+			<property name="hibernate.hbm2ddl.auto" value="validate"/>
 			<property name="hibernate.show_sql" value="true" />
 
 			<property name="hibernate.c3p0.min_size" value="5" />

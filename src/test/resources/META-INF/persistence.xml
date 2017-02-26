@@ -41,11 +41,11 @@
 	<persistence-unit name="testDataDb" transaction-type="RESOURCE_LOCAL">
 		<class>de.spiritaner.maz.model.Address</class>
 		<class>de.spiritaner.maz.model.Approval</class>
-		<class>de.spiritaner.maz.model.ApprovalType</class>
-		<class>de.spiritaner.maz.model.Gender</class>
+		<class>de.spiritaner.maz.model.meta.ApprovalType</class>
+		<class>de.spiritaner.maz.model.meta.Gender</class>
 		<class>de.spiritaner.maz.model.Person</class>
 		<class>de.spiritaner.maz.model.Residence</class>
-		<class>de.spiritaner.maz.model.ResidenceType</class>
+		<class>de.spiritaner.maz.model.meta.ResidenceType</class>
 
 		<properties>
 			<property name="connection.driver_class" value="org.h2.Driver"/>

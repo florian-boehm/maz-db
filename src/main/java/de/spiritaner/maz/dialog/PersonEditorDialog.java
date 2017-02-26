@@ -28,11 +28,12 @@ public class PersonEditorDialog extends Scene {
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.setResizable(true);
 			dialogStage.sizeToScene();
-			dialogStage.setOnShown(event -> {
-				dialogStage.setMaxHeight(dialogStage.getHeight());
-				dialogStage.setMinHeight(dialogStage.getHeight());
-				dialogStage.setMinWidth(dialogStage.getWidth());
-			});
+			// TODO Find a way to set the maximum window size correctly
+			//dialogStage.setOnShown(event -> {
+			//	dialogStage.setMaxHeight(dialogStage.getHeight());
+			//	dialogStage.setMinHeight(dialogStage.getHeight());
+			//	dialogStage.setMinWidth(dialogStage.getWidth());
+			//});
 
 			controller.setPerson(person);
 			controller.setStage(dialogStage);

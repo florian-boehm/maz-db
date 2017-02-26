@@ -1,10 +1,10 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.model.meta.EventType;
 import javafx.beans.property.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -1,11 +1,10 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.model.meta.ResidenceType;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author Florian Schwab

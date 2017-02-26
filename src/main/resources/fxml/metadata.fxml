@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.*?>
+<?import de.spiritaner.maz.view.components.MetadataEditorTab?>
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.MetadataController">
+    <children>
+        <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <content>
+                <TabPane fx:id="tabPane" style="-fx-padding: 0; -fx-background-insets: 0px; -fx-background-color: #f4f4f4; -fx-border-width: 0 0 1 0; -fx-border-color: #c8c8c8;" >
+                    <tabs>
+                        <MetadataEditorTab text="Geschlechter" fx:value="de.spiritaner.maz.controller.meta.GenderEditorController"/>
+                        <!--MetadataEditorTab text="Funktionen" fx:value="roleType"/-->
+                    </tabs>
+                </TabPane>
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>

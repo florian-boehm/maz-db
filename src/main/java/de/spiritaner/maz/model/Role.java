@@ -1,5 +1,6 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.model.meta.RoleType;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 
