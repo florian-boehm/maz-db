@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 /**
@@ -22,9 +23,12 @@ public class MainController implements Initializable, Controller {
 
 	@FXML private TabPane sideTabs;
 
+	private HashMap<String, Controller> controllers;
 	private Stage stage;
 
 	public void initialize(URL location, ResourceBundle resources) {
+	    if(controllers == null) controllers = new HashMap<>();
+
         sideTabs.getSelectionModel().clearSelection();
 
         sideTabs.getSelectionModel().selectedItemProperty().addListener((observableValue, oldTab, newTab) -> {
@@ -38,10 +42,14 @@ public class MainController implements Initializable, Controller {
                             final Parent root = loader.load();
                             final Controller controller = loader.getController();
 
+                            // Save the controller for later usage
+                            controllers.put(imgTab.getUrl(),controller);
+
                             controller.setStage(stage);
                             newTab.setContent(root);
                         } else {
-                            // TODO what to do if the tab is already loaded?
+                            //
+                            controllers.get(imgTab.getUrl()).onReopen();
                         }
                     }
                 } catch (IOException e) {
@@ -57,7 +65,12 @@ public class MainController implements Initializable, Controller {
 		this.stage = stage;
 	}
 
-	public void closeApplication(ActionEvent actionEvent) {
+    @Override
+    public void onReopen() {
+        
+    }
+
+    public void closeApplication(ActionEvent actionEvent) {
 		Platform.exit();
 	}
 }

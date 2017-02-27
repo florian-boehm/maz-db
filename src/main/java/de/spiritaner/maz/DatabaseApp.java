@@ -1,19 +1,11 @@
 package de.spiritaner.maz;
 
-import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.dialog.LoginDialog;
-import de.spiritaner.maz.model.User;
 import de.spiritaner.maz.util.UserDatabase;
 import de.spiritaner.maz.view.InitView;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import org.apache.log4j.Logger;
-
-import javax.crypto.KeyGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
 
 /**
  * @author Florian Schwab

@@ -17,6 +17,11 @@ public class MetadataController implements Initializable, Controller {
     }
 
     @Override
+    public void onReopen() {
+
+    }
+
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }

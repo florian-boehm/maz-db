@@ -3,6 +3,7 @@ package de.spiritaner.maz.model;
 import de.spiritaner.maz.model.meta.ApprovalType;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
  * @version 0.0.1
  */
 @Entity
+@Audited
 public class Approval {
 
 	private LongProperty id;

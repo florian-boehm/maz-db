@@ -1,35 +1,44 @@
 package de.spiritaner.maz.controller.meta;
 
 import de.spiritaner.maz.controller.Controller;
+import de.spiritaner.maz.dialog.MetadataEditorDialog;
+import de.spiritaner.maz.dialog.MetadataRemoveDialog;
+import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.meta.MetaClass;
 import de.spiritaner.maz.util.DataDatabase;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.RollbackException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-public abstract class MetadataEditorController extends BorderPane implements Initializable, Controller {
+public abstract class MetadataEditorController<T extends MetaClass> extends BorderPane implements Initializable {
 
     final static Logger logger = Logger.getLogger(MetadataEditorController.class);
 
-    @FXML protected TableView<? extends MetaClass> metaClassTable;
-    @FXML private TableColumn<? extends MetaClass, Long> metaClassIdColumn;
-    @FXML private TableColumn<? extends MetaClass, String> metaClassDescriptionColumn;
+    @FXML protected TableView<T> metaClassTable;
+    @FXML private TableColumn<T, Long> metaClassIdColumn;
+    @FXML private TableColumn<T, String> metaClassDescriptionColumn;
 
-    private Stage stage;
     protected EntityManager em = DataDatabase.getFactory().createEntityManager();
+    private Class<T> cls;
 
-    public MetadataEditorController() {
+    public MetadataEditorController(Class<T> cls) {
+        this.cls = cls;
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/metadata_editor.fxml"));
             loader.setController(this);
@@ -41,22 +50,67 @@ public abstract class MetadataEditorController extends BorderPane implements Ini
     }
 
     @Override
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         metaClassIdColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
         metaClassDescriptionColumn.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
         load();
     }
 
-    public abstract void load();
+    public void load() {
+        metaClassTable.setItems(FXCollections.observableArrayList(em.createNamedQuery(cls.getSimpleName()+".findAll").getResultList()));
+    }
 
-    public abstract void create(ActionEvent actionEvent);
+    public void create(ActionEvent actionEvent) {
+        Optional<String> result = MetadataEditorDialog.showAndWait(null, getMetaName());
 
-    public abstract void edit(ActionEvent actionEvent);
+        result.ifPresent((value) -> {
+            try {
+                T newMetaClass = cls.newInstance();
+                newMetaClass.setDescription(value);
+                em.getTransaction().begin();
+                em.persist(newMetaClass);
+                em.getTransaction().commit();
 
-    public abstract void remove(ActionEvent actionEvent);
+                load();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void edit(ActionEvent actionEvent) {
+        MetaClass metaClassObj = metaClassTable.getSelectionModel().getSelectedItem();
+        Optional<String> result = MetadataEditorDialog.showAndWait(metaClassObj, getMetaName());
+
+        result.ifPresent((value) -> {
+            em.getTransaction().begin();
+            T existingGender = em.find(cls, metaClassObj.getId());
+            existingGender.setDescription(value);
+            em.getTransaction().commit();
+
+            load();
+        });
+    }
+
+    public void remove(ActionEvent actionEvent) {
+        MetaClass metaClassObj = metaClassTable.getSelectionModel().getSelectedItem();
+        Optional<ButtonType> result = MetadataRemoveDialog.showAndWait(metaClassObj, getMetaName());
+
+        if (result.get() == ButtonType.OK){
+            try {
+                em.getTransaction().begin();
+                T obsoleteGender = em.find(cls, metaClassObj.getId());
+                em.remove(obsoleteGender);
+                em.getTransaction().commit();
+
+                load();
+            } catch(RollbackException e) {
+                MetadataRemoveDialog.showFailureAndWait(metaClassObj, getMetaName(), e);
+            }
+        }
+    }
+
+    public abstract String getMetaName();
 }

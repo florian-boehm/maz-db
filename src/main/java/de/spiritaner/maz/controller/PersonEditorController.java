@@ -3,6 +3,7 @@ package de.spiritaner.maz.controller;
 import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.DateValidator;
 import de.spiritaner.maz.util.TextValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -37,6 +38,7 @@ public class PersonEditorController implements Initializable {
 
 	private TextValidator firstnameFieldValidator;
 	private TextValidator familynameFieldValidator;
+	private DateValidator birthdayDateValidator;
 
 	private Person person;
 	private Stage stage;
@@ -44,6 +46,7 @@ public class PersonEditorController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
         firstnameFieldValidator = TextValidator.create(firstnameField).fieldName("Vorname").notEmpty(true).removeAll(" ").textChanged();
         familynameFieldValidator = TextValidator.create(familynameField).fieldName("Nachname").notEmpty(true).removeAll(" ").textChanged();
+        birthdayDateValidator = DateValidator.create(birthdayDatePicker).fieldName("Geburtsdatum").notEmpty(true).past().valueChanged();
 	}
 
 	public void setPerson(Person person) {
@@ -63,16 +66,16 @@ public class PersonEditorController implements Initializable {
 			}
 		};});
 		genderComboBox.setButtonCell(new ListCell<Gender>() {
-			@Override protected void updateItem(Gender item, boolean empty) {
-				super.updateItem(item, empty);
+            @Override protected void updateItem(Gender item, boolean empty) {
+                super.updateItem(item, empty);
 
-				if (item == null || empty) {
-					setText(null);
-				} else {
-					setText(item.getDescription());
-				}
-			}
-		});
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    setText(item.getDescription());
+                }
+            }
+        });
 		genderComboBox.getItems().addAll(FXCollections.observableArrayList(em.createNamedQuery("Gender.findAll").getResultList()));
 
 		if(person != null) {
@@ -85,7 +88,7 @@ public class PersonEditorController implements Initializable {
 			birthplaceField.setText(person.getBirthplace());
 			genderComboBox.getSelectionModel().select(person.getGender());
 		} else {
-			titleText.setText("Neue Person anlegen");
+			titleText.setText("Person anlegen");
 			savePersonButton.setText("Anlegen");
 		}
 	}
@@ -99,12 +102,12 @@ public class PersonEditorController implements Initializable {
 	}
 
 	public void savePerson(ActionEvent actionEvent) {
-	    // Check if the username is valid
-	    boolean prenameValid = firstnameFieldValidator.validate();
-	    boolean surnameValid = familynameFieldValidator.validate();
-	    // TODO Check if a birthdate is entered
+	    // Check if the first name, family name and birthday are valid
+	    boolean firstnameValid = firstnameFieldValidator.validate();
+	    boolean familyNameValid = familynameFieldValidator.validate();
+	    boolean birtdayValid = birthdayDateValidator.validate();
 
-        if(prenameValid && surnameValid) {
+        if(firstnameValid && familyNameValid && birtdayValid) {
             EntityManager em = DataDatabase.getFactory().createEntityManager();
 			em.getTransaction().begin();
 
@@ -132,9 +135,7 @@ public class PersonEditorController implements Initializable {
             } catch (PersistenceException e) {
                 em.getTransaction().rollback();
                 logger.warn(e);
-                logger.warn("Could not persist person");
             } finally {
-                logger.info("Database contains person: " + em.contains(person));
                 em.close();
             }
         }

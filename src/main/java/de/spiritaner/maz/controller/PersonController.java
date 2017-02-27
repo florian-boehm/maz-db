@@ -1,5 +1,6 @@
 package de.spiritaner.maz.controller;
 
+import de.spiritaner.maz.DatabaseApp;
 import de.spiritaner.maz.dialog.PersonEditorDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
@@ -14,17 +15,23 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.ToggleSwitch;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 
 import javax.persistence.EntityManager;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class PersonController implements Initializable, Controller {
+
+    private static final Logger logger = Logger.getLogger(PersonController.class);
 
     @FXML private TableView<Person> personTable;
     @FXML private TableColumn<Person, String> firstNameColumn;
@@ -68,13 +75,30 @@ public class PersonController implements Initializable, Controller {
             };
         });
 
-        loadAllPersonsAsync();
+        personTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPerson, newPerson) -> {
+            if(newPerson != null && personDetailsToggle.isSelected()) loadPersonDetails(newPerson);
+        });
+
+        loadAllPersons();
+    }
+
+    private void loadPersonDetails(Person person) {
+        AuditReader reader = AuditReaderFactory.get(DataDatabase.getFactory().createEntityManager());
+        List<Number> revisions = reader.getRevisions(Person.class, person.getId());
+
+        for(Number revision : revisions) {
+            logger.info("Found revision "+revision+" for person with first name "+person.getFirstName());
+            Person revPerson = reader.find(Person.class, person.getId(), revision);
+            logger.info("First in this revision was: "+revPerson.getFirstName());
+        }
+
+        //Event secondRevision = reader.find( Person.class, 2L, 2 );
     }
 
     public void createNewPerson(ActionEvent actionEvent) {
         boolean result = PersonEditorDialog.showAndWait(null, stage);
 
-        loadAllPersonsAsync();
+        loadAllPersons();
     }
 
     public void editPerson(ActionEvent actionEvent) {
@@ -84,10 +108,10 @@ public class PersonController implements Initializable, Controller {
             PersonEditorDialog.showAndWait(selectedPersons.get(0), stage);
         }
 
-        loadAllPersonsAsync();
+        loadAllPersons();
     }
 
-    private void loadAllPersonsAsync() {
+    private void loadAllPersons() {
         masker.setProgressVisible(true);
         masker.setText("Lade Personen ...");
         masker.setVisible(true);
@@ -106,5 +130,10 @@ public class PersonController implements Initializable, Controller {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    @Override
+    public void onReopen() {
+        loadAllPersons();
     }
 }

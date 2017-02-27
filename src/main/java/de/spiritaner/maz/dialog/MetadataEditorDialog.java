@@ -2,6 +2,7 @@ package de.spiritaner.maz.dialog;
 
 import de.spiritaner.maz.model.meta.MetaClass;
 import javafx.scene.control.TextInputDialog;
+import javafx.stage.StageStyle;
 
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ public class MetadataEditorDialog {
             dialog.setTitle(metaName + " bearbeiten");
         }
 
+        dialog.initStyle(StageStyle.UTILITY);
         dialog.setHeaderText(null);
         dialog.setContentText("Beschreibung: ");
 

@@ -1,6 +1,8 @@
 package de.spiritaner.maz.dialog;
 
+import de.spiritaner.maz.controller.AddressEditorController;
 import de.spiritaner.maz.controller.PersonEditorController;
+import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.Person;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,19 +12,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * Created by Florian on 9/26/2016.
- */
-public class PersonEditorDialog extends Scene {
+public class AddressEditorDialog extends Scene {
 
-	public static boolean showAndWait(Person person, Stage primaryStage) {
+	public static boolean showAndWait(Address address, Stage primaryStage) {
 		try {
-			final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource("/fxml/person_editor.fxml"));
+			final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource("/fxml/address_editor.fxml"));
 			final Parent root = loader.load();
-			final PersonEditorController controller = loader.getController();
+			final AddressEditorController controller = loader.getController();
 
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle((person == null) ? "Person anlegen" : "Person bearbeiten");
+			dialogStage.setTitle((address == null) ? "Adresse anlegen" : "Adresse bearbeiten");
 			dialogStage.initOwner(primaryStage);
 			// TODO Is the modality of this window really necessary
 			dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -35,11 +34,10 @@ public class PersonEditorDialog extends Scene {
 			//	dialogStage.setMinWidth(dialogStage.getWidth());
 			//});
 
-			controller.setPerson(person);
+			controller.setAddress(address);
 			controller.setStage(dialogStage);
-			controller.loadGender();
 
-			PersonEditorDialog personEditorDialog = new PersonEditorDialog(root);
+			AddressEditorDialog personEditorDialog = new AddressEditorDialog(root);
 			dialogStage.setScene(personEditorDialog);
 			dialogStage.showAndWait();
 
@@ -50,7 +48,7 @@ public class PersonEditorDialog extends Scene {
 		}
 	}
 
-	private PersonEditorDialog(Parent root) {
+	private AddressEditorDialog(Parent root) {
 		super(root);
 	}
 }

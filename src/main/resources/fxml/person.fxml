@@ -26,6 +26,7 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.HyperlinkLabel?>
 <?import org.controlsfx.control.MaskerPane?>
+<?import org.controlsfx.control.ToggleSwitch?>
 
 <SplitPane fx:id="personSplitPane" dividerPositions="0.5" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.PersonController">
     <items>
@@ -38,12 +39,6 @@
                                 <Button mnemonicParsing="false" prefWidth="70.0" text="Suchen" />
                                 <TextField prefHeight="25.0" prefWidth="125.0" />
                                 <Separator orientation="VERTICAL" />
-                                <!--ToggleSwitch fx:id="personDetailsToggle" contentDisplay="RIGHT" graphicTextGap="3.0" selected="true" text="Detailsansicht">
-                                    <padding>
-                                        <Insets top="3.0" />
-                                    </padding>
-                                </ToggleSwitch>
-                                <Separator orientation="VERTICAL" /-->
                                 <Button mnemonicParsing="false" text="Entfernen" />
                                 <Button mnemonicParsing="false" onAction="#editPerson" text="Bearbeiten" />
                                 <Button mnemonicParsing="false" onAction="#createNewPerson" text="Neu" />
@@ -55,6 +50,12 @@
                                         <MenuItem mnemonicParsing="false" text="Auf Suche basierend" />
                                     </items>
                                 </MenuButton>
+                                <Separator orientation="VERTICAL" />
+                                <ToggleSwitch fx:id="personDetailsToggle" contentDisplay="RIGHT" graphicTextGap="0.0" selected="true" text="Detailansicht">
+                                    <padding>
+                                        <Insets top="3.0" />
+                                    </padding>
+                                </ToggleSwitch>
                             </items>
                         </ToolBar>
                     </bottom>
@@ -339,6 +340,11 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
+                  <Tab text="Kurse">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </Tab>
                     </tabs>
                 </TabPane>
             </children>

@@ -2,6 +2,7 @@ package de.spiritaner.maz.model;
 
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.time.Year;
@@ -11,6 +12,7 @@ import java.time.Year;
  * @version 0.0.1
  */
 @Entity
+@Audited
 public class YearAbroad {
 
 	private LongProperty id;

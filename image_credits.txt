@@ -17,6 +17,7 @@ Icons made by Freepik (http://www.freepik.com) from www.flaticon.com are license
     img/message_32.png
     img/earth_32.png
     img/analysis_32.png
+    img/event_32.png
 
 Icons made by SimpleIcon (http://www.flaticon.com/authors/simpleicon) from www.flaticon.com are licensed by Creative Commons BY 3.0:
     img/magnifier_16.png

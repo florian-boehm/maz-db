@@ -54,12 +54,11 @@
 		<class>de.spiritaner.maz.model.meta.ResidenceType</class>
 		<class>de.spiritaner.maz.model.Role</class>
 		<class>de.spiritaner.maz.model.meta.RoleType</class>
-		<class>de.spiritaner.maz.model.Salutation</class>
+		<class>de.spiritaner.maz.model.meta.Salutation</class>
 		<class>de.spiritaner.maz.model.Site</class>
 		<class>de.spiritaner.maz.model.Participant</class>
 		<class>de.spiritaner.maz.model.meta.ParticipantType</class>
 		<class>de.spiritaner.maz.model.YearAbroad</class>
-		<class>de.spiritaner.maz.model.TemporalEntityKey</class>
 
 		<properties>
 			<property name="hibernate.connection.url" value="jdbc:h2:./dbfiles/data;CIPHER=AES"/>

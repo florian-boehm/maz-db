@@ -2,6 +2,7 @@ package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.model.meta.EventType;
 import javafx.beans.property.*;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.List;
  * @version 0.0.1
  */
 @Entity
+@Audited
 public class Event {
 
 	private LongProperty id;

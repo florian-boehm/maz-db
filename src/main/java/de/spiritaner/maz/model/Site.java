@@ -4,6 +4,7 @@ import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
  * @version 0.0.1
  */
 @Entity
+@Audited
 public class Site {
 
 	private LongProperty id;

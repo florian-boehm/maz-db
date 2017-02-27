@@ -9,9 +9,10 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.util.List;
 
 @MappedSuperclass
-public class MetaClass {
+abstract public class MetaClass {
 
     private LongProperty id = new SimpleLongProperty();
     private StringProperty description = new SimpleStringProperty();
@@ -21,9 +22,11 @@ public class MetaClass {
     public Long getId() {
         return id.get();
     }
+
     public void setId(Long id) {
         this.id.set(id);
     }
+
     public LongProperty idProperty() {
         return id;
     }
@@ -32,9 +35,11 @@ public class MetaClass {
     public String getDescription() {
         return description.get();
     }
+
     public void setDescription(String description) {
         this.description.set(description);
     }
+
     public StringProperty descriptionProperty() {
         return description;
     }
@@ -43,13 +48,15 @@ public class MetaClass {
     public String toString() {
         return description.get();
     }
+
     @Override
     public int hashCode() {
-        return id.hashCode()+description.hashCode();
+        return id.hashCode() + description.hashCode();
     }
+
     @Override
     public boolean equals(Object object) {
-        if(object instanceof MetaClass) {
+        if (object instanceof MetaClass) {
             return ((MetaClass) object).id.get() == id.get();
         } else {
             return false;

@@ -2,13 +2,12 @@ package de.spiritaner.maz.util;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.PopOver;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.time.LocalDate;
 
 /**
  * Created by Florian on 8/11/2016.
@@ -18,14 +17,10 @@ public class DateValidator {
 	private PopOver popOver;
 //	private Label msgLabel;
 	private VBox vbox;
-	private TextField textField;
+	private DatePicker datePicker;
 
-	private Integer minLenght;
-	private Integer maxLength;
 	private Boolean notEmpty;
-	private Boolean justText;
-	private ArrayList<String> removeAll;
-	private TextField originalField;
+	private Boolean future;
 
 	private String fieldName;
 
@@ -43,9 +38,9 @@ public class DateValidator {
 		popOver.setContentNode(vbox);
 	}
 
-	public static DateValidator create(TextField node) {
+	public static DateValidator create(DatePicker node) {
 		DateValidator result = new DateValidator();
-		result.textField = node;
+		result.datePicker = node;
 		return result;
 	}
 
@@ -56,16 +51,11 @@ public class DateValidator {
 		vbox.getChildren().add(label);
 	}
 
-	public DateValidator textChanged() {
-		textField.textProperty().addListener((observable, oldValue, newValue) -> {
+	public DateValidator valueChanged() {
+		datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
 			validate(oldValue, newValue);
 		});
 
-		return this;
-	}
-
-	public DateValidator min(Integer minLenght) {
-		this.minLenght = minLenght;
 		return this;
 	}
 
@@ -79,74 +69,34 @@ public class DateValidator {
 		return this;
 	}
 
-	public DateValidator justText() {
-		this.justText = true;
+	public DateValidator future() {
+		this.future = Boolean.TRUE;
 		return this;
 	}
 
-	public DateValidator removeAll(String... remove) {
-		this.removeAll = new ArrayList<String>(Arrays.asList(remove));
+	public DateValidator past() {
+		this.future = Boolean.FALSE;
 		return this;
 	}
 
-	public DateValidator max(Integer maxLength) {
-		this.maxLength = maxLength;
-		return this;
-	}
-
-	public DateValidator equals(TextField originalField) {
-		this.originalField = originalField;
-		return this;
-	}
-
-	public boolean validate(String oldValue, String newValue) {
+	public boolean validate(LocalDate oldValue, LocalDate newValue) {
 		boolean result = true;
-
-		if(removeAll != null && !oldValue.equals(newValue)) {
-			removeAll.forEach(needle -> {
-				textField.setText(textField.getText().replace(needle, ""));
-			});
-		}
 
 		vbox.getChildren().clear();
 
-		if(textField == null) {
-			System.out.println("SOMETHING IS WRONG HERE");
-			return false;
-		}
-
-		if(justText != null && justText == true) {
-			String after = textField.getText().replaceAll("[^a-zA-Z0-9-_]","");
-			if(!after.equals(textField.getText())) {
-				result = false;
-				addMsg(fieldName+" darf keine Sonderzeichen enthalten!");
-			}
-
-//			textField.setText(textField.getText().replaceAll("[^a-zA-Z0-9-_]",""));
-		}
-
-		// Check if the text is shorter than allowed
-		if(minLenght != null && textField.getText().length() < minLenght) {
-			addMsg(fieldName+" muss mindestens "+minLenght+" Zeichen lang sein!");
-			result = false;
-		}
-
-		// Check if the text is longer than allowed
-		if(maxLength != null && textField.getText().length() > maxLength) {
-			addMsg(fieldName + " darf nicht mehr als "+maxLength+" Zeichen lang sein!");
-			result = false;
-		}
-
 		// Check if the value is null
-		if(notEmpty != null && textField.getText().trim().isEmpty()) {
+		if(notEmpty != null && newValue == null) {
 			addMsg(fieldName + " darf nicht leer sein!");
 			result = false;
-		}
-
-		// Check if the value is null
-		if(originalField != null && !textField.getText().equals(originalField.getText())) {
-			addMsg(fieldName + " stimmt nicht überein!");
-			result = false;
+		} else {
+			// Check if the date is a future date
+			if (future != null && future && newValue.compareTo(LocalDate.now()) < 0) {
+				addMsg(fieldName + " muss in der Zukunft liegen!");
+				result = false;
+			} else if(future != null && !future && newValue.compareTo(LocalDate.now()) > 0) {
+				addMsg(fieldName + " muss in der Vergangenheit liegen!");
+				result = false;
+			}
 		}
 
 		// Hide or show the messages
@@ -154,12 +104,12 @@ public class DateValidator {
 			popOver.hide();
 		else
 			if(!popOver.isShowing())
-				popOver.show(textField);
+				popOver.show(datePicker);
 
 		return result;
 	}
 
-	public boolean validate() {
-		return validate("","");
-	}
+    public boolean validate() {
+	    return validate(null, datePicker.getValue());
+    }
 }

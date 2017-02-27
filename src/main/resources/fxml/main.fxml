@@ -13,19 +13,10 @@
                     <items>
                         <MenuItem mnemonicParsing="false" text="Version"/>
                         <MenuItem mnemonicParsing="false" text="Hilfe"/>
+                        <MenuItem mnemonicParsing="false" text="Updates"/>
                         <MenuItem mnemonicParsing="false" onAction="#closeApplication" text="Schließen"/>
                     </items>
                 </Menu>
-                <!--Menu mnemonicParsing="false" text="Metadaten">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Geschlechter"/>
-                        <MenuItem mnemonicParsing="false" text="Funktionen"/>
-                        <MenuItem mnemonicParsing="false" text="Kontaktarten"/>
-                        <MenuItem mnemonicParsing="false" text="Wohnortarten"/>
-                        <MenuItem mnemonicParsing="false" text="Beziehungsarten"/>
-                        <MenuItem mnemonicParsing="false" text="Einwilligungsarten"/>
-                    </items>
-                </Menu-->
             </menus>
         </MenuBar>
     </top>
@@ -33,6 +24,7 @@
         <TabPane fx:id="sideTabs" side="LEFT" id="side-tabs">
             <ImageTab closable="false" img="@../img/people_32.png" name="Personen" url="@person.fxml"/>
             <ImageTab closable="false" img="@../img/map_32.png" name="Adressen"/>
+            <ImageTab closable="false" img="@../img/event_32.png" name="Veranstaltungen"/>
             <ImageTab closable="false" img="@../img/message_32.png" name="Kontaktwege"/>
             <ImageTab closable="false" img="@../img/manager_32.png" name="Verwaltung"/>
             <ImageTab closable="false" img="@../img/analysis_32.png" name="Analyse"/>

@@ -7,12 +7,18 @@
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.MetadataController">
     <children>
         <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" style="-fx-background-insets: 0px;">
             <content>
                 <TabPane fx:id="tabPane" style="-fx-padding: 0; -fx-background-insets: 0px; -fx-background-color: #f4f4f4; -fx-border-width: 0 0 1 0; -fx-border-color: #c8c8c8;" >
                     <tabs>
                         <MetadataEditorTab text="Geschlechter" fx:value="de.spiritaner.maz.controller.meta.GenderEditorController"/>
-                        <!--MetadataEditorTab text="Funktionen" fx:value="roleType"/-->
+                        <MetadataEditorTab text="Funktionen" fx:value="de.spiritaner.maz.controller.meta.RoleTypeEditorController"/>
+                        <MetadataEditorTab text="Kontaktarten" fx:value="de.spiritaner.maz.controller.meta.ContactMethodTypeEditorController"/>
+                        <MetadataEditorTab text="Einwilligungen" fx:value="de.spiritaner.maz.controller.meta.ApprovalTypeEditorController"/>
+                        <MetadataEditorTab text="Veranstaltungsarten" fx:value="de.spiritaner.maz.controller.meta.EventTypeEditorController" />
+                        <MetadataEditorTab text="Wohnungsarten" fx:value="de.spiritaner.maz.controller.meta.ResidenceTypeEditorController" />
+                        <MetadataEditorTab text="Teilnehmerarten" fx:value="de.spiritaner.maz.controller.meta.ParticipantTypeEditorController" />
+                        <MetadataEditorTab text="Anredearten" fx:value="de.spiritaner.maz.controller.meta.SalutationEditorController" />
                     </tabs>
                 </TabPane>
             </content>

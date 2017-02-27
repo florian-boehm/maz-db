@@ -1,7 +1,9 @@
 package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.model.meta.Gender;
+import de.spiritaner.maz.model.meta.Salutation;
 import javafx.beans.property.*;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,6 +14,7 @@ import java.util.List;
  * @version 0.0.2
  */
 @Entity
+@Audited
 @NamedQueries({
 	@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
 	//@NamedQuery(name="Person.fetchAllResidences",query="SELECT r FROM Residence where personId=:personId"),
@@ -50,8 +53,6 @@ public class Person {
 
 	/**
 	 * Every person has a composite key to track changes made to the dataset.
-	 * The surrogate key of the TemporalEntityKey will be persistent until the person is deleted.
-	 * The natural key of the TemporalEntityKey represents the time when the object was changed.
 	 *
 	 * @return The composite key of a person
 	 */

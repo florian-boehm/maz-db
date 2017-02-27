@@ -2,7 +2,7 @@ package de.spiritaner.maz.util;
 
 import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.Person;
-import de.spiritaner.maz.model.Salutation;
+import de.spiritaner.maz.model.meta.Salutation;
 import de.spiritaner.maz.model.User;
 import org.apache.log4j.Logger;
 
