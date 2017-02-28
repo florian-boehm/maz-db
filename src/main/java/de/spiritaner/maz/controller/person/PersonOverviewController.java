@@ -1,19 +1,19 @@
-package de.spiritaner.maz.controller;
+package de.spiritaner.maz.controller.person;
 
-import de.spiritaner.maz.DatabaseApp;
+import de.spiritaner.maz.controller.Controller;
+import de.spiritaner.maz.controller.residence.ResidenceOverviewController;
 import de.spiritaner.maz.dialog.PersonEditorDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.MaskerPane;
@@ -29,9 +29,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class PersonController implements Initializable, Controller {
+public class PersonOverviewController implements Initializable, Controller {
 
-    private static final Logger logger = Logger.getLogger(PersonController.class);
+    private static final Logger logger = Logger.getLogger(PersonOverviewController.class);
 
     @FXML private TableView<Person> personTable;
     @FXML private TableColumn<Person, String> firstNameColumn;
@@ -42,8 +42,14 @@ public class PersonController implements Initializable, Controller {
     @FXML private TableColumn<Person, LocalDate> birthdayColumn;
     @FXML private TableColumn<Person, String> genderColumn;
     @FXML private MaskerPane masker;
+    @FXML private MaskerPane detailsMasker;
     @FXML private ToggleSwitch personDetailsToggle;
     @FXML private SplitPane personSplitPane;
+    @FXML private Button removePersonButton;
+    @FXML private Button editPersonButton;
+
+    @FXML private AnchorPane personResidences;
+    @FXML private ResidenceOverviewController personResidencesController;
 
     private Stage stage;
 
@@ -75,28 +81,56 @@ public class PersonController implements Initializable, Controller {
             };
         });
 
+        // TODO Make multiselection possible later
         personTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPerson, newPerson) -> {
-            if(newPerson != null && personDetailsToggle.isSelected()) loadPersonDetails(newPerson);
+            editPersonButton.setDisable(newPerson == null);
+            removePersonButton.setDisable(newPerson == null);
+
+            if(newPerson != null && personDetailsToggle.isSelected()) {
+                loadPersonDetails(newPerson);
+            } else if(newPerson == null) {
+                detailsMasker.setVisible(true);
+            }
         });
+
+        personTable.setRowFactory( tv -> {
+            TableRow<Person> row = new TableRow<>();
+
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    Person selectedPerson = row.getItem();
+                    loadPersonDetails(selectedPerson);
+                    System.out.println(selectedPerson.getFirstName());
+                }
+            });
+
+            return row;
+        });
+
+        personResidencesController.setStage(stage);
 
         loadAllPersons();
     }
 
     private void loadPersonDetails(Person person) {
-        AuditReader reader = AuditReaderFactory.get(DataDatabase.getFactory().createEntityManager());
-        List<Number> revisions = reader.getRevisions(Person.class, person.getId());
+        Platform.runLater(() -> {
+            AuditReader reader = AuditReaderFactory.get(DataDatabase.getFactory().createEntityManager());
+            List<Number> revisions = reader.getRevisions(Person.class, person.getId());
 
-        for(Number revision : revisions) {
-            logger.info("Found revision "+revision+" for person with first name "+person.getFirstName());
-            Person revPerson = reader.find(Person.class, person.getId(), revision);
-            logger.info("First in this revision was: "+revPerson.getFirstName());
-        }
+            for(Number revision : revisions) {
+                logger.info("Found revision "+revision+" for person with first name "+person.getFirstName());
+                Person revPerson = reader.find(Person.class, person.getId(), revision);
+                logger.info("First in this revision was: "+revPerson.getFirstName());
+            }
 
-        //Event secondRevision = reader.find( Person.class, 2L, 2 );
+            detailsMasker.setVisible(false);
+
+            personResidencesController.loadResidencesForPerson(person);
+        });
     }
 
     public void createNewPerson(ActionEvent actionEvent) {
-        boolean result = PersonEditorDialog.showAndWait(null, stage);
+        boolean result = PersonEditorDialog.showAndWait(new Person(), stage);
 
         loadAllPersons();
     }

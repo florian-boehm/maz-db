@@ -3,6 +3,8 @@ package de.spiritaner.maz.model;
 import de.spiritaner.maz.model.meta.ResidenceType;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -13,6 +15,10 @@ import javax.persistence.*;
  */
 @Entity
 @Audited
+@NamedQueries({
+		@NamedQuery(name = "Residence.findAll", query = "SELECT r FROM Residence r"),
+		@NamedQuery(name = "Residence.findAllForPerson", query = "SELECT r FROM Residence r WHERE r.person=:person")
+})
 public class Residence {
 
 	private LongProperty id;
@@ -42,7 +48,7 @@ public class Residence {
 		this.person = person;
 	}
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST })
     @JoinColumn(name="addressId", nullable = false)
 	public Address getAddress() {
 		return address;
@@ -61,9 +67,12 @@ public class Residence {
 	}
 
 	public Boolean getPreferredAddress() {
-		return isPreferredAddress;
+		return (isPreferredAddress == null) ? Boolean.FALSE : isPreferredAddress;
 	}
 	public void setPreferredAddress(Boolean preferredAddress) {
 		isPreferredAddress = preferredAddress;
 	}
+	public StringProperty preferredAddressProperty() {
+	    return new SimpleStringProperty((isPreferredAddress) ? "Ja" : "Nein");
+    }
 }

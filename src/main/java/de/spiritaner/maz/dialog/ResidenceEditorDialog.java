@@ -1,7 +1,7 @@
 package de.spiritaner.maz.dialog;
 
-import de.spiritaner.maz.controller.person.PersonEditorDialogController;
-import de.spiritaner.maz.model.Person;
+import de.spiritaner.maz.controller.residence.ResidenceEditorDialogController;
+import de.spiritaner.maz.model.Residence;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,19 +10,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- * Created by Florian on 9/26/2016.
- */
-public class PersonEditorDialog extends Scene {
+public class ResidenceEditorDialog extends Scene {
 
-	public static boolean showAndWait(Person person, Stage primaryStage) {
+	public static boolean showAndWait(Residence residence, Stage primaryStage) {
 		try {
-			final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource("/fxml/person/person_editor_dialog.fxml"));
+			final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource("/fxml/residence/residence_editor_dialog.fxml"));
 			final Parent root = loader.load();
-			final PersonEditorDialogController controller = loader.getController();
+			final ResidenceEditorDialogController controller = loader.getController();
 
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle((person.getId() == null) ? "Person anlegen" : "Person bearbeiten");
+			dialogStage.setTitle((residence == null || residence.getId() == 0L) ? "Wohnort anlegen" : "Wohnort bearbeiten");
 			dialogStage.initOwner(primaryStage);
 			// TODO Is the modality of this window really necessary
 			dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -30,15 +27,16 @@ public class PersonEditorDialog extends Scene {
 			dialogStage.sizeToScene();
 			// TODO Find a way to set the maximum window size correctly
 			//dialogStage.setOnShown(event -> {
+			//	dialogStage.sizeToScene();
 			//	dialogStage.setMaxHeight(dialogStage.getHeight());
 			//	dialogStage.setMinHeight(dialogStage.getHeight());
 			//	dialogStage.setMinWidth(dialogStage.getWidth());
 			//});
 
-			controller.setPerson(person);
+			controller.setResidence(residence);
 			controller.setStage(dialogStage);
 
-			PersonEditorDialog personEditorDialog = new PersonEditorDialog(root);
+			ResidenceEditorDialog personEditorDialog = new ResidenceEditorDialog(root);
 			dialogStage.setScene(personEditorDialog);
 			dialogStage.showAndWait();
 
@@ -49,7 +47,7 @@ public class PersonEditorDialog extends Scene {
 		}
 	}
 
-	private PersonEditorDialog(Parent root) {
+	private ResidenceEditorDialog(Parent root) {
 		super(root);
 	}
 }

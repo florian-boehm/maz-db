@@ -88,7 +88,7 @@ public class Address {
 	/**
 	 * The state is not necessary for delivery of post in Germany
 	 *
-	 * @return The state of this address; might be null
+	 * @return The state of this residence; might be null
 	 */
 	@Column(nullable = true)
 	public String getState() {
@@ -102,7 +102,7 @@ public class Address {
 	/**
 	 * The country is not necessary for delivery of post in Germany
 	 *
-	 * @return The country of this address; might be null
+	 * @return The country of this residence; might be null
 	 */
 	@Column(nullable = true)
 	public String getCountry() {

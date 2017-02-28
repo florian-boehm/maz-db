@@ -102,22 +102,25 @@ public class TextValidator {
 	public boolean validate(String oldValue, String newValue) {
 		boolean result = true;
 
-		if(removeAll != null && !oldValue.equals(newValue)) {
+        if(textField == null) {
+            return false;
+        }
+
+        // Set to empty string if it is null to avoid null pointer exceptions
+		final String newText = (newValue == null) ? "" : newValue;
+		final String oldText = (oldValue == null) ? "" : oldValue;
+
+		if(removeAll != null && !oldText.equals(newText)) {
 			removeAll.forEach(needle -> {
-				textField.setText(textField.getText().replace(needle, ""));
+				textField.setText(newText.replace(needle, ""));
 			});
 		}
 
 		vbox.getChildren().clear();
 
-		if(textField == null) {
-			System.out.println("SOMETHING IS WRONG HERE");
-			return false;
-		}
-
 		if(justText != null && justText == true) {
-			String after = textField.getText().replaceAll("[^a-zA-Z0-9-_]","");
-			if(!after.equals(textField.getText())) {
+			String after = newText.replaceAll("[^a-zA-Z0-9-_]","");
+			if(!after.equals(newText)) {
 				result = false;
 				addMsg(fieldName+" darf keine Sonderzeichen enthalten!");
 			}
@@ -126,40 +129,45 @@ public class TextValidator {
 		}
 
 		// Check if the text is shorter than allowed
-		if(minLenght != null && textField.getText().length() < minLenght) {
+		if(minLenght != null && newText.length() < minLenght) {
 			addMsg(fieldName+" muss mindestens "+minLenght+" Zeichen lang sein!");
 			result = false;
 		}
 
 		// Check if the text is longer than allowed
-		if(maxLength != null && textField.getText().length() > maxLength) {
+		if(maxLength != null && newText.length() > maxLength) {
 			addMsg(fieldName + " darf nicht mehr als "+maxLength+" Zeichen lang sein!");
 			result = false;
 		}
 
 		// Check if the value is null
-		if(notEmpty != null && textField.getText().trim().isEmpty()) {
+		if(notEmpty != null && newText.trim().isEmpty()) {
 			addMsg(fieldName + " darf nicht leer sein!");
 			result = false;
 		}
 
 		// Check if the value is null
-		if(originalField != null && !textField.getText().equals(originalField.getText())) {
+		if(originalField != null && !newText.equals(originalField.getText())) {
 			addMsg(fieldName + " stimmt nicht überein!");
 			result = false;
 		}
 
 		// Hide or show the messages
-		if(result == true)
+		if(result) {
 			popOver.hide();
-		else
-			if(!popOver.isShowing())
-				popOver.show(textField);
+		} else {
+            try {
+                if(!popOver.isShowing())
+                    popOver.show(textField);
+            } catch (NullPointerException e) {
+                // TODO find a way to suppress the nullpointer exception that gets thrown when "setAll" sets the values and the text changes
+            }
+		}
 
 		return result;
 	}
 
 	public boolean validate() {
-		return validate("","");
+		return validate(textField.getText(),textField.getText());
 	}
 }

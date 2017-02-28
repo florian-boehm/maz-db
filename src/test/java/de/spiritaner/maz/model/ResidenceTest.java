@@ -48,7 +48,7 @@ public class ResidenceTest {
 		person.setGender(gender);
 
 		ResidenceType residenceType = new ResidenceType();
-		residenceType.setDescription("Primary address");
+		residenceType.setDescription("Primary residence");
 
 		EntityManager em = factory.createEntityManager();
 		em.getTransaction().begin();
@@ -89,33 +89,33 @@ public class ResidenceTest {
 //		em.getTransaction().begin();
 //
 //		try {
-//			em.persist(address);
+//			em.persist(residence);
 //			em.getTransaction().commit();
 //		} catch (PersistenceException e) {
 //			em.getTransaction().rollback();
 //		} finally {
-//			Assert.assertEquals(em.contains(address),false);
+//			Assert.assertEquals(em.contains(residence),false);
 //			em.close();
 //		}
 	}
 
 	@Test(enabled = false, dependsOnMethods = {"persistInvalidAddress"})
 	public void makeAddressValid() {
-//		address.setPostCode("123456");
+//		residence.setPostCode("123456");
 //
-//		Assert.assertEquals(address.getPostCode(),"123456");
+//		Assert.assertEquals(residence.getPostCode(),"123456");
 	}
 
 	@Test(enabled = false, dependsOnMethods = {"makeAddressValid"})
 	public void persistAddress() {
 //		EntityManager em = factory.createEntityManager();
 //		em.getTransaction().begin();
-//		address = em.merge(address);
+//		residence = em.merge(residence);
 //		em.getTransaction().commit();
 //		em.close();
 //
-//		Assert.assertNotNull(address.getId());
-//		Assert.assertEquals(address.getId(),factory.getPersistenceUnitUtil().getIdentifier(address));
+//		Assert.assertNotNull(residence.getId());
+//		Assert.assertEquals(residence.getId(),factory.getPersistenceUnitUtil().getIdentifier(residence));
 	}
 
 	@Test(enabled = false, dependsOnMethods = {"persistAddress"})
@@ -139,7 +139,7 @@ public class ResidenceTest {
 //		EntityManager em = factory.createEntityManager();
 //
 //		em.getTransaction().begin();
-//		Address managedAddress = em.find(Address.class, address.getId());
+//		Address managedAddress = em.find(Address.class, residence.getId());
 //		managedAddress.setCountry("Other country");
 //		em.getTransaction().commit();
 //
@@ -155,7 +155,7 @@ public class ResidenceTest {
 //		EntityManager em = factory.createEntityManager();
 //
 //		em.getTransaction().begin();
-//		Address managedAddress = em.find(Address.class, address.getId());
+//		Address managedAddress = em.find(Address.class, residence.getId());
 //		managedAddress.setStreet(null);
 //		em.getTransaction().commit();
 	}

@@ -18,20 +18,10 @@
     <bottom>
         <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="746.0" BorderPane.alignment="CENTER">
             <items>
-                <Button mnemonicParsing="false" text="Neu" onAction="#create"/>
-                <Button mnemonicParsing="false" text="Bearbeiten" onAction="#edit"/>
                 <Button mnemonicParsing="false" text="Entfernen" onAction="#remove"/>
+                <Button mnemonicParsing="false" text="Bearbeiten" onAction="#edit"/>
+                <Button mnemonicParsing="false" text="Neu" onAction="#create"/>
             </items>
         </ToolBar>
-        <!--ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <buttons>
-                <Button mnemonicParsing="false" text="Neu" onAction="#create"/>
-                <Button mnemonicParsing="false" text="Bearbeiten" onAction="#edit"/>
-                <Button mnemonicParsing="false" text="Entfernen" onAction="#remove"/>
-            </buttons>
-            <padding>
-                <Insets right="10.0"/>
-            </padding>
-        </ButtonBar-->
     </bottom>
 </fx:root>

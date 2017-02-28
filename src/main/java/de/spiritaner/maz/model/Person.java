@@ -35,6 +35,7 @@ public class Person {
 
 	private Gender gender;
 	private List<Residence> residences;
+	// TODO Implement diocese as meta data
 	private Address diocese;
 	private List<Role> roles;
 	private List<Approval> approvals;
@@ -198,7 +199,7 @@ public class Person {
 	}
 
 	/**
-	 * The address of the diocese that is responsable for this person.
+	 * The residence of the diocese that is responsable for this person.
 	 */
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="dioceseAddress")

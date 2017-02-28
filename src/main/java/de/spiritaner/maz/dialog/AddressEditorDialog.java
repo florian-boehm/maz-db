@@ -1,9 +1,7 @@
 package de.spiritaner.maz.dialog;
 
-import de.spiritaner.maz.controller.AddressEditorController;
-import de.spiritaner.maz.controller.PersonEditorController;
+import de.spiritaner.maz.controller.residence.AddressEditorDialogController;
 import de.spiritaner.maz.model.Address;
-import de.spiritaner.maz.model.Person;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,9 +14,9 @@ public class AddressEditorDialog extends Scene {
 
 	public static boolean showAndWait(Address address, Stage primaryStage) {
 		try {
-			final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource("/fxml/address_editor.fxml"));
+			final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource("/fxml/residence/address_editor_dialog.fxml"));
 			final Parent root = loader.load();
-			final AddressEditorController controller = loader.getController();
+			final AddressEditorDialogController controller = loader.getController();
 
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle((address == null) ? "Adresse anlegen" : "Adresse bearbeiten");
