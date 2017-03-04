@@ -1,0 +1,824 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="1" author="florian">
+        <createSequence sequenceName="HIBERNATE_SEQUENCE"/>
+        <createTable tableName="ADDRESS">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ADDITION" type="VARCHAR(255)"/>
+            <column name="CITY" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="COUNTRY" type="VARCHAR(255)"/>
+            <column name="HOUSENUMBER" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="POSTCODE" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATE" type="VARCHAR(255)"/>
+            <column name="STREET" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="ADDRESS_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="ADDITION" type="VARCHAR(255)"/>
+            <column name="CITY" type="VARCHAR(255)"/>
+            <column name="COUNTRY" type="VARCHAR(255)"/>
+            <column name="HOUSENUMBER" type="VARCHAR(255)"/>
+            <column name="POSTCODE" type="VARCHAR(10)"/>
+            <column name="STATE" type="VARCHAR(255)"/>
+            <column name="STREET" type="VARCHAR(255)"/>
+        </createTable>
+        <createTable tableName="APPROVAL">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="APPROVED" type="BOOLEAN(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="APPROVALTYPEID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERSONID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="APPROVALTYPE">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="APPROVALTYPE_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+        </createTable>
+        <createTable tableName="APPROVAL_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="APPROVED" type="BOOLEAN(1)"/>
+            <column name="APPROVALTYPEID" type="BIGINT(19)"/>
+            <column name="PERSONID" type="BIGINT(19)"/>
+        </createTable>
+        <createTable tableName="CONTACTMETHOD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONTACTMETHODTYPEID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERSONID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="CONTACTMETHODTYPE">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="CONTACTMETHODTYPE_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+        </createTable>
+        <createTable tableName="CONTACTMETHOD_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="VALUE" type="VARCHAR(255)"/>
+            <column name="CONTACTMETHODTYPEID" type="BIGINT(19)"/>
+            <column name="PERSONID" type="BIGINT(19)"/>
+        </createTable>
+        <createTable tableName="DIOCESE">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="DIOCESE_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+        </createTable>
+        <createTable tableName="EVENT">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="FROMDATE" type="date"/>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TODATE" type="date"/>
+            <column name="ADDRESSID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EVENTTYPEID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="EVENTTYPE">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="EVENTTYPE_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+        </createTable>
+        <createTable tableName="EVENT_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="FROMDATE" type="date"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="TODATE" type="date"/>
+            <column name="ADDRESSID" type="BIGINT(19)"/>
+            <column name="EVENTTYPEID" type="BIGINT(19)"/>
+        </createTable>
+        <createTable tableName="GENDER">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="GENDER_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+        </createTable>
+        <createTable tableName="PARTICIPANT">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HASPARTICIPATED" type="BOOLEAN(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERSONID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PARTICIPANTTYPEID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EVENTID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="PARTICIPANTTYPE">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="PARTICIPANTTYPE_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+        </createTable>
+        <createTable tableName="PARTICIPANT_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="HASPARTICIPATED" type="BOOLEAN(1)"/>
+            <column name="PERSONID" type="BIGINT(19)"/>
+            <column name="PARTICIPANTTYPEID" type="BIGINT(19)"/>
+            <column name="EVENTID" type="BIGINT(19)"/>
+        </createTable>
+        <createTable tableName="PERSON">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BIRTHNAME" type="VARCHAR(255)"/>
+            <column name="BIRTHDAY" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BIRTHPLACE" type="VARCHAR(255)"/>
+            <column name="FAMILYNAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="FIRSTNAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="HONORIFIC" type="VARCHAR(255)"/>
+            <column name="DIOCESEADDRESS" type="BIGINT(19)"/>
+            <column name="GENDERID" type="BIGINT(19)"/>
+            <column name="SALUTATIONID" type="BIGINT(19)"/>
+        </createTable>
+        <createTable tableName="PERSON_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="BIRTHNAME" type="VARCHAR(255)"/>
+            <column name="BIRTHDAY" type="date"/>
+            <column name="BIRTHPLACE" type="VARCHAR(255)"/>
+            <column name="FAMILYNAME" type="VARCHAR(255)"/>
+            <column name="FIRSTNAME" type="VARCHAR(255)"/>
+            <column name="HONORIFIC" type="VARCHAR(255)"/>
+            <column name="DIOCESEADDRESS" type="BIGINT(19)"/>
+            <column name="GENDERID" type="BIGINT(19)"/>
+            <column name="SALUTATIONID" type="BIGINT(19)"/>
+        </createTable>
+        <createTable tableName="RESIDENCE">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PREFERREDADDRESS" type="BOOLEAN(1)"/>
+            <column name="ADDRESSID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERSONID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RESIDENCETYPEID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="RESIDENCETYPE">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="RESIDENCETYPE_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+        </createTable>
+        <createTable tableName="RESIDENCE_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="PREFERREDADDRESS" type="BOOLEAN(1)"/>
+            <column name="ADDRESSID" type="BIGINT(19)"/>
+            <column name="PERSONID" type="BIGINT(19)"/>
+            <column name="RESIDENCETYPEID" type="BIGINT(19)"/>
+        </createTable>
+        <createTable tableName="REVINFO">
+            <column autoIncrement="true" name="REV" type="INT(10)">
+                <constraints primaryKey="true" primaryKeyName="CONSTRAINT_6"/>
+            </column>
+            <column name="REVTSTMP" type="BIGINT(19)"/>
+        </createTable>
+        <createTable tableName="ROLE">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERSONID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ROLETYPEID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="ROLETYPE">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="ROLETYPE_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+        </createTable>
+        <createTable tableName="ROLE_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="PERSONID" type="BIGINT(19)"/>
+            <column name="ROLETYPEID" type="BIGINT(19)"/>
+        </createTable>
+        <createTable tableName="SALUTATION">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="SALUTATION_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+        </createTable>
+        <createTable tableName="SITE">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ADDRESSID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="SITE_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="ADDRESSID" type="BIGINT(19)"/>
+        </createTable>
+        <createTable tableName="SITE_EP_NUMBERS">
+            <column name="EPNUMBER" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE" type="VARCHAR(255)"/>
+            <column name="ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="SITE_EP_NUMBERS_AUD">
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EPNUMBER" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALUE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+        </createTable>
+        <createTable tableName="USER">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATABASEKEYSALT" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENCRYPTEDDATABASEKEY" type="VARBINARY(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORDHASH" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERNAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="YEARABROAD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERSONID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SITEID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="YEARABROAD_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="PERSONID" type="BIGINT(19)"/>
+            <column name="SITEID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="florian">
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_1" tableName="EVENTTYPE_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_19" tableName="PARTICIPANTTYPE_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_1E" tableName="ROLE_AUD"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_1ED" tableName="ROLETYPE"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_2" tableName="ADDRESS_AUD"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_24" tableName="RESIDENCE"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_26" tableName="ROLE"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_26D" tableName="SITE"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_27" tableName="USER"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_3" tableName="EVENT"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_4" tableName="PERSON_AUD"/>
+        <addPrimaryKey columnNames="REV, EPNUMBER, VALUE, ID" constraintName="CONSTRAINT_4A"
+                       tableName="SITE_EP_NUMBERS_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_5" tableName="CONTACTMETHODTYPE_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_56" tableName="SITE_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_5E" tableName="RESIDENCE_AUD"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_5E3" tableName="RESIDENCETYPE"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_7" tableName="APPROVAL"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_72" tableName="SALUTATION_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_74" tableName="PARTICIPANT_AUD"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_74C" tableName="PARTICIPANTTYPE"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_7D" tableName="GENDER"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_8" tableName="DIOCESE"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_8C" tableName="PERSON"/>
+        <addPrimaryKey columnNames="EPNUMBER, ID" constraintName="CONSTRAINT_8E" tableName="SITE_EP_NUMBERS"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_9" tableName="APPROVAL_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_95" tableName="CONTACTMETHOD_AUD"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_95C" tableName="CONTACTMETHODTYPE"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_97" tableName="APPROVALTYPE"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_A" tableName="CONTACTMETHOD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_A8" tableName="EVENT_AUD"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_A80" tableName="EVENTTYPE"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_A89" tableName="YEARABROAD"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_AE" tableName="PARTICIPANT"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_C" tableName="APPROVALTYPE_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_C1" tableName="YEARABROAD_AUD"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_D" tableName="SALUTATION"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_E" tableName="ADDRESS"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_E4" tableName="RESIDENCETYPE_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_E5" tableName="GENDER_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_EC" tableName="ROLETYPE_AUD"/>
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_F" tableName="DIOCESE_AUD"/>
+        <addUniqueConstraint columnNames="USERNAME" constraintName="UK_JREODF78A7PL5QIDFH43AXDFB" tableName="USER"/>
+    </changeSet>
+
+    <changeSet id="3" author="florian">
+        <createIndex indexName="FK13MV0NAORCD655TTKX5UET4VB_INDEX_8" tableName="PERSON">
+            <column name="SALUTATIONID"/>
+        </createIndex>
+        <createIndex indexName="FK16IWI0JYHMGKS75LWT6I1PJVO_INDEX_C" tableName="APPROVALTYPE_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FK1EWFAJBNFJ8Q5BA7X2QBOESJY_INDEX_A" tableName="CONTACTMETHOD">
+            <column name="PERSONID"/>
+        </createIndex>
+        <createIndex indexName="FK1PWLUHGT7AMFT7BYD6SSDQVXX_INDEX_8" tableName="PERSON">
+            <column name="DIOCESEADDRESS"/>
+        </createIndex>
+        <createIndex indexName="FK1VWMTYPJ315M989OTQ2NJ1F40_INDEX_7" tableName="PARTICIPANT_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FK3V8MNO9GPYE3WA2MNNGBXY0A6_INDEX_E" tableName="ROLETYPE_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FK4FGLEUO8TKKISNTXJ3HU5DI8B_INDEX_8" tableName="PERSON">
+            <column name="GENDERID"/>
+        </createIndex>
+        <createIndex indexName="FK4KFC9W7OEC0KPONKI4K3L17T0_INDEX_C" tableName="YEARABROAD_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FK4RYS9M1FJLPF65PH2NQBT0N2U_INDEX_2" tableName="RESIDENCE">
+            <column name="PERSONID"/>
+        </createIndex>
+        <createIndex indexName="FK5PEAE0SXHR9CY3T8B2HR7BBUN_INDEX_2" tableName="RESIDENCE">
+            <column name="RESIDENCETYPEID"/>
+        </createIndex>
+        <createIndex indexName="FK79FNQY2USECK2V9RVQFHE3DYX_INDEX_A" tableName="CONTACTMETHOD">
+            <column name="CONTACTMETHODTYPEID"/>
+        </createIndex>
+        <createIndex indexName="FK9DJ5G8IYDTO4QSM2GS1G79OGF_INDEX_9" tableName="CONTACTMETHOD_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKAHQET56K3C7LIJSQB8UD5CK55_INDEX_E" tableName="GENDER_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKBHSN8PJUV4GFGV4IQPFSB2T31_INDEX_A" tableName="PARTICIPANT">
+            <column name="PARTICIPANTTYPEID"/>
+        </createIndex>
+        <createIndex indexName="FKBJYCKJACVH56WGY3LE2N0XA1Y_INDEX_A" tableName="YEARABROAD">
+            <column name="SITEID"/>
+        </createIndex>
+        <createIndex indexName="FKCHU9YUAODO4JY9XOMGQE3IPXG_INDEX_1" tableName="EVENTTYPE_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKD4UUMOKC656F2W03AIO7LQN1T_INDEX_3" tableName="EVENT">
+            <column name="ADDRESSID"/>
+        </createIndex>
+        <createIndex indexName="FKD6JF03XFVTO0JBKUF93F3BMKL_INDEX_2" tableName="ROLE">
+            <column name="ROLETYPEID"/>
+        </createIndex>
+        <createIndex indexName="FKESEWPQOAK6SE5O8J8WJ2HWBPX_INDEX_A" tableName="PARTICIPANT">
+            <column name="PERSONID"/>
+        </createIndex>
+        <createIndex indexName="FKF32AEJKNHYE2WK7VJ9N4QLH3Y_INDEX_9" tableName="APPROVAL_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKFLTKRLFP2QG1QJARUL1FNORLS_INDEX_E" tableName="RESIDENCETYPE_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKFXIMUT1WACBN0DAYRUVM877YB_INDEX_2" tableName="ROLE">
+            <column name="PERSONID"/>
+        </createIndex>
+        <createIndex indexName="FKGWP5SEK4PJB4AWY66SP184HRV_INDEX_2" tableName="ADDRESS_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKH5V0MDEQCFQH9EXLQ23RXD840_INDEX_2" tableName="RESIDENCE">
+            <column name="ADDRESSID"/>
+        </createIndex>
+        <createIndex indexName="FKHOD5ML6S60VVJE70RFJOFL6DF_INDEX_3" tableName="EVENT">
+            <column name="EVENTTYPEID"/>
+        </createIndex>
+        <createIndex indexName="FKHSVW8KKWC1TMARS5RHXAHOOIL_INDEX_2" tableName="SITE">
+            <column name="ADDRESSID"/>
+        </createIndex>
+        <createIndex indexName="FKI8M9AJW6N73T6LG5ROL75IC2Y_INDEX_5" tableName="CONTACTMETHODTYPE_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKIGBUYQHDJB8BUY4G3M7O71DQJ_INDEX_7" tableName="SALUTATION_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKIM7CSJOHTYWC99OBKTXQBM0XH_INDEX_7" tableName="APPROVAL">
+            <column name="APPROVALTYPEID"/>
+        </createIndex>
+        <createIndex indexName="FKIS9DTXYWN2IUSYGEJ7GA62LNL_INDEX_F" tableName="DIOCESE_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKJQS7Y6NR8F8DN3YYND4JR9VAF_INDEX_5" tableName="SITE_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKJYJPLLJH27Q3VL4F05YEDP8UB_INDEX_1" tableName="PARTICIPANTTYPE_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKNMPO8GVYSI2OQQH4BSDLHLDKA_INDEX_A" tableName="YEARABROAD">
+            <column name="PERSONID"/>
+        </createIndex>
+        <createIndex indexName="FKPF00LVWFQ5KTKPP6LQ02OCSRL_INDEX_7" tableName="APPROVAL">
+            <column name="PERSONID"/>
+        </createIndex>
+        <createIndex indexName="FKQ02270329RRBA8MSUV461KM7H_INDEX_1" tableName="ROLE_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKQBM2Y5O4ELHANXEQ26REU73YD_INDEX_4" tableName="PERSON_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKS8F4ANP95ODOT9RXMWS5NUHT3_INDEX_5" tableName="RESIDENCE_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKSYT9G93FK2QEU896D9VKWUCL4_INDEX_A" tableName="EVENT_AUD">
+            <column name="REV"/>
+        </createIndex>
+        <createIndex indexName="FKWJUKVBRFTUILLISKPAJ48VQJ_INDEX_A" tableName="PARTICIPANT">
+            <column name="EVENTID"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="4" author="florian">
+        <addForeignKeyConstraint baseColumnNames="SALUTATIONID" baseTableName="PERSON"
+                                 constraintName="FK13MV0NAORCD655TTKX5UET4VB" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="SALUTATION"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="APPROVALTYPE_AUD"
+                                 constraintName="FK16IWI0JYHMGKS75LWT6I1PJVO" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="CONTACTMETHOD"
+                                 constraintName="FK1EWFAJBNFJ8Q5BA7X2QBOESJY" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="PERSON"/>
+        <addForeignKeyConstraint baseColumnNames="DIOCESEADDRESS" baseTableName="PERSON"
+                                 constraintName="FK1PWLUHGT7AMFT7BYD6SSDQVXX" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="ADDRESS"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="PARTICIPANT_AUD"
+                                 constraintName="FK1VWMTYPJ315M989OTQ2NJ1F40" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="ROLETYPE_AUD"
+                                 constraintName="FK3V8MNO9GPYE3WA2MNNGBXY0A6" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="GENDERID" baseTableName="PERSON"
+                                 constraintName="FK4FGLEUO8TKKISNTXJ3HU5DI8B" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="GENDER"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="YEARABROAD_AUD"
+                                 constraintName="FK4KFC9W7OEC0KPONKI4K3L17T0" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="RESIDENCE"
+                                 constraintName="FK4RYS9M1FJLPF65PH2NQBT0N2U" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="PERSON"/>
+        <addForeignKeyConstraint baseColumnNames="RESIDENCETYPEID" baseTableName="RESIDENCE"
+                                 constraintName="FK5PEAE0SXHR9CY3T8B2HR7BBUN" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="RESIDENCETYPE"/>
+        <addForeignKeyConstraint baseColumnNames="CONTACTMETHODTYPEID" baseTableName="CONTACTMETHOD"
+                                 constraintName="FK79FNQY2USECK2V9RVQFHE3DYX" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="CONTACTMETHODTYPE"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="CONTACTMETHOD_AUD"
+                                 constraintName="FK9DJ5G8IYDTO4QSM2GS1G79OGF" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="GENDER_AUD"
+                                 constraintName="FKAHQET56K3C7LIJSQB8UD5CK55" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="PARTICIPANTTYPEID" baseTableName="PARTICIPANT"
+                                 constraintName="FKBHSN8PJUV4GFGV4IQPFSB2T31" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="PARTICIPANTTYPE"/>
+        <addForeignKeyConstraint baseColumnNames="SITEID" baseTableName="YEARABROAD"
+                                 constraintName="FKBJYCKJACVH56WGY3LE2N0XA1Y" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="SITE"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="EVENTTYPE_AUD"
+                                 constraintName="FKCHU9YUAODO4JY9XOMGQE3IPXG" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="ADDRESSID" baseTableName="EVENT"
+                                 constraintName="FKD4UUMOKC656F2W03AIO7LQN1T" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="ADDRESS"/>
+        <addForeignKeyConstraint baseColumnNames="ROLETYPEID" baseTableName="ROLE"
+                                 constraintName="FKD6JF03XFVTO0JBKUF93F3BMKL" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="ROLETYPE"/>
+        <addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="PARTICIPANT"
+                                 constraintName="FKESEWPQOAK6SE5O8J8WJ2HWBPX" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="EVENT"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="APPROVAL_AUD"
+                                 constraintName="FKF32AEJKNHYE2WK7VJ9N4QLH3Y" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="RESIDENCETYPE_AUD"
+                                 constraintName="FKFLTKRLFP2QG1QJARUL1FNORLS" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="ROLE"
+                                 constraintName="FKFXIMUT1WACBN0DAYRUVM877YB" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="PERSON"/>
+        <addForeignKeyConstraint baseColumnNames="EPNUMBER" baseTableName="SITE_EP_NUMBERS"
+                                 constraintName="FKGG0EYK402WY5A8HGM6LPVFDCR" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="SITE"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="ADDRESS_AUD"
+                                 constraintName="FKGWP5SEK4PJB4AWY66SP184HRV" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="ADDRESSID" baseTableName="RESIDENCE"
+                                 constraintName="FKH5V0MDEQCFQH9EXLQ23RXD840" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="ADDRESS"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="SITE_EP_NUMBERS_AUD"
+                                 constraintName="FKHJVI905D0O4TLGXEI8QBK6TUE" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="EVENTTYPEID" baseTableName="EVENT"
+                                 constraintName="FKHOD5ML6S60VVJE70RFJOFL6DF" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="EVENTTYPE"/>
+        <addForeignKeyConstraint baseColumnNames="ADDRESSID" baseTableName="SITE"
+                                 constraintName="FKHSVW8KKWC1TMARS5RHXAHOOIL" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="ADDRESS"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="CONTACTMETHODTYPE_AUD"
+                                 constraintName="FKI8M9AJW6N73T6LG5ROL75IC2Y" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="SALUTATION_AUD"
+                                 constraintName="FKIGBUYQHDJB8BUY4G3M7O71DQJ" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="APPROVALTYPEID" baseTableName="APPROVAL"
+                                 constraintName="FKIM7CSJOHTYWC99OBKTXQBM0XH" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="APPROVALTYPE"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="DIOCESE_AUD"
+                                 constraintName="FKIS9DTXYWN2IUSYGEJ7GA62LNL" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="SITE_AUD"
+                                 constraintName="FKJQS7Y6NR8F8DN3YYND4JR9VAF" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="PARTICIPANTTYPE_AUD"
+                                 constraintName="FKJYJPLLJH27Q3VL4F05YEDP8UB" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="YEARABROAD"
+                                 constraintName="FKNMPO8GVYSI2OQQH4BSDLHLDKA" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="PERSON"/>
+        <addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="APPROVAL"
+                                 constraintName="FKPF00LVWFQ5KTKPP6LQ02OCSRL" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="PERSON"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="ROLE_AUD"
+                                 constraintName="FKQ02270329RRBA8MSUV461KM7H" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="PERSON_AUD"
+                                 constraintName="FKQBM2Y5O4ELHANXEQ26REU73YD" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="RESIDENCE_AUD"
+                                 constraintName="FKS8F4ANP95ODOT9RXMWS5NUHT3" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="EVENT_AUD"
+                                 constraintName="FKSYT9G93FK2QEU896D9VKWUCL4" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="REV" referencedTableName="REVINFO"/>
+        <addForeignKeyConstraint baseColumnNames="EVENTID" baseTableName="PARTICIPANT"
+                                 constraintName="FKWJUKVBRFTUILLISKPAJ48VQJ" deferrable="false"
+                                 initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT"
+                                 referencedColumnNames="ID" referencedTableName="PERSON"/>
+    </changeSet>
+</databaseChangeLog>

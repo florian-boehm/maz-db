@@ -23,8 +23,9 @@
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 		<properties>
-			<property name="hibernate.connection.url" value="jdbc:h2:./dbfiles/users"/>
 			<property name="connection.driver_class" value="org.h2.Driver"/>
+
+			<property name="hibernate.connection.url" value="jdbc:h2:./dbfiles/users"/>
 			<property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
 			<property name="hibernate.hbm2ddl.auto" value="update"/>
@@ -44,6 +45,7 @@
 		<class>de.spiritaner.maz.model.meta.ApprovalType</class>
 		<class>de.spiritaner.maz.model.ContactMethod</class>
 		<class>de.spiritaner.maz.model.meta.ContactMethodType</class>
+        <class>de.spiritaner.maz.model.meta.Diocese</class>
 		<class>de.spiritaner.maz.model.Event</class>
 		<class>de.spiritaner.maz.model.meta.EventType</class>
 		<class>de.spiritaner.maz.model.meta.Gender</class>
@@ -61,8 +63,9 @@
 		<class>de.spiritaner.maz.model.YearAbroad</class>
 
 		<properties>
-			<property name="hibernate.connection.url" value="jdbc:h2:./dbfiles/data;CIPHER=AES"/>
 			<property name="connection.driver_class" value="org.h2.Driver"/>
+
+			<property name="hibernate.connection.url" value="jdbc:h2:./dbfiles/data;CIPHER=AES"/>
 			<property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
 			<property name="hibernate.hbm2ddl.auto" value="validate"/>

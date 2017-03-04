@@ -1,24 +1,22 @@
 package de.spiritaner.maz.model.meta;
 
+import de.spiritaner.maz.model.Identifiable;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.List;
 
 @MappedSuperclass
-abstract public class MetaClass {
+abstract public class MetaClass implements Identifiable {
 
     private LongProperty id = new SimpleLongProperty();
     private StringProperty description = new SimpleStringProperty();
 
     @Id
-    @GeneratedValue
+    @GeneratedValue/*(strategy = GenerationType.TABLE)*/
     public Long getId() {
         return id.get();
     }

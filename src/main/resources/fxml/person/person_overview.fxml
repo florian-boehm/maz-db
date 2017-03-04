@@ -60,6 +60,7 @@
                                       <TableColumn fx:id="genderColumn" prefWidth="126.0" text="Geschlecht" />
                                       <TableColumn fx:id="birthdayColumn" prefWidth="126.0" text="Geburtstag" />
                                       <TableColumn fx:id="birthplaceColumn" prefWidth="116.0" text="Geburtsort" />
+                                      <TableColumn fx:id="dioceseColumn" prefWidth="126.0" text="Diözese" />
                                       <TableColumn fx:id="idColumn" prefWidth="75.0" text="ID" />
                                   </columns>
                                   <opaqueInsets>
@@ -85,6 +86,16 @@
                                 <fx:include fx:id="personResidences" source="../residence/residence_overview.fxml" />
                             </content>
                         </Tab>
+                        <Tab text="Kontaktwege">
+                            <content>
+                                <fx:include fx:id="personContactMethods" source="../contactmethod/contactmethod_overview.fxml" />
+                            </content>
+                        </Tab>
+                        <!--Tab text="Event">
+                            <content>
+                                <fx:include fx:id="personEvents" source="../event/event_overview.fxml" />
+                            </content>
+                        </Tab-->
                         <!--Tab text="Kontaktwege">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">

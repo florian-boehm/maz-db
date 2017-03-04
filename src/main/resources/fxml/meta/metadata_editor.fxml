@@ -18,8 +18,8 @@
     <bottom>
         <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="746.0" BorderPane.alignment="CENTER">
             <items>
-                <Button mnemonicParsing="false" text="Entfernen" onAction="#remove"/>
-                <Button mnemonicParsing="false" text="Bearbeiten" onAction="#edit"/>
+                <Button mnemonicParsing="false" text="Entfernen" disable="true" onAction="#remove" fx:id="removeMetadata"/>
+                <Button mnemonicParsing="false" text="Bearbeiten" disable="true" onAction="#edit" fx:id="editMetadata"/>
                 <Button mnemonicParsing="false" text="Neu" onAction="#create"/>
             </items>
         </ToolBar>

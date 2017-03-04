@@ -10,9 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import org.apache.log4j.Logger;
 
@@ -30,6 +28,8 @@ public abstract class MetadataEditorController<T extends MetaClass> extends Bord
     @FXML protected TableView<T> metaClassTable;
     @FXML private TableColumn<T, Long> metaClassIdColumn;
     @FXML private TableColumn<T, String> metaClassDescriptionColumn;
+    @FXML private Button removeMetadata;
+    @FXML private Button editMetadata;
 
     protected EntityManager em = DataDatabase.getFactory().createEntityManager();
     private Class<T> cls;
@@ -45,6 +45,12 @@ public abstract class MetadataEditorController<T extends MetaClass> extends Bord
         } catch (IOException e) {
             System.out.println();
         }
+
+        metaClassTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        metaClassTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            removeMetadata.setDisable(newValue==null);
+            editMetadata.setDisable(newValue==null);
+        });
     }
 
     @Override

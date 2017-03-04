@@ -1,7 +1,7 @@
 package de.spiritaner.maz.controller.residence;
 
 import de.spiritaner.maz.controller.Controller;
-import de.spiritaner.maz.dialog.ResidenceEditorDialog;
+import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.util.DataDatabase;
@@ -25,24 +25,38 @@ import java.util.ResourceBundle;
 
 public class ResidenceOverviewController implements Initializable, Controller {
 
-    @FXML private MaskerPane masker;
-    @FXML private TableView<Residence> residenceTable;
-    @FXML private TableColumn<Residence, String> residenceTypeColumn;
-    @FXML private TableColumn<Residence, String> preferredAddressColumn;
-    @FXML private TableColumn<Residence, String> streetColumn;
-    @FXML private TableColumn<Residence, String> houseNumberColumn;
-    @FXML private TableColumn<Residence, String> postCodeColumn;
-    @FXML private TableColumn<Residence, String> cityColumn;
-    @FXML private TableColumn<Residence, String> stateColumn;
-    @FXML private TableColumn<Residence, String> countryColumn;
-    @FXML private TableColumn<Residence, String> additionColumn;
-    @FXML private TableColumn<Residence, Long> idColumn;
-    @FXML private Button removeResidenceButton;
-    @FXML private Button editResidenceButton;
+    @FXML
+    private MaskerPane masker;
+    @FXML
+    private TableView<Residence> residenceTable;
+    @FXML
+    private TableColumn<Residence, String> residenceTypeColumn;
+    @FXML
+    private TableColumn<Residence, String> preferredAddressColumn;
+    @FXML
+    private TableColumn<Residence, String> streetColumn;
+    @FXML
+    private TableColumn<Residence, String> houseNumberColumn;
+    @FXML
+    private TableColumn<Residence, String> postCodeColumn;
+    @FXML
+    private TableColumn<Residence, String> cityColumn;
+    @FXML
+    private TableColumn<Residence, String> stateColumn;
+    @FXML
+    private TableColumn<Residence, String> countryColumn;
+    @FXML
+    private TableColumn<Residence, String> additionColumn;
+    @FXML
+    private TableColumn<Residence, Long> idColumn;
+    @FXML
+    private Button removeResidenceButton;
+    @FXML
+    private Button editResidenceButton;
 
     private Stage stage;
     private Person person;
-    
+
     @Override
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -67,22 +81,17 @@ public class ResidenceOverviewController implements Initializable, Controller {
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 
         residenceTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPerson, newPerson) -> {
-            if(newPerson != null) {
-                removeResidenceButton.setDisable(false);
-                editResidenceButton.setDisable(false);
-            } else {
-                removeResidenceButton.setDisable(true);
-                editResidenceButton.setDisable(true);
-            }
+            removeResidenceButton.setDisable(newPerson == null);
+            editResidenceButton.setDisable(newPerson == null);
         });
 
         residenceTable.setRowFactory(tv -> {
             TableRow<Residence> row = new TableRow<>();
 
             row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     Residence selectedResidence = row.getItem();
-                    ResidenceEditorDialog.showAndWait(selectedResidence, stage);
+                    EditorDialog.showAndWait(selectedResidence,stage);
                     loadResidencesForPerson(selectedResidence.getPerson());
                 }
             });
@@ -97,7 +106,7 @@ public class ResidenceOverviewController implements Initializable, Controller {
 
     public void editResidence(ActionEvent actionEvent) {
         Residence selectedResidence = residenceTable.getSelectionModel().getSelectedItem();
-        ResidenceEditorDialog.showAndWait(selectedResidence, stage);
+        EditorDialog.showAndWait(selectedResidence,stage);
 
         loadResidencesForPerson(selectedResidence.getPerson());
     }
@@ -105,7 +114,9 @@ public class ResidenceOverviewController implements Initializable, Controller {
     public void createResidence(ActionEvent actionEvent) {
         Residence newResidence = new Residence();
         newResidence.setPerson(person);
-        ResidenceEditorDialog.showAndWait(newResidence, stage);
+        EditorDialog.showAndWait(newResidence,stage);
+
+        loadResidencesForPerson(person);
     }
 
     public void loadResidencesForPerson(Person person) {
@@ -118,7 +129,7 @@ public class ResidenceOverviewController implements Initializable, Controller {
         new Thread(new Task() {
             @Override
             protected Collection<Residence> call() throws Exception {
-                TypedQuery<Residence> query = DataDatabase.getFactory().createEntityManager().createNamedQuery("Residence.findAllForPerson",Residence.class);
+                TypedQuery<Residence> query = DataDatabase.getFactory().createEntityManager().createNamedQuery("Residence.findAllForPerson", Residence.class);
                 query.setParameter("person", person);
                 ObservableList<Residence> result = FXCollections.observableArrayList(query.getResultList());
                 residenceTable.setItems(result);

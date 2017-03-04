@@ -1,8 +1,10 @@
 package de.spiritaner.maz.controller.person;
 
 import de.spiritaner.maz.controller.Controller;
+import de.spiritaner.maz.controller.contactmethod.ContactMethodOverviewController;
+import de.spiritaner.maz.controller.event.EventOverviewController;
 import de.spiritaner.maz.controller.residence.ResidenceOverviewController;
-import de.spiritaner.maz.dialog.PersonEditorDialog;
+import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
 import javafx.application.Platform;
@@ -41,6 +43,7 @@ public class PersonOverviewController implements Initializable, Controller {
     @FXML private TableColumn<Person, Long> idColumn;
     @FXML private TableColumn<Person, LocalDate> birthdayColumn;
     @FXML private TableColumn<Person, String> genderColumn;
+    @FXML private TableColumn<Person, String> dioceseColumn;
     @FXML private MaskerPane masker;
     @FXML private MaskerPane detailsMasker;
     @FXML private ToggleSwitch personDetailsToggle;
@@ -51,6 +54,12 @@ public class PersonOverviewController implements Initializable, Controller {
     @FXML private AnchorPane personResidences;
     @FXML private ResidenceOverviewController personResidencesController;
 
+    @FXML private AnchorPane personContactMethods;
+    @FXML private ContactMethodOverviewController personContactMethodsController;
+
+    @FXML private AnchorPane personEvents;
+    @FXML private EventOverviewController personEventsController;
+
     private Stage stage;
 
     @Override
@@ -59,6 +68,7 @@ public class PersonOverviewController implements Initializable, Controller {
         familyNameColumn.setCellValueFactory(cellData -> cellData.getValue().familyNameProperty());
         birthNameColumn.setCellValueFactory(cellData -> cellData.getValue().birthNameProperty());
         genderColumn.setCellValueFactory(cellData -> cellData.getValue().getGender().descriptionProperty());
+        dioceseColumn.setCellValueFactory(cellData -> cellData.getValue().getDiocese().descriptionProperty());
         birthdayColumn.setCellValueFactory(cellData -> cellData.getValue().birthdayProperty());
         birthplaceColumn.setCellValueFactory(cellData -> cellData.getValue().birthplaceProperty());
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
@@ -82,6 +92,7 @@ public class PersonOverviewController implements Initializable, Controller {
         });
 
         // TODO Make multiselection possible later
+        personTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         personTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPerson, newPerson) -> {
             editPersonButton.setDisable(newPerson == null);
             removePersonButton.setDisable(newPerson == null);
@@ -126,21 +137,26 @@ public class PersonOverviewController implements Initializable, Controller {
             detailsMasker.setVisible(false);
 
             personResidencesController.loadResidencesForPerson(person);
+            personContactMethodsController.loadContactMethodsForPerson(person);
+            //personEventsController.loadEventsForPerson(person);
         });
     }
 
     public void createNewPerson(ActionEvent actionEvent) {
-        boolean result = PersonEditorDialog.showAndWait(new Person(), stage);
+        EditorDialog.showAndWait(new Person(), stage);
 
         loadAllPersons();
     }
 
     public void editPerson(ActionEvent actionEvent) {
-        ObservableList<Person> selectedPersons = personTable.getSelectionModel().getSelectedItems();
+        //ObservableList<Person> selectedPersons = personTable.getSelectionModel().getSelectedItems();
 
-        if(selectedPersons.size() == 1) {
-            PersonEditorDialog.showAndWait(selectedPersons.get(0), stage);
-        }
+        //if(selectedPersons.size() == 1) {
+        //    EditorDialog.showAndWait(new Person(), stage);
+        //    PersonEditorDialog.showAndWait(selectedPersons.get(0), stage);
+        //}
+        Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
+        EditorDialog.showAndWait(selectedPerson, stage);
 
         loadAllPersons();
     }

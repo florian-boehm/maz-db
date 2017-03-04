@@ -13,7 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Audited
-public class Role {
+public class Role implements Identifiable {
 
 	private LongProperty id;
 	private Person person;

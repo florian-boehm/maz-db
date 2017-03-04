@@ -19,7 +19,7 @@ import javax.persistence.*;
 		@NamedQuery(name = "Residence.findAll", query = "SELECT r FROM Residence r"),
 		@NamedQuery(name = "Residence.findAllForPerson", query = "SELECT r FROM Residence r WHERE r.person=:person")
 })
-public class Residence {
+public class Residence implements Identifiable {
 
 	private LongProperty id;
 	private Person person;

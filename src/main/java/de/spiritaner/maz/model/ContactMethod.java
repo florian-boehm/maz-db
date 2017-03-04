@@ -15,7 +15,11 @@ import javax.persistence.*;
  */
 @Entity
 @Audited
-public class ContactMethod {
+@NamedQueries({
+		@NamedQuery(name = "ContactMethod.findAll", query = "SELECT cm FROM ContactMethod cm"),
+		@NamedQuery(name = "ContactMethod.findAllForPerson", query = "SELECT cm FROM ContactMethod cm WHERE cm.person=:person")
+})
+public class ContactMethod implements Identifiable  {
 
 	private LongProperty id;
 	private StringProperty value;
@@ -30,7 +34,7 @@ public class ContactMethod {
 
 	@Id
 	@GeneratedValue
-	public long getId() {
+	public Long getId() {
 		return id.get();
 	}
 	public LongProperty idProperty() {

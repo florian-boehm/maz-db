@@ -15,7 +15,7 @@ import javax.persistence.*;
  */
 @Entity
 @Audited
-public class Participant {
+public class Participant implements Identifiable {
 
 	LongProperty id;
 
@@ -32,7 +32,7 @@ public class Participant {
 
 	@Id
 	@GeneratedValue
-	public long getId() {
+	public Long getId() {
 		return id.get();
 	}
 	public LongProperty idProperty() {

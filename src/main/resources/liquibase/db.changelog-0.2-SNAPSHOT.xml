@@ -1,0 +1,30 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="florian (generated)" id="1488621657391-1">
+        <addColumn tableName="PERSON">
+            <column name="DIOCESEID" type="BIGINT(19)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="florian (generated)" id="1488621657391-2">
+        <addColumn tableName="PERSON_AUD">
+            <column name="DIOCESEID" type="BIGINT(19)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="florian (generated)" id="1488621657391-3">
+        <createIndex indexName="FKL83TNGAUB3JB68KMIP6Q3P04T_INDEX_8" tableName="PERSON">
+            <column name="DIOCESEID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="florian (generated)" id="1488621657391-4">
+        <addForeignKeyConstraint baseColumnNames="DIOCESEID" baseTableName="PERSON" constraintName="FKL83TNGAUB3JB68KMIP6Q3P04T" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="DIOCESE"/>
+    </changeSet>
+    <changeSet author="florian (generated)" id="1488621657391-5">
+        <dropForeignKeyConstraint baseTableName="PERSON" constraintName="FK1PWLUHGT7AMFT7BYD6SSDQVXX"/>
+    </changeSet>
+    <changeSet author="florian (generated)" id="1488621657391-6">
+        <dropColumn columnName="DIOCESEADDRESS" tableName="PERSON"/>
+    </changeSet>
+    <changeSet author="florian (generated)" id="1488621657391-7">
+        <dropColumn columnName="DIOCESEADDRESS" tableName="PERSON_AUD"/>
+    </changeSet>
+</databaseChangeLog>

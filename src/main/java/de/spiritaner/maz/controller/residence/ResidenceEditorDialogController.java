@@ -85,11 +85,11 @@ public class ResidenceEditorDialogController implements Initializable, Controlle
 
     public void saveResidence(ActionEvent actionEvent) {
         Platform.runLater(() -> {
-            boolean allFieldsValid = addressEditorController.isValid() &&
-                    personEditorController.isValid() &&
-                    residenceEditorController.isValid();
+            boolean addressValid = addressEditorController.isValid();
+            boolean personValid = personEditorController.isValid();
+            boolean residenceValid = residenceEditorController.isValid();
 
-            if (allFieldsValid) {
+            if (addressValid && personValid && residenceValid) {
                 EntityManager em = DataDatabase.getFactory().createEntityManager();
                 em.getTransaction().begin();
 

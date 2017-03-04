@@ -15,7 +15,7 @@ import java.util.Map;
  */
 @Entity
 @Audited
-public class Site {
+public class Site implements Identifiable  {
 
 	private LongProperty id;
 	private StringProperty name;
@@ -29,7 +29,7 @@ public class Site {
 
 	@Id
 	@GeneratedValue
-	public long getId() {
+	public Long getId() {
 		return id.get();
 	}
 	public LongProperty idProperty() {

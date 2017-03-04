@@ -1,8 +1,9 @@
 package de.spiritaner.maz.controller.person;
 
+import de.spiritaner.maz.controller.meta.DioceseEditorController;
 import de.spiritaner.maz.controller.meta.GenderEditorController;
-import de.spiritaner.maz.dialog.MetadataEditorDialog;
 import de.spiritaner.maz.model.Person;
+import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.util.DataDatabase;
 import de.spiritaner.maz.util.DateValidator;
@@ -17,7 +18,6 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -42,7 +42,7 @@ public class PersonEditorController implements Initializable {
     @FXML
     private Button addNewGenderButton;
     @FXML
-    private ComboBox<String> dioceseComboBox;
+    private ComboBox<Diocese> dioceseComboBox;
     @FXML
     private Button addNewDioceseButton;
 
@@ -81,8 +81,35 @@ public class PersonEditorController implements Initializable {
                 }
             }
         });
+        dioceseComboBox.setCellFactory(column -> {
+            return new ListCell<Diocese>() {
+                @Override
+                public void updateItem(Diocese item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (item == null || empty) {
+                        setText(null);
+                    } else {
+                        setText(item.getDescription());
+                    }
+                }
+            };
+        });
+        dioceseComboBox.setButtonCell(new ListCell<Diocese>() {
+            @Override
+            protected void updateItem(Diocese item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    setText(item.getDescription());
+                }
+            }
+        });
 
         loadGender();
+        loadDiocese();
     }
 
     public void setAll(Person person) {
@@ -92,7 +119,7 @@ public class PersonEditorController implements Initializable {
         birthdayDatePicker.setValue(person.getBirthday());
         birthplaceField.setText(person.getBirthplace());
         genderComboBox.setValue(person.getGender());
-        // TODO Diocese here
+        dioceseComboBox.setValue(person.getDiocese());
     }
 
     public Person getAll(Person person) {
@@ -103,7 +130,7 @@ public class PersonEditorController implements Initializable {
         person.setBirthday(birthdayDatePicker.getValue());
         person.setBirthplace(birthplaceField.getText());
         person.setGender(genderComboBox.getValue());
-        // TODO Diocese here
+        person.setDiocese(dioceseComboBox.getValue());
         return person;
     }
 
@@ -129,10 +156,25 @@ public class PersonEditorController implements Initializable {
         genderComboBox.setValue(selectedBefore);
     }
 
+    public void loadDiocese() {
+        EntityManager em = DataDatabase.getFactory().createEntityManager();
+        Collection<Diocese> result = em.createNamedQuery("Diocese.findAll", Diocese.class).getResultList();
+
+        Diocese selectedBefore = dioceseComboBox.getValue();
+        dioceseComboBox.getItems().clear();
+        dioceseComboBox.getItems().addAll(FXCollections.observableArrayList(result));
+        dioceseComboBox.setValue(selectedBefore);
+
+    }
+
     public boolean isValid() {
-        return firstnameFieldValidator.validate() &&
-                familynameFieldValidator.validate() &&
-                birthdayDateValidator.validate();
+        boolean firstnameValid = firstnameFieldValidator.validate();
+        boolean familynameValid = familynameFieldValidator.validate();
+        boolean birthdayValid = birthdayDateValidator.validate();
+
+        return firstnameValid &&
+                familynameValid &&
+                birthdayValid;
     }
 
     public void addNewGender(ActionEvent actionEvent) {
@@ -142,5 +184,8 @@ public class PersonEditorController implements Initializable {
     }
 
     public void addNewDiocese(ActionEvent actionEvent) {
+        new DioceseEditorController().create(actionEvent);
+
+        loadDiocese();
     }
 }

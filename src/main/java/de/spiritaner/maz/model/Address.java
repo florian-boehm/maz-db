@@ -17,7 +17,7 @@ import javax.persistence.Id;
  */
 @Entity
 @Audited
-public class Address {
+public class Address implements Identifiable {
 
 	private LongProperty id;
 	private StringProperty street;

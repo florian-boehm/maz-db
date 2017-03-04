@@ -5,7 +5,6 @@ import org.hibernate.envers.Audited;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import java.util.List;
 
 import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
@@ -16,8 +15,8 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 @Entity
 @Audited(targetAuditMode = NOT_AUDITED)
 @NamedQueries({
-        @NamedQuery(name = "Gender.findAll", query = "SELECT g FROM Gender g ORDER BY g.description"),
+        @NamedQuery(name = "Diocese.findAll", query = "SELECT d FROM Diocese d ORDER BY d.description"),
 })
-public class Gender extends MetaClass {
+public class Diocese extends MetaClass {
 
 }

@@ -13,7 +13,7 @@ import java.time.Year;
  */
 @Entity
 @Audited
-public class YearAbroad {
+public class YearAbroad implements Identifiable {
 
 	private LongProperty id;
 	private Person person;
@@ -25,7 +25,7 @@ public class YearAbroad {
 
 	@Id
 	@GeneratedValue
-	public long getId() {
+	public Long getId() {
 		return id.get();
 	}
 	public LongProperty idProperty() {

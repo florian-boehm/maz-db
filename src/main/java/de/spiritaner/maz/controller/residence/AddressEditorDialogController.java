@@ -1,5 +1,6 @@
 package de.spiritaner.maz.controller.residence;
 
+import de.spiritaner.maz.controller.Controller;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.util.DataDatabase;
@@ -19,7 +20,7 @@ import javax.persistence.PersistenceException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AddressEditorDialogController implements Initializable {
+public class AddressEditorDialogController implements Initializable, Controller {
 
     final static Logger logger = Logger.getLogger(AddressEditorDialogController.class);
 
@@ -83,5 +84,10 @@ public class AddressEditorDialogController implements Initializable {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    @Override
+    public void onReopen() {
+
     }
 }

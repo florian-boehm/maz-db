@@ -1,5 +1,6 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.meta.Salutation;
 import javafx.beans.property.*;
@@ -19,7 +20,7 @@ import java.util.List;
 	@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
 	//@NamedQuery(name="Person.fetchAllResidences",query="SELECT r FROM Residence where personId=:personId"),
 })
-public class Person {
+public class Person implements Identifiable {
 
 	private LongProperty id;
 
@@ -35,8 +36,7 @@ public class Person {
 
 	private Gender gender;
 	private List<Residence> residences;
-	// TODO Implement diocese as meta data
-	private Address diocese;
+	private Diocese diocese;
 	private List<Role> roles;
 	private List<Approval> approvals;
 
@@ -147,7 +147,6 @@ public class Person {
 	 * @return The birthday of a person
 	 */
 	@Column(nullable = false)
-	//@Temporal(TemporalType.TIMESTAMP)
 	public LocalDate getBirthday() {
 		return birthday.get();
 	}
@@ -180,7 +179,7 @@ public class Person {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="genderId")
 	public Gender getGender() {
-		return gender;
+		return (gender == null) ? new Gender() : gender;
 	}
 	public void setGender(Gender gender) {
 		this.gender = gender;
@@ -199,14 +198,14 @@ public class Person {
 	}
 
 	/**
-	 * The residence of the diocese that is responsable for this person.
+	 * The diocese that is responsable for this person.
 	 */
 	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="dioceseAddress")
-	public Address getDiocese() {
-		return diocese;
+	@JoinColumn(name="dioceseId")
+	public Diocese getDiocese() {
+		return (diocese == null) ? new Diocese() : diocese;
 	}
-	public void setDiocese(Address diocese) {
+	public void setDiocese(Diocese diocese) {
 		this.diocese = diocese;
 	}
 
