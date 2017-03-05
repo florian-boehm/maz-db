@@ -1,5 +1,7 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.util.UserDatabase;
+import org.apache.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.crypto.*;
@@ -21,6 +23,7 @@ import java.util.Arrays;
 })
 public class User {
 
+	private static final Logger logger = Logger.getLogger(User.class);
 	private static final Integer BCRYPT_ROUNDS = 12;
 
 	@Id
@@ -51,11 +54,11 @@ public class User {
 		if(password != null && !password.trim().isEmpty()) {
 			// ... hash it with BCrypt so it is correctly salted
 			passwordHash = BCrypt.hashpw(password, BCrypt.gensalt(12));
-			System.out.println("We got '"+passwordHash+"' out of '"+password+"'");
+			logger.info("We got '"+passwordHash+"' out of '"+password+"'");
 
 			// Also if the unencrypted database key is set (happens on database or user creation) ...
 			if (unencryptedDatabaseKey.length > 0) {
-				System.out.println("Unencrypted database aes key is '"+DatatypeConverter.printHexBinary(unencryptedDatabaseKey)+"'");
+				logger.info("Unencrypted database aes key is '"+DatatypeConverter.printHexBinary(unencryptedDatabaseKey)+"'");
 
 				try {
 					// ... salt the user specific database key every time
@@ -65,7 +68,7 @@ public class User {
 					cipher.init(Cipher.ENCRYPT_MODE, generateUserSpecificAESKey(tmpSalt));
 
 					encryptedDatabaseKey = cipher.doFinal(unencryptedDatabaseKey);
-					System.out.println("Encrypted database aes key '"+DatatypeConverter.printHexBinary(encryptedDatabaseKey)+"'");
+					logger.info("Encrypted database aes key '"+DatatypeConverter.printHexBinary(encryptedDatabaseKey)+"'");
 					unencryptedDatabaseKey = null;
 					databaseKeySalt = tmpSalt;
 				} catch(Exception e) {
@@ -142,7 +145,9 @@ public class User {
 		MessageDigest shaMD = MessageDigest.getInstance("SHA-1");
 		key = shaMD.digest(key);
 		key = Arrays.copyOf(key, 16);
-		System.out.println("User specific aes key is '"+DatatypeConverter.printHexBinary(key)+"'");
+
+		// TODO disable this here before release!
+		logger.info("User specific aes key is '"+DatatypeConverter.printHexBinary(key)+"'");
 
 		return new SecretKeySpec(key, "AES");
 	}

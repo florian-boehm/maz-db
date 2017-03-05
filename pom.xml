@@ -79,16 +79,22 @@
 			<version>5.2.8.Final</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-java8</artifactId>
-            <version>5.2.8.Final</version>
-        </dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-java8</artifactId>
+			<version>5.2.8.Final</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.controlsfx</groupId>
 			<artifactId>controlsfx</artifactId>
 			<version>8.40.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-maven-plugin</artifactId>
+			<version>3.5.3</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -109,132 +115,77 @@
 				</configuration>
 			</plugin>
 
-            <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-                <version>3.5.3</version>
-                <configuration>
-                    <logging>warning</logging>
-                </configuration>
-                <executions>
-                    <!--execution>
-                        <id>diff-databases</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>diff</goal>
-                        </goals>
-                        <configuration>
-                            <diffChangeLogFile>src/main/resources/liquibase/db.changelog-${project.version}.xml</diffChangeLogFile>
-                            <changeLogFile>src/main/resources/liquibase/db.changelog.xml</changeLogFile>
-                            <driver>org.h2.Driver</driver>
-                            <url>jdbc:h2:./target/dbfiles/data_ref;CIPHER=AES</url>
-                            <username>admin</username>
-                            <password>8A4D329C709A79E364BC286804E10C8A test1234</password>
-                            <referenceDriver>org.h2.Driver</referenceDriver>
-                            <referenceUrl>jdbc:h2:./target/dbfiles/data;CIPHER=AES</referenceUrl>
-                            <referenceUsername>admin</referenceUsername>
-                            <referencePassword>8A4D329C709A79E364BC286804E10C8A test1234</referencePassword>
-                        </configuration>
-                    </execution-->
-                    <execution>
-                        <id>update-database</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <!-- only use the first two when nothing works anymore -->
-                            <!--goal>clearCheckSums</goal>
-                            <goal>dropAll</goal-->
-                            <goal>update</goal>
-                        </goals>
-                        <configuration>
-                            <changeLogFile>src/main/resources/liquibase/db.changelog.xml</changeLogFile>
-                            <driver>org.h2.Driver</driver>
-                            <url>jdbc:h2:./target/dbfiles/data;CIPHER=AES</url>
-                            <username>admin</username>
-                            <password>8A4D329C709A79E364BC286804E10C8A test1234</password>
-                            <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>update-reference</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <!-- only use the first two when nothing works anymore -->
-                            <!--goal>clearCheckSums</goal>
-                            <goal>dropAll</goal-->
-                            <goal>update</goal>
-                        </goals>
-                        <configuration>
-                            <changeLogFile>src/main/resources/liquibase/db.changelog.xml</changeLogFile>
-                            <url>jdbc:h2:./target/dbfiles/data_ref;CIPHER=AES</url>
-                            <username>admin</username>
-                            <password>8A4D329C709A79E364BC286804E10C8A test1234</password>
-                            <driver>org.h2.Driver</driver>
-                            <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>3.5.3</version>
+				<configuration>
+					<logging>warning</logging>
+				</configuration>
+				<executions>
+				</executions>
+			</plugin>
 
-            <!-- Juplo kann LocalDate nicht richtig umwandeln -->
-            <!--plugin>
-                <groupId>de.juplo</groupId>
-                <artifactId>hibernate-maven-plugin</artifactId>
-                <version>2.0.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>drop</goal>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <force>true</force>
-                    <url>jdbc:h2:./target/dbfiles/data;CIPHER=AES</url>
-                    <persistenceUnit>dataDb</persistenceUnit>
-                    <username>admin</username>
-                    <password>8A4D329C709A79E364BC286804E10C8A test1234</password>
-                    <show>false</show>
-                </configuration>
-            </plugin-->
+			<!-- Juplo kann LocalDate nicht richtig umwandeln -->
+			<!--plugin>
+				 <groupId>de.juplo</groupId>
+				 <artifactId>hibernate-maven-plugin</artifactId>
+				 <version>2.0.0</version>
+				 <executions>
+					  <execution>
+							<goals>
+								 <goal>drop</goal>
+								 <goal>create</goal>
+							</goals>
+					  </execution>
+				 </executions>
+				 <configuration>
+					  <force>true</force>
+					  <url>jdbc:h2:./target/dbfiles/data;CIPHER=AES</url>
+					  <persistenceUnit>dataDb</persistenceUnit>
+					  <username>admin</username>
+					  <password>8A4D329C709A79E364BC286804E10C8A test1234</password>
+					  <show>false</show>
+				 </configuration>
+			</plugin-->
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.5.0</version>
-                <executions>
-                    <execution>
-                        <id>run-maz-db</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <executable>java</executable>
-                    <arguments>
-                        <argument>-classpath</argument>
-                        <classpath/>
-                        <argument>de.spiritaner.maz.DatabaseApp</argument>
-                    </arguments>
-                    <mainClass>de.spiritaner.maz.DatabaseApp</mainClass>
-                    <workingDirectory>target/</workingDirectory>
-                </configuration>
-            </plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.5.0</version>
+				<executions>
+					<execution>
+						<id>run-maz-db</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>java</executable>
+					<arguments>
+						<argument>-classpath</argument>
+						<classpath/>
+						<argument>de.spiritaner.maz.DatabaseApp</argument>
+					</arguments>
+					<mainClass>de.spiritaner.maz.DatabaseApp</mainClass>
+					<workingDirectory>target/</workingDirectory>
+				</configuration>
+			</plugin>
 
-            <!--plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-jar-plugin</artifactId>
-              <version>3.0.2</version>
-              <configuration>
-                 <archive>
-                    <manifest>
-                      <addClasspath>true</addClasspath>
-                      <mainClass>de.spiritaner.maz.DatabaseApp</mainClass>
-                    </manifest>
-                 </archive>
-              </configuration>
-            </plugin-->
+			<!--plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-jar-plugin</artifactId>
+			  <version>3.0.2</version>
+			  <configuration>
+				  <archive>
+					  <manifest>
+						 <addClasspath>true</addClasspath>
+						 <mainClass>de.spiritaner.maz.DatabaseApp</mainClass>
+					  </manifest>
+				  </archive>
+			  </configuration>
+			</plugin-->
 		</plugins>
 	</build>
 </project>
