@@ -41,13 +41,13 @@ public abstract class EditorDialog<T extends Controller> {
         stage.setScene(new Scene(root));
         stage.sizeToScene();
 
-        // TODO Find a way to set the maximum window size correctly
-        //dialogStage.setOnShown(event -> {
-        //	dialogStage.sizeToScene();
-        //	dialogStage.setMaxHeight(dialogStage.getHeight());
-        //	dialogStage.setMinHeight(dialogStage.getHeight());
-        //	dialogStage.setMinWidth(dialogStage.getWidth());
-        //});
+        // TODO Seems to work correctly on windows, but not on linux
+        stage.setOnShown(event -> {
+            stage.sizeToScene();
+            stage.setMaxHeight(stage.getHeight());
+            stage.setMinHeight(stage.getHeight());
+            stage.setMinWidth(stage.getWidth());
+        });
     }
 
     public void showAndWait() {

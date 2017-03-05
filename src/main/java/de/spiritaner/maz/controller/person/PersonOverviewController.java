@@ -5,6 +5,8 @@ import de.spiritaner.maz.controller.contactmethod.ContactMethodOverviewControlle
 import de.spiritaner.maz.controller.event.EventOverviewController;
 import de.spiritaner.maz.controller.residence.ResidenceOverviewController;
 import de.spiritaner.maz.dialog.EditorDialog;
+import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
 import javafx.application.Platform;
@@ -24,11 +26,13 @@ import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 
 import javax.persistence.EntityManager;
+import javax.persistence.RollbackException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class PersonOverviewController implements Initializable, Controller {
@@ -68,7 +72,7 @@ public class PersonOverviewController implements Initializable, Controller {
         familyNameColumn.setCellValueFactory(cellData -> cellData.getValue().familyNameProperty());
         birthNameColumn.setCellValueFactory(cellData -> cellData.getValue().birthNameProperty());
         genderColumn.setCellValueFactory(cellData -> cellData.getValue().getGender().descriptionProperty());
-        dioceseColumn.setCellValueFactory(cellData -> cellData.getValue().getDiocese().descriptionProperty());
+        dioceseColumn.setCellValueFactory(cellData -> cellData.getValue().getDiocese(true).descriptionProperty());
         birthdayColumn.setCellValueFactory(cellData -> cellData.getValue().birthdayProperty());
         birthplaceColumn.setCellValueFactory(cellData -> cellData.getValue().birthplaceProperty());
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
@@ -185,5 +189,25 @@ public class PersonOverviewController implements Initializable, Controller {
     @Override
     public void onReopen() {
         loadAllPersons();
+    }
+
+    public void removePerson(ActionEvent actionEvent) {
+        Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
+        final Optional<ButtonType> result = RemoveDialog.create(selectedPerson,stage).showAndWait();
+
+        if (result.get() == ButtonType.OK){
+            try {
+                EntityManager em = DataDatabase.getFactory().createEntityManager();
+                em.getTransaction().begin();
+                Person obsoletePerson = em.find(Person.class, selectedPerson.getId());
+                em.remove(obsoletePerson);
+                em.getTransaction().commit();
+
+                loadAllPersons();
+            } catch(RollbackException e) {
+                // TODO show graphical error message in better way
+                ExceptionDialog.show(e);
+            }
+        }
     }
 }

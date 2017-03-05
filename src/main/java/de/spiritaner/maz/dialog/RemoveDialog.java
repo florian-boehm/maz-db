@@ -1,5 +1,7 @@
 package de.spiritaner.maz.dialog;
 
+import de.spiritaner.maz.model.ContactMethod;
+import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.MetaClass;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -9,7 +11,7 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import java.util.Optional;
 
-public class MetadataRemoveDialog {
+public class RemoveDialog {
 
     public static Optional<ButtonType> showAndWait(MetaClass metaClassObj, String metaName) {
         return create(metaClassObj, metaName).showAndWait();
@@ -49,4 +51,24 @@ public class MetadataRemoveDialog {
         alert.initOwner(owner);
         return alert;
     }
+
+    public static Alert create(Person person, Stage stage) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Person löschen");
+        alert.setHeaderText(null);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.setContentText("Person '" + person.getFullName() +"' wirklich löschen?");
+        alert.initOwner(stage);
+        return alert;
+    }
+
+	public static Alert create(ContactMethod selectedContactMethod, Stage stage) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Kontaktweg löschen");
+		alert.setHeaderText(null);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setContentText(selectedContactMethod.getContactMethodType().getDescription() + " '" + selectedContactMethod.getValue() +"' wirklich löschen?");
+		alert.initOwner(stage);
+		return alert;
+	}
 }

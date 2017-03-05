@@ -29,7 +29,7 @@
                                 <Button mnemonicParsing="false" prefWidth="70.0" text="Suchen" />
                                 <TextField prefHeight="25.0" prefWidth="125.0" />
                                 <Separator orientation="VERTICAL" />
-                                <Button mnemonicParsing="false" fx:id="removePersonButton" disable="true" text="Entfernen" />
+                                <Button mnemonicParsing="false" fx:id="removePersonButton" disable="true" onAction="#removePerson" text="Entfernen" />
                                 <Button mnemonicParsing="false" fx:id="editPersonButton" disable="true" onAction="#editPerson" text="Bearbeiten" />
                                 <Button mnemonicParsing="false" onAction="#createNewPerson" text="Neu" />
                                 <Separator orientation="VERTICAL" />

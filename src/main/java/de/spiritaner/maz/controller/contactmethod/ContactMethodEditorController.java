@@ -1,13 +1,10 @@
 package de.spiritaner.maz.controller.contactmethod;
 
 import de.spiritaner.maz.controller.meta.ContactMethodTypeEditorController;
-import de.spiritaner.maz.controller.meta.EventTypeEditorController;
 import de.spiritaner.maz.model.ContactMethod;
-import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.meta.ContactMethodType;
-import de.spiritaner.maz.model.meta.EventType;
 import de.spiritaner.maz.util.DataDatabase;
-import de.spiritaner.maz.util.TextValidator;
+import de.spiritaner.maz.util.validator.TextValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,7 +34,7 @@ public class ContactMethodEditorController implements Initializable {
     private TextValidator valueFieldValidator;
 
     public void initialize(URL location, ResourceBundle resources) {
-        valueFieldValidator = TextValidator.create(valueField).fieldName("Wert").notEmpty(true).textChanged();
+        valueFieldValidator = TextValidator.create(valueField).fieldName("Wert").notEmpty(true).validateOnChange();
 
         contactMethodTypeComboBox.setCellFactory(column -> {
             return new ListCell<ContactMethodType>() {

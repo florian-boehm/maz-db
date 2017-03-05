@@ -2,6 +2,8 @@ package de.spiritaner.maz.controller.contactmethod;
 
 import de.spiritaner.maz.controller.Controller;
 import de.spiritaner.maz.dialog.EditorDialog;
+import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
@@ -11,16 +13,16 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.controlsfx.control.MaskerPane;
 
+import javax.persistence.EntityManager;
+import javax.persistence.RollbackException;
 import javax.persistence.TypedQuery;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ContactMethodOverviewController implements Initializable, Controller {
@@ -94,6 +96,23 @@ public class ContactMethodOverviewController implements Initializable, Controlle
     }
 
     public void removeContactMethod(ActionEvent actionEvent) {
+        ContactMethod selectedContactMethod = contactMethodTable.getSelectionModel().getSelectedItem();
+        final Optional<ButtonType> result = RemoveDialog.create(selectedContactMethod, stage).showAndWait();
+
+        if (result.get() == ButtonType.OK){
+            try {
+                EntityManager em = DataDatabase.getFactory().createEntityManager();
+                em.getTransaction().begin();
+                ContactMethod obsoleteContactMethod = em.find(ContactMethod.class, selectedContactMethod.getId());
+                em.remove(obsoleteContactMethod);
+                em.getTransaction().commit();
+
+                loadContactMethodsForPerson(person);
+            } catch(RollbackException e) {
+                // TODO show graphical error message in better way
+                ExceptionDialog.show(e);
+            }
+        }
     }
 
     public void editContactMethod(ActionEvent actionEvent) {

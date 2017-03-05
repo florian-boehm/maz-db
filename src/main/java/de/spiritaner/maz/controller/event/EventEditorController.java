@@ -1,14 +1,10 @@
 package de.spiritaner.maz.controller.event;
 
-import de.spiritaner.maz.controller.meta.DioceseEditorController;
 import de.spiritaner.maz.controller.meta.EventTypeEditorController;
-import de.spiritaner.maz.controller.meta.GenderEditorController;
 import de.spiritaner.maz.model.Event;
-import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.EventType;
-import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.util.DataDatabase;
-import de.spiritaner.maz.util.TextValidator;
+import de.spiritaner.maz.util.validator.TextValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,7 +40,7 @@ public class EventEditorController implements Initializable {
     private TextValidator nameFieldValidator;
 
     public void initialize(URL location, ResourceBundle resources) {
-        nameFieldValidator = TextValidator.create(nameField).fieldName("Name").notEmpty(true).textChanged();
+        nameFieldValidator = TextValidator.create(nameField).fieldName("Name").notEmpty(true).validateOnChange();
 
         eventTypeComboBox.setCellFactory(column -> {
             return new ListCell<EventType>() {

@@ -19,4 +19,14 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 })
 public class Diocese extends MetaClass {
 
+	public Diocese(){
+
+	}
+
+	public static Diocese createEmpty() {
+		Diocese result = new Diocese();
+		result.setDescription("-/-");
+		result.setId(-1L);
+		return result;
+	}
 }

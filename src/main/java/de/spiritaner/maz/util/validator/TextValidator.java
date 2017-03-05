@@ -1,4 +1,4 @@
-package de.spiritaner.maz.util;
+package de.spiritaner.maz.util.validator;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -56,7 +56,7 @@ public class TextValidator {
 		vbox.getChildren().add(label);
 	}
 
-	public TextValidator textChanged() {
+	public TextValidator validateOnChange() {
 		textField.textProperty().addListener((observable, oldValue, newValue) -> {
 			validate(oldValue, newValue);
 		});

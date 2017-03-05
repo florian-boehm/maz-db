@@ -1,10 +1,9 @@
 package de.spiritaner.maz.controller.meta;
 
 import de.spiritaner.maz.dialog.MetadataEditorDialog;
-import de.spiritaner.maz.dialog.MetadataRemoveDialog;
+import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.meta.MetaClass;
 import de.spiritaner.maz.util.DataDatabase;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -100,7 +99,7 @@ public abstract class MetadataEditorController<T extends MetaClass> extends Bord
 
     public void remove(final ActionEvent actionEvent) {
         final MetaClass metaClassObj = metaClassTable.getSelectionModel().getSelectedItem();
-        final Optional<ButtonType> result = MetadataRemoveDialog.showAndWait(metaClassObj, getMetaName());
+        final Optional<ButtonType> result = RemoveDialog.showAndWait(metaClassObj, getMetaName());
 
         if (result.get() == ButtonType.OK){
             try {
@@ -111,7 +110,7 @@ public abstract class MetadataEditorController<T extends MetaClass> extends Bord
 
                 load();
             } catch(RollbackException e) {
-                MetadataRemoveDialog.showFailureAndWait(metaClassObj, getMetaName(), e);
+                RemoveDialog.showFailureAndWait(metaClassObj, getMetaName(), e);
             }
         }
     }

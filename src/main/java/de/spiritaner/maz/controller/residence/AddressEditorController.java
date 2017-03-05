@@ -1,7 +1,7 @@
 package de.spiritaner.maz.controller.residence;
 
 import de.spiritaner.maz.model.Address;
-import de.spiritaner.maz.util.TextValidator;
+import de.spiritaner.maz.util.validator.TextValidator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -33,10 +33,10 @@ public class AddressEditorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        streetFieldValidator = TextValidator.create(streetField).fieldName("Straße").notEmpty(true).textChanged();
-        houseNumberFieldValidator = TextValidator.create(houseNumberField).fieldName("Hausnummer").notEmpty(true).textChanged();
-        postCodeFieldValidator = TextValidator.create(postCodeField).fieldName("Postleitzahl").max(10).notEmpty(true).textChanged();
-        cityFieldValidator = TextValidator.create(cityField).fieldName("Stadt").notEmpty(true).textChanged();
+        streetFieldValidator = TextValidator.create(streetField).fieldName("Straße").notEmpty(true).validateOnChange();
+        houseNumberFieldValidator = TextValidator.create(houseNumberField).fieldName("Hausnummer").notEmpty(true).validateOnChange();
+        postCodeFieldValidator = TextValidator.create(postCodeField).fieldName("Postleitzahl").max(10).notEmpty(true).validateOnChange();
+        cityFieldValidator = TextValidator.create(cityField).fieldName("Stadt").notEmpty(true).validateOnChange();
     }
 
     public void setAll(Address address) {

@@ -1,10 +1,8 @@
 package de.spiritaner.maz.controller.residence;
 
 import de.spiritaner.maz.controller.Controller;
-import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.util.DataDatabase;
-import de.spiritaner.maz.util.TextValidator;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -4,6 +4,7 @@ import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.meta.Salutation;
 import javafx.beans.property.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -143,6 +144,9 @@ public class Person implements Identifiable {
 		return birthName;
 	}
 
+	@Transient
+	public String getFullName() { return getFirstName() + " " + getFamilyName(); }
+
 	/**
 	 * @return The birthday of a person
 	 */
@@ -190,6 +194,7 @@ public class Person implements Identifiable {
 	 * The list will be fetched lazy when it is needed.
 	 */
 	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+	@Cascade(org.hibernate.annotations.CascadeType.DELETE)
 	public List<Residence> getResidences() {
 		return residences;
 	}
@@ -203,11 +208,13 @@ public class Person implements Identifiable {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="dioceseId")
 	public Diocese getDiocese() {
-		return (diocese == null) ? new Diocese() : diocese;
+		return diocese;
 	}
 	public void setDiocese(Diocese diocese) {
 		this.diocese = diocese;
 	}
+	@Transient
+	public Diocese getDiocese(boolean nullSave) { return (nullSave && diocese == null) ? new Diocese() : diocese; }
 
 	/**
 	 * All the roles this specific person has.
@@ -227,6 +234,7 @@ public class Person implements Identifiable {
      * The contact methods by which this person can be contacted with.
      */
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+	 @Cascade(org.hibernate.annotations.CascadeType.DELETE)
     public List<ContactMethod> getContactMethods() {
         return contactMethods;
     }

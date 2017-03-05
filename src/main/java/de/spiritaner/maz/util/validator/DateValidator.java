@@ -1,4 +1,4 @@
-package de.spiritaner.maz.util;
+package de.spiritaner.maz.util.validator;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -51,7 +51,7 @@ public class DateValidator {
 		vbox.getChildren().add(label);
 	}
 
-	public DateValidator valueChanged() {
+	public DateValidator validateOnChange() {
 		datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
 			validate(oldValue, newValue);
 		});
