@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.MaskerPane?>
+<SplitPane fx:id="personSplitPane" dividerPositions="0.5" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.person.PersonPageController">
+    <items>
+        <fx:include fx:id="personOverview" source="person_overview.fxml" />
+        <AnchorPane fx:id="detailPane" minHeight="0.0" minWidth="0.0" prefHeight="252.0" prefWidth="746.0">
+            <children>
+                <TabPane fx:id="detailTabPane" prefHeight="535.0" prefWidth="526.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <tabs>
+                        <Tab text="Wohnorte" fx:id="residenceTab">
+                            <content>
+                                <fx:include fx:id="personResidences" source="../residence/residence_overview.fxml" />
+                            </content>
+                        </Tab>
+                        <Tab text="Kontaktwege" fx:id="contactMethodTab">
+                            <content>
+                                <fx:include fx:id="personContactMethods" source="../contactmethod/contactmethod_overview.fxml" />
+                            </content>
+                        </Tab>
+                        <Tab text="Einwilligungen" fx:id="approvalTab">
+                            <content>
+                                <fx:include fx:id="personApprovals" source="../approval/approval_overview.fxml" />
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+                <MaskerPane fx:id="detailsMasker" progressVisible="false" text="Bitte zuerst eine Person auswählen ..." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </children>
+        </AnchorPane>
+    </items>
+</SplitPane>

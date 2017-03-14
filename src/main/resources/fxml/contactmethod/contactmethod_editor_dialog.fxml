@@ -49,13 +49,13 @@
 
             <!--Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" /-->
 
-            <fx:include fx:id="approvalEditor" source="contactmethod_editor.fxml" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <fx:include fx:id="contactMethodEditor" source="contactmethod_editor.fxml" GridPane.columnIndex="2" GridPane.rowIndex="3" />
 
             <!--fx:include fx:id="residenceEditor" source="residence_editor.fxml" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="5" /-->
 
             <ButtonBar prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                 <buttons>
-                    <Button fx:id="saveApprovalButton" defaultButton="true" mnemonicParsing="false" onAction="#saveApproval" text="Anlegen" />
+                    <Button fx:id="saveContactMethodButton" defaultButton="true" mnemonicParsing="false" onAction="#saveContactMethod" text="Anlegen" />
                     <Button cancelButton="true" mnemonicParsing="false" onAction="#closeDialog" text="Abbrechen" />
                 </buttons>
                 <GridPane.margin>

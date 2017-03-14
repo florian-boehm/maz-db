@@ -85,16 +85,14 @@ public class ApprovalEditorDialogController implements Initializable, Controller
                 EntityManager em = DataDatabase.getFactory().createEntityManager();
                 em.getTransaction().begin();
 
-                Approval tmpApproval = (approval.getId() != 0L) ? em.find(Approval.class, approval.getId()) : approval;
-
-                if(tmpApproval.getPerson() == null) {
-                    tmpApproval.setPerson(personEditorController.getAll(tmpApproval.getPerson()));
-                }
-
-                tmpApproval = approvalEditorController.getAll(tmpApproval);
+					 approval.setPerson(personEditorController.getAll(approval.getPerson()));
+                approvalEditorController.getAll(approval);
 
                 try {
-                    if (!em.contains(tmpApproval)) em.persist(tmpApproval);
+                    if (!em.contains(approval)) em.merge(approval);
+
+						 // Add backwards relationship too
+                    if(!approval.getPerson().getApprovals().contains(approval)) approval.getPerson().getApprovals().add(approval);
 
                     em.getTransaction().commit();
                     stage.close();

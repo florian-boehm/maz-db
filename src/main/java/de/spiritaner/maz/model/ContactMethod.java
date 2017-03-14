@@ -89,4 +89,9 @@ public class ContactMethod implements Identifiable  {
 	public void setPreferred(boolean preferred) {
 		this.preferred.set(preferred);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (obj instanceof ContactMethod) && (this.getId().equals(((ContactMethod) obj).getId()));
+	}
 }

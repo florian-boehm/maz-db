@@ -22,7 +22,7 @@
     </top>
     <center>
         <TabPane fx:id="sideTabs" side="LEFT" id="side-tabs">
-            <ImageTab closable="false" img="@../img/people_32.png" name="Personen" url="@person/person_overview.fxml"/>
+            <ImageTab closable="false" img="@../img/people_32.png" name="Personen" url="@person/person_page.fxml"/>
             <ImageTab closable="false" img="@../img/map_32.png" name="Adressen"/>
             <ImageTab closable="false" img="@../img/event_32.png" name="Veranstaltungen"/>
             <ImageTab closable="false" img="@../img/message_32.png" name="Kontaktwege"/>

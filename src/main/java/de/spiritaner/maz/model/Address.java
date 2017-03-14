@@ -1,15 +1,14 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.util.DataDatabase;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.hibernate.envers.Audited;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
 
 /**
  * @author Florian Schwab
@@ -17,6 +16,12 @@ import javax.persistence.Id;
  */
 @Entity
 @Audited
+@NamedQueries({
+		  @NamedQuery(name="Address.findSame", query="SELECT a FROM Address a WHERE a.street=:street AND " +
+					 "a.houseNumber=:houseNumber AND a.postCode=:postCode AND a.city=:city AND a.state=:state AND " +
+					 "a.country=:country AND a.addition=:addition")
+})
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"street", "houseNumber", "postCode", "city", "state", "country", "addition"}))
 public class Address implements Identifiable {
 
 	private LongProperty id;
@@ -120,4 +125,18 @@ public class Address implements Identifiable {
 		this.addition.set(addition);
 	}
 	public StringProperty additionProperty() { return addition; }
+
+	public static Address findSame(EntityManager em, Address address) {
+		TypedQuery<Address> query = em.createNamedQuery("Address.findSame", Address.class);
+		query.setParameter("street", address.getStreet());
+		query.setParameter("houseNumber", address.getHouseNumber());
+		query.setParameter("postCode", address.getPostCode());
+		query.setParameter("city", address.getCity());
+		query.setParameter("state", address.getState());
+		query.setParameter("country", address.getCountry());
+		query.setParameter("addition", address.getAddition());
+		ArrayList<Address> results = (ArrayList<Address>) query.getResultList();
+
+		return (results.size() == 1) ? em.merge(results.get(0)) : address;
+	}
 }

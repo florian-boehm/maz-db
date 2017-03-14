@@ -1,6 +1,7 @@
 package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.model.meta.ResidenceType;
+import de.spiritaner.maz.util.DataDatabase;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -8,6 +9,7 @@ import javafx.beans.property.StringProperty;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 /**
  * @author Florian Schwab
@@ -55,7 +57,7 @@ public class Residence implements Identifiable {
 		this.person = person;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "addressId", nullable = false)
 	public Address getAddress() {
 		return address;
@@ -85,5 +87,10 @@ public class Residence implements Identifiable {
 
 	public StringProperty preferredAddressProperty() {
 		return new SimpleStringProperty((isPreferredAddress) ? "Ja" : "Nein");
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (obj instanceof Residence) && (((Residence) obj).getId().equals(this.getId()));
 	}
 }

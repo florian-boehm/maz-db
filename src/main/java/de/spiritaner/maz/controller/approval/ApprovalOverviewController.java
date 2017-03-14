@@ -53,7 +53,7 @@ public class ApprovalOverviewController implements Initializable, Controller {
 
 	@Override
 	public void onReopen() {
-
+		loadApprovalsForPerson();
 	}
 
 	@Override
@@ -73,9 +73,8 @@ public class ApprovalOverviewController implements Initializable, Controller {
 			row.setOnMouseClicked(event -> {
 				if (event.getClickCount() == 2 && (!row.isEmpty())) {
 					Approval selectedApproval = row.getItem();
-					//ContactMethodEditorDialog.showAndWait(selectedContactMethod, stage);
 					EditorDialog.showAndWait(selectedApproval, stage);
-					loadApprovalsForPerson(person);
+					loadApprovalsForPerson();
 				}
 			});
 
@@ -99,27 +98,29 @@ public class ApprovalOverviewController implements Initializable, Controller {
 		});
 	}
 
-	public void loadApprovalsForPerson(Person person) {
-		this.person = person;
+	public void loadApprovalsForPerson() {
+		if(person != null) {
+			masker.setProgressVisible(true);
+			masker.setText("Lade Einwilligungen ...");
+			masker.setVisible(true);
 
-		masker.setProgressVisible(true);
-		masker.setText("Lade Einwilligungen ...");
-		masker.setVisible(true);
+			new Thread(new Task() {
+				@Override
+				protected Collection<Approval> call() throws Exception {
+					// Fetch the lazy collection list from the database
+					EntityManager em = DataDatabase.getFactory().createEntityManager();
+					em.getTransaction().begin();
+					Hibernate.initialize(person.getApprovals());
+					em.getTransaction().commit();
+					Collection<Approval> result = FXCollections.observableArrayList(person.getApprovals());
 
-		new Thread(new Task() {
-			@Override
-			protected Collection<Approval> call() throws Exception {
-				// Fetch the lazy collection list from the database
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
-				Hibernate.initialize(person.getApprovals());
-				em.getTransaction().commit();
-
-				approvalTable.setItems(FXCollections.observableArrayList(person.getApprovals()));
-				masker.setVisible(false);
-				return person.getApprovals();
-			}
-		}).start();
+					approvalTable.getItems().clear();
+					approvalTable.getItems().addAll(result);
+					masker.setVisible(false);
+					return result;
+				}
+			}).start();
+		}
 	}
 
 	public void removeContactMethod(ActionEvent actionEvent) {
@@ -132,9 +133,10 @@ public class ApprovalOverviewController implements Initializable, Controller {
 				em.getTransaction().begin();
 				Approval obsoleteApproval = em.find(Approval.class, selectedApproval.getId());
 				em.remove(obsoleteApproval);
+				person.getApprovals().remove(selectedApproval);
 				em.getTransaction().commit();
 
-				loadApprovalsForPerson(person);
+				loadApprovalsForPerson();
 			} catch (RollbackException e) {
 				// TODO show graphical error message in better way
 				ExceptionDialog.show(e);
@@ -146,15 +148,18 @@ public class ApprovalOverviewController implements Initializable, Controller {
 		Approval selectedApproval = approvalTable.getSelectionModel().getSelectedItem();
 		EditorDialog.showAndWait(selectedApproval, stage);
 
-		loadApprovalsForPerson(person);
+		loadApprovalsForPerson();
 	}
 
 	public void createContactMethod(ActionEvent actionEvent) {
 		Approval newApproval = new Approval();
 		newApproval.setPerson(person);
-		//ContactMethodEditorDialog.showAndWait(newContactMethod, stage);
 		EditorDialog.showAndWait(newApproval, stage);
 
-		loadApprovalsForPerson(person);
+		loadApprovalsForPerson();
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 }

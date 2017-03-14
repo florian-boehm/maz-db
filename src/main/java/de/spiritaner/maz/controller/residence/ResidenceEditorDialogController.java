@@ -3,6 +3,7 @@ package de.spiritaner.maz.controller.residence;
 import de.spiritaner.maz.controller.Controller;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.controller.person.PersonEditorDialogController;
+import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.util.DataDatabase;
 import javafx.application.Platform;
@@ -22,105 +23,101 @@ import java.util.ResourceBundle;
 
 public class ResidenceEditorDialogController implements Initializable, Controller {
 
-    final static Logger logger = Logger.getLogger(ResidenceEditorDialogController.class);
+	final static Logger logger = Logger.getLogger(ResidenceEditorDialogController.class);
 
-    @FXML
-    private Button saveResidenceButton;
-    @FXML
-    private Text titleText;
-    @FXML
-    private GridPane personEditor;
-    @FXML
-    private PersonEditorController personEditorController;
-    @FXML
-    private GridPane addressEditor;
-    @FXML
-    private AddressEditorController addressEditorController;
-    @FXML
-    private GridPane residenceEditor;
-    @FXML
-    private ResidenceEditorController residenceEditorController;
+	@FXML
+	private Button saveResidenceButton;
+	@FXML
+	private Text titleText;
+	@FXML
+	private GridPane personEditor;
+	@FXML
+	private PersonEditorController personEditorController;
+	@FXML
+	private GridPane addressEditor;
+	@FXML
+	private AddressEditorController addressEditorController;
+	@FXML
+	private GridPane residenceEditor;
+	@FXML
+	private ResidenceEditorController residenceEditorController;
 
-    private Stage stage;
-    private Residence residence;
+	private Stage stage;
+	private Residence residence;
 
-    @Override
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
+	@Override
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
 
-    @Override
-    public void onReopen() {
-    }
+	@Override
+	public void onReopen() {
+	}
 
-    public void setResidence(Residence residence) {
-        this.residence = residence;
+	public void setResidence(Residence residence) {
+		this.residence = residence;
 
-        if (residence != null) {
-            // Check if a person is already set in this residence
-            if (residence.getPerson() != null) {
-                personEditorController.setAll(residence.getPerson());
-                personEditorController.setReadonly(true);
-            }
+		if (residence != null) {
+			// Check if a person is already set in this residence
+			if (residence.getPerson() != null) {
+				personEditorController.setAll(residence.getPerson());
+				personEditorController.setReadonly(true);
+			}
 
-            if (residence.getAddress() != null) {
-                addressEditorController.setAll(residence.getAddress());
-            }
+			if (residence.getAddress() != null) {
+				addressEditorController.setAll(residence.getAddress());
+			}
 
-            residenceEditorController.setAll(residence);
+			residenceEditorController.setAll(residence);
 
-            if(residence.getId() != 0L) {
-                titleText.setText("Wohnort bearbeiten");
-                saveResidenceButton.setText("Speichern");
-            } else {
-                titleText.setText("Wohnort anlegen");
-                saveResidenceButton.setText("Anlegen");
-            }
-        }
-    }
+			if (residence.getId() != 0L) {
+				titleText.setText("Wohnort bearbeiten");
+				saveResidenceButton.setText("Speichern");
+			} else {
+				titleText.setText("Wohnort anlegen");
+				saveResidenceButton.setText("Anlegen");
+			}
+		}
+	}
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-    }
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+	}
 
-    public void saveResidence(ActionEvent actionEvent) {
-        Platform.runLater(() -> {
-            boolean addressValid = addressEditorController.isValid();
-            boolean personValid = personEditorController.isValid();
-            boolean residenceValid = residenceEditorController.isValid();
+	public void saveResidence(ActionEvent actionEvent) {
+		Platform.runLater(() -> {
+			boolean addressValid = addressEditorController.isValid();
+			boolean personValid = personEditorController.isValid();
+			boolean residenceValid = residenceEditorController.isValid();
 
-            if (addressValid && personValid && residenceValid) {
-                EntityManager em = DataDatabase.getFactory().createEntityManager();
-                em.getTransaction().begin();
+			if (addressValid && personValid && residenceValid) {
+				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				em.getTransaction().begin();
 
-                Residence tmpResidence = (residence.getId() != 0L) ? em.find(Residence.class, residence.getId()) : residence;
+				residence.setPerson(personEditorController.getAll(residence.getPerson()));
+				residence.setAddress(Address.findSame(em, addressEditorController.getAll(residence.getAddress())));
+				residenceEditorController.getAll(residence);
 
-                if(tmpResidence.getPerson() == null) {
-                    tmpResidence.setPerson(personEditorController.getAll(tmpResidence.getPerson()));
-                }
+				try {
+					if (!em.contains(residence)) em.merge(residence);
 
-                if(tmpResidence.getAddress() == null) {
-                    tmpResidence.setAddress(addressEditorController.getAll(tmpResidence.getAddress()));
-                }
+					// Add backwards relationship too
+					if (!residence.getPerson().getResidences().contains(residence))
+						residence.getPerson().getResidences().add(residence);
 
-                tmpResidence = residenceEditorController.getAll(tmpResidence);
+					em.getTransaction().commit();
+					stage.close();
+				} catch (PersistenceException e) {
+					em.getTransaction().rollback();
+					logger.warn(e);
+				} finally {
+					em.close();
+				}
+			}
+		});
+	}
 
-                try {
-                    if (!em.contains(tmpResidence)) em.persist(tmpResidence);
-
-                    em.getTransaction().commit();
-                    stage.close();
-                } catch (PersistenceException e) {
-                    em.getTransaction().rollback();
-                    logger.warn(e);
-                } finally {
-                    em.close();
-                }
-            }
-        });
-    }
-
-    public void closeDialog(ActionEvent actionEvent) {
-        Platform.runLater(() -> stage.close());
-    }
+	public void closeDialog(ActionEvent actionEvent) {
+		Platform.runLater(() -> stage.close());
+	}
 }

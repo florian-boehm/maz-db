@@ -126,7 +126,7 @@
 					<!-- those two reference databases will always be regenerated -->
 					<execution>
 						<id>update-data-ref</id>
-						<phase>process-resources</phase>
+						<!--phase>process-resources</phase-->
 						<goals>
 							<goal>clearCheckSums</goal>
 							<goal>dropAll</goal>
@@ -141,7 +141,7 @@
 					</execution>
 					<execution>
 						<id>update-users-ref</id>
-						<phase>process-resources</phase>
+						<!--phase>process-resources</phase-->
 						<goals>
 							<goal>clearCheckSums</goal>
 							<goal>dropAll</goal>

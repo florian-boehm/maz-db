@@ -1,30 +1,21 @@
 package de.spiritaner.maz.controller.person;
 
 import de.spiritaner.maz.controller.Controller;
-import de.spiritaner.maz.controller.approval.ApprovalOverviewController;
-import de.spiritaner.maz.controller.contactmethod.ContactMethodOverviewController;
-import de.spiritaner.maz.controller.event.EventOverviewController;
-import de.spiritaner.maz.controller.residence.ResidenceOverviewController;
 import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.ToggleSwitch;
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
@@ -33,7 +24,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -64,35 +54,11 @@ public class PersonOverviewController implements Initializable, Controller {
 	@FXML
 	private MaskerPane masker;
 	@FXML
-	private MaskerPane detailsMasker;
-	@FXML
 	private ToggleSwitch personDetailsToggle;
-	@FXML
-	private SplitPane personSplitPane;
 	@FXML
 	private Button removePersonButton;
 	@FXML
 	private Button editPersonButton;
-
-	@FXML
-	private AnchorPane personResidences;
-	@FXML
-	private ResidenceOverviewController personResidencesController;
-
-	@FXML
-	private AnchorPane personContactMethods;
-	@FXML
-	private ContactMethodOverviewController personContactMethodsController;
-
-	@FXML
-	private AnchorPane personEvents;
-	@FXML
-	private EventOverviewController personEventsController;
-
-	@FXML
-	private AnchorPane personApprovals;
-	@FXML
-	private ApprovalOverviewController personApprovalsController;
 
 	private Stage stage;
 
@@ -152,51 +118,9 @@ public class PersonOverviewController implements Initializable, Controller {
 		personTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPerson, newPerson) -> {
 			editPersonButton.setDisable(newPerson == null);
 			removePersonButton.setDisable(newPerson == null);
-
-			if (newPerson != null && personDetailsToggle.isSelected()) {
-				loadPersonDetails(newPerson);
-			} else if (newPerson == null) {
-				detailsMasker.setVisible(true);
-			}
 		});
-
-		personTable.setRowFactory(tv -> {
-			TableRow<Person> row = new TableRow<>();
-
-			row.setOnMouseClicked(event -> {
-				if (event.getClickCount() == 2 && (!row.isEmpty())) {
-					Person selectedPerson = row.getItem();
-					loadPersonDetails(selectedPerson);
-					System.out.println(selectedPerson.getFirstName());
-				}
-			});
-
-			return row;
-		});
-
-		personResidencesController.setStage(stage);
 
 		loadAllPersons();
-	}
-
-	private void loadPersonDetails(Person person) {
-		Platform.runLater(() -> {
-			AuditReader reader = AuditReaderFactory.get(DataDatabase.getFactory().createEntityManager());
-			List<Number> revisions = reader.getRevisions(Person.class, person.getId());
-
-			for (Number revision : revisions) {
-				logger.info("Found revision " + revision + " for person with first name " + person.getFirstName());
-				Person revPerson = reader.find(Person.class, person.getId(), revision);
-				logger.info("First in this revision was: " + revPerson.getFirstName());
-			}
-
-			detailsMasker.setVisible(false);
-
-			personResidencesController.loadResidencesForPerson(person);
-			personContactMethodsController.loadContactMethodsForPerson(person);
-			personApprovalsController.loadApprovalsForPerson(person);
-			//personEventsController.loadEventsForPerson(person);
-		});
 	}
 
 	public void createNewPerson(ActionEvent actionEvent) {
@@ -206,12 +130,6 @@ public class PersonOverviewController implements Initializable, Controller {
 	}
 
 	public void editPerson(ActionEvent actionEvent) {
-		//ObservableList<Person> selectedPersons = personTable.getSelectionModel().getSelectedItems();
-
-		//if(selectedPersons.size() == 1) {
-		//    EditorDialog.showAndWait(new Person(), stage);
-		//    PersonEditorDialog.showAndWait(selectedPersons.get(0), stage);
-		//}
 		Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
 		EditorDialog.showAndWait(selectedPerson, stage);
 
@@ -262,5 +180,13 @@ public class PersonOverviewController implements Initializable, Controller {
 				ExceptionDialog.show(e);
 			}
 		}
+	}
+
+	public TableView<Person> getPersonTable() {
+		return personTable;
+	}
+
+	public ToggleSwitch getPersonDetailsToggle() {
+		return personDetailsToggle;
 	}
 }

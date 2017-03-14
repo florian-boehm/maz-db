@@ -66,4 +66,9 @@ public class Approval implements Identifiable {
 	public void setApproved(boolean approved) {
 		this.approved.set(approved);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (obj instanceof Approval) && (((Approval) obj).getId().equals(this.getId()));
+	}
 }

@@ -56,7 +56,7 @@ public abstract class EditorDialog<T extends Controller> {
         stage.showAndWait();
     }
 
-    public static void showAndWait(final ContactMethod contactMethod, final Stage parent) {
+    public static ContactMethod showAndWait(final ContactMethod contactMethod, final Stage parent) {
         try {
             EditorDialog<ContactMethodEditorDialogController> editorDialog = new EditorDialog<ContactMethodEditorDialogController>(parent, "/fxml/contactmethod/contactmethod_editor_dialog.fxml", contactMethod, "Kontaktweg") {
                 @Override
@@ -69,6 +69,8 @@ public abstract class EditorDialog<T extends Controller> {
         } catch (IOException e) {
             ExceptionDialog.show(e);
         }
+
+        return contactMethod;
     }
 
     public static void showAndWait(final Address address, final Stage parent) {

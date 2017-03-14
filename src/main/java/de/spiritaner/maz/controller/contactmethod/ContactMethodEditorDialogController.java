@@ -24,92 +24,90 @@ import java.util.ResourceBundle;
 
 public class ContactMethodEditorDialogController implements Initializable, Controller {
 
-    final static Logger logger = Logger.getLogger(ContactMethodEditorDialogController.class);
+	final static Logger logger = Logger.getLogger(ContactMethodEditorDialogController.class);
 
-    @FXML
-    private Button saveContactMethodButton;
-    @FXML
-    private Text titleText;
-    @FXML
-    private GridPane personEditor;
-    @FXML
-    private PersonEditorController personEditorController;
-    @FXML
-    private GridPane contactMethodEditor;
-    @FXML
-    private ContactMethodEditorController contactMethodEditorController;
+	@FXML
+	private Button saveContactMethodButton;
+	@FXML
+	private Text titleText;
+	@FXML
+	private GridPane personEditor;
+	@FXML
+	private PersonEditorController personEditorController;
+	@FXML
+	private GridPane contactMethodEditor;
+	@FXML
+	private ContactMethodEditorController contactMethodEditorController;
 
-    private Stage stage;
-    private ContactMethod contactMethod;
+	private Stage stage;
+	private ContactMethod contactMethod;
 
-    @Override
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
+	@Override
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
 
-    @Override
-    public void onReopen() {
-    }
+	@Override
+	public void onReopen() {
+	}
 
-    public void setContactMethod(ContactMethod contactMethod) {
-        this.contactMethod = contactMethod;
+	public void setContactMethod(ContactMethod contactMethod) {
+		this.contactMethod = contactMethod;
 
-        if (contactMethod != null) {
-            // Check if a person is already set in this residence
-            if (contactMethod.getPerson() != null) {
-                personEditorController.setAll(contactMethod.getPerson());
-                personEditorController.setReadonly(true);
-            }
+		if (contactMethod != null) {
+			// Check if a person is already set in this residence
+			if (contactMethod.getPerson() != null) {
+				personEditorController.setAll(contactMethod.getPerson());
+				personEditorController.setReadonly(true);
+			}
 
-            contactMethodEditorController.setAll(contactMethod);
+			contactMethodEditorController.setAll(contactMethod);
 
-            if(contactMethod.getId() != 0L) {
-                titleText.setText("Kontaktweg bearbeiten");
-                saveContactMethodButton.setText("Speichern");
-            } else {
-                titleText.setText("Kontaktweg anlegen");
-                saveContactMethodButton.setText("Anlegen");
-            }
-        }
-    }
+			if (contactMethod.getId() != 0L) {
+				titleText.setText("Kontaktweg bearbeiten");
+				saveContactMethodButton.setText("Speichern");
+			} else {
+				titleText.setText("Kontaktweg anlegen");
+				saveContactMethodButton.setText("Anlegen");
+			}
+		}
+	}
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-    }
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+	}
 
-    public void saveContactMethod(ActionEvent actionEvent) {
-        Platform.runLater(() -> {
-            boolean personValid = personEditorController.isValid();
-            boolean contactMethodValid = contactMethodEditorController.isValid();
+	public void saveContactMethod(ActionEvent actionEvent) {
+		Platform.runLater(() -> {
+			boolean personValid = personEditorController.isValid();
+			boolean contactMethodValid = contactMethodEditorController.isValid();
 
-            if (personValid && contactMethodValid) {
-                EntityManager em = DataDatabase.getFactory().createEntityManager();
-                em.getTransaction().begin();
+			if (personValid && contactMethodValid) {
+				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				em.getTransaction().begin();
 
-                ContactMethod tmpContactMethod = (contactMethod.getId() != 0L) ? em.find(ContactMethod.class, contactMethod.getId()) : contactMethod;
+				contactMethod.setPerson(personEditorController.getAll(contactMethod.getPerson()));
+				contactMethodEditorController.getAll(contactMethod);
 
-                if(tmpContactMethod.getPerson() == null) {
-                    tmpContactMethod.setPerson(personEditorController.getAll(tmpContactMethod.getPerson()));
-                }
+				try {
+					if (!em.contains(contactMethod)) em.merge(contactMethod);
 
-                tmpContactMethod = contactMethodEditorController.getAll(tmpContactMethod);
+					// Add backwards relationship too
+					if(!contactMethod.getPerson().getContactMethods().contains(contactMethod)) contactMethod.getPerson().getContactMethods().add(contactMethod);
 
-                try {
-                    if (!em.contains(tmpContactMethod)) em.persist(tmpContactMethod);
+					em.getTransaction().commit();
+					stage.close();
+				} catch (PersistenceException e) {
+					em.getTransaction().rollback();
+					logger.warn(e);
+				} finally {
+					em.close();
+				}
+			}
+		});
+	}
 
-                    em.getTransaction().commit();
-                    stage.close();
-                } catch (PersistenceException e) {
-                    em.getTransaction().rollback();
-                    logger.warn(e);
-                } finally {
-                    em.close();
-                }
-            }
-        });
-    }
-
-    public void closeDialog(ActionEvent actionEvent) {
-        Platform.runLater(() -> stage.close());
-    }
+	public void closeDialog(ActionEvent actionEvent) {
+		Platform.runLater(() -> stage.close());
+	}
 }

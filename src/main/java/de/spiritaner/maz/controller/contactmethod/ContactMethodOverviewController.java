@@ -54,7 +54,7 @@ public class ContactMethodOverviewController implements Initializable, Controlle
 
 	@Override
 	public void onReopen() {
-
+		loadContactMethodsForPerson();
 	}
 
 	@Override
@@ -74,9 +74,8 @@ public class ContactMethodOverviewController implements Initializable, Controlle
 			row.setOnMouseClicked(event -> {
 				if (event.getClickCount() == 2 && (!row.isEmpty())) {
 					ContactMethod selectedContactMethod = row.getItem();
-					//ContactMethodEditorDialog.showAndWait(selectedContactMethod, stage);
 					EditorDialog.showAndWait(selectedContactMethod, stage);
-					loadContactMethodsForPerson(person);
+					loadContactMethodsForPerson();
 				}
 			});
 
@@ -84,30 +83,28 @@ public class ContactMethodOverviewController implements Initializable, Controlle
 		});
 	}
 
-	public void loadContactMethodsForPerson(Person person) {
-		this.person = person;
+	public void loadContactMethodsForPerson() {
+		if(person != null) {
+			masker.setProgressVisible(true);
+			masker.setText("Lade Kontaktwege ...");
+			masker.setVisible(true);
 
-		masker.setProgressVisible(true);
-		masker.setText("Lade Kontaktwege ...");
-		masker.setVisible(true);
+			new Thread(new Task() {
+				@Override
+				protected Collection<ContactMethod> call() throws Exception {
+					EntityManager em = DataDatabase.getFactory().createEntityManager();
+					em.getTransaction().begin();
+					Hibernate.initialize(person.getContactMethods());
+					em.getTransaction().commit();
+					Collection<ContactMethod> result = FXCollections.observableArrayList(person.getContactMethods());
 
-		new Thread(new Task() {
-			@Override
-			protected Collection<ContactMethod> call() throws Exception {
-				//TypedQuery<ContactMethod> query = DataDatabase.getFactory().createEntityManager().createNamedQuery("ContactMethod.findAllForPerson",ContactMethod.class);
-				//query.setParameter("person", person);
-				//ObservableList<ContactMethod> result = FXCollections.observableArrayList(query.getResultList());
-				// TODO alternative way to fetch the contact methods
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
-				Hibernate.initialize(person.getContactMethods());
-				em.getTransaction().commit();
-
-				contactMethodTable.setItems(FXCollections.observableArrayList(person.getContactMethods()));
-				masker.setVisible(false);
-				return person.getContactMethods();
-			}
-		}).start();
+					contactMethodTable.getItems().clear();
+					contactMethodTable.getItems().addAll(result);
+					masker.setVisible(false);
+					return result;
+				}
+			}).start();
+		}
 	}
 
 	public void removeContactMethod(ActionEvent actionEvent) {
@@ -120,9 +117,10 @@ public class ContactMethodOverviewController implements Initializable, Controlle
 				em.getTransaction().begin();
 				ContactMethod obsoleteContactMethod = em.find(ContactMethod.class, selectedContactMethod.getId());
 				em.remove(obsoleteContactMethod);
+				person.getContactMethods().remove(selectedContactMethod);
 				em.getTransaction().commit();
 
-				loadContactMethodsForPerson(person);
+				loadContactMethodsForPerson();
 			} catch (RollbackException e) {
 				// TODO show graphical error message in better way
 				ExceptionDialog.show(e);
@@ -132,18 +130,20 @@ public class ContactMethodOverviewController implements Initializable, Controlle
 
 	public void editContactMethod(ActionEvent actionEvent) {
 		ContactMethod selectedContactMethod = contactMethodTable.getSelectionModel().getSelectedItem();
-		//ContactMethodEditorDialog.showAndWait(selectedContactMethod, stage);
 		EditorDialog.showAndWait(selectedContactMethod, stage);
 
-		loadContactMethodsForPerson(person);
+		loadContactMethodsForPerson();
 	}
 
 	public void createContactMethod(ActionEvent actionEvent) {
 		ContactMethod newContactMethod = new ContactMethod();
 		newContactMethod.setPerson(person);
-		//ContactMethodEditorDialog.showAndWait(newContactMethod, stage);
 		EditorDialog.showAndWait(newContactMethod, stage);
 
-		loadContactMethodsForPerson(person);
+		loadContactMethodsForPerson();
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 }
