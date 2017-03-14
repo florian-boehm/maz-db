@@ -41,7 +41,7 @@ public class Person implements Identifiable {
 	private List<Role> roles;
 	private List<Approval> approvals;
 
-    private List<ContactMethod> contactMethods;
+	private List<ContactMethod> contactMethods;
 
 	public Person() {
 		id = new SimpleLongProperty();

@@ -33,4 +33,203 @@
     <changeSet author="florian (generated)" id="1488621657391-7">
         <dropColumn columnName="DIOCESEADDRESS" tableName="PERSON_AUD"/>
     </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-1">
+        <createTable tableName="RELATIONSHIP">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TOPERSONNAME" type="VARCHAR(255)"/>
+            <column name="FROMPERSONID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RELATIONSHIPTYPEID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GETPERSONID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-2">
+        <createTable tableName="RELATIONSHIPTYPE">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-3">
+        <createTable tableName="RELATIONSHIPTYPE_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-4">
+        <createTable tableName="RELATIONSHIP_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="TOPERSONNAME" type="VARCHAR(255)"/>
+            <column name="FROMPERSONID" type="BIGINT(19)"/>
+            <column name="RELATIONSHIPTYPEID" type="BIGINT(19)"/>
+            <column name="GETPERSONID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-5">
+        <addColumn tableName="YEARABROAD">
+            <column name="ABORTIONDATE" type="DATE(8)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-6">
+        <addColumn tableName="CONTACTMETHOD">
+            <column name="PREFERRED" type="BOOLEAN(1)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-7">
+        <addColumn tableName="YEARABROAD">
+            <column name="ABORTIONREASON" type="VARCHAR(255 BYTE)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-8">
+        <addColumn tableName="SITE">
+            <column name="ORGANIZATION" type="VARCHAR(255 BYTE)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-9">
+        <addColumn tableName="YEARABROAD_AUD">
+            <column name="ABORTIONDATE" type="DATE(8)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-10">
+        <addColumn tableName="YEARABROAD">
+            <column name="ARRIVALDATE" type="DATE(8)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-11">
+        <addColumn tableName="CONTACTMETHOD_AUD">
+            <column name="PREFERRED" type="BOOLEAN(1)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-12">
+        <addColumn tableName="YEARABROAD_AUD">
+            <column name="ABORTIONREASON" type="VARCHAR(255 BYTE)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-13">
+        <addColumn tableName="YEARABROAD">
+            <column name="DEPARTUREDATE" type="DATE(8)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-14">
+        <addColumn tableName="SITE_AUD">
+            <column name="ORGANIZATION" type="VARCHAR(255 BYTE)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-15">
+        <addColumn tableName="YEARABROAD_AUD">
+            <column name="ARRIVALDATE" type="DATE(8)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-16">
+        <addColumn tableName="YEARABROAD">
+            <column name="DETAILS" type="VARCHAR(255 BYTE)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-17">
+        <addColumn tableName="YEARABROAD_AUD">
+            <column name="DEPARTUREDATE" type="DATE(8)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-18">
+        <addColumn tableName="YEARABROAD">
+            <column name="JOBDESCRIPTION" type="VARCHAR(255 BYTE)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-19">
+        <addColumn tableName="YEARABROAD_AUD">
+            <column name="DETAILS" type="VARCHAR(255 BYTE)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-20">
+        <addColumn tableName="YEARABROAD">
+            <column name="WELTWAERTSPROMOTED" type="BOOLEAN(1)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-21">
+        <addColumn tableName="YEARABROAD_AUD">
+            <column name="JOBDESCRIPTION" type="VARCHAR(255 BYTE)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-22">
+        <addColumn tableName="YEARABROAD_AUD">
+            <column name="WELTWAERTSPROMOTED" type="BOOLEAN(1)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-23">
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_7A" tableName="RELATIONSHIP"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-24">
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_B" tableName="RELATIONSHIP_AUD"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-25">
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_B0" tableName="RELATIONSHIPTYPE"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-26">
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_D1" tableName="RELATIONSHIPTYPE_AUD"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-27">
+        <createIndex indexName="FK26HASLKDVUY6BLP2S7RT448W4_INDEX_7" tableName="RELATIONSHIP">
+            <column name="RELATIONSHIPTYPEID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-28">
+        <createIndex indexName="FK67SQY152MDQXJ2S56QD3JTCTI_INDEX_D" tableName="RELATIONSHIPTYPE_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-29">
+        <createIndex indexName="FKAQBAH5QT5T5231XN6N88OJ02T_INDEX_B" tableName="RELATIONSHIP_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-30">
+        <createIndex indexName="FKDGHQSN6HEFW8X9KHUU7NE0T6A_INDEX_7" tableName="RELATIONSHIP">
+            <column name="GETPERSONID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-31">
+        <createIndex indexName="FKP5Q9R9MAJ28UNXNYE7CP2KWHI_INDEX_7" tableName="RELATIONSHIP">
+            <column name="FROMPERSONID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-32">
+        <addForeignKeyConstraint baseColumnNames="RELATIONSHIPTYPEID" baseTableName="RELATIONSHIP" constraintName="FK26HASLKDVUY6BLP2S7RT448W4" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="RELATIONSHIPTYPE"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-33">
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="RELATIONSHIPTYPE_AUD" constraintName="FK67SQY152MDQXJ2S56QD3JTCTI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV" referencedTableName="REVINFO"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-34">
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="RELATIONSHIP_AUD" constraintName="FKAQBAH5QT5T5231XN6N88OJ02T" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV" referencedTableName="REVINFO"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-35">
+        <addForeignKeyConstraint baseColumnNames="GETPERSONID" baseTableName="RELATIONSHIP" constraintName="FKDGHQSN6HEFW8X9KHUU7NE0T6A" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="PERSON"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489483020246-36">
+        <addForeignKeyConstraint baseColumnNames="FROMPERSONID" baseTableName="RELATIONSHIP" constraintName="FKP5Q9R9MAJ28UNXNYE7CP2KWHI" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="PERSON"/>
+    </changeSet>
 </databaseChangeLog>

@@ -1,6 +1,7 @@
 package de.spiritaner.maz.dialog;
 
 import de.spiritaner.maz.controller.Controller;
+import de.spiritaner.maz.controller.approval.ApprovalEditorDialogController;
 import de.spiritaner.maz.controller.contactmethod.ContactMethodEditorDialogController;
 import de.spiritaner.maz.controller.person.PersonEditorDialogController;
 import de.spiritaner.maz.controller.residence.AddressEditorDialogController;
@@ -106,6 +107,21 @@ public abstract class EditorDialog<T extends Controller> {
                 @Override
                 public void initController(final ResidenceEditorDialogController controller,final Stage stage) {
                     controller.setResidence(residence);
+                    controller.setStage(stage);
+                }
+            };
+            editorDialog.showAndWait();
+        } catch (IOException e) {
+            ExceptionDialog.show(e);
+        }
+    }
+
+    public static void showAndWait(final Approval approval, final Stage parent) {
+        try {
+            EditorDialog<ApprovalEditorDialogController> editorDialog = new EditorDialog<ApprovalEditorDialogController>(parent, "/fxml/approval/approval_editor_dialog.fxml", approval, "Einwilligung") {
+                @Override
+                public void initController(final ApprovalEditorDialogController controller,final Stage stage) {
+                    controller.setApproval(approval);
                     controller.setStage(stage);
                 }
             };

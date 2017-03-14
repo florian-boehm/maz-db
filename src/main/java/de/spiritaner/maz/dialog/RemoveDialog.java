@@ -1,5 +1,6 @@
 package de.spiritaner.maz.dialog;
 
+import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.MetaClass;
@@ -71,4 +72,14 @@ public class RemoveDialog {
 		alert.initOwner(stage);
 		return alert;
 	}
+
+    public static Alert create(Approval approval, Stage stage) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Einwilligung löschen");
+        alert.setHeaderText(null);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.setContentText("Einwilligung zu(r) " + approval.getApprovalType().getDescription() + " wirklich löschen?");
+        alert.initOwner(stage);
+        return alert;
+    }
 }

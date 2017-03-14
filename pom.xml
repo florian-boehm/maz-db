@@ -123,31 +123,59 @@
 					<logging>warning</logging>
 				</configuration>
 				<executions>
+					<!-- those two reference databases will always be regenerated -->
+					<execution>
+						<id>update-data-ref</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>clearCheckSums</goal>
+							<goal>dropAll</goal>
+							<goal>update</goal>
+						</goals>
+						<configuration>
+							<changeLogFile>src/main/resources/liquibase/data/changelog.xml</changeLogFile>
+							<url>jdbc:h2:./target/dbfiles/data_ref</url>
+							<driver>org.h2.Driver</driver>
+							<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+						</configuration>
+					</execution>
+					<execution>
+						<id>update-users-ref</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>clearCheckSums</goal>
+							<goal>dropAll</goal>
+							<goal>update</goal>
+						</goals>
+						<configuration>
+							<changeLogFile>src/main/resources/liquibase/users/changelog.xml</changeLogFile>
+							<url>jdbc:h2:./target/dbfiles/users_ref</url>
+							<driver>org.h2.Driver</driver>
+							<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+						</configuration>
+					</execution>
+					<execution>
+						<id>diff-data-db</id>
+						<!--phase>process-resources</phase-->
+						<goals>
+							<goal>diff</goal>
+						</goals>
+						<configuration>
+							<diffChangeLogFile>src/main/resources/liquibase/data/changelog-${project.version}.xml
+							</diffChangeLogFile>
+							<changeLogFile>src/main/resources/liquibase/data/changelog.xml</changeLogFile>
+							<driver>org.h2.Driver</driver>
+							<url>jdbc:h2:./target/dbfiles/data_ref</url>
+							<!--username>admin</username>
+							<password>E4BCC47A694E87A900D9ABA3702C2351 test1234</password-->
+							<referenceDriver>org.h2.Driver</referenceDriver>
+							<referenceUrl>jdbc:h2:./target/dbfiles/data;CIPHER=AES</referenceUrl>
+							<referenceUsername>admin</referenceUsername>
+							<referencePassword>E4BCC47A694E87A900D9ABA3702C2351 test1234</referencePassword>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
-
-			<!-- Juplo kann LocalDate nicht richtig umwandeln -->
-			<!--plugin>
-				 <groupId>de.juplo</groupId>
-				 <artifactId>hibernate-maven-plugin</artifactId>
-				 <version>2.0.0</version>
-				 <executions>
-					  <execution>
-							<goals>
-								 <goal>drop</goal>
-								 <goal>create</goal>
-							</goals>
-					  </execution>
-				 </executions>
-				 <configuration>
-					  <force>true</force>
-					  <url>jdbc:h2:./target/dbfiles/data;CIPHER=AES</url>
-					  <persistenceUnit>dataDb</persistenceUnit>
-					  <username>admin</username>
-					  <password>8A4D329C709A79E364BC286804E10C8A test1234</password>
-					  <show>false</show>
-				 </configuration>
-			</plugin-->
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -172,20 +200,6 @@
 					<workingDirectory>target/</workingDirectory>
 				</configuration>
 			</plugin>
-
-			<!--plugin>
-			  <groupId>org.apache.maven.plugins</groupId>
-			  <artifactId>maven-jar-plugin</artifactId>
-			  <version>3.0.2</version>
-			  <configuration>
-				  <archive>
-					  <manifest>
-						 <addClasspath>true</addClasspath>
-						 <mainClass>de.spiritaner.maz.DatabaseApp</mainClass>
-					  </manifest>
-				  </archive>
-			  </configuration>
-			</plugin-->
 		</plugins>
 	</build>
 </project>

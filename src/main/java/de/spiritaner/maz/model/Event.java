@@ -15,9 +15,9 @@ import java.util.List;
 @Entity
 @Audited
 @NamedQueries({
-		@NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
-		// TODO findAllForPerson is not that easy, because therefore we need a join with the participants table here!!!
-		//@NamedQuery(name = "Event.findAllForPerson", query = "SELECT cm FROM ContactMethod cm WHERE cm.person=:person")
+		  @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
+		  // TODO findAllForPerson is not that easy, because therefore we need a join with the participants table here!!!
+		  //@NamedQuery(name = "Event.findAllForPerson", query = "SELECT cm FROM ContactMethod cm WHERE cm.person=:person")
 })
 public class Event {
 
@@ -29,7 +29,7 @@ public class Event {
 	private ObjectProperty<LocalDate> fromDate;
 	private ObjectProperty<LocalDate> toDate;
 
-   	private List<Participant> participants;
+	private List<Participant> participants;
 	private EventType eventType;
 	private Address address;
 
@@ -46,9 +46,11 @@ public class Event {
 	public long getId() {
 		return id.get();
 	}
+
 	public LongProperty idProperty() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id.set(id);
 	}
@@ -57,9 +59,11 @@ public class Event {
 	public String getName() {
 		return name.get();
 	}
+
 	public StringProperty nameProperty() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name.set(name);
 	}
@@ -67,9 +71,11 @@ public class Event {
 	public String getDescription() {
 		return description.get();
 	}
+
 	public StringProperty descriptionProperty() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description.set(description);
 	}
@@ -77,9 +83,11 @@ public class Event {
 	public LocalDate getFromDate() {
 		return fromDate.get();
 	}
+
 	public ObjectProperty<LocalDate> fromDateProperty() {
 		return fromDate;
 	}
+
 	public void setFromDate(LocalDate fromDate) {
 		this.fromDate.set(fromDate);
 	}
@@ -87,9 +95,11 @@ public class Event {
 	public LocalDate getToDate() {
 		return toDate.get();
 	}
+
 	public ObjectProperty<LocalDate> toDateProperty() {
 		return toDate;
 	}
+
 	public void setToDate(LocalDate toDate) {
 		this.toDate.set(toDate);
 	}
@@ -98,17 +108,28 @@ public class Event {
 	public List<Participant> getParticipants() {
 		return participants;
 	}
+
 	public void setParticipants(List<Participant> participants) {
 		this.participants = participants;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "eventTypeId", nullable = false)
-	public EventType getEventType() { return eventType; }
-	public void setEventType(EventType eventType) { this.eventType = eventType; }
+	public EventType getEventType() {
+		return eventType;
+	}
+
+	public void setEventType(EventType eventType) {
+		this.eventType = eventType;
+	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="addressId", nullable = false)
-	public Address getAddress() { return address; }
-	public void setAddress(Address address) { this.address = address; }
+	@JoinColumn(name = "addressId", nullable = false)
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 }

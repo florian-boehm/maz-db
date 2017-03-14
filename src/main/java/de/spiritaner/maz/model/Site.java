@@ -20,11 +20,14 @@ public class Site implements Identifiable  {
 	private LongProperty id;
 	private StringProperty name;
 	private Map<String, String> epNumbers;
+
+	private StringProperty organization;
 	private Address address;
 
 	public Site() {
 		id = new SimpleLongProperty();
 		name = new SimpleStringProperty();
+		organization = new SimpleStringProperty();
 	}
 
 	@Id
@@ -55,4 +58,20 @@ public class Site implements Identifiable  {
 	@JoinColumn(name="addressId", nullable = false)
 	public Address getAddress() { return address; }
 	public void setAddress(Address address) { this.address = address; }
+
+	/**
+	 * The organization is used together with the address for correspondence
+	 *
+	 * @return
+	 */
+	@Column(nullable = false)
+	public String getOrganization() {
+		return organization.get();
+	}
+	public StringProperty organizationProperty() {
+		return organization;
+	}
+	public void setOrganization(String organization) {
+		this.organization.set(organization);
+	}
 }

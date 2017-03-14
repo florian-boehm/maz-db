@@ -1,10 +1,7 @@
 package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.model.meta.ContactMethodType;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -27,9 +24,13 @@ public class ContactMethod implements Identifiable  {
 	private Person person;
 	private ContactMethodType contactMethodType;
 
+	private BooleanProperty preferred;
+
 	public ContactMethod() {
 	    id = new SimpleLongProperty();
 	    value = new SimpleStringProperty();
+	    preferred = new SimpleBooleanProperty();
+	    preferred.set(false);
     }
 
 	@Id
@@ -77,5 +78,15 @@ public class ContactMethod implements Identifiable  {
 	}
 	public void setContactMethodType(ContactMethodType contactMethodType) {
 		this.contactMethodType = contactMethodType;
+	}
+
+	public boolean isPreferred() {
+		return preferred.get();
+	}
+	public BooleanProperty preferredProperty() {
+		return preferred;
+	}
+	public void setPreferred(boolean preferred) {
+		this.preferred.set(preferred);
 	}
 }

@@ -1,7 +1,9 @@
 package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.model.meta.ApprovalType;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleLongProperty;
 import org.hibernate.envers.Audited;
 
@@ -19,9 +21,10 @@ public class Approval implements Identifiable {
 
 	private Person person;
 	private ApprovalType approvalType;
-	private Boolean isApproved;
+	private BooleanProperty approved;
 
 	public Approval() {
+		approved = new SimpleBooleanProperty();
 		id = new SimpleLongProperty();
 	}
 
@@ -54,10 +57,13 @@ public class Approval implements Identifiable {
 	}
 
 	@Column(nullable = false)
-	public Boolean getApproved() {
-		return isApproved;
+	public boolean isApproved() {
+		return approved.get();
 	}
-	public void setApproved(Boolean approved) {
-		isApproved = approved;
+	public BooleanProperty approvedProperty() {
+		return approved;
+	}
+	public void setApproved(boolean approved) {
+		this.approved.set(approved);
 	}
 }
