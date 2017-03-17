@@ -1,9 +1,10 @@
-package de.spiritaner.maz.controller.event;
+package de.spiritaner.maz.controller.participant;
 
 import de.spiritaner.maz.controller.meta.EventTypeEditorController;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.meta.EventType;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -38,9 +39,11 @@ public class EventEditorController implements Initializable {
     private Button addNewEventTypeButton;
 
     private TextValidator nameFieldValidator;
+    private ComboBoxValidator<EventType> eventTypeValidator;
 
     public void initialize(URL location, ResourceBundle resources) {
         nameFieldValidator = TextValidator.create(nameField).fieldName("Name").notEmpty(true).validateOnChange();
+        eventTypeValidator = new ComboBoxValidator<>(eventTypeComboBox).fieldName("Veranstaltungsart").isSelected(true).validateOnChange();
 
         eventTypeComboBox.setCellFactory(column -> {
             return new ListCell<EventType>() {
@@ -112,8 +115,9 @@ public class EventEditorController implements Initializable {
 
     public boolean isValid() {
         boolean nameValid = nameFieldValidator.validate();
+        boolean eventTypeValid = eventTypeValidator.validate();
 
-        return nameValid;
+        return nameValid && eventTypeValid;
     }
 
     public void addNewEventType(ActionEvent actionEvent) {

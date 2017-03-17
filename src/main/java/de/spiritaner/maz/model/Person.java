@@ -6,6 +6,8 @@ import de.spiritaner.maz.model.meta.Salutation;
 import javafx.beans.property.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,6 +19,7 @@ import java.util.List;
  */
 @Entity
 @Audited
+@Indexed
 @NamedQueries({
 	@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
 	//@NamedQuery(name="Person.fetchAllResidences",query="SELECT r FROM Residence where personId=:personId"),
@@ -40,8 +43,8 @@ public class Person implements Identifiable {
 	private Diocese diocese;
 	private List<Role> roles;
 	private List<Approval> approvals;
-
 	private List<ContactMethod> contactMethods;
+	private List<Participant> participations;
 
 	public Person() {
 		id = new SimpleLongProperty();
@@ -102,6 +105,7 @@ public class Person implements Identifiable {
 	 * @return The persons first name.
 	 */
 	@Column(nullable = false)
+	@Field
 	public String getFirstName() {
 		return firstName.get();
 	}
@@ -119,6 +123,7 @@ public class Person implements Identifiable {
 	 * @return The persons family name
 	 */
 	@Column(nullable = false)
+	@Field
 	public String getFamilyName() {
 		return familyName.get();
 	}
@@ -134,6 +139,7 @@ public class Person implements Identifiable {
 	 *
 	 * @return The persons birth name, may be empty
 	 */
+	@Field
 	public String getBirthName() {
 		return birthName.get();
 	}
@@ -164,6 +170,7 @@ public class Person implements Identifiable {
 	/**
 	 * @return The birthplace of a person, may be empty
 	 */
+	@Field
 	public String getBirthplace() {
 		return birthplace.get();
 	}
@@ -241,4 +248,22 @@ public class Person implements Identifiable {
     public void setContactMethods(List<ContactMethod> contactMethods) {
         this.contactMethods = contactMethods;
     }
+
+	/**
+	 * A list of participations at events of this person.
+	 * The list will be fetched lazy when it is needed.
+	 */
+	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+	@Cascade(org.hibernate.annotations.CascadeType.DELETE)
+	public List<Participant> getParticipations() {
+		return participations;
+	}
+	public void setParticipations(List<Participant> participations) {
+		this.participations = participations;
+	}
+
+	@Transient
+	public String toString() {
+		return this.getFullName() + ((getBirthday() == null) ? "" : " ("+getBirthday().toString()+")");
+	}
 }

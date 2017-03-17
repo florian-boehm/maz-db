@@ -1,0 +1,21 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="Florian (generated)" id="1489743138718-1">
+        <addUniqueConstraint columnNames="STREET, HOUSENUMBER, POSTCODE, CITY, STATE, COUNTRY, ADDITION" constraintName="UK5QRG909ON1L40ELCOIG84407X" tableName="ADDRESS"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489743138718-2">
+        <addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="PARTICIPANT" constraintName="FKBOHAICOSUAUM8VPO8ELPEKWOY" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="PERSON"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489743138718-3">
+        <addForeignKeyConstraint baseColumnNames="EVENTID" baseTableName="PARTICIPANT" constraintName="FKE00KF38RE9O8BFS8CJIB1WTFY" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="EVENT"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489743138718-4">
+        <dropForeignKeyConstraint baseTableName="PARTICIPANT" constraintName="FKESEWPQOAK6SE5O8J8WJ2HWBPX"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489743138718-5">
+        <dropForeignKeyConstraint baseTableName="PARTICIPANT" constraintName="FKWJUKVBRFTUILLISKPAJ48VQJ"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1489743138718-6">
+        <dropNotNullConstraint columnDataType="bigint(19)" columnName="ADDRESSID" tableName="EVENT"/>
+    </changeSet>
+</databaseChangeLog>

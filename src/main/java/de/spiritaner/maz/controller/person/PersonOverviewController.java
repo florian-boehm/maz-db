@@ -1,38 +1,32 @@
 package de.spiritaner.maz.controller.person;
 
-import de.spiritaner.maz.controller.Controller;
-import de.spiritaner.maz.dialog.EditorDialog;
-import de.spiritaner.maz.dialog.ExceptionDialog;
-import de.spiritaner.maz.dialog.RemoveDialog;
+import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
 import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
 import org.apache.log4j.Logger;
-import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.ToggleSwitch;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.query.dsl.QueryBuilder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.List;
 
-public class PersonOverviewController implements Initializable, Controller {
+public class PersonOverviewController extends OverviewController<Person> {
 
 	private static final Logger logger = Logger.getLogger(PersonOverviewController.class);
 
-	@FXML
-	private TableView<Person> personTable;
 	@FXML
 	private TableColumn<Person, String> firstNameColumn;
 	@FXML
@@ -52,18 +46,18 @@ public class PersonOverviewController implements Initializable, Controller {
 	@FXML
 	private TableColumn<Person, String> dioceseColumn;
 	@FXML
-	private MaskerPane masker;
-	@FXML
 	private ToggleSwitch personDetailsToggle;
 	@FXML
-	private Button removePersonButton;
+	private Button personSearchButton;
 	@FXML
-	private Button editPersonButton;
+	private TextField personSearchText;
 
-	private Stage stage;
+	public PersonOverviewController() {
+		super(Person.class);
+	}
 
 	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
+	protected void postInit() {
 		firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
 		familyNameColumn.setCellValueFactory(cellData -> cellData.getValue().familyNameProperty());
 		birthNameColumn.setCellValueFactory(cellData -> cellData.getValue().birthNameProperty());
@@ -113,56 +107,50 @@ public class PersonOverviewController implements Initializable, Controller {
 			};
 		});
 
-		// TODO Make multiselection possible later
-		personTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		personTable.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPerson, newPerson) -> {
-			editPersonButton.setDisable(newPerson == null);
-			removePersonButton.setDisable(newPerson == null);
-		});
-
-		loadAllPersons();
-	}
-
-	public void createNewPerson(ActionEvent actionEvent) {
-		EditorDialog.showAndWait(new Person(), stage);
-
-		loadAllPersons();
-	}
-
-	public void editPerson(ActionEvent actionEvent) {
-		Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
-		EditorDialog.showAndWait(selectedPerson, stage);
-
-		loadAllPersons();
-	}
-
-	private void loadAllPersons() {
-		masker.setProgressVisible(true);
-		masker.setText("Lade Personen ...");
-		masker.setVisible(true);
-
-		new Thread(new Task() {
-			@Override
-			protected Collection<Person> call() throws Exception {
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
-				Collection<Person> result = em.createQuery("SELECT p FROM Person p").getResultList();
-				personTable.setItems(FXCollections.observableArrayList(result));
-				masker.setVisible(false);
-				return result;
-			}
-		}).start();
-	}
-
-	public void setStage(Stage stage) {
-		this.stage = stage;
+		personSearchButton.setDefaultButton(true);
 	}
 
 	@Override
-	public void onReopen() {
-		loadAllPersons();
+	protected void preCreate(Person object) {
+
 	}
 
-	public void removePerson(ActionEvent actionEvent) {
+	@Override
+	protected void preEdit(Person object) {
+
+	}
+
+	@Override
+	protected void preRemove(Person obsoleteEntity) {
+
+	}
+
+	@Override
+	protected Collection preLoad(EntityManager em) {
+		return em.createNamedQuery("Person.findAll", Person.class).getResultList();
+	}
+
+	@Override
+	protected void postLoad(Collection loadedObjs) {
+
+	}
+
+	@Override
+	protected String getLoadingText() {
+		return "Lade Personen ...";
+	}
+
+	@Override
+	protected void handleException(RollbackException e) {
+
+	}
+
+	@Override
+	protected void preInit() {
+
+	}
+
+	/*public void removePerson(ActionEvent actionEvent) {
 		Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
 		final Optional<ButtonType> result = RemoveDialog.create(selectedPerson, stage).showAndWait();
 
@@ -180,13 +168,39 @@ public class PersonOverviewController implements Initializable, Controller {
 				ExceptionDialog.show(e);
 			}
 		}
-	}
+	}*/
 
-	public TableView<Person> getPersonTable() {
+	/*public TableView<Person> getPersonTable() {
 		return personTable;
-	}
+	}*/
 
 	public ToggleSwitch getPersonDetailsToggle() {
 		return personDetailsToggle;
+	}
+
+	public void searchForPersons(ActionEvent actionEvent) {
+		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(em);
+		em.getTransaction().begin();
+
+		// create native Lucene query unsing the query DSL
+		// alternatively you can write the Lucene query using the Lucene query parser
+		// or the Lucene programmatic API. The Hibernate Search DSL is recommended though
+		QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Person.class).get();
+		org.apache.lucene.search.Query luceneQuery = qb.keyword().onFields("firstName", "familyName")
+				  .matching(personSearchText.getText()+"*")
+				  .createQuery();
+
+		// wrap Lucene query in a javax.persistence.Query
+		javax.persistence.Query jpaQuery =
+				  fullTextEntityManager.createFullTextQuery(luceneQuery, Person.class);
+
+		// execute search
+		List result = jpaQuery.getResultList();
+
+		getTable().getItems().clear();
+		getTable().getItems().addAll(FXCollections.observableArrayList(result));
+
+		em.getTransaction().commit();
 	}
 }

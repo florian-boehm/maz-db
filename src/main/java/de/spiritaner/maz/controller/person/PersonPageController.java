@@ -3,17 +3,11 @@ package de.spiritaner.maz.controller.person;
 import de.spiritaner.maz.controller.Controller;
 import de.spiritaner.maz.controller.approval.ApprovalOverviewController;
 import de.spiritaner.maz.controller.contactmethod.ContactMethodOverviewController;
-import de.spiritaner.maz.controller.event.EventOverviewController;
+import de.spiritaner.maz.controller.participant.EventOverviewController;
+import de.spiritaner.maz.controller.participant.ParticipantOverviewController;
 import de.spiritaner.maz.controller.residence.ResidenceOverviewController;
-import de.spiritaner.maz.dialog.EditorDialog;
-import de.spiritaner.maz.dialog.ExceptionDialog;
-import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Person;
-import de.spiritaner.maz.util.DataDatabase;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -21,19 +15,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.MaskerPane;
-import org.controlsfx.control.ToggleSwitch;
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
 
-import javax.persistence.EntityManager;
-import javax.persistence.RollbackException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class PersonPageController implements Initializable, Controller {
@@ -66,9 +49,9 @@ public class PersonPageController implements Initializable, Controller {
 	private ContactMethodOverviewController personContactMethodsController;
 
 	@FXML
-	private AnchorPane personEvents;
+	private AnchorPane personParticipations;
 	@FXML
-	private EventOverviewController personEventsController;
+	private ParticipantOverviewController personParticipationsController;
 
 	@FXML
 	private AnchorPane personApprovals;
@@ -79,7 +62,7 @@ public class PersonPageController implements Initializable, Controller {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		personOverviewController.getPersonTable().getSelectionModel().selectedItemProperty().addListener((observable, oldPerson, newPerson) -> {
+		personOverviewController.getTable().getSelectionModel().selectedItemProperty().addListener((observable, oldPerson, newPerson) -> {
 			if (newPerson != null && personOverviewController.getPersonDetailsToggle().isSelected()) {
 				loadPersonDetails(newPerson);
 			} else if (newPerson == null) {
@@ -87,7 +70,7 @@ public class PersonPageController implements Initializable, Controller {
 			}
 		});
 
-		personOverviewController.getPersonTable().setRowFactory(tv -> {
+		personOverviewController.getTable().setRowFactory(tv -> {
 			TableRow<Person> row = new TableRow<>();
 
 			row.setOnMouseClicked(event -> {
@@ -110,6 +93,7 @@ public class PersonPageController implements Initializable, Controller {
 			case "residenceTab": personResidencesController.onReopen(); break;
 			case "approvalTab": personApprovalsController.onReopen(); break;
 			case "contactMethodTab": personContactMethodsController.onReopen(); break;
+			case "participationTab": personParticipationsController.onReopen(); break;
 		}
 	}
 
@@ -128,6 +112,7 @@ public class PersonPageController implements Initializable, Controller {
 			personResidencesController.setPerson(person);
 			personContactMethodsController.setPerson(person);
 			personApprovalsController.setPerson(person);
+			personParticipationsController.setPerson(person);
 
 			detailsMasker.setVisible(false);
 

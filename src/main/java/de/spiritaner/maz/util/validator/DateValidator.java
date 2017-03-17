@@ -103,8 +103,10 @@ public class DateValidator {
 		if(result == true)
 			popOver.hide();
 		else
-			if(!popOver.isShowing())
+			if(!popOver.isShowing()) {
+				popOver.setAutoHide(true);
 				popOver.show(datePicker);
+			}
 
 		return result;
 	}

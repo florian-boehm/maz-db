@@ -34,7 +34,7 @@ public class ApprovalEditorController implements Initializable {
     private ComboBoxValidator<ApprovalType> approvalTypeValidator;
 
     public void initialize(URL location, ResourceBundle resources) {
-		 approvalTypeValidator = new ComboBoxValidator<>(approvalTypeComboBox).fieldName("Einwilligung").isSelected(true).validatOnChange();
+		 approvalTypeValidator = new ComboBoxValidator<>(approvalTypeComboBox).fieldName("Einwilligung").isSelected(true).validateOnChange();
 
         approvalTypeComboBox.setCellFactory(column -> {
             return new ListCell<ApprovalType>() {

@@ -10,32 +10,32 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import org.controlsfx.control.MaskerPane?>
 
-<AnchorPane fx:id="tablePane" minHeight="0.0" minWidth="0.0" prefHeight="520.0" prefWidth="689.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.event.EventOverviewController">
+<AnchorPane fx:id="tablePane" minHeight="0.0" minWidth="0.0" prefHeight="520.0" prefWidth="689.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.participant.EventOverviewController">
     <children>
         <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <bottom>
-                <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="746.0" BorderPane.alignment="CENTER">
+                <ToolBar fx:id="toolbar" nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="746.0" BorderPane.alignment="CENTER">
                     <items>
-                        <Button fx:id="removeEventButton" disable="true" mnemonicParsing="false" onAction="#removeEvent" text="Entfernen" />
-                        <Button fx:id="editEventButton" disable="true" mnemonicParsing="false" onAction="#editEvent" text="Bearbeiten" />
-                        <Button mnemonicParsing="false" onAction="#createEvent" text="Neu" />
+                        <Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#remove" text="Entfernen" />
+                        <Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#edit" text="Bearbeiten" />
+                        <Button mnemonicParsing="false" onAction="#create" text="Neu" />
                     </items>
                 </ToolBar>
             </bottom>
             <center>
                 <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-insets: 0;" BorderPane.alignment="CENTER">
                     <content>
-                        <TableView fx:id="eventTable" style="-fx-padding: 0; -fx-background-insets: 0px; -fx-background-color: #f4f4f4; -fx-border-width: 0 0 1 0; -fx-border-color: #c8c8c8;" tableMenuButtonVisible="true">
+                        <TableView fx:id="table" style="-fx-padding: 0; -fx-background-insets: 0px; -fx-background-color: #f4f4f4; -fx-border-width: 0 0 1 0; -fx-border-color: #c8c8c8;" tableMenuButtonVisible="true">
                             <columns>
                                 <TableColumn fx:id="eventTypeColumn" prefWidth="150.0" text="Veranstaltungsart" />
                                 <TableColumn fx:id="nameColumn" prefWidth="150.0" text="Name" />
                                 <TableColumn fx:id="descriptionColumn" prefWidth="120.0" text="Beschreibung" />
                                 <TableColumn fx:id="fromDateColumn" prefWidth="120.0" text="Von" />
                                 <TableColumn fx:id="toDateColumn" prefWidth="120.0" text="Bis" />
-                                <TableColumn fx:id="cityColumn" prefWidth="126.0" text="Stadt" />
+                                <!--TableColumn fx:id="cityColumn" prefWidth="126.0" text="Stadt" />
                                 <TableColumn fx:id="stateColumn" prefWidth="126.0" text="Bundesland" />
                                 <TableColumn fx:id="countryColumn" prefWidth="116.0" text="Land" />
-                                <TableColumn fx:id="additionColumn" prefWidth="75.0" text="Adresszusatz" />
+                                <TableColumn fx:id="additionColumn" prefWidth="75.0" text="Adresszusatz" /-->
                                 <TableColumn fx:id="idColumn" prefWidth="75.0" text="ID" />
                             </columns>
                             <opaqueInsets>

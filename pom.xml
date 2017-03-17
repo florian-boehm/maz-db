@@ -4,7 +4,7 @@
 
 	<groupId>de.spiritaner.maz</groupId>
 	<artifactId>maz-db</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>maz-db</name>
@@ -83,6 +83,12 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-java8</artifactId>
 			<version>5.2.8.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search-orm</artifactId>
+			<version>5.7.0.Final</version>
 		</dependency>
 
 		<dependency>
@@ -171,7 +177,7 @@
 							<referenceDriver>org.h2.Driver</referenceDriver>
 							<referenceUrl>jdbc:h2:./target/dbfiles/data;CIPHER=AES</referenceUrl>
 							<referenceUsername>admin</referenceUsername>
-							<referencePassword>E4BCC47A694E87A900D9ABA3702C2351 test1234</referencePassword>
+							<referencePassword>E87BCE57B684D88B8B50C72A405E7D4A test1234</referencePassword>
 						</configuration>
 					</execution>
 				</executions>

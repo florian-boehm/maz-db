@@ -32,7 +32,7 @@ public class ComboBoxValidator<T extends MetaClass> {
 		selected = Boolean.FALSE;
 	}
 
-	public ComboBoxValidator<T> validatOnChange() {
+	public ComboBoxValidator<T> validateOnChange() {
 		comboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 			validate(oldValue, newValue);
 		});
@@ -78,6 +78,7 @@ public class ComboBoxValidator<T extends MetaClass> {
 		} else {
 			try {
 				if (!popOver.isShowing())
+					popOver.setAutoHide(true);
 					popOver.show(comboBox);
 			} catch (NullPointerException e) {
 				// TODO find a way to suppress the nullpointer exception that gets thrown when "setAll" sets the values and the text changes

@@ -19,7 +19,7 @@ import java.util.List;
 		  // TODO findAllForPerson is not that easy, because therefore we need a join with the participants table here!!!
 		  //@NamedQuery(name = "Event.findAllForPerson", query = "SELECT cm FROM ContactMethod cm WHERE cm.person=:person")
 })
-public class Event {
+public class Event implements Identifiable {
 
 	private LongProperty id;
 
@@ -43,7 +43,7 @@ public class Event {
 
 	@Id
 	@GeneratedValue
-	public long getId() {
+	public Long getId() {
 		return id.get();
 	}
 
@@ -124,12 +124,24 @@ public class Event {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "addressId", nullable = false)
+	@JoinColumn(name = "addressId")
 	public Address getAddress() {
 		return address;
 	}
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	@Override
+	@Transient
+	public boolean equals(Object obj) {
+		return (obj instanceof Event) && (((Event) obj).getId().equals(this.getId()));
+	}
+
+	@Override
+	@Transient
+	public String toString() {
+		return name.get() + ((fromDate.get() == null) ? "" : " (" + fromDate.get().getYear() + ")");
 	}
 }

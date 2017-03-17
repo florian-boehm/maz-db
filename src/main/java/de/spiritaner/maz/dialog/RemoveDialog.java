@@ -1,8 +1,6 @@
 package de.spiritaner.maz.dialog;
 
-import de.spiritaner.maz.model.Approval;
-import de.spiritaner.maz.model.ContactMethod;
-import de.spiritaner.maz.model.Person;
+import de.spiritaner.maz.model.*;
 import de.spiritaner.maz.model.meta.MetaClass;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -78,7 +76,27 @@ public class RemoveDialog {
         alert.setTitle("Einwilligung löschen");
         alert.setHeaderText(null);
         alert.initStyle(StageStyle.UTILITY);
-        alert.setContentText("Einwilligung zu(r) " + approval.getApprovalType().getDescription() + " wirklich löschen?");
+        alert.setContentText("Einwilligung zur/zum " + approval.getApprovalType().getDescription() + " wirklich löschen?");
+        alert.initOwner(stage);
+        return alert;
+    }
+
+	public static Alert create(Event event, Stage stage) {
+       Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+       alert.setTitle("Veranstaltung löschen");
+       alert.setHeaderText(null);
+       alert.initStyle(StageStyle.UTILITY);
+       alert.setContentText("Veranstaltung '" + event.getName() + "' wirklich löschen?");
+       alert.initOwner(stage);
+       return alert;
+	}
+
+    public static Alert create(Participant participant, Stage stage) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Teilnehmer löschen");
+        alert.setHeaderText(null);
+        alert.initStyle(StageStyle.UTILITY);
+        alert.setContentText("Teilnehmer '" + participant.getPerson().getFullName() + "' wirklich löschen?");
         alert.initOwner(stage);
         return alert;
     }

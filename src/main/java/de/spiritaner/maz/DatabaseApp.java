@@ -22,6 +22,7 @@ public class DatabaseApp extends Application {
 	public void start(final Stage primaryStage) throws Exception {
 //		UserDatabase.createFirstUser("admin","admin");
 //		ExceptionDialog.show(new Exception("Just a test"));
+		logger.info("Starting maz-db version 0.3");
 
 		try {
 			if (!UserDatabase.isPopulated()) {

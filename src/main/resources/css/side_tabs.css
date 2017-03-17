@@ -11,7 +11,7 @@
     -fx-background-radius: 0;
 }
 
-#side-tabs .img-tab:selected .focus-indicator {
+#side-tabs .img-tab:selected.focus-indicator {
     -fx-border-width: 0;
 }
 
@@ -26,6 +26,7 @@
     -fx-opacity: 0;
     /*-fx-effect: innershadow(two-pass-box , transparent , 0, 0, 0 , 0);*/
 }
+
 #side-tabs > .tab-header-area {
     -fx-background-color: #e5e5e5;
     -fx-border-color: #c8c8c8;

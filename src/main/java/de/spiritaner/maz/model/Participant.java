@@ -1,10 +1,7 @@
 package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.model.meta.ParticipantType;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -43,7 +40,7 @@ public class Participant implements Identifiable {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="eventId", nullable = false)
+	@JoinColumn(name="personId", nullable = false)
 	public Person getPerson() {
 		return person;
 	}
@@ -52,7 +49,7 @@ public class Participant implements Identifiable {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="personId", nullable = false)
+	@JoinColumn(name="eventId", nullable = false)
 	public Event getEvent() {
 		return event;
 	}
@@ -69,4 +66,9 @@ public class Participant implements Identifiable {
 	public Boolean getHasParticipated() { return hasParticipated.get(); }
 	public void setHasParticipated(Boolean hasParticipated) { this.hasParticipated.set(hasParticipated); }
 	public BooleanProperty hasParticipatedProperty() { return hasParticipated; }
+
+	@Transient
+	public StringProperty hasParticipatedStringProperty() {
+		return new SimpleStringProperty((hasParticipated.get()) ? "Ja" : "Nein");
+	}
 }

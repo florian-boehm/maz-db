@@ -1,6 +1,5 @@
 package de.spiritaner.maz.model;
 
-import de.spiritaner.maz.model.meta.EventType;
 import de.spiritaner.maz.model.meta.RelationshipType;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
