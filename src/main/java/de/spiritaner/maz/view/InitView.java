@@ -1,17 +1,12 @@
 package de.spiritaner.maz.view;
 
-import de.spiritaner.maz.DatabaseApp;
 import de.spiritaner.maz.controller.InitController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
-import de.spiritaner.maz.dialog.LoginDialog;
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;

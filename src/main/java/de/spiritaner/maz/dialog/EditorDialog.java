@@ -43,6 +43,7 @@ public abstract class EditorDialog<T extends Controller> {
 		stage.setResizable(true);
 		stage.setScene(new Scene(root));
 		stage.sizeToScene();
+		root.getStylesheets().add(EditorDialog.class.getClass().getResource("/css/editor_dialog.css").toExternalForm());
 
 		// TODO Seems to work correctly on windows, but not on linux
 		stage.setOnShown(event -> {

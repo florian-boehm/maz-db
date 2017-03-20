@@ -25,7 +25,7 @@
                                 <fx:include fx:id="personApprovals" source="../approval/approval_overview.fxml" />
                             </content>
                         </Tab>
-                        <Tab text="Veranstaltungsteilnahmen" fx:id="participationTab">
+                        <Tab text="Veranstaltungen" fx:id="participationTab">
                             <content>
                                 <fx:include fx:id="personParticipations" source="../participant/participant_overview.fxml" />
                             </content>

@@ -16,8 +16,6 @@ import java.util.List;
 @Audited
 @NamedQueries({
 		  @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
-		  // TODO findAllForPerson is not that easy, because therefore we need a join with the participants table here!!!
-		  //@NamedQuery(name = "Event.findAllForPerson", query = "SELECT cm FROM ContactMethod cm WHERE cm.person=:person")
 })
 public class Event implements Identifiable {
 

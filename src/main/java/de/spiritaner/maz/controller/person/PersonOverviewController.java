@@ -1,5 +1,6 @@
 package de.spiritaner.maz.controller.person;
 
+import de.spiritaner.maz.controller.ControllerAnnotation;
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
@@ -23,6 +24,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
 
+@ControllerAnnotation(fxmlFile = "/fxml/person/person_overview.fxml", objDesc = "Person")
 public class PersonOverviewController extends OverviewController<Person> {
 
 	private static final Logger logger = Logger.getLogger(PersonOverviewController.class);

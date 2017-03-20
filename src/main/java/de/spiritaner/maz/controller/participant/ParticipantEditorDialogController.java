@@ -128,7 +128,7 @@ public class ParticipantEditorDialogController implements Initializable, Control
 	}
 
 	public void searchEvent(ActionEvent actionEvent) {
-		OverviewDialog<EventOverviewController, Event> dialog = new OverviewDialog<>();
+		OverviewDialog<EventOverviewController, Event> dialog = new OverviewDialog<>(EventOverviewController.class);
 		Optional<Event> result = dialog.showAndWait(stage);
 
 		result.ifPresent((Event event) -> {
@@ -138,7 +138,7 @@ public class ParticipantEditorDialogController implements Initializable, Control
 	}
 
 	public void searchPerson(ActionEvent actionEvent) {
-		OverviewDialog<PersonOverviewController, Person> dialog = new OverviewDialog<>();
+		OverviewDialog<PersonOverviewController, Person> dialog = new OverviewDialog<>(PersonOverviewController.class);
 		Optional<Person> result = dialog.showAndWait(stage);
 
 		result.ifPresent((Person person) -> {

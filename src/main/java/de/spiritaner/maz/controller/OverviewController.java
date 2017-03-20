@@ -218,5 +218,6 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 	public void setToolbarVisible(boolean visibility) {
 		toolbar.setVisible(visibility);
+		toolbar.setManaged(false);
 	}
 }
