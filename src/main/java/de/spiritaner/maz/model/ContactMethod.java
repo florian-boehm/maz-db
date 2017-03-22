@@ -1,5 +1,6 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.controller.contactmethod.ContactMethodEditorDialogController;
 import de.spiritaner.maz.model.meta.ContactMethodType;
 import javafx.beans.property.*;
 import org.hibernate.envers.Audited;
@@ -12,6 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Audited
+@Identifiable.Annotation(identifiableName = "Kontaktweg", editorDialogClass = ContactMethodEditorDialogController.class)
 @NamedQueries({
 		@NamedQuery(name = "ContactMethod.findAll", query = "SELECT cm FROM ContactMethod cm"),
 		@NamedQuery(name = "ContactMethod.findAllForPerson", query = "SELECT cm FROM ContactMethod cm WHERE cm.person=:person")
@@ -91,6 +93,7 @@ public class ContactMethod implements Identifiable  {
 	}
 
 	@Override
+	@Transient
 	public boolean equals(Object obj) {
 		return (obj instanceof ContactMethod) && (this.getId().equals(((ContactMethod) obj).getId()));
 	}

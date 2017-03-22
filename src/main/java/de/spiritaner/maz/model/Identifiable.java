@@ -1,9 +1,18 @@
 package de.spiritaner.maz.model;
 
-/**
- * Created by florian on 3/4/17.
- */
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 public interface Identifiable {
 
-    public Long getId();
+	Long getId();
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	@interface Annotation {
+    	String identifiableName() default "";
+    	Class editorDialogClass();
+	}
 }

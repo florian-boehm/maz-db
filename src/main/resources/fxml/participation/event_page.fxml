@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.MaskerPane?>
-<SplitPane fx:id="personSplitPane" dividerPositions="0.5" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.participant.EventPageController">
+<SplitPane fx:id="personSplitPane" dividerPositions="0.5" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.participation.EventPageController">
     <items>
         <fx:include fx:id="eventOverview" source="event_overview.fxml" />
         <AnchorPane fx:id="detailPane" minHeight="0.0" minWidth="0.0" prefHeight="252.0" prefWidth="746.0">
@@ -12,7 +12,7 @@
                     <tabs>
                         <Tab text="Teilnehmer" fx:id="participantTab">
                             <content>
-                                <fx:include fx:id="eventParticipants" source="participant_overview.fxml" />
+                                <fx:include fx:id="eventParticipants" source="participation_overview.fxml" />
                             </content>
                         </Tab>
                         <!--Tab text="Kontaktwege" fx:id="contactMethodTab">

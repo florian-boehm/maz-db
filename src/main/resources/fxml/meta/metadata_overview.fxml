@@ -18,7 +18,7 @@
                         <MetadataEditorTab text="Einwilligungen" fx:value="de.spiritaner.maz.controller.meta.ApprovalTypeEditorController"/>
                         <MetadataEditorTab text="Veranstaltungsarten" fx:value="de.spiritaner.maz.controller.meta.EventTypeEditorController" />
                         <MetadataEditorTab text="Wohnungsarten" fx:value="de.spiritaner.maz.controller.meta.ResidenceTypeEditorController" />
-                        <MetadataEditorTab text="Teilnehmerarten" fx:value="de.spiritaner.maz.controller.meta.ParticipantTypeEditorController" />
+                        <MetadataEditorTab text="Teilnehmerarten" fx:value="de.spiritaner.maz.controller.meta.ParticipationTypeEditorController" />
                         <MetadataEditorTab text="Anredearten" fx:value="de.spiritaner.maz.controller.meta.SalutationEditorController" />
                     </tabs>
                 </TabPane>

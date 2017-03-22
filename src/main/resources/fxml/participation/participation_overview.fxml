@@ -12,7 +12,7 @@
 
 <AnchorPane fx:id="tablePane" minHeight="0.0" minWidth="0.0" prefHeight="520.0" prefWidth="689.0"
             xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="de.spiritaner.maz.controller.participant.ParticipantOverviewController">
+            fx:controller="de.spiritaner.maz.controller.participation.ParticipationOverviewController">
 	<children>
 		<BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
 		            AnchorPane.topAnchor="0.0">

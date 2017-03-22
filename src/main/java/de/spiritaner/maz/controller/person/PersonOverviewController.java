@@ -1,18 +1,15 @@
 package de.spiritaner.maz.controller.person;
 
-import de.spiritaner.maz.controller.ControllerAnnotation;
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
+import org.controlsfx.control.table.TableFilter;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.query.dsl.QueryBuilder;
 
@@ -24,7 +21,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
 
-@ControllerAnnotation(fxmlFile = "/fxml/person/person_overview.fxml", objDesc = "Person")
+@OverviewController.Annotation(fxmlFile = "/fxml/person/person_overview.fxml", objDesc = "Person")
 public class PersonOverviewController extends OverviewController<Person> {
 
 	private static final Logger logger = Logger.getLogger(PersonOverviewController.class);
@@ -55,7 +52,7 @@ public class PersonOverviewController extends OverviewController<Person> {
 	private TextField personSearchText;
 
 	public PersonOverviewController() {
-		super(Person.class);
+		super(Person.class, true);
 	}
 
 	@Override
@@ -118,12 +115,22 @@ public class PersonOverviewController extends OverviewController<Person> {
 	}
 
 	@Override
+	protected void postCreate(Person obj) {
+
+	}
+
+	@Override
 	protected void preEdit(Person object) {
 
 	}
 
 	@Override
 	protected void preRemove(Person obsoleteEntity) {
+
+	}
+
+	@Override
+	protected void postRemove(Person obsoleteEntity) {
 
 	}
 
@@ -151,30 +158,6 @@ public class PersonOverviewController extends OverviewController<Person> {
 	protected void preInit() {
 
 	}
-
-	/*public void removePerson(ActionEvent actionEvent) {
-		Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
-		final Optional<ButtonType> result = RemoveDialog.create(selectedPerson, stage).showAndWait();
-
-		if (result.get() == ButtonType.OK) {
-			try {
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
-				Person obsoletePerson = em.find(Person.class, selectedPerson.getId());
-				em.remove(obsoletePerson);
-				em.getTransaction().commit();
-
-				loadAllPersons();
-			} catch (RollbackException e) {
-				// TODO show graphical error message in better way
-				ExceptionDialog.show(e);
-			}
-		}
-	}*/
-
-	/*public TableView<Person> getPersonTable() {
-		return personTable;
-	}*/
 
 	public ToggleSwitch getPersonDetailsToggle() {
 		return personDetailsToggle;

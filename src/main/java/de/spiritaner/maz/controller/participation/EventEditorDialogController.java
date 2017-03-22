@@ -1,18 +1,18 @@
-package de.spiritaner.maz.controller.participant;
+package de.spiritaner.maz.controller.participation;
 
-import de.spiritaner.maz.controller.Controller;
+import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.residence.AddressEditorController;
+import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.validator.DateValidator;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -21,7 +21,8 @@ import javax.persistence.PersistenceException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EventEditorDialogController implements Initializable, Controller {
+@EditorDialog.Annotation(fxmlFile = "/fxml/participation/event_editor_dialog.fxml", objDesc = "Veranstaltung")
+public class EventEditorDialogController extends EditorController<Event> {
 
 	final static Logger logger = Logger.getLogger(EventEditorDialogController.class);
 
@@ -40,12 +41,11 @@ public class EventEditorDialogController implements Initializable, Controller {
 	@FXML
 	private AddressEditorController addressEditorController;
 
-	private Stage stage;
 	private Event event;
 
 	@Override
-	public void setStage(Stage stage) {
-		this.stage = stage;
+	public void setIdentifiable(Event obj) {
+		setEvent(obj);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class EventEditorDialogController implements Initializable, Controller {
 					if (!em.contains(event)) em.merge(event);
 
 					em.getTransaction().commit();
-					stage.close();
+					getStage().close();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);
@@ -111,6 +111,6 @@ public class EventEditorDialogController implements Initializable, Controller {
 	}
 
 	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> stage.close());
+		Platform.runLater(() -> getStage().close());
 	}
 }

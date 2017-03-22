@@ -1,5 +1,7 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.controller.participation.ParticipationEditorDialogController;
+import de.spiritaner.maz.controller.role.RoleEditorDialogController;
 import de.spiritaner.maz.model.meta.RoleType;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -13,6 +15,7 @@ import javax.persistence.*;
  */
 @Entity
 @Audited
+@Identifiable.Annotation(editorDialogClass = RoleEditorDialogController.class, identifiableName = "Funktion")
 public class Role implements Identifiable {
 
 	private LongProperty id;
@@ -55,5 +58,11 @@ public class Role implements Identifiable {
 	}
 	public void setRoleType(RoleType roleType) {
 		this.roleType = roleType;
+	}
+
+	@Override
+	@Transient
+	public boolean equals(Object obj) {
+		return (obj instanceof Role) && (this.getId().equals(((Role) obj).getId()));
 	}
 }

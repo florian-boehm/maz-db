@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.spiritaner.maz.view.components.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import org.controlsfx.control.StatusBar?>
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.MainController">
+<?import de.spiritaner.maz.view.components.ImageTab?>
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.MainController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="Anwendung">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Version"/>
-                        <MenuItem mnemonicParsing="false" text="Hilfe"/>
-                        <MenuItem mnemonicParsing="false" text="Updates"/>
-                        <MenuItem mnemonicParsing="false" onAction="#closeApplication" text="Schließen"/>
+                        <MenuItem mnemonicParsing="false" onAction="#showVersion" text="Version/Updates" />
+                        <MenuItem mnemonicParsing="false" text="Hilfe" />
+                        <!--MenuItem mnemonicParsing="false" text="Updates" /-->
+                        <MenuItem mnemonicParsing="false" onAction="#closeApplication" text="Schließen" />
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
     </top>
     <center>
-        <TabPane fx:id="sideTabs" side="LEFT" id="side-tabs">
-            <ImageTab closable="false" img="@../img/people_32.png" name="Personen" url="@person/person_page.fxml"/>
+        <TabPane id="side-tabs" fx:id="sideTabs" side="LEFT">
+            <ImageTab closable="false" img="@../img/people_32.png" name="Personen" url="@person/person_page.fxml" />
             <!--ImageTab closable="false" img="@../img/map_32.png" name="Adressen"/-->
-            <ImageTab closable="false" img="@../img/event_32.png" name="Veranstaltungen" url="@participant/event_page.fxml"/>
+            <ImageTab closable="false" img="@../img/event_32.png" name="Veranstaltungen" url="@participation/event_page.fxml" />
             <!--ImageTab closable="false" img="@../img/message_32.png" name="Kontaktwege"/>
             <ImageTab closable="false" img="@../img/manager_32.png" name="Verwaltung"/>
             <ImageTab closable="false" img="@../img/analysis_32.png" name="Analyse"/-->
-            <ImageTab closable="false" img="@../img/tags_32.png" name="Metadaten" url="@meta/metadata_overview.fxml"/>
+            <ImageTab closable="false" img="@../img/tags_32.png" name="Metadaten" url="@meta/metadata_overview.fxml" />
             <!--ImageTab closable="false" img="@../img/warning_32.png" name="Warnungen"/-->
         </TabPane>
     </center>
     <bottom>
-        <StatusBar progress="0.5" text="Lade Datensätze" BorderPane.alignment="CENTER"/>
+        <StatusBar progress="0.5" text="Lade Datensätze" BorderPane.alignment="CENTER" />
     </bottom>
 </BorderPane>

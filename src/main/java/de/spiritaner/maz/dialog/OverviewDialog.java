@@ -1,15 +1,12 @@
 package de.spiritaner.maz.dialog;
 
-import de.spiritaner.maz.controller.ControllerAnnotation;
 import de.spiritaner.maz.controller.OverviewController;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,7 +21,7 @@ public class OverviewDialog<T extends OverviewController, K> {
 	}
 
 	public Optional<K> showAndWait(Stage stage) {
-		ControllerAnnotation controllerAnnotation = cls.getAnnotation(ControllerAnnotation.class);
+		OverviewController.Annotation controllerAnnotation = cls.getAnnotation(OverviewController.Annotation.class);
 		Dialog<K> dialog = new Dialog<>();
 
 		dialog.setTitle("Auswahlübersicht");
@@ -48,8 +45,22 @@ public class OverviewDialog<T extends OverviewController, K> {
 				dialog.getDialogPane().setContent(root);
 
 				// Enable/Disable login button depending on whether a username was entered.
-				Node selectButton = dialog.getDialogPane().lookupButton(selectButtonType);
+				final Node selectButton = dialog.getDialogPane().lookupButton(selectButtonType);
 				selectButton.setDisable(true);
+
+				// Enable selection on double clicking a row
+				controller.setEditOnDoubleclick(false);
+				controller.getTable().setRowFactory(tv -> {
+					TableRow<T> row = new TableRow<>();
+
+					row.setOnMouseClicked(event -> {
+						if (event.getClickCount() == 2 && (!row.isEmpty())) {
+							((Button) selectButton).fire();
+						}
+					});
+
+					return row;
+				});
 
 				controller.setToolbarVisible(false);
 

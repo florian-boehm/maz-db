@@ -27,7 +27,12 @@
                         </Tab>
                         <Tab text="Veranstaltungen" fx:id="participationTab">
                             <content>
-                                <fx:include fx:id="personParticipations" source="../participant/participant_overview.fxml" />
+                                <fx:include fx:id="personParticipations" source="../participation/participation_overview.fxml" />
+                            </content>
+                        </Tab>
+                        <Tab text="Funktionen" fx:id="roleTab">
+                            <content>
+                                <fx:include fx:id="personRoles" source="../role/role_overview.fxml" />
                             </content>
                         </Tab>
                     </tabs>

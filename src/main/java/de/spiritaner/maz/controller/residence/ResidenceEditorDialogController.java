@@ -1,19 +1,17 @@
 package de.spiritaner.maz.controller.residence;
 
-import de.spiritaner.maz.controller.Controller;
+import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
-import de.spiritaner.maz.controller.person.PersonEditorDialogController;
+import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.util.DataDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -21,7 +19,8 @@ import javax.persistence.PersistenceException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ResidenceEditorDialogController implements Initializable, Controller {
+@EditorDialog.Annotation(fxmlFile = "/fxml/residence/residence_editor_dialog.fxml", objDesc = "Wohnort")
+public class ResidenceEditorDialogController extends EditorController<Residence> {
 
 	final static Logger logger = Logger.getLogger(ResidenceEditorDialogController.class);
 
@@ -42,12 +41,11 @@ public class ResidenceEditorDialogController implements Initializable, Controlle
 	@FXML
 	private ResidenceEditorController residenceEditorController;
 
-	private Stage stage;
 	private Residence residence;
 
 	@Override
-	public void setStage(Stage stage) {
-		this.stage = stage;
+	public void setIdentifiable(Residence obj) {
+		setResidence(obj);
 	}
 
 	@Override
@@ -106,7 +104,7 @@ public class ResidenceEditorDialogController implements Initializable, Controlle
 						residence.getPerson().getResidences().add(residence);
 
 					em.getTransaction().commit();
-					stage.close();
+					getStage().close();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);
@@ -118,6 +116,6 @@ public class ResidenceEditorDialogController implements Initializable, Controlle
 	}
 
 	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> stage.close());
+		Platform.runLater(() -> getStage().close());
 	}
 }

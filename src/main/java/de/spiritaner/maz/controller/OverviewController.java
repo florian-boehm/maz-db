@@ -6,20 +6,25 @@ import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.util.DataDatabase;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.controlsfx.control.MaskerPane;
+import org.controlsfx.control.table.TableFilter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Collection;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -32,11 +37,16 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	@FXML private Button createButton;
 	@FXML private ToolBar toolbar;
 
+	private TableFilter<T> tableFilter;
+	private boolean useFilter;
 	private Stage stage;
 	private Class<T> cls;
+	private boolean editOnDoubleclick;
 
-	public OverviewController(Class<T> cls) {
+	public OverviewController(Class<T> cls, boolean useFilter) {
 		this.cls = cls;
+		this.useFilter = useFilter;
+		this.editOnDoubleclick = true;
 	}
 
 	public TableView<T> getTable() {
@@ -77,15 +87,17 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		try {
 			T obj = cls.newInstance();
 			preCreate(obj);
-			Method method = EditorDialog.class.getMethod("showAndWait", cls, Stage.class);
+			Method method = EditorDialog.class.getMethod("showAndWait", Identifiable.class, Stage.class);
 			method.invoke(null, obj, stage);
-			//postCreate(obj);
+			postCreate(obj);
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			ExceptionDialog.show(e);
 		}
 
 		load();
 	}
+
+	protected abstract void postCreate(T obj);
 
 	protected abstract void preEdit(T object);
 
@@ -99,7 +111,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		try {
 			obj = (obj == null) ? table.getSelectionModel().getSelectedItem() : obj;
 			preEdit(obj);
-			Method method = EditorDialog.class.getMethod("showAndWait", cls, Stage.class);
+			Method method = EditorDialog.class.getMethod("showAndWait",  Identifiable.class, Stage.class);
 			method.invoke(null, obj, stage);
 			//postCreate(object);
 		} catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
@@ -107,30 +119,31 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		}
 
 		load();
-
 	}
 
 	protected abstract void preRemove(T obsoleteEntity);
 
-	public void remove(ActionEvent actionEvent) {
-		T selectedObj = getTable().getSelectionModel().getSelectedItem();
+	public void remove(final ActionEvent actionEvent) {
+		final T selectedObj = getTable().getSelectionModel().getSelectedItem();
 
 		try {
-			Method method = RemoveDialog.class.getMethod("create", cls, Stage.class);
-			Alert removeDialog = (Alert) method.invoke(null, selectedObj, stage);
+			final Method method = RemoveDialog.class.getMethod("create", cls, Stage.class);
+			final Alert removeDialog = (Alert) method.invoke(null, selectedObj, stage);
 			final Optional<ButtonType> result = removeDialog.showAndWait();
 
 			if (result.get() == ButtonType.OK) {
 				try {
 					EntityManager em = DataDatabase.getFactory().createEntityManager();
 					em.getTransaction().begin();
-					T obsoleteEntity = em.find(cls, selectedObj.getId());
+					final T obsoleteEntity = em.find(cls, selectedObj.getId());
 					preRemove(obsoleteEntity);
 					em.remove(obsoleteEntity);
 					em.getTransaction().commit();
+
+					postRemove(obsoleteEntity);
 				} catch (RollbackException e) {
 					// TODO show graphical error message in better way
-					ExceptionDialog.show(e);
+					handleException(e);
 				}
 			}
 		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -140,12 +153,17 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		load();
 	}
 
+	protected abstract void postRemove(T obsoleteEntity);
+
 	public void load() {
 		Platform.runLater(() -> {
 			try {
 				masker.setProgressVisible(true);
 				masker.setText(getLoadingText());
 				masker.setVisible(true);
+
+				//T previousSelected = table.getSelectionModel().getSelectedItem();
+				//table.getSelectionModel().clearSelection();
 
 				EntityManager em = DataDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
@@ -154,8 +172,15 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 				postLoad(result);
 
-				table.getItems().clear();
-				table.getItems().addAll(result);
+				if(useFilter) {
+					tableFilter.getBackingList().clear();
+					if (result != null) tableFilter.getBackingList().addAll(result);
+				} else {
+					table.getItems().clear();
+					if (result != null) table.getItems().addAll(result);
+				}
+
+				//table.getSelectionModel().select(previousSelected);
 				masker.setVisible(false);
 			} catch (RollbackException e) {
 				handleException(e);
@@ -188,7 +213,6 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		preInit();
 
 		getTable().getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
-			System.out.println("Selected: " + newVal);
 			removeButton.setDisable(newVal == null);
 			editButton.setDisable(newVal == null);
 		});
@@ -197,13 +221,18 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 			TableRow<T> row = new TableRow<>();
 
 			row.setOnMouseClicked(event -> {
-				if (event.getClickCount() == 2 && (!row.isEmpty())) {
+				if (event.getClickCount() == 2 && (!row.isEmpty()) && editOnDoubleclick) {
 					editObj(row.getItem());
 				}
 			});
 
 			return row;
 		});
+
+		if(useFilter) {
+			TableFilter.Builder<T> tableFilterBuilder = TableFilter.forTableView(table);
+			tableFilter = tableFilterBuilder.apply();
+		}
 
 		postInit();
 
@@ -219,5 +248,16 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	public void setToolbarVisible(boolean visibility) {
 		toolbar.setVisible(visibility);
 		toolbar.setManaged(false);
+	}
+
+	public void setEditOnDoubleclick(boolean editOnDoubleclick) {
+		this.editOnDoubleclick = editOnDoubleclick;
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	public @interface Annotation {
+		String fxmlFile() default "";
+		String objDesc() default "";
 	}
 }

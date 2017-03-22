@@ -104,6 +104,12 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -201,6 +207,7 @@
 						<argument>-classpath</argument>
 						<classpath/>
 						<argument>de.spiritaner.maz.DatabaseApp</argument>
+						<argument>-Duser.language=de</argument>
 					</arguments>
 					<mainClass>de.spiritaner.maz.DatabaseApp</mainClass>
 					<workingDirectory>target/</workingDirectory>

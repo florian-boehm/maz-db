@@ -91,12 +91,12 @@ public class RemoveDialog {
        return alert;
 	}
 
-    public static Alert create(Participant participant, Stage stage) {
+    public static Alert create(Participation participation, Stage stage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Teilnehmer löschen");
         alert.setHeaderText(null);
         alert.initStyle(StageStyle.UTILITY);
-        alert.setContentText("Teilnehmer '" + participant.getPerson().getFullName() + "' wirklich löschen?");
+        alert.setContentText("Teilnehmer '" + participation.getPerson().getFullName() + "' wirklich löschen?");
         alert.initOwner(stage);
         return alert;
     }

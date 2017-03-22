@@ -1,19 +1,16 @@
 package de.spiritaner.maz.controller.approval;
 
-import de.spiritaner.maz.controller.Controller;
-import de.spiritaner.maz.controller.contactmethod.ContactMethodEditorController;
+import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
+import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.model.Approval;
-import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.util.DataDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -21,7 +18,8 @@ import javax.persistence.PersistenceException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ApprovalEditorDialogController implements Initializable, Controller {
+@EditorDialog.Annotation(fxmlFile = "/fxml/approval/approval_editor_dialog.fxml", objDesc = "Einwilligung")
+public class ApprovalEditorDialogController extends EditorController<Approval> {
 
     final static Logger logger = Logger.getLogger(ApprovalEditorDialogController.class);
 
@@ -38,12 +36,11 @@ public class ApprovalEditorDialogController implements Initializable, Controller
     @FXML
     private ApprovalEditorController approvalEditorController;
 
-    private Stage stage;
     private Approval approval;
 
     @Override
-    public void setStage(Stage stage) {
-        this.stage = stage;
+    public void setIdentifiable(Approval obj) {
+        setApproval(obj);
     }
 
     @Override
@@ -90,12 +87,12 @@ public class ApprovalEditorDialogController implements Initializable, Controller
 
                 try {
                     if (!em.contains(approval)) em.merge(approval);
+                    em.getTransaction().commit();
 
-						 // Add backwards relationship too
+                    // Add backwards relationship too
                     if(!approval.getPerson().getApprovals().contains(approval)) approval.getPerson().getApprovals().add(approval);
 
-                    em.getTransaction().commit();
-                    stage.close();
+                    getStage().close();
                 } catch (PersistenceException e) {
                     em.getTransaction().rollback();
                     logger.warn(e);
@@ -107,6 +104,6 @@ public class ApprovalEditorDialogController implements Initializable, Controller
     }
 
     public void closeDialog(ActionEvent actionEvent) {
-        Platform.runLater(() -> stage.close());
+        Platform.runLater(() -> getStage().close());
     }
 }

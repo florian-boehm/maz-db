@@ -9,18 +9,19 @@ import org.controlsfx.control.PopOver;
 
 import java.time.LocalDate;
 
-/**
- * Created by Florian on 8/11/2016.
- */
 public class DateValidator {
 
 	private PopOver popOver;
-//	private Label msgLabel;
 	private VBox vbox;
 	private DatePicker datePicker;
 
 	private Boolean notEmpty;
 	private Boolean future;
+
+	private DatePicker relationField;
+	private String relationFieldName;
+	private Boolean beforeRelation;
+	private Boolean sameRelation;
 
 	private String fieldName;
 
@@ -28,9 +29,6 @@ public class DateValidator {
 		vbox = new VBox();
 		vbox.setAlignment(Pos.CENTER_LEFT);
 		vbox.setPadding(new Insets(2));
-//		msgLabel = new Label("");
-//		msgLabel.setStyle("-fx-text-fill: #B80024; -fx-font-weight: bold");
-//		msgLabel.setPadding(new Insets(4));
 
 		popOver = new PopOver();
 		popOver.setAutoHide(false);
@@ -79,13 +77,40 @@ public class DateValidator {
 		return this;
 	}
 
+	public DateValidator relationFieldName(String relationFieldName) {
+		this.relationFieldName = relationFieldName;
+		return this;
+	}
+
+	public DateValidator before(DatePicker relationField, Boolean sameRelation) {
+		this.sameRelation = sameRelation;
+		this.relationField = relationField;
+		this.beforeRelation = Boolean.TRUE;
+		return this;
+	}
+
+	public DateValidator before(DatePicker relationField) {
+		return before(relationField,Boolean.TRUE);
+	}
+
+	public DateValidator after(DatePicker relationField, Boolean sameRelation) {
+		this.sameRelation = sameRelation;
+		this.relationField = relationField;
+		this.beforeRelation = Boolean.FALSE;
+		return this;
+	}
+
+	public DateValidator after(DatePicker relationField) {
+		return after(relationField, Boolean.TRUE);
+	}
+
 	public boolean validate(LocalDate oldValue, LocalDate newValue) {
 		boolean result = true;
 
 		vbox.getChildren().clear();
 
 		// Check if the value is null
-		if(notEmpty != null && newValue == null) {
+		if (notEmpty != null && newValue == null) {
 			addMsg(fieldName + " darf nicht leer sein!");
 			result = false;
 		} else {
@@ -93,25 +118,40 @@ public class DateValidator {
 			if (future != null && future && newValue.compareTo(LocalDate.now()) < 0) {
 				addMsg(fieldName + " muss in der Zukunft liegen!");
 				result = false;
-			} else if(future != null && !future && newValue.compareTo(LocalDate.now()) > 0) {
+			} else if (future != null && !future && newValue.compareTo(LocalDate.now()) > 0) {
 				addMsg(fieldName + " muss in der Vergangenheit liegen!");
 				result = false;
 			}
 		}
 
-		// Hide or show the messages
-		if(result == true)
-			popOver.hide();
-		else
-			if(!popOver.isShowing()) {
-				popOver.setAutoHide(true);
-				popOver.show(datePicker);
+		if (relationField != null && relationField.getValue() != null && newValue != null) {
+			if(beforeRelation && !sameRelation && (newValue.isAfter(relationField.getValue()) || newValue.isEqual(relationField.getValue()))) {
+				addMsg(fieldName + " muss vor " + relationFieldName + " sein!");
+				result = false;
+			} else if(beforeRelation && sameRelation && newValue.isAfter(relationField.getValue())) {
+				addMsg(fieldName + " muss vor oder gleich " + relationFieldName + " sein!");
+				result = false;
+			} else if(!beforeRelation && !sameRelation && (newValue.isBefore(relationField.getValue()) || newValue.isEqual(relationField.getValue()))) {
+				addMsg(fieldName + " muss nach " + relationFieldName + " sein!");
+				result = false;
+			} else if(!beforeRelation && sameRelation && newValue.isBefore(relationField.getValue())) {
+				addMsg(fieldName + " muss vor oder gleich " + relationFieldName + " sein!");
+				result = false;
 			}
+		}
+
+		// Hide or show the messages
+		if (result == true)
+			popOver.hide();
+		else if (!popOver.isShowing()) {
+			popOver.setAutoHide(true);
+			popOver.show(datePicker);
+		}
 
 		return result;
 	}
 
-    public boolean validate() {
-	    return validate(null, datePicker.getValue());
-    }
+	public boolean validate() {
+		return validate(null, datePicker.getValue());
+	}
 }

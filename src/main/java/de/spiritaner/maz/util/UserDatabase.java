@@ -37,6 +37,7 @@ public class UserDatabase {
 				factory = Persistence.createEntityManagerFactory("userDb");
 			}
 		} catch (Exception e) {
+			// TODO This should only be done in extra updater application
 			Throwable t = e.getCause();
 
 			while ((t != null) && !(t instanceof SchemaManagementException)) {

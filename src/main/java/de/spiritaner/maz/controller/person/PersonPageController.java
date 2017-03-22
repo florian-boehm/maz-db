@@ -3,9 +3,9 @@ package de.spiritaner.maz.controller.person;
 import de.spiritaner.maz.controller.Controller;
 import de.spiritaner.maz.controller.approval.ApprovalOverviewController;
 import de.spiritaner.maz.controller.contactmethod.ContactMethodOverviewController;
-import de.spiritaner.maz.controller.participant.EventOverviewController;
-import de.spiritaner.maz.controller.participant.ParticipantOverviewController;
+import de.spiritaner.maz.controller.participation.ParticipationOverviewController;
 import de.spiritaner.maz.controller.residence.ResidenceOverviewController;
+import de.spiritaner.maz.controller.role.RoleOverviewController;
 import de.spiritaner.maz.model.Person;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -51,26 +51,31 @@ public class PersonPageController implements Initializable, Controller {
 	@FXML
 	private AnchorPane personParticipations;
 	@FXML
-	private ParticipantOverviewController personParticipationsController;
+	private ParticipationOverviewController personParticipationsController;
 
 	@FXML
 	private AnchorPane personApprovals;
 	@FXML
 	private ApprovalOverviewController personApprovalsController;
 
+	@FXML
+	private AnchorPane personRoles;
+	@FXML
+	private RoleOverviewController personRolesController;
+
 	private Stage stage;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		personOverviewController.getTable().getSelectionModel().selectedItemProperty().addListener((observable, oldPerson, newPerson) -> {
-			if (newPerson != null && personOverviewController.getPersonDetailsToggle().isSelected()) {
+			if (newPerson != null /*&& personOverviewController.getPersonDetailsToggle().isSelected()*/) {
 				loadPersonDetails(newPerson);
 			} else if (newPerson == null) {
 				detailsMasker.setVisible(true);
 			}
 		});
 
-		personOverviewController.getTable().setRowFactory(tv -> {
+		/*personOverviewController.getTable().setRowFactory(tv -> {
 			TableRow<Person> row = new TableRow<>();
 
 			row.setOnMouseClicked(event -> {
@@ -81,7 +86,7 @@ public class PersonPageController implements Initializable, Controller {
 			});
 
 			return row;
-		});
+		});*/
 
 		detailTabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
 			reloadSpecificTab(newTab.getId());
@@ -94,25 +99,17 @@ public class PersonPageController implements Initializable, Controller {
 			case "approvalTab": personApprovalsController.onReopen(); break;
 			case "contactMethodTab": personContactMethodsController.onReopen(); break;
 			case "participationTab": personParticipationsController.onReopen(); break;
+			case "roleTab": personRolesController.onReopen(); break;
 		}
 	}
 
 	private void loadPersonDetails(Person person) {
 		Platform.runLater(() -> {
-			// TODO implement person history display
-			//AuditReader reader = AuditReaderFactory.get(DataDatabase.getFactory().createEntityManager());
-			//List<Number> revisions = reader.getRevisions(Person.class, person.getId());
-
-			/*for (Number revision : revisions) {
-				logger.info("Found revision " + revision + " for person with first name " + person.getFirstName());
-				Person revPerson = reader.find(Person.class, person.getId(), revision);
-				logger.info("First in this revision was: " + revPerson.getFirstName());
-			}*/
-
 			personResidencesController.setPerson(person);
 			personContactMethodsController.setPerson(person);
 			personApprovalsController.setPerson(person);
 			personParticipationsController.setPerson(person);
+			personRolesController.setPerson(person);
 
 			detailsMasker.setVisible(false);
 
@@ -125,8 +122,9 @@ public class PersonPageController implements Initializable, Controller {
 
 		personOverviewController.setStage(stage);
 		personResidencesController.setStage(stage);
-		//personEventsController.setStage(stage);
+		personParticipationsController.setStage(stage);
 		personContactMethodsController.setStage(stage);
+		personRolesController.setStage(stage);
 	}
 
 	@Override

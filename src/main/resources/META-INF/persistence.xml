@@ -49,8 +49,8 @@
 		<class>de.spiritaner.maz.model.Event</class>
 		<class>de.spiritaner.maz.model.meta.EventType</class>
 		<class>de.spiritaner.maz.model.meta.Gender</class>
-		<class>de.spiritaner.maz.model.Participant</class>
-		<class>de.spiritaner.maz.model.meta.ParticipantType</class>
+		<class>de.spiritaner.maz.model.Participation</class>
+		<class>de.spiritaner.maz.model.meta.ParticipationType</class>
 		<class>de.spiritaner.maz.model.Person</class>
 		<class>de.spiritaner.maz.model.Residence</class>
 		<class>de.spiritaner.maz.model.meta.ResidenceType</class>
@@ -58,8 +58,8 @@
 		<class>de.spiritaner.maz.model.meta.RoleType</class>
 		<class>de.spiritaner.maz.model.meta.Salutation</class>
 		<class>de.spiritaner.maz.model.Site</class>
-		<class>de.spiritaner.maz.model.Participant</class>
-		<class>de.spiritaner.maz.model.meta.ParticipantType</class>
+		<class>de.spiritaner.maz.model.Participation</class>
+		<class>de.spiritaner.maz.model.meta.ParticipationType</class>
 		<class>de.spiritaner.maz.model.YearAbroad</class>
 		<class>de.spiritaner.maz.model.meta.RelationshipType</class>
 		<class>de.spiritaner.maz.model.Relationship</class>
@@ -71,7 +71,7 @@
 			<property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
 			<property name="hibernate.hbm2ddl.auto" value="validate"/>
-			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
 
 			<property name="hibernate.c3p0.min_size" value="5" />
 			<property name="hibernate.c3p0.max_size" value="20" />

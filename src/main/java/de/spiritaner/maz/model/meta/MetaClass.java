@@ -12,52 +12,52 @@ import java.util.List;
 @MappedSuperclass
 abstract public class MetaClass implements Identifiable {
 
-    private LongProperty id = new SimpleLongProperty();
-    private StringProperty description = new SimpleStringProperty();
+	private LongProperty id = new SimpleLongProperty();
+	private StringProperty description = new SimpleStringProperty();
 
-    @Id
-    @GeneratedValue/*(strategy = GenerationType.TABLE)*/
-    public Long getId() {
-        return id.get();
-    }
+	@Id
+	@GeneratedValue/*(strategy = GenerationType.TABLE)*/
+	public Long getId() {
+		return id.get();
+	}
 
-    public void setId(Long id) {
-        this.id.set(id);
-    }
+	public void setId(Long id) {
+		this.id.set(id);
+	}
 
-    public LongProperty idProperty() {
-        return id;
-    }
+	public LongProperty idProperty() {
+		return id;
+	}
 
-    @Column(nullable = false)
-    public String getDescription() {
-        return description.get();
-    }
+	@Column(nullable = false)
+	public String getDescription() {
+		return description.get();
+	}
 
-    public void setDescription(String description) {
-        this.description.set(description);
-    }
+	public void setDescription(String description) {
+		this.description.set(description);
+	}
 
-    public StringProperty descriptionProperty() {
-        return description;
-    }
+	public StringProperty descriptionProperty() {
+		return description;
+	}
 
-    @Override
-    public String toString() {
-        return description.get();
-    }
+	@Override
+	public String toString() {
+		return id.get() + " - " + description.get();
+	}
 
-    @Override
-    public int hashCode() {
-        return id.hashCode() + description.hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return id.hashCode() + description.hashCode();
+	}
 
-    @Override
-    public boolean equals(Object object) {
-        if (object instanceof MetaClass) {
-            return ((MetaClass) object).id.get() == id.get();
-        } else {
-            return false;
-        }
-    }
+	@Override
+	public boolean equals(Object object) {
+		if (object instanceof MetaClass) {
+			return ((MetaClass) object).id.get() == id.get();
+		} else {
+			return false;
+		}
+	}
 }

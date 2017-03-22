@@ -1,5 +1,6 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.controller.participation.EventEditorDialogController;
 import de.spiritaner.maz.model.meta.EventType;
 import javafx.beans.property.*;
 import org.hibernate.envers.Audited;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @Entity
 @Audited
+@Identifiable.Annotation(editorDialogClass = EventEditorDialogController.class, identifiableName = "Veranstaltung")
 @NamedQueries({
 		  @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
 })
@@ -27,7 +29,7 @@ public class Event implements Identifiable {
 	private ObjectProperty<LocalDate> fromDate;
 	private ObjectProperty<LocalDate> toDate;
 
-	private List<Participant> participants;
+	private List<Participation> participations;
 	private EventType eventType;
 	private Address address;
 
@@ -103,12 +105,12 @@ public class Event implements Identifiable {
 	}
 
 	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
-	public List<Participant> getParticipants() {
-		return participants;
+	public List<Participation> getParticipations() {
+		return participations;
 	}
 
-	public void setParticipants(List<Participant> participants) {
-		this.participants = participants;
+	public void setParticipations(List<Participation> participations) {
+		this.participations = participations;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)

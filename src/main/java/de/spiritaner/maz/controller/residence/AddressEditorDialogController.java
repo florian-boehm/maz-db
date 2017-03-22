@@ -1,16 +1,15 @@
 package de.spiritaner.maz.controller.residence;
 
-import de.spiritaner.maz.controller.Controller;
+import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.util.DataDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -18,7 +17,8 @@ import javax.persistence.PersistenceException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AddressEditorDialogController implements Initializable, Controller {
+@EditorDialog.Annotation(fxmlFile = "/fxml/residence/address_editor_dialog.fxml", objDesc = "Adresse")
+public class AddressEditorDialogController extends EditorController<Address> {
 
     final static Logger logger = Logger.getLogger(AddressEditorDialogController.class);
 
@@ -32,7 +32,6 @@ public class AddressEditorDialogController implements Initializable, Controller 
     private AddressEditorController addressEditorController;
 
     private Address address;
-    private Stage stage;
 
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -66,7 +65,7 @@ public class AddressEditorDialogController implements Initializable, Controller 
                 if(address == null) em.persist(tmpAddress);
 
                 em.getTransaction().commit();
-                stage.close();
+                getStage().close();
             } catch (PersistenceException e) {
                 em.getTransaction().rollback();
                 logger.warn(e);
@@ -77,11 +76,12 @@ public class AddressEditorDialogController implements Initializable, Controller 
     }
 
     public void closeDialog(ActionEvent actionEvent) {
-        Platform.runLater(() -> stage.close());
+        Platform.runLater(() -> getStage().close());
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
+    @Override
+    public void setIdentifiable(Address obj) {
+        setAddress(obj);
     }
 
     @Override

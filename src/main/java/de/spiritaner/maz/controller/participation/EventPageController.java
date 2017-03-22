@@ -1,4 +1,4 @@
-package de.spiritaner.maz.controller.participant;
+package de.spiritaner.maz.controller.participation;
 
 import de.spiritaner.maz.controller.Controller;
 import de.spiritaner.maz.model.Event;
@@ -29,7 +29,7 @@ public class EventPageController implements Initializable, Controller {
 	@FXML
 	private AnchorPane eventParticipants;
 	@FXML
-	private ParticipantOverviewController eventParticipantsController;
+	private ParticipationOverviewController eventParticipantsController;
 
 	private Stage stage;
 

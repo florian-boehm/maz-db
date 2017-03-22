@@ -1,5 +1,6 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.controller.person.PersonEditorDialogController;
 import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.meta.Salutation;
@@ -7,7 +8,6 @@ import javafx.beans.property.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.*;
-import org.hibernate.search.annotations.Index;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,6 +19,7 @@ import java.util.List;
  */
 @Entity
 @Audited
+@Identifiable.Annotation(editorDialogClass = PersonEditorDialogController.class, identifiableName = "Person")
 @Indexed
 @NamedQueries({
 	@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
@@ -44,7 +45,7 @@ public class Person implements Identifiable {
 	private List<Role> roles;
 	private List<Approval> approvals;
 	private List<ContactMethod> contactMethods;
-	private List<Participant> participations;
+	private List<Participation> participations;
 
 	public Person() {
 		id = new SimpleLongProperty();
@@ -255,10 +256,10 @@ public class Person implements Identifiable {
 	 */
 	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
 	@Cascade(org.hibernate.annotations.CascadeType.DELETE)
-	public List<Participant> getParticipations() {
+	public List<Participation> getParticipations() {
 		return participations;
 	}
-	public void setParticipations(List<Participant> participations) {
+	public void setParticipations(List<Participation> participations) {
 		this.participations = participations;
 	}
 

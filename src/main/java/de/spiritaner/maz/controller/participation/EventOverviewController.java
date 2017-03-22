@@ -1,6 +1,5 @@
-package de.spiritaner.maz.controller.participant;
+package de.spiritaner.maz.controller.participation;
 
-import de.spiritaner.maz.controller.ControllerAnnotation;
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.Event;
@@ -13,7 +12,7 @@ import javax.persistence.RollbackException;
 import java.time.LocalDate;
 import java.util.Collection;
 
-@ControllerAnnotation(fxmlFile = "/fxml/participant/event_overview.fxml", objDesc = "Veranstaltung")
+@OverviewController.Annotation(fxmlFile = "/fxml/participation/event_overview.fxml", objDesc = "Veranstaltung")
 public class EventOverviewController extends OverviewController<Event> {
 
 	@FXML private TableColumn<Event, String> eventTypeColumn;
@@ -26,11 +25,16 @@ public class EventOverviewController extends OverviewController<Event> {
 	private Stage stage;
 
 	public EventOverviewController() {
-		super(Event.class);
+		super(Event.class, true);
 	}
 
 	@Override
 	public void preCreate(Event object) {
+
+	}
+
+	@Override
+	protected void postCreate(Event obj) {
 
 	}
 
@@ -41,6 +45,11 @@ public class EventOverviewController extends OverviewController<Event> {
 
 	@Override
 	protected void preRemove(Event obsoleteEntity) {
+
+	}
+
+	@Override
+	protected void postRemove(Event obsoleteEntity) {
 
 	}
 

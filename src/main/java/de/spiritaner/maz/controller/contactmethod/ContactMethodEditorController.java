@@ -4,6 +4,7 @@ import de.spiritaner.maz.controller.meta.ContactMethodTypeEditorController;
 import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.model.meta.ContactMethodType;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -32,9 +33,11 @@ public class ContactMethodEditorController implements Initializable {
     private Button addNewContactMethodTypeButton;
 
     private TextValidator valueFieldValidator;
+    private ComboBoxValidator<ContactMethodType> contactMethodTypeValidator;
 
     public void initialize(URL location, ResourceBundle resources) {
         valueFieldValidator = TextValidator.create(valueField).fieldName("Wert").notEmpty(true).validateOnChange();
+        contactMethodTypeValidator = new ComboBoxValidator<>(contactMethodTypeComboBox).fieldName("Kontaktart").isSelected(true).validateOnChange();
 
         contactMethodTypeComboBox.setCellFactory(column -> {
             return new ListCell<ContactMethodType>() {
@@ -96,8 +99,9 @@ public class ContactMethodEditorController implements Initializable {
 
     public boolean isValid() {
         boolean valueValid = valueFieldValidator.validate();
+        boolean contactMethodTypeValid = contactMethodTypeValidator.validate();
 
-        return valueValid;
+        return valueValid && contactMethodTypeValid;
     }
 
     public void addNewContactMethodType(ActionEvent actionEvent) {

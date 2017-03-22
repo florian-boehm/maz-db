@@ -1,5 +1,6 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.controller.approval.ApprovalEditorDialogController;
 import de.spiritaner.maz.model.meta.ApprovalType;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
@@ -15,6 +16,7 @@ import javax.persistence.*;
  */
 @Entity
 @Audited
+@Identifiable.Annotation(editorDialogClass = ApprovalEditorDialogController.class, identifiableName = "Einwilligung")
 public class Approval implements Identifiable {
 
 	private LongProperty id;

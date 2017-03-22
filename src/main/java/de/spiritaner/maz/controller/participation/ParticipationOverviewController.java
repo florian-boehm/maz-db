@@ -1,9 +1,9 @@
-package de.spiritaner.maz.controller.participant;
+package de.spiritaner.maz.controller.participation;
 
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.Event;
-import de.spiritaner.maz.model.Participant;
+import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.Person;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -15,20 +15,20 @@ import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.Collection;
 
-public class ParticipantOverviewController extends OverviewController<Participant> {
+public class ParticipationOverviewController extends OverviewController<Participation> {
 
-	@FXML private TableColumn<Participant, String> eventColumn;
-	@FXML private TableColumn<Participant, String> personColumn;
-	@FXML private TableColumn<Participant, String> participantTypeColumn;
-	@FXML private TableColumn<Participant, String> participatedColumn;
-	@FXML private TableColumn<Participant, Long> idColumn;
+	@FXML private TableColumn<Participation, String> eventColumn;
+	@FXML private TableColumn<Participation, String> personColumn;
+	@FXML private TableColumn<Participation, String> participantTypeColumn;
+	@FXML private TableColumn<Participation, String> participatedColumn;
+	@FXML private TableColumn<Participation, Long> idColumn;
 
-	// This controller can be person or participant centric
+	// This controller can be person or participation centric
 	private Person person;
 	private Event event;
 
-	public ParticipantOverviewController() {
-		super(Participant.class);
+	public ParticipationOverviewController() {
+		super(Participation.class, true);
 	}
 
 	public void setPerson(Person person) {
@@ -42,19 +42,24 @@ public class ParticipantOverviewController extends OverviewController<Participan
 	}
 
 	@Override
-	public void preCreate(Participant participant) {
-		participant.setEvent(event);
-		participant.setPerson(person);
+	public void preCreate(Participation participation) {
+		participation.setEvent(event);
+		participation.setPerson(person);
 	}
 
 	@Override
-	public void preEdit(final Participant participant) {
-		//participant.setPerson(person);
-		//participant.setParticipant(participant);
+	protected void postCreate(Participation participation) {
+
 	}
 
 	@Override
-	protected void preRemove(Participant obsoleteEntity) {
+	public void preEdit(final Participation participation) {
+		//participation.setPerson(person);
+		//participation.setParticipation(participation);
+	}
+
+	@Override
+	protected void preRemove(Participation obsoleteEntity) {
 
 	}
 
@@ -73,20 +78,20 @@ public class ParticipantOverviewController extends OverviewController<Participan
 	}
 
 	@Override
-	protected Collection<Participant> preLoad(EntityManager em) {
+	protected Collection<Participation> preLoad(EntityManager em) {
 		if (person != null && event == null) {
 			Hibernate.initialize(person.getParticipations());
 			return FXCollections.observableArrayList(person.getParticipations());
 		} else if(person == null && event != null) {
-			Hibernate.initialize(event.getParticipants());
-			return FXCollections.observableArrayList(event.getParticipants());
+			Hibernate.initialize(event.getParticipations());
+			return FXCollections.observableArrayList(event.getParticipations());
 		}
 
 		return FXCollections.emptyObservableList();
 	}
 
 	@Override
-	protected void postLoad(Collection<Participant> loadedObjs) {
+	protected void postLoad(Collection<Participation> loadedObjs) {
 
 	}
 
@@ -94,7 +99,7 @@ public class ParticipantOverviewController extends OverviewController<Participan
 	public void preInit() {
 		eventColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent().toString()));
 		personColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPerson().toString()));
-		participantTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getParticipantType().descriptionProperty());
+		participantTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getParticipationType().descriptionProperty());
 		participatedColumn.setCellValueFactory(cellData -> cellData.getValue().hasParticipatedStringProperty());
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 	}
@@ -102,5 +107,11 @@ public class ParticipantOverviewController extends OverviewController<Participan
 	@Override
 	public void postInit() {
 
+	}
+
+	@Override
+	public void postRemove(Participation obj) {
+		if(person != null) person.getParticipations().remove(obj);
+		if(event != null) event.getParticipations().remove(obj);
 	}
 }

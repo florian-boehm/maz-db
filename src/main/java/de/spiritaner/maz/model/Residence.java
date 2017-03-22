@@ -1,5 +1,7 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.controller.participation.ParticipationEditorDialogController;
+import de.spiritaner.maz.controller.residence.ResidenceEditorDialogController;
 import de.spiritaner.maz.model.meta.ResidenceType;
 import de.spiritaner.maz.util.DataDatabase;
 import javafx.beans.property.LongProperty;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
  */
 @Entity
 @Audited
+@Identifiable.Annotation(editorDialogClass = ResidenceEditorDialogController.class, identifiableName = "Wohnort")
 @NamedQueries({
 		  @NamedQuery(name = "Residence.findAll", query = "SELECT r FROM Residence r"),
 		  @NamedQuery(name = "Residence.findAllForPerson", query = "SELECT r FROM Residence r WHERE r.person=:person")

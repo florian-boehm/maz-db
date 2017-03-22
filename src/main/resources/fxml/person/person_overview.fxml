@@ -35,17 +35,17 @@
 								<MenuItem mnemonicParsing="false" text="Auf Suche basierend" />
 							</items>
 						</MenuButton>
-						<Separator orientation="VERTICAL" />
+						<!--Separator orientation="VERTICAL" />
 						<ToggleSwitch fx:id="personDetailsToggle" contentDisplay="RIGHT" graphicTextGap="0.0" selected="true" text="Detailansicht">
 							<padding>
 								<Insets top="3.0" />
 							</padding>
-						</ToggleSwitch>
+						</ToggleSwitch-->
 					</items>
 				</ToolBar>
 			</bottom>
 			<center>
-				<ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+				<ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-insets: 0;"  BorderPane.alignment="CENTER">
 					<content>
 						<TableView fx:id="table" style="-fx-padding: 0; -fx-background-insets: 0px; -fx-background-color: #f4f4f4; -fx-border-width: 0 0 1 0; -fx-border-color: #c8c8c8;" tableMenuButtonVisible="true">
 							<columns>

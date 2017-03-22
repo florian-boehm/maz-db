@@ -1,11 +1,10 @@
 package de.spiritaner.maz.controller.residence;
 
-import de.spiritaner.maz.controller.meta.GenderEditorController;
 import de.spiritaner.maz.controller.meta.ResidenceTypeEditorController;
 import de.spiritaner.maz.model.Residence;
-import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.meta.ResidenceType;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,54 +20,55 @@ import java.util.ResourceBundle;
 
 public class ResidenceEditorController implements Initializable {
 
-    @FXML private
-    Button addNewResidenceTypeButton;
-    @FXML
-    private ToggleSwitch preferredResidence;
+	@FXML private
+	Button addNewResidenceTypeButton;
+	@FXML
+	private ToggleSwitch preferredResidence;
+	@FXML
+	private ComboBox<ResidenceType> residenceTypeComboBox;
 
-    @FXML
-    private ComboBox<ResidenceType> residenceTypeComboBox;
+	private ComboBoxValidator<ResidenceType> residenceTypeValidator;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadResidenceTypes();
-    }
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+		residenceTypeValidator = new ComboBoxValidator<>(residenceTypeComboBox).fieldName("Wohnortart").isSelected(true).validateOnChange();
+		loadResidenceTypes();
+	}
 
-    public void setAll(Residence residence) {
-        preferredResidence.setSelected(residence.getPreferredAddress());
-        residenceTypeComboBox.setValue(residence.getResidenceType());
-    }
+	public void setAll(Residence residence) {
+		preferredResidence.setSelected(residence.getPreferredAddress());
+		residenceTypeComboBox.setValue(residence.getResidenceType());
+	}
 
-    public Residence getAll(Residence residence) {
-        if(residence == null) residence = new Residence();
-        residence.setPreferredAddress(preferredResidence.isSelected());
-        residence.setResidenceType(residenceTypeComboBox.getValue());
-        return residence;
-    }
+	public Residence getAll(Residence residence) {
+		if (residence == null) residence = new Residence();
+		residence.setPreferredAddress(preferredResidence.isSelected());
+		residence.setResidenceType(residenceTypeComboBox.getValue());
+		return residence;
+	}
 
-    public void setReadonly(boolean readonly) {
-        preferredResidence.setDisable(readonly);
-        residenceTypeComboBox.setDisable(readonly);
-    }
+	public void setReadonly(boolean readonly) {
+		preferredResidence.setDisable(readonly);
+		residenceTypeComboBox.setDisable(readonly);
+	}
 
-    public void loadResidenceTypes() {
-        EntityManager em = DataDatabase.getFactory().createEntityManager();
-        Collection<ResidenceType> result = em.createNamedQuery("ResidenceType.findAll", ResidenceType.class).getResultList();
+	public void loadResidenceTypes() {
+		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		Collection<ResidenceType> result = em.createNamedQuery("ResidenceType.findAll", ResidenceType.class).getResultList();
 
-        ResidenceType selectedBefore = residenceTypeComboBox.getValue();
-        residenceTypeComboBox.getItems().clear();
-        residenceTypeComboBox.getItems().addAll(FXCollections.observableArrayList(result));
-        residenceTypeComboBox.setValue(selectedBefore);
-    }
+		ResidenceType selectedBefore = residenceTypeComboBox.getValue();
+		residenceTypeComboBox.getItems().clear();
+		residenceTypeComboBox.getItems().addAll(FXCollections.observableArrayList(result));
+		residenceTypeComboBox.setValue(selectedBefore);
+	}
 
-    public boolean isValid() {
-        // TODO Validate the residence specific fields
-        return true;
-    }
+	public boolean isValid() {
+		return residenceTypeValidator.validate();
+	}
 
-    public void addNewResidenceType(ActionEvent actionEvent) {
-        new ResidenceTypeEditorController().create(actionEvent);
+	public void addNewResidenceType(ActionEvent actionEvent) {
+		new ResidenceTypeEditorController().create(actionEvent);
 
-        loadResidenceTypes();
-    }
+		loadResidenceTypes();
+	}
 }

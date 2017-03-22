@@ -4,14 +4,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import org.controlsfx.control.ToggleSwitch?>
 
-<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.residence.ResidenceEditorController">
+<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.residence.ResidenceEditorController">
     <children>
         <Label text="Wohnortart:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.vgrow="NEVER">
@@ -23,29 +22,27 @@
                 </ComboBox>
             </center>
             <right>
-                <Button fx:id="addNewResidenceTypeButton" onAction="#addNewResidenceType" mnemonicParsing="false" text="+" BorderPane.alignment="CENTER">
+                <Button fx:id="addNewResidenceTypeButton" mnemonicParsing="false" onAction="#addNewResidenceType" text="+" BorderPane.alignment="CENTER">
                     <BorderPane.margin>
                         <Insets />
                     </BorderPane.margin>
                 </Button>
             </right>
         </BorderPane>
-        <ToggleSwitch fx:id="preferredResidence" text="Bevorzugter Wohnort:" GridPane.columnIndex="3">
+        <ToggleSwitch fx:id="preferredResidence" text="Bevorzugt:" GridPane.columnSpan="2" GridPane.rowIndex="1">
          <padding>
             <Insets top="3.0" />
          </padding>
          <GridPane.margin>
             <Insets />
          </GridPane.margin></ToggleSwitch>
-      <Separator orientation="VERTICAL" GridPane.columnIndex="2" />
     </children>
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0" />
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
-      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
-      <ColumnConstraints hgrow="NEVER" />
     </columnConstraints>
    <rowConstraints>
       <RowConstraints />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
    </rowConstraints>
 </GridPane>

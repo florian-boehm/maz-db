@@ -8,35 +8,32 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import org.controlsfx.control.ToggleSwitch?>
 
-<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.participant.ParticipantEditorController">
+<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.role.RoleEditorController">
     <children>
         <Label text="Funktion:" />
       <BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER">
          <center>
-                <ComboBox fx:id="participantTypeComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                <ComboBox fx:id="roleTypeComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets />
                </BorderPane.margin>
                 </ComboBox>
          </center>
          <right>
-            <Button fx:id="addNewParticipantTypeButton" mnemonicParsing="false" onAction="#addNewParticipantType" text="+" BorderPane.alignment="CENTER">
+            <Button fx:id="addNewRoleTypeButton" mnemonicParsing="false" onAction="#addNewRoleType" text="+" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets />
                </BorderPane.margin>
             </Button>
          </right>
       </BorderPane>
-      <ToggleSwitch fx:id="participatedToogleSwitch" text="Teilgenommen:" GridPane.columnSpan="2" GridPane.rowIndex="1" />
     </children>
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0" />
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
     </columnConstraints>
    <rowConstraints>
-      <RowConstraints />
       <RowConstraints />
    </rowConstraints>
 

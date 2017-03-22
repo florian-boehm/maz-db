@@ -1,96 +1,141 @@
 package de.spiritaner.maz.controller.person;
 
-import de.spiritaner.maz.controller.Controller;
+import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.model.Person;
+import de.spiritaner.maz.model.meta.Diocese;
+import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.envers.RevisionEntity;
+import de.spiritaner.maz.util.envers.RevisionEntityListCell;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
-public class PersonEditorDialogController implements Initializable, Controller {
+@EditorDialog.Annotation(fxmlFile = "/fxml/person/person_editor_dialog.fxml", objDesc = "Person")
+public class PersonEditorDialogController extends EditorController<Person> {
 
-    final static Logger logger = Logger.getLogger(PersonEditorDialogController.class);
+	final static Logger logger = Logger.getLogger(PersonEditorDialogController.class);
 
-    @FXML
-    private Text titleText;
-    @FXML
-    private GridPane personEditor;
-    @FXML
-    private PersonEditorController personEditorController;
-    @FXML
-    private Button savePersonButton;
+	@FXML
+	private Text titleText;
+	@FXML
+	private GridPane personEditor;
+	@FXML
+	private PersonEditorController personEditorController;
+	@FXML
+	private Button savePersonButton;
+	@FXML
+	private ComboBox<RevisionEntity<Person>> revisionList;
 
-    private Person person;
-    private Stage stage;
+	private Person person;
 
-    public void initialize(URL location, ResourceBundle resources) {
+	public void initialize(URL location, ResourceBundle resources) {
 
-    }
+	}
 
-    public void setPerson(Person person) {
-        this.person = person;
+	public void setPerson(Person person) {
+		this.person = person;
 
-        if (person != null) {
-            personEditorController.setAll(person);
+		if (person != null) {
+			personEditorController.setAll(person);
 
-            if(person.getId() != 0L) {
-                titleText.setText("Person bearbeiten");
-                savePersonButton.setText("Speichern");
-            } else {
-                titleText.setText("Person anlegen");
-                savePersonButton.setText("Anlegen");
-            }
-        }
-    }
+			if (person.getId() != 0L) {
+				titleText.setText("Person bearbeiten");
+				savePersonButton.setText("Speichern");
+			} else {
+				titleText.setText("Person anlegen");
+				savePersonButton.setText("Anlegen");
+			}
 
-    public void closeDialog(ActionEvent actionEvent) {
-        Platform.runLater(() -> stage.close());
-    }
+			final AuditReader reader = AuditReaderFactory.get(DataDatabase.getFactory().createEntityManager());
+			final List<Number> revisions = reader.getRevisions(Person.class, person.getId());
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
+			if(revisions.size() > 0) {
+				revisionList.setVisible(true);
+				revisionList.setCellFactory(param -> new RevisionEntityListCell<Person>());
+				revisionList.setButtonCell(new RevisionEntityListCell<Person>());
+				revisionList.valueProperty().addListener((observable, oldValue, newValue) -> {
+					if(newValue.getEntity() == null) {
+						personEditorController.setAll(person);
+						personEditorController.setReadonly(false);
+						savePersonButton.setDisable(false);
+					} else {
+						personEditorController.setAll(newValue.getEntity());
+						personEditorController.setReadonly(true);
+						savePersonButton.setDisable(true);
+					}
+				});
+			} else {
+				revisionList.setVisible(false);
+			}
 
-    @Override
-    public void onReopen() {
+			for(Number revision : revisions) {
+				RevisionEntity<Person> tmpRevisionEntity = new RevisionEntity<>();
+				tmpRevisionEntity.setEntity(reader.find(Person.class, person.getId(), revision));
+				tmpRevisionEntity.setRevision(revision);
+				tmpRevisionEntity.setRevisionDate(reader.getRevisionDate(revision));
+				tmpRevisionEntity.initialize();
+				revisionList.getItems().add(tmpRevisionEntity);
+			}
 
-    }
+			revisionList.getItems().add(new RevisionEntity<Person>());
+			revisionList.getSelectionModel().clearSelection();
+			revisionList.getSelectionModel().selectLast();
+		}
+	}
 
-    public void savePerson(ActionEvent actionEvent) {
-        Platform.runLater(() -> {
-            // Check if the first name, family name and birthday are valid
-            boolean validation = personEditorController.isValid();
+	public void closeDialog(ActionEvent actionEvent) {
+		Platform.runLater(() -> getStage().close());
+	}
 
-            if (validation) {
-                EntityManager em = DataDatabase.getFactory().createEntityManager();
-                em.getTransaction().begin();
+	@Override
+	public void onReopen() {
 
-                Person tmpPerson = personEditorController.getAll((person.getId() != null) ? em.find(Person.class, person.getId()) : person);
+	}
 
-                try {
-                    // Persist only if the person has not existed before
-                    if (!em.contains(tmpPerson)) em.persist(tmpPerson);
+	public void savePerson(ActionEvent actionEvent) {
+		Platform.runLater(() -> {
+			// Check if the first name, family name and birthday are valid
+			boolean validation = personEditorController.isValid();
 
-                    em.getTransaction().commit();
-                    stage.close();
-                } catch (PersistenceException e) {
-                    em.getTransaction().rollback();
-                    logger.warn(e);
-                } finally {
-                    em.close();
-                }
-            }
-        });
-    }
+			if (validation) {
+				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				em.getTransaction().begin();
+
+				Person tmpPerson = personEditorController.getAll((person.getId() != null) ? em.find(Person.class, person.getId()) : person);
+
+				try {
+					// Persist only if the person has not existed before
+					if (!em.contains(tmpPerson)) em.persist(tmpPerson);
+
+					em.getTransaction().commit();
+					getStage().close();
+				} catch (PersistenceException e) {
+					em.getTransaction().rollback();
+					logger.warn(e);
+				} finally {
+					em.close();
+				}
+			}
+		});
+	}
+
+	@Override
+	public void setIdentifiable(Person obj) {
+		setPerson(obj);
+	}
 }

@@ -1,20 +1,16 @@
 package de.spiritaner.maz.controller.contactmethod;
 
-import de.spiritaner.maz.controller.Controller;
+import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
-import de.spiritaner.maz.controller.residence.AddressEditorController;
-import de.spiritaner.maz.controller.residence.ResidenceEditorController;
+import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.model.ContactMethod;
-import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.util.DataDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -22,7 +18,8 @@ import javax.persistence.PersistenceException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ContactMethodEditorDialogController implements Initializable, Controller {
+@EditorDialog.Annotation(fxmlFile = "/fxml/contactmethod/contactmethod_editor_dialog.fxml", objDesc = "Kontaktweg")
+public class ContactMethodEditorDialogController extends EditorController<ContactMethod> {
 
 	final static Logger logger = Logger.getLogger(ContactMethodEditorDialogController.class);
 
@@ -39,12 +36,12 @@ public class ContactMethodEditorDialogController implements Initializable, Contr
 	@FXML
 	private ContactMethodEditorController contactMethodEditorController;
 
-	private Stage stage;
 	private ContactMethod contactMethod;
 
 	@Override
-	public void setStage(Stage stage) {
-		this.stage = stage;
+	public void setIdentifiable(ContactMethod obj) {
+		super.setIdentifiable(obj);
+		setContactMethod(obj);
 	}
 
 	@Override
@@ -64,10 +61,10 @@ public class ContactMethodEditorDialogController implements Initializable, Contr
 			contactMethodEditorController.setAll(contactMethod);
 
 			if (contactMethod.getId() != 0L) {
-				titleText.setText("Kontaktweg bearbeiten");
+				titleText.setText(getIdentifiableName() + " bearbeiten");
 				saveContactMethodButton.setText("Speichern");
 			} else {
-				titleText.setText("Kontaktweg anlegen");
+				titleText.setText(getIdentifiableName() + " anlegen");
 				saveContactMethodButton.setText("Anlegen");
 			}
 		}
@@ -91,12 +88,12 @@ public class ContactMethodEditorDialogController implements Initializable, Contr
 
 				try {
 					if (!em.contains(contactMethod)) em.merge(contactMethod);
+					em.getTransaction().commit();
 
 					// Add backwards relationship too
 					if(!contactMethod.getPerson().getContactMethods().contains(contactMethod)) contactMethod.getPerson().getContactMethods().add(contactMethod);
 
-					em.getTransaction().commit();
-					stage.close();
+					getStage().close();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);
@@ -108,6 +105,6 @@ public class ContactMethodEditorDialogController implements Initializable, Contr
 	}
 
 	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> stage.close());
+		Platform.runLater(() -> getStage().close());
 	}
 }

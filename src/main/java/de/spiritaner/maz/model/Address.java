@@ -1,6 +1,6 @@
 package de.spiritaner.maz.model;
 
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.controller.residence.AddressEditorDialogController;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 @Entity
 @Audited
+@Identifiable.Annotation(editorDialogClass = AddressEditorDialogController.class, identifiableName = "Adresse")
 @NamedQueries({
 		  @NamedQuery(name="Address.findSame", query="SELECT a FROM Address a WHERE a.street=:street AND " +
 					 "a.houseNumber=:houseNumber AND a.postCode=:postCode AND a.city=:city AND a.state=:state AND " +

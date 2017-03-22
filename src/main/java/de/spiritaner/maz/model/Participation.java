@@ -1,6 +1,7 @@
 package de.spiritaner.maz.model;
 
-import de.spiritaner.maz.model.meta.ParticipantType;
+import de.spiritaner.maz.controller.participation.ParticipationEditorDialogController;
+import de.spiritaner.maz.model.meta.ParticipationType;
 import javafx.beans.property.*;
 import org.hibernate.envers.Audited;
 
@@ -12,17 +13,18 @@ import javax.persistence.*;
  */
 @Entity
 @Audited
-public class Participant implements Identifiable {
+@Identifiable.Annotation(editorDialogClass = ParticipationEditorDialogController.class, identifiableName = "Teilnahme")
+public class Participation implements Identifiable {
 
 	LongProperty id;
 
 	private Person person;
 	private Event event;
-	private ParticipantType participantType;
+	private ParticipationType participationType;
 
 	private BooleanProperty hasParticipated;
 
-	public Participant() {
+	public Participation() {
 		id = new SimpleLongProperty();
 		hasParticipated = new SimpleBooleanProperty();
 	}
@@ -59,8 +61,8 @@ public class Participant implements Identifiable {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "participantTypeId", nullable = false)
-	public ParticipantType getParticipantType() { return participantType; }
-	public void setParticipantType(ParticipantType type) { this.participantType = type; }
+	public ParticipationType getParticipationType() { return participationType; }
+	public void setParticipationType(ParticipationType type) { this.participationType = type; }
 
 	@Column(nullable = false)
 	public Boolean getHasParticipated() { return hasParticipated.get(); }
@@ -70,5 +72,11 @@ public class Participant implements Identifiable {
 	@Transient
 	public StringProperty hasParticipatedStringProperty() {
 		return new SimpleStringProperty((hasParticipated.get()) ? "Ja" : "Nein");
+	}
+
+	@Transient
+	@Override
+	public boolean equals(Object obj) {
+		return (obj instanceof Participation) && (((Participation) obj).getId().equals(getId()));
 	}
 }

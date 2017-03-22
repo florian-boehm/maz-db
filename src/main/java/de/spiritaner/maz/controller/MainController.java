@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -72,5 +73,16 @@ public class MainController implements Initializable, Controller {
 
     public void closeApplication(ActionEvent actionEvent) {
 		Platform.exit();
+	}
+
+	public void showVersion(ActionEvent actionEvent) {
+		Locale.setDefault(new Locale("de","DE"));
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Information Dialog");
+		alert.setHeaderText("Look, an Information Dialog");
+		ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+		alert.setContentText(guiText.getString("version"));
+
+		alert.showAndWait();
 	}
 }

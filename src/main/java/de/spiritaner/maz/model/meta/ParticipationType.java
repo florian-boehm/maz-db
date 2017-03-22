@@ -15,8 +15,8 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 @Entity
 @Audited(targetAuditMode = NOT_AUDITED)
 @NamedQueries({
-        @NamedQuery(name = "ParticipantType.findAll", query = "SELECT pt FROM ParticipantType pt"),
+        @NamedQuery(name = "ParticipationType.findAll", query = "SELECT pt FROM ParticipationType pt"),
 })
-public class ParticipantType extends MetaClass {
+public class ParticipationType extends MetaClass {
 
 }

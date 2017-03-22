@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.MaskerPane?>
-<AnchorPane fx:id="tablePane" minHeight="0.0" minWidth="0.0" prefHeight="520.0" prefWidth="689.0"
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="520.0" prefWidth="689.0"
             xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="de.spiritaner.maz.controller.residence.ResidenceOverviewController">
     <children>
@@ -14,9 +14,9 @@
                 <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="746.0"
                          BorderPane.alignment="CENTER">
                     <items>
-                        <Button mnemonicParsing="false" onAction="#removeResidence" disable="true" fx:id="removeResidenceButton" text="Entfernen"/>
-                        <Button mnemonicParsing="false" onAction="#editResidence" disable="true" fx:id="editResidenceButton" text="Bearbeiten"/>
-                        <Button mnemonicParsing="false" onAction="#createResidence" text="Neu"/>
+                        <Button mnemonicParsing="false" onAction="#remove" disable="true" fx:id="removeButton" text="Entfernen"/>
+                        <Button mnemonicParsing="false" onAction="#edit" disable="true" fx:id="editButton" text="Bearbeiten"/>
+                        <Button mnemonicParsing="false" onAction="#create" text="Neu"/>
                     </items>
                 </ToolBar>
             </bottom>
@@ -24,11 +24,11 @@
                 <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-insets: 0;"
                             BorderPane.alignment="CENTER">
                     <content>
-                        <TableView fx:id="residenceTable"
+                        <TableView fx:id="table"
                                    style="-fx-padding: 0; -fx-background-insets: 0px; -fx-background-color: #f4f4f4; -fx-border-width: 0 0 1 0; -fx-border-color: #c8c8c8;"
                                    tableMenuButtonVisible="true">
                             <columns>
-                                <TableColumn fx:id="residenceTypeColumn" prefWidth="83.0" text="Wohnungsart"/>
+                                <TableColumn fx:id="residenceTypeColumn" prefWidth="83.0" text="Wohnortart"/>
                                 <TableColumn fx:id="preferredAddressColumn" prefWidth="55.0" text="Primär"/>
                                 <TableColumn fx:id="streetColumn" prefWidth="107.0" text="Straße"/>
                                 <TableColumn fx:id="houseNumberColumn" prefWidth="117.0" text="Hausnummer"/>

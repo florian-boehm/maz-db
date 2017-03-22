@@ -37,6 +37,7 @@ public class DataDatabase {
 				factory = Persistence.createEntityManagerFactory("dataDb", properties);
 			}
 		} catch (Exception e) {
+			// TODO this is not good here!
 			Throwable t = e.getCause();
 
 			while ((t != null) && !(t instanceof SchemaManagementException)) {

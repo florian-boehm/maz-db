@@ -1,6 +1,5 @@
 package de.spiritaner.maz.controller.approval;
 
-import de.spiritaner.maz.controller.ControllerAnnotation;
 import de.spiritaner.maz.controller.meta.ApprovalTypeEditorController;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.meta.ApprovalType;
