@@ -3,9 +3,14 @@ package de.spiritaner.maz.model;
 import de.spiritaner.maz.controller.participation.EventEditorDialogController;
 import de.spiritaner.maz.model.meta.EventType;
 import javafx.beans.property.*;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -105,6 +110,7 @@ public class Event implements Identifiable {
 	}
 
 	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+	@Cascade(CascadeType.DELETE)
 	public List<Participation> getParticipations() {
 		return participations;
 	}

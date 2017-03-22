@@ -6,6 +6,7 @@ import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.factories.DatePickerFormatter;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.DateValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
@@ -57,6 +58,8 @@ public class PersonEditorController implements Initializable {
 		familynameFieldValidator = TextValidator.create(familynameField).fieldName("Nachname").notEmpty(true).validateOnChange();
 		birthdayDateValidator = DateValidator.create(birthdayDatePicker).fieldName("Geburtsdatum").notEmpty(true).past().validateOnChange();
 		genderComboBoxValidator = new ComboBoxValidator<Gender>(genderComboBox).fieldName("Geschlecht").isSelected(true).validateOnChange();
+
+		birthdayDatePicker.setConverter(new DatePickerFormatter());
 
 		genderComboBox.setCellFactory(column -> {
 			return new ListCell<Gender>() {

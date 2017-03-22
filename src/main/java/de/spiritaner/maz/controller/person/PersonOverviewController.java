@@ -1,8 +1,10 @@
 package de.spiritaner.maz.controller.person;
 
 import de.spiritaner.maz.controller.OverviewController;
+import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.factories.DateAsStringListCell;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +21,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @OverviewController.Annotation(fxmlFile = "/fxml/person/person_overview.fxml", objDesc = "Person")
@@ -67,81 +70,15 @@ public class PersonOverviewController extends OverviewController<Person> {
 		birthplaceColumn.setCellValueFactory(cellData -> cellData.getValue().birthplaceProperty());
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 
-		final DateTimeFormatter myDateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-		birthdayColumn.setCellFactory(column -> {
-			return new TableCell<Person, LocalDate>() {
-				@Override
-				protected void updateItem(LocalDate item, boolean empty) {
-					super.updateItem(item, empty);
-
-					if (item == null || empty) {
-						setText(null);
-						setStyle("");
-					} else {
-						// Format date.
-						setText(myDateFormatter.format(item));
-					}
-				}
-			};
-		});
-
-		final LocalDate today = LocalDate.now();
-
-		ageColumn.setCellFactory(column -> {
-			return new TableCell<Person, LocalDate>() {
-				@Override
-				protected void updateItem(LocalDate item, boolean empty) {
-					super.updateItem(item, empty);
-
-					if (item == null || empty) {
-						setText(null);
-						setStyle("");
-					} else {
-						// Format date.
-						long years = item.until(today, ChronoUnit.YEARS);
-						setText(years+" Jahre");
-					}
-				}
-			};
-		});
+		birthdayColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
+		ageColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCellYearsToNow());
 
 		personSearchButton.setDefaultButton(true);
 	}
 
 	@Override
-	protected void preCreate(Person object) {
-
-	}
-
-	@Override
-	protected void postCreate(Person obj) {
-
-	}
-
-	@Override
-	protected void preEdit(Person object) {
-
-	}
-
-	@Override
-	protected void preRemove(Person obsoleteEntity) {
-
-	}
-
-	@Override
-	protected void postRemove(Person obsoleteEntity) {
-
-	}
-
-	@Override
 	protected Collection preLoad(EntityManager em) {
 		return em.createNamedQuery("Person.findAll", Person.class).getResultList();
-	}
-
-	@Override
-	protected void postLoad(Collection loadedObjs) {
-
 	}
 
 	@Override
@@ -151,12 +88,7 @@ public class PersonOverviewController extends OverviewController<Person> {
 
 	@Override
 	protected void handleException(RollbackException e) {
-
-	}
-
-	@Override
-	protected void preInit() {
-
+		ExceptionDialog.show(e);
 	}
 
 	public ToggleSwitch getPersonDetailsToggle() {

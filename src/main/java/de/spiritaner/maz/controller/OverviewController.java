@@ -81,7 +81,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		this.createButton = createButton;
 	}
 
-	protected abstract void preCreate(T object);
+	protected void preCreate(T newObject) {};
 
 	public void create(ActionEvent actionEvent) {
 		try {
@@ -97,11 +97,9 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		load();
 	}
 
-	protected abstract void postCreate(T obj);
+	protected void postCreate(T newObject) {};
 
-	protected abstract void preEdit(T object);
-
-	//public abstract void postCreate(T object);
+	protected void preEdit(T object) {};
 
 	public void edit(ActionEvent actionEvent) {
 		editObj(null);
@@ -121,7 +119,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		load();
 	}
 
-	protected abstract void preRemove(T obsoleteEntity);
+	protected void preRemove(T obsoleteEntity) {};
 
 	public void remove(final ActionEvent actionEvent) {
 		final T selectedObj = getTable().getSelectionModel().getSelectedItem();
@@ -153,7 +151,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		load();
 	}
 
-	protected abstract void postRemove(T obsoleteEntity);
+	protected void postRemove(T obsoleteEntity) {};
 
 	public void load() {
 		Platform.runLater(() -> {
@@ -190,7 +188,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 	protected abstract Collection<T> preLoad(EntityManager em);
 
-	protected abstract void postLoad(Collection<T> loadedObjs);
+	protected void postLoad(Collection<T> loadedObjs) {};
 
 	protected abstract String getLoadingText();
 
@@ -206,7 +204,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		load();
 	}
 
-	protected abstract void preInit();
+	protected void preInit() {};
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -239,7 +237,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		load();
 	}
 
-	protected abstract void postInit();
+	protected void postInit() {};
 
 	public MaskerPane getMasker() {
 		return masker;

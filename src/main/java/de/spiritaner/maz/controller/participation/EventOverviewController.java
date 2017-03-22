@@ -3,6 +3,7 @@ package de.spiritaner.maz.controller.participation;
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.Event;
+import de.spiritaner.maz.util.factories.DateAsStringListCell;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.stage.Stage;
@@ -29,31 +30,6 @@ public class EventOverviewController extends OverviewController<Event> {
 	}
 
 	@Override
-	public void preCreate(Event object) {
-
-	}
-
-	@Override
-	protected void postCreate(Event obj) {
-
-	}
-
-	@Override
-	public void preEdit(Event object) {
-
-	}
-
-	@Override
-	protected void preRemove(Event obsoleteEntity) {
-
-	}
-
-	@Override
-	protected void postRemove(Event obsoleteEntity) {
-
-	}
-
-	@Override
 	protected void handleException(RollbackException e) {
 		ExceptionDialog.show(e);
 	}
@@ -61,11 +37,6 @@ public class EventOverviewController extends OverviewController<Event> {
 	@Override
 	protected String getLoadingText() {
 		return "Lade Veranstaltungen ...";
-	}
-
-	@Override
-	protected void postLoad(Collection<Event> loadedObjs) {
-
 	}
 
 	@Override
@@ -79,18 +50,15 @@ public class EventOverviewController extends OverviewController<Event> {
 	}
 
 	@Override
-	protected void preInit() {
-
-	}
-
-	@Override
 	protected void postInit() {
 		eventTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getEventType().descriptionProperty());
 		nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
-		// TODO Implement correct date formatting like in person overview controller
 		fromDateColumn.setCellValueFactory(cellData -> cellData.getValue().fromDateProperty());
 		toDateColumn.setCellValueFactory(cellData -> cellData.getValue().toDateProperty());
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+
+		fromDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
+		toDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
 	}
 }

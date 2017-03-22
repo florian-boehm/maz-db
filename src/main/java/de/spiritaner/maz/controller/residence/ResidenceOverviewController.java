@@ -48,37 +48,12 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 	}
 
 	@Override
-	protected void postCreate(Residence obj) {
-
-	}
-
-	@Override
-	protected void preEdit(Residence object) {
-
-	}
-
-	@Override
-	protected void preRemove(Residence obsoleteEntity) {
-
-	}
-
-	@Override
-	protected void postRemove(Residence obsoleteEntity) {
-
-	}
-
-	@Override
 	protected Collection<Residence> preLoad(EntityManager em) {
 		if(person != null) {
 			Hibernate.initialize(person.getResidences());
 			return FXCollections.observableArrayList(person.getResidences());
 		}
 		return null;
-	}
-
-	@Override
-	protected void postLoad(Collection<Residence> loadedObjs) {
-
 	}
 
 	@Override
@@ -89,11 +64,6 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 	@Override
 	protected void handleException(RollbackException e) {
 		ExceptionDialog.show(e);
-	}
-
-	@Override
-	protected void preInit() {
-
 	}
 
 	@Override

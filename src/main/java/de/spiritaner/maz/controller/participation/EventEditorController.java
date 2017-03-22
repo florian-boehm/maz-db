@@ -4,6 +4,7 @@ import de.spiritaner.maz.controller.meta.EventTypeEditorController;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.meta.EventType;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.factories.DatePickerFormatter;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.DateValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
@@ -47,6 +48,9 @@ public class EventEditorController implements Initializable {
 		nameFieldValidator = TextValidator.create(nameField).fieldName("Name").notEmpty(true).validateOnChange();
 		eventTypeValidator = new ComboBoxValidator<>(eventTypeComboBox).fieldName("Veranstaltungsart").isSelected(true).validateOnChange();
 		toDateValidator = DateValidator.create(toDatePicker).fieldName("Bis-Datum").after(fromDatePicker).relationFieldName("Von-Datum").validateOnChange();
+
+		fromDatePicker.setConverter(new DatePickerFormatter());
+		toDatePicker.setConverter(new DatePickerFormatter());
 
 		eventTypeComboBox.setCellFactory(column -> {
 			return new ListCell<EventType>() {

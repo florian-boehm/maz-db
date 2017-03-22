@@ -16,16 +16,16 @@
             <bottom>
                 <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="746.0" BorderPane.alignment="CENTER">
                     <items>
-                        <Button fx:id="removeContactMethodButton" disable="true" mnemonicParsing="false" onAction="#removeContactMethod" text="Entfernen" />
-                        <Button fx:id="editContactMethodButton" disable="true" mnemonicParsing="false" onAction="#editContactMethod" text="Bearbeiten" />
-                        <Button mnemonicParsing="false" onAction="#createContactMethod" text="Neu" />
+                        <Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#remove" text="Entfernen" />
+                        <Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#edit" text="Bearbeiten" />
+                        <Button mnemonicParsing="false" onAction="#create" text="Neu" />
                     </items>
                 </ToolBar>
             </bottom>
             <center>
                 <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-insets: 0;" BorderPane.alignment="CENTER">
                     <content>
-                        <TableView fx:id="contactMethodTable" style="-fx-padding: 0; -fx-background-insets: 0px; -fx-background-color: #f4f4f4; -fx-border-width: 0 0 1 0; -fx-border-color: #c8c8c8;" tableMenuButtonVisible="true">
+                        <TableView fx:id="table" style="-fx-padding: 0; -fx-background-insets: 0px; -fx-background-color: #f4f4f4; -fx-border-width: 0 0 1 0; -fx-border-color: #c8c8c8;" tableMenuButtonVisible="true">
                             <columns>
                                 <TableColumn fx:id="contactMethodTypeColumn" prefWidth="150.0" text="Kontaktart" />
                                 <TableColumn fx:id="valueColumn" prefWidth="150.0" text="Wert" />
