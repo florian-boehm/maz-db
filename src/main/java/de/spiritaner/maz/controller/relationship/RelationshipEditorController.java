@@ -40,37 +40,41 @@ public class RelationshipEditorController implements Initializable {
 	@FXML
 	private ToggleSwitch inverseRelationshipToggleSwitch;
 	@FXML
-	private javafx.scene.text.Text inverseRelationshipTypeText;
+	private ComboBox<RelationshipType> inverseRelationshipTypeComboBox;
+	@FXML
+	private Button addNewInverseRelationshipTypeButton;
 
 	private ComboBoxValidator<RelationshipType> relationshipTypeValidator;
+	private ComboBoxValidator<RelationshipType> inverseRelationshipTypeValidator;
 	private TextValidator toPersonFirstNameValidator;
 	private TextValidator toPersonFamilyNameValidator;
 
 	public void initialize(URL location, ResourceBundle resources) {
 		relationshipTypeValidator = new ComboBoxValidator<>(relationshipTypeComboBox).fieldName("Beziehungsart").isSelected(true).validateOnChange();
+		inverseRelationshipTypeValidator = new ComboBoxValidator<>(inverseRelationshipTypeComboBox).fieldName("Beziehungsart").isSelected(true).validateOnChange();
 		toPersonFamilyNameValidator = TextValidator.create(toPersonFamilyNameField).fieldName("Nachname").notEmpty(true).validateOnChange();
 		toPersonFirstNameValidator = TextValidator.create(toPersonFirstNameField).fieldName("Vorname").notEmpty(true).validateOnChange();
 
 		relationshipTypeComboBox.setCellFactory(column -> new MetaClassListCell<>());
 		relationshipTypeComboBox.setButtonCell(new MetaClassListCell<>());
 
+		inverseRelationshipTypeComboBox.setCellFactory(column -> new MetaClassListCell<>());
+		inverseRelationshipTypeComboBox.setButtonCell(new MetaClassListCell<>());
+
 		personFromDatabaseToggleSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
 			setPersonFromDatabase(newValue);
 		});
 
 		inverseRelationshipToggleSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
-			inverseRelationshipTypeText.setText((newValue) ? relationshipTypeComboBox.getValue().getInverseRelationshipType().getDescription() : "Keine");
-		});
+			addNewInverseRelationshipTypeButton.setDisable(!newValue);
+			inverseRelationshipTypeComboBox.setDisable(!newValue);
 
-		relationshipTypeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-			if(newValue != null && newValue.getInverseRelationshipType().getInverseRelationshipType() != null) {
-				inverseRelationshipToggleSwitch.setDisable(false);
-			} else {
-				inverseRelationshipToggleSwitch.setDisable(true);
-			}
+			if(!newValue) inverseRelationshipTypeComboBox.setValue(null);
 		});
 
 		setPersonFromDatabase(personFromDatabaseToggleSwitch.isSelected());
+		inverseRelationshipTypeComboBox.setDisable(true);
+		addNewInverseRelationshipTypeButton.setDisable(true);
 
 		loadRelationshipType();
 	}
@@ -95,6 +99,8 @@ public class RelationshipEditorController implements Initializable {
 		relationshipTypeComboBox.setDisable(readonly);
 		addNewRelationshipTypeButton.setDisable(readonly);
 		inverseRelationshipToggleSwitch.setDisable(readonly);
+		inverseRelationshipTypeComboBox.setDisable(readonly);
+		addNewInverseRelationshipTypeButton.setDisable(readonly);
 	}
 
 	public void loadRelationshipType() {
@@ -105,14 +111,20 @@ public class RelationshipEditorController implements Initializable {
 		relationshipTypeComboBox.getItems().clear();
 		relationshipTypeComboBox.getItems().addAll(FXCollections.observableArrayList(result));
 		relationshipTypeComboBox.setValue(selectedBefore);
+
+		selectedBefore = inverseRelationshipTypeComboBox.getValue();
+		inverseRelationshipTypeComboBox.getItems().clear();
+		inverseRelationshipTypeComboBox.getItems().addAll(FXCollections.observableArrayList(result));
+		inverseRelationshipTypeComboBox.setValue(selectedBefore);
 	}
 
 	public boolean isValid() {
 		boolean relationshipTypeValid = relationshipTypeValidator.validate();
 		boolean toPersonFirstNameValid = personFromDatabaseToggleSwitch.isSelected() || toPersonFirstNameValidator.validate();
 		boolean toPersonFamilyNameValid = personFromDatabaseToggleSwitch.isSelected() || toPersonFamilyNameValidator.validate();
+		boolean inverseRelationshipTypeValid = !(personFromDatabaseToggleSwitch.isSelected() && inverseRelationshipToggleSwitch.isSelected()) || inverseRelationshipTypeValidator.validate();
 
-		return relationshipTypeValid && toPersonFirstNameValid && toPersonFamilyNameValid;
+		return relationshipTypeValid && toPersonFirstNameValid && toPersonFamilyNameValid && inverseRelationshipTypeValid;
 	}
 
 	public void addNewRelationshipType(ActionEvent actionEvent) {
@@ -133,5 +145,9 @@ public class RelationshipEditorController implements Initializable {
 
 	public ToggleSwitch getInverseRelationshipToggleSwitch() {
 		return inverseRelationshipToggleSwitch;
+	}
+
+	public RelationshipType getInverseRelationship() {
+		return inverseRelationshipTypeComboBox.getValue();
 	}
 }

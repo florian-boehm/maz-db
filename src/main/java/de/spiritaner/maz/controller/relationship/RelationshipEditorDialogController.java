@@ -77,8 +77,6 @@ public class RelationshipEditorDialogController extends EditorController<Relatio
 				titleText.setText("Beziehung bearbeiten");
 				saveRelationshipButton.setText("Speichern");
 
-				relationshipEditorController.getPersonFromDatabaseToggleSwitch().setDisable(true);
-
 				if(relationship.getToPerson() != null) {
 					toPersonEditorController.setAll(relationship.getToPerson());
 					relationshipEditorController.getPersonFromDatabaseToggleSwitch().setSelected(true);
@@ -87,6 +85,10 @@ public class RelationshipEditorDialogController extends EditorController<Relatio
 					relationshipEditorController.getPersonFromDatabaseToggleSwitch().setSelected(false);
 					relationshipEditorController.setPersonFromDatabase(false);
 				}
+
+				relationshipEditorController.getPersonFromDatabaseToggleSwitch().setDisable(true);
+				relationshipEditorController.getInverseRelationshipToggleSwitch().setDisable(true);
+				searchPersonButton.setDisable(true);
 			} else {
 				titleText.setText("Beziehung anlegen");
 				saveRelationshipButton.setText("Anlegen");
@@ -134,7 +136,7 @@ public class RelationshipEditorDialogController extends EditorController<Relatio
 						Relationship inverseRelationship = new Relationship();
 						inverseRelationship.setToPerson(relationship.getFromPerson());
 						inverseRelationship.setFromPerson(relationship.getToPerson());
-						inverseRelationship.setRelationshipType(relationship.getRelationshipType());
+						inverseRelationship.setRelationshipType(relationshipEditorController.getInverseRelationship());
 						managedInverseRelationship = (!em.contains(inverseRelationship)) ? em.merge(inverseRelationship) : inverseRelationship;
 					}
 
