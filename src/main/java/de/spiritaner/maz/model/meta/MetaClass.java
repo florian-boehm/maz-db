@@ -44,7 +44,7 @@ abstract public class MetaClass implements Identifiable {
 
 	@Override
 	public String toString() {
-		return id.get() + " - " + description.get();
+		return (id.get() == 0L) ? "" : id.get() + " - " + description.get();
 	}
 
 	@Override
@@ -54,10 +54,6 @@ abstract public class MetaClass implements Identifiable {
 
 	@Override
 	public boolean equals(Object object) {
-		if (object instanceof MetaClass) {
-			return ((MetaClass) object).id.get() == id.get();
-		} else {
-			return false;
-		}
+		return (object instanceof MetaClass) && ((MetaClass) object).getId().equals(this.getId());
 	}
 }

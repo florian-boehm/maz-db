@@ -4,6 +4,7 @@ import de.spiritaner.maz.controller.Controller;
 import de.spiritaner.maz.controller.approval.ApprovalOverviewController;
 import de.spiritaner.maz.controller.contactmethod.ContactMethodOverviewController;
 import de.spiritaner.maz.controller.participation.ParticipationOverviewController;
+import de.spiritaner.maz.controller.relationship.RelationshipOverviewController;
 import de.spiritaner.maz.controller.residence.ResidenceOverviewController;
 import de.spiritaner.maz.controller.role.RoleOverviewController;
 import de.spiritaner.maz.model.Person;
@@ -63,6 +64,11 @@ public class PersonPageController implements Initializable, Controller {
 	@FXML
 	private RoleOverviewController personRolesController;
 
+	@FXML
+	private AnchorPane personRelationships;
+	@FXML
+	private RelationshipOverviewController personRelationshipsController;
+
 	private Stage stage;
 
 	@Override
@@ -100,6 +106,7 @@ public class PersonPageController implements Initializable, Controller {
 			case "contactMethodTab": personContactMethodsController.onReopen(); break;
 			case "participationTab": personParticipationsController.onReopen(); break;
 			case "roleTab": personRolesController.onReopen(); break;
+			case "relationshipTab": personRelationshipsController.onReopen(); break;
 		}
 	}
 
@@ -110,6 +117,7 @@ public class PersonPageController implements Initializable, Controller {
 			personApprovalsController.setPerson(person);
 			personParticipationsController.setPerson(person);
 			personRolesController.setPerson(person);
+			personRelationshipsController.setPerson(person);
 
 			detailsMasker.setVisible(false);
 
@@ -125,6 +133,7 @@ public class PersonPageController implements Initializable, Controller {
 		personParticipationsController.setStage(stage);
 		personContactMethodsController.setStage(stage);
 		personRolesController.setStage(stage);
+		personRelationshipsController.setStage(stage);
 	}
 
 	@Override

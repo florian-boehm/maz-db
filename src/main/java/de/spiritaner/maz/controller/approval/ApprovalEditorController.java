@@ -4,6 +4,7 @@ import de.spiritaner.maz.controller.meta.ApprovalTypeEditorController;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.meta.ApprovalType;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.factories.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -22,87 +23,63 @@ import java.util.ResourceBundle;
 
 public class ApprovalEditorController implements Initializable {
 
-    final static Logger logger = Logger.getLogger(ApprovalEditorController.class);
+	final static Logger logger = Logger.getLogger(ApprovalEditorController.class);
 
-    @FXML
-    private Button addNewApprovalTypeButton;
-    @FXML
-    private ToggleSwitch approvedToggleSwitch;
-    @FXML
-    private ComboBox<ApprovalType> approvalTypeComboBox;
+	@FXML
+	private Button addNewApprovalTypeButton;
+	@FXML
+	private ToggleSwitch approvedToggleSwitch;
+	@FXML
+	private ComboBox<ApprovalType> approvalTypeComboBox;
 
-    private ComboBoxValidator<ApprovalType> approvalTypeValidator;
+	private ComboBoxValidator<ApprovalType> approvalTypeValidator;
 
-    public void initialize(URL location, ResourceBundle resources) {
-		 approvalTypeValidator = new ComboBoxValidator<>(approvalTypeComboBox).fieldName("Einwilligung").isSelected(true).validateOnChange();
+	public void initialize(URL location, ResourceBundle resources) {
+		approvalTypeValidator = new ComboBoxValidator<>(approvalTypeComboBox).fieldName("Einwilligungsart").isSelected(true).validateOnChange();
 
-        approvalTypeComboBox.setCellFactory(column -> {
-            return new ListCell<ApprovalType>() {
-                @Override
-                public void updateItem(ApprovalType item, boolean empty) {
-                    super.updateItem(item, empty);
+		approvalTypeComboBox.setCellFactory(column -> new MetaClassListCell<>());
+		approvalTypeComboBox.setButtonCell(new MetaClassListCell<>());
 
-                    if (item == null || empty) {
-                        setText(null);
-                    } else {
-                        setText(item.getDescription());
-                    }
-                }
-            };
-        });
-		 approvalTypeComboBox.setButtonCell(new ListCell<ApprovalType>() {
-            @Override
-            protected void updateItem(ApprovalType item, boolean empty) {
-                super.updateItem(item, empty);
+		loadApprovalType();
+	}
 
-                if (item == null || empty) {
-                    setText(null);
-                } else {
-                    setText(item.getDescription());
-                }
-            }
-        });
+	public void setAll(Approval approval) {
+		approvedToggleSwitch.setSelected(approval.isApproved());
+		approvalTypeComboBox.setValue(approval.getApprovalType());
+	}
 
-        loadApprovalType();
-    }
+	public Approval getAll(Approval approval) {
+		if (approval == null) approval = new Approval();
+		approval.setApproved(approvedToggleSwitch.isSelected());
+		approval.setApprovalType(approvalTypeComboBox.getValue());
+		return approval;
+	}
 
-    public void setAll(Approval approval) {
-        approvedToggleSwitch.setSelected(approval.isApproved());
-        approvalTypeComboBox.setValue(approval.getApprovalType());
-    }
+	public void setReadonly(boolean readonly) {
+		approvedToggleSwitch.setDisable(readonly);
+		approvalTypeComboBox.setDisable(readonly);
+		addNewApprovalTypeButton.setDisable(readonly);
+	}
 
-    public Approval getAll(Approval approval) {
-        if (approval == null) approval = new Approval();
-        approval.setApproved(approvedToggleSwitch.isSelected());
-        approval.setApprovalType(approvalTypeComboBox.getValue());
-        return approval;
-    }
+	public void loadApprovalType() {
+		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		Collection<ApprovalType> result = em.createNamedQuery("ApprovalType.findAll", ApprovalType.class).getResultList();
 
-    public void setReadonly(boolean readonly) {
-        approvedToggleSwitch.setDisable(readonly);
-        approvalTypeComboBox.setDisable(readonly);
-        addNewApprovalTypeButton.setDisable(readonly);
-    }
+		ApprovalType selectedBefore = approvalTypeComboBox.getValue();
+		approvalTypeComboBox.getItems().clear();
+		approvalTypeComboBox.getItems().addAll(FXCollections.observableArrayList(result));
+		approvalTypeComboBox.setValue(selectedBefore);
+	}
 
-    public void loadApprovalType() {
-        EntityManager em = DataDatabase.getFactory().createEntityManager();
-        Collection<ApprovalType> result = em.createNamedQuery("ApprovalType.findAll", ApprovalType.class).getResultList();
+	public boolean isValid() {
+		boolean approvalTypeValid = approvalTypeValidator.validate();
 
-        ApprovalType selectedBefore = approvalTypeComboBox.getValue();
-        approvalTypeComboBox.getItems().clear();
-        approvalTypeComboBox.getItems().addAll(FXCollections.observableArrayList(result));
-        approvalTypeComboBox.setValue(selectedBefore);
-    }
+		return approvalTypeValid;
+	}
 
-    public boolean isValid() {
-        boolean approvalTypeValid = approvalTypeValidator.validate();
+	public void addNewApprovalType(ActionEvent actionEvent) {
+		new ApprovalTypeEditorController().create(actionEvent);
 
-        return approvalTypeValid;
-    }
-
-    public void addNewApprovalType(ActionEvent actionEvent) {
-        new ApprovalTypeEditorController().create(actionEvent);
-
-        loadApprovalType();
-    }
+		loadApprovalType();
+	}
 }

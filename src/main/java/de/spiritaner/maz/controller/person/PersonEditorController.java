@@ -7,6 +7,7 @@ import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.util.DataDatabase;
 import de.spiritaner.maz.util.factories.DatePickerFormatter;
+import de.spiritaner.maz.util.factories.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.DateValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
@@ -14,7 +15,10 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -61,58 +65,10 @@ public class PersonEditorController implements Initializable {
 
 		birthdayDatePicker.setConverter(new DatePickerFormatter());
 
-		genderComboBox.setCellFactory(column -> {
-			return new ListCell<Gender>() {
-				@Override
-				public void updateItem(Gender item, boolean empty) {
-					super.updateItem(item, empty);
-
-					if (item == null || empty) {
-						setText(null);
-					} else {
-						setText(item.getDescription());
-					}
-				}
-			};
-		});
-		genderComboBox.setButtonCell(new ListCell<Gender>() {
-			@Override
-			protected void updateItem(Gender item, boolean empty) {
-				super.updateItem(item, empty);
-
-				if (item == null || empty) {
-					setText(null);
-				} else {
-					setText(item.getDescription());
-				}
-			}
-		});
-		dioceseComboBox.setCellFactory(column -> {
-			return new ListCell<Diocese>() {
-				@Override
-				public void updateItem(Diocese item, boolean empty) {
-					super.updateItem(item, empty);
-
-					if (item == null || empty) {
-						setText(null);
-					} else {
-						setText(item.getDescription());
-					}
-				}
-			};
-		});
-		dioceseComboBox.setButtonCell(new ListCell<Diocese>() {
-			@Override
-			protected void updateItem(Diocese item, boolean empty) {
-				super.updateItem(item, empty);
-
-				if (item == null || empty) {
-					setText(null);
-				} else {
-					setText(item.getDescription());
-				}
-			}
-		});
+		genderComboBox.setCellFactory(column -> new MetaClassListCell<Gender>());
+		genderComboBox.setButtonCell(new MetaClassListCell<>());
+		dioceseComboBox.setCellFactory(column -> new MetaClassListCell<Diocese>());
+		dioceseComboBox.setButtonCell(new MetaClassListCell<>());
 
 		loadGender();
 		loadDiocese();
@@ -135,7 +91,7 @@ public class PersonEditorController implements Initializable {
 		person.setBirthName(birthnameField.getText());
 		person.setBirthday(birthdayDatePicker.getValue());
 		person.setBirthplace(birthplaceField.getText());
-		person.setGender(genderComboBox.getValue());
+		person.setGender((genderComboBox.getSelectionModel().getSelectedIndex() <= 0) ? null : genderComboBox.getValue());
 		person.setDiocese((dioceseComboBox.getSelectionModel().getSelectedIndex() <= 0) ? null : dioceseComboBox.getValue());
 		return person;
 	}
@@ -159,6 +115,7 @@ public class PersonEditorController implements Initializable {
 		Gender selectedBefore = genderComboBox.getValue();
 		genderComboBox.getItems().clear();
 		genderComboBox.getItems().addAll(FXCollections.observableArrayList(result));
+		genderComboBox.getItems().add(0, Gender.createEmpty());
 		genderComboBox.setValue(selectedBefore);
 	}
 
@@ -176,13 +133,13 @@ public class PersonEditorController implements Initializable {
 	public boolean isValid() {
 		boolean firstnameValid = firstnameFieldValidator.validate();
 		boolean familynameValid = familynameFieldValidator.validate();
-		boolean birthdayValid = birthdayDateValidator.validate();
-		boolean genderValid = genderComboBoxValidator.validate();
+		/*boolean birthdayValid = birthdayDateValidator.validate();*/
+		/*boolean genderValid = genderComboBoxValidator.validate();*/
 
 		return firstnameValid &&
-				  familynameValid &&
+				  familynameValid /*&&
 				  birthdayValid &&
-				  genderValid;
+				  genderValid*/;
 	}
 
 	public void addNewGender(ActionEvent actionEvent) {

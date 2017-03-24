@@ -4,6 +4,7 @@ import de.spiritaner.maz.controller.meta.ParticipationTypeEditorController;
 import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.meta.ParticipationType;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.factories.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -34,34 +35,10 @@ public class ParticipationEditorController implements Initializable {
 	private ComboBoxValidator<ParticipationType> participantTypeValidator;
 
 	public void initialize(URL location, ResourceBundle resources) {
-		participantTypeValidator = new ComboBoxValidator<ParticipationType>(participationTypeComboBox).fieldName("Funktion").validateOnChange();
+		participantTypeValidator = new ComboBoxValidator<>(participationTypeComboBox).fieldName("Funktion").validateOnChange();
 
-		participationTypeComboBox.setCellFactory(column -> {
-			return new ListCell<ParticipationType>() {
-				@Override
-				public void updateItem(ParticipationType item, boolean empty) {
-					super.updateItem(item, empty);
-
-					if (item == null || empty) {
-						setText(null);
-					} else {
-						setText(item.getDescription());
-					}
-				}
-			};
-		});
-		participationTypeComboBox.setButtonCell(new ListCell<ParticipationType>() {
-			@Override
-			protected void updateItem(ParticipationType item, boolean empty) {
-				super.updateItem(item, empty);
-
-				if (item == null || empty) {
-					setText(null);
-				} else {
-					setText(item.getDescription());
-				}
-			}
-		});
+		participationTypeComboBox.setCellFactory(column -> new MetaClassListCell<>());
+		participationTypeComboBox.setButtonCell(new MetaClassListCell<>());
 
 		loadParticipantType();
 	}

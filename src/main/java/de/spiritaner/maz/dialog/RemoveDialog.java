@@ -101,6 +101,16 @@ public class RemoveDialog {
 		return alert;
 	}
 
+	public static Alert create(Relationship relationship, Stage stage) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Beziehung löschen");
+		alert.setHeaderText(null);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setContentText("Beziehung von '" + relationship.getFromPerson().getFullName() + "' zu '" + relationship.getToPersonFullName() + "' wirklich löschen?");
+		alert.initOwner(stage);
+		return alert;
+	}
+
 	public static <T extends Identifiable> Alert create(final T identifiable, final Stage stage) {
 		final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		final Identifiable.Annotation annotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);

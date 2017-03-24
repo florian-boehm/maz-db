@@ -4,6 +4,7 @@ import de.spiritaner.maz.controller.meta.ResidenceTypeEditorController;
 import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.model.meta.ResidenceType;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.factories.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -32,6 +33,10 @@ public class ResidenceEditorController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		residenceTypeValidator = new ComboBoxValidator<>(residenceTypeComboBox).fieldName("Wohnortart").isSelected(true).validateOnChange();
+
+		residenceTypeComboBox.setButtonCell(new MetaClassListCell<>());
+		residenceTypeComboBox.setCellFactory(param -> new MetaClassListCell<>());
+
 		loadResidenceTypes();
 	}
 

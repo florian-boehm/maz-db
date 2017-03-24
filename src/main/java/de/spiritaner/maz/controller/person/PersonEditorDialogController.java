@@ -92,9 +92,11 @@ public class PersonEditorDialogController extends EditorController<Person> {
 				revisionList.getItems().add(tmpRevisionEntity);
 			}
 
-			revisionList.getItems().add(new RevisionEntity<Person>());
-			revisionList.getSelectionModel().clearSelection();
-			revisionList.getSelectionModel().selectLast();
+			if(revisions.size() > 0) {
+				revisionList.getItems().add(new RevisionEntity<Person>());
+				revisionList.getSelectionModel().clearSelection();
+				revisionList.getSelectionModel().selectLast();
+			}
 		}
 	}
 

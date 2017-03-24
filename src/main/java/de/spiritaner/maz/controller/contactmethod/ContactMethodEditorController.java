@@ -4,6 +4,7 @@ import de.spiritaner.maz.controller.meta.ContactMethodTypeEditorController;
 import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.model.meta.ContactMethodType;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.factories.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
 import javafx.collections.FXCollections;
@@ -39,32 +40,8 @@ public class ContactMethodEditorController implements Initializable {
         valueFieldValidator = TextValidator.create(valueField).fieldName("Wert").notEmpty(true).validateOnChange();
         contactMethodTypeValidator = new ComboBoxValidator<>(contactMethodTypeComboBox).fieldName("Kontaktart").isSelected(true).validateOnChange();
 
-        contactMethodTypeComboBox.setCellFactory(column -> {
-            return new ListCell<ContactMethodType>() {
-                @Override
-                public void updateItem(ContactMethodType item, boolean empty) {
-                    super.updateItem(item, empty);
-
-                    if (item == null || empty) {
-                        setText(null);
-                    } else {
-                        setText(item.getDescription());
-                    }
-                }
-            };
-        });
-        contactMethodTypeComboBox.setButtonCell(new ListCell<ContactMethodType>() {
-            @Override
-            protected void updateItem(ContactMethodType item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item == null || empty) {
-                    setText(null);
-                } else {
-                    setText(item.getDescription());
-                }
-            }
-        });
+        contactMethodTypeComboBox.setCellFactory(column -> new MetaClassListCell<>());
+        contactMethodTypeComboBox.setButtonCell(new MetaClassListCell<>());
 
         loadContactMethodType();
     }

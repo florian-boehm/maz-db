@@ -43,7 +43,7 @@ public class RevisionEntity<T extends Identifiable> {
 
 	@Override
 	public String toString() {
-		return "Version " + getRevision() + "(" + new SimpleDateFormat("HH:mm dd.MM.yyyy").format(revisionDate) + ")";
+		return (getRevision() == null) ? "Neu" : "Version " + getRevision() + "(" + new SimpleDateFormat("HH:mm dd.MM.yyyy").format(revisionDate) + ")";
 	}
 
 	public void initialize() {

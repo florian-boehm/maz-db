@@ -1,5 +1,6 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.controller.relationship.RelationshipEditorDialogController;
 import de.spiritaner.maz.model.meta.RelationshipType;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -9,11 +10,9 @@ import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
-/**
- * Created by Florian on 3/14/2017.
- */
 @Entity
 @Audited
+@Identifiable.Annotation(editorDialogClass = RelationshipEditorDialogController.class, identifiableName = "Beziehung")
 @NamedQueries({
 		  @NamedQuery(name = "Relationship.findAll", query = "SELECT r FROM Relationship r"),
 })
@@ -23,11 +22,13 @@ public class Relationship implements Identifiable {
 	private RelationshipType relationshipType;
 	private Person fromPerson;
 	private Person toPerson;
-	private StringProperty toPersonName;
+	private StringProperty toPersonFirstName;
+	private StringProperty toPersonFamilyName;
 
 	public Relationship() {
 		id = new SimpleLongProperty();
-		toPersonName = new SimpleStringProperty();
+		toPersonFirstName = new SimpleStringProperty();
+		toPersonFamilyName = new SimpleStringProperty();
 	}
 
 	@Id
@@ -66,7 +67,7 @@ public class Relationship implements Identifiable {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "getPersonId", nullable = true)
+	@JoinColumn(name = "toPersonId", nullable = true)
 	public Person getToPerson() {
 		return toPerson;
 	}
@@ -75,15 +76,48 @@ public class Relationship implements Identifiable {
 		this.toPerson = person;
 	}
 
-	public String getToPersonName() {
-		return toPersonName.get();
+	/**
+	 * If the person does not exist as explicit Person entity his/her first name can be inserted here manually
+	 *
+	 * @return
+	 */
+	public String getToPersonFirstName() {
+		return toPersonFirstName.get();
 	}
 
-	public StringProperty toPersonNameProperty() {
-		return toPersonName;
+	public StringProperty toPersonFirstNameProperty() {
+		return toPersonFirstName;
 	}
 
-	public void setToPersonName(String toPersonName) {
-		this.toPersonName.set(toPersonName);
+	public void setToPersonFirstName(String toPersonFirstName) {
+		this.toPersonFirstName.set(toPersonFirstName);
+	}
+
+	/**
+	 * If the person does not exist as explicit Person entity his/her family name can be inserted here manually
+	 *
+	 * @return
+	 */
+	public String getToPersonFamilyName() {
+		return toPersonFamilyName.get();
+	}
+
+	public StringProperty toPersonFamilyNameProperty() {
+		return toPersonFamilyName;
+	}
+
+	public void setToPersonFamilyName(String toPersonFamilyName) {
+		this.toPersonFamilyName.set(toPersonFamilyName);
+	}
+
+	@Transient
+	@Override
+	public boolean equals(Object object) {
+		return (object instanceof Relationship) && ((Relationship) object).getId().equals(getId());
+	}
+
+	@Transient
+	public String getToPersonFullName() {
+		return (toPerson != null) ? toPerson.getFullName() : toPersonFirstName.get() + " " + toPersonFamilyName.get();
 	}
 }

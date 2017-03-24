@@ -35,6 +35,11 @@
                                 <fx:include fx:id="personRoles" source="../role/role_overview.fxml" />
                             </content>
                         </Tab>
+                        <Tab text="Beziehungen" fx:id="relationshipTab">
+                            <content>
+                                <fx:include fx:id="personRelationships" source="../relationship/relationship_overview.fxml" />
+                            </content>
+                        </Tab>
                     </tabs>
                 </TabPane>
                 <MaskerPane fx:id="detailsMasker" progressVisible="false" text="Bitte zuerst eine Person auswählen ..." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

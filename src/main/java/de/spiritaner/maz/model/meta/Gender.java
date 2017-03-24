@@ -20,4 +20,10 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 })
 public class Gender extends MetaClass {
 
+	public static Gender createEmpty() {
+		Gender result = new Gender();
+		result.setDescription("-/-");
+		result.setId(-1L);
+		return result;
+	}
 }

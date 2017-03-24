@@ -47,21 +47,18 @@ public class EditorDialog<T extends EditorController> {
 		});
 	}
 
-	public Identifiable showAndWait() {
+	public void showAndWait() {
 		stage.showAndWait();
-		return controller.getIdentifiable();
 	}
 
-	public static Identifiable showAndWait(Identifiable identifiable, Stage parent) {
+	public static void showAndWait(Identifiable identifiable, Stage parent) {
 		try {
 			final Identifiable.Annotation identifiableAnnotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);
 			final Annotation annotation = (Annotation) identifiableAnnotation.editorDialogClass().getAnnotation(Annotation.class);
-			return new EditorDialog(parent, annotation.fxmlFile(), identifiable, annotation.objDesc()).showAndWait();
+			new EditorDialog(parent, annotation.fxmlFile(), identifiable, annotation.objDesc()).showAndWait();
 		} catch (IOException e) {
 			ExceptionDialog.show(e);
 		}
-
-		return null;
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

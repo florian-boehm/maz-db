@@ -11,6 +11,7 @@ import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -46,6 +47,7 @@ public class Person implements Identifiable {
 	private List<Approval> approvals;
 	private List<ContactMethod> contactMethods;
 	private List<Participation> participations;
+	private List<Relationship> relationships;
 
 	public Person() {
 		id = new SimpleLongProperty();
@@ -157,7 +159,7 @@ public class Person implements Identifiable {
 	/**
 	 * @return The birthday of a person
 	 */
-	@Column(nullable = false)
+	@Column(nullable = true)
 	public LocalDate getBirthday() {
 		return birthday.get();
 	}
@@ -191,11 +193,13 @@ public class Person implements Identifiable {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="genderId")
 	public Gender getGender() {
-		return (gender == null) ? new Gender() : gender;
+		return gender;
 	}
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
+	@Transient
+	public Gender getGender(boolean nullSave) { return (nullSave && gender == null) ? new Gender() : gender; }
 
 	/**
 	 * A list of all places associated with this person.
@@ -263,8 +267,29 @@ public class Person implements Identifiable {
 		this.participations = participations;
 	}
 
+	/**
+	 * A list of all relationships associated with this person.
+	 * The list will be fetched lazy when it is needed.
+	 */
+	@OneToMany(mappedBy = "fromPerson", fetch = FetchType.LAZY)
+	@Cascade(org.hibernate.annotations.CascadeType.DELETE)
+	public List<Relationship> getRelationships() {
+		return relationships;
+	}
+	public void setRelationships(List<Relationship> relationships) {
+		this.relationships = relationships;
+	}
+
 	@Transient
+	@Override
 	public String toString() {
-		return this.getFullName() + ((getBirthday() == null) ? "" : " ("+getBirthday().toString()+")");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+		return this.getFullName() + ((getBirthday() == null) ? "" : " ("+dtf.format(getBirthday())+")");
+	}
+
+	@Transient
+	@Override
+	public boolean equals(Object obj) {
+		return (obj instanceof Person) && ((Person) obj).getId().equals(this.getId());
 	}
 }

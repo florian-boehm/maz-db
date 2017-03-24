@@ -108,6 +108,7 @@ public class ParticipationEditorDialogController extends EditorController<Partic
 				participationEditorController.getAll(participation);
 
 				try {
+					// TODO this is the best way to do it, so it should be copied over to other editor dialog controllers
 					Participation managedParticipation = (!em.contains(participation)) ? em.merge(participation) : participation;
 					em.getTransaction().commit();
 

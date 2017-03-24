@@ -18,9 +18,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Florian on 9/26/2016.
- */
 public class DataDatabase {
 	private static final Logger logger = Logger.getLogger(DataDatabase.class);
 	private static EntityManagerFactory factory = null;

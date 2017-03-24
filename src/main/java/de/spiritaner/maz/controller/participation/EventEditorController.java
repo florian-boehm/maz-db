@@ -5,6 +5,7 @@ import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.meta.EventType;
 import de.spiritaner.maz.util.DataDatabase;
 import de.spiritaner.maz.util.factories.DatePickerFormatter;
+import de.spiritaner.maz.util.factories.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.DateValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
@@ -52,32 +53,8 @@ public class EventEditorController implements Initializable {
 		fromDatePicker.setConverter(new DatePickerFormatter());
 		toDatePicker.setConverter(new DatePickerFormatter());
 
-		eventTypeComboBox.setCellFactory(column -> {
-			return new ListCell<EventType>() {
-				@Override
-				public void updateItem(EventType item, boolean empty) {
-					super.updateItem(item, empty);
-
-					if (item == null || empty) {
-						setText(null);
-					} else {
-						setText(item.getDescription());
-					}
-				}
-			};
-		});
-		eventTypeComboBox.setButtonCell(new ListCell<EventType>() {
-			@Override
-			protected void updateItem(EventType item, boolean empty) {
-				super.updateItem(item, empty);
-
-				if (item == null || empty) {
-					setText(null);
-				} else {
-					setText(item.getDescription());
-				}
-			}
-		});
+		eventTypeComboBox.setCellFactory(column -> new MetaClassListCell<>());
+		eventTypeComboBox.setButtonCell(new MetaClassListCell<>());
 
 		loadEventType();
 	}

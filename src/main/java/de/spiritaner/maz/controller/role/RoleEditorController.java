@@ -1,12 +1,10 @@
 package de.spiritaner.maz.controller.role;
 
-import de.spiritaner.maz.controller.meta.ContactMethodTypeEditorController;
 import de.spiritaner.maz.controller.meta.RoleTypeEditorController;
-import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.model.Role;
-import de.spiritaner.maz.model.meta.ContactMethodType;
 import de.spiritaner.maz.model.meta.RoleType;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.factories.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -14,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -34,34 +31,10 @@ public class RoleEditorController implements Initializable {
 	private ComboBoxValidator<RoleType> roleTypeValidator;
 
 	public void initialize(URL location, ResourceBundle resources) {
-		roleTypeValidator = new ComboBoxValidator<RoleType>(roleTypeComboBox).fieldName("Funktion").isSelected(true).validateOnChange();
+		roleTypeValidator = new ComboBoxValidator<>(roleTypeComboBox).fieldName("Funktion").isSelected(true).validateOnChange();
 
-		roleTypeComboBox.setCellFactory(column -> {
-			return new ListCell<RoleType>() {
-				@Override
-				public void updateItem(RoleType item, boolean empty) {
-					super.updateItem(item, empty);
-
-					if (item == null || empty) {
-						setText(null);
-					} else {
-						setText(item.getDescription());
-					}
-				}
-			};
-		});
-		roleTypeComboBox.setButtonCell(new ListCell<RoleType>() {
-			@Override
-			protected void updateItem(RoleType item, boolean empty) {
-				super.updateItem(item, empty);
-
-				if (item == null || empty) {
-					setText(null);
-				} else {
-					setText(item.getDescription());
-				}
-			}
-		});
+		roleTypeComboBox.setCellFactory(column -> new MetaClassListCell<>());
+		roleTypeComboBox.setButtonCell(new MetaClassListCell<>());
 
 		loadRoleType();
 	}

@@ -7,9 +7,6 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/**
- * Created by florian on 2/26/17.
- */
 public class MetadataOverviewController implements Initializable, Controller {
 
     @Override

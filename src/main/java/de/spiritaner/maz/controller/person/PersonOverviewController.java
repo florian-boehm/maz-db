@@ -63,7 +63,7 @@ public class PersonOverviewController extends OverviewController<Person> {
 		firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
 		familyNameColumn.setCellValueFactory(cellData -> cellData.getValue().familyNameProperty());
 		birthNameColumn.setCellValueFactory(cellData -> cellData.getValue().birthNameProperty());
-		genderColumn.setCellValueFactory(cellData -> cellData.getValue().getGender().descriptionProperty());
+		genderColumn.setCellValueFactory(cellData -> cellData.getValue().getGender(true).descriptionProperty());
 		dioceseColumn.setCellValueFactory(cellData -> cellData.getValue().getDiocese(true).descriptionProperty());
 		birthdayColumn.setCellValueFactory(cellData -> cellData.getValue().birthdayProperty());
 		ageColumn.setCellValueFactory(cellData -> cellData.getValue().birthdayProperty());

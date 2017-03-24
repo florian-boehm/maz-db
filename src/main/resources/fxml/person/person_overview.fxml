@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.MaskerPane?>
-<?import org.controlsfx.control.ToggleSwitch?>
-
 <AnchorPane fx:id="tablePane" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.person.PersonOverviewController">
 	<children>
 		<BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -27,14 +16,14 @@
 						<Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#remove" text="Entfernen" />
 						<Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#edit" text="Bearbeiten" />
 						<Button mnemonicParsing="false" onAction="#create" text="Neu" />
-						<Separator orientation="VERTICAL" />
+						<!--Separator orientation="VERTICAL" />
 						<MenuButton mnemonicParsing="false" text="Auswahl">
 							<items>
 								<MenuItem mnemonicParsing="false" text="Alle" />
 								<MenuItem mnemonicParsing="false" text="Keine" />
 								<MenuItem mnemonicParsing="false" text="Auf Suche basierend" />
 							</items>
-						</MenuButton>
+						</MenuButton-->
 						<!--Separator orientation="VERTICAL" />
 						<ToggleSwitch fx:id="personDetailsToggle" contentDisplay="RIGHT" graphicTextGap="0.0" selected="true" text="Detailansicht">
 							<padding>
