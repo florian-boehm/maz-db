@@ -1,4 +1,4 @@
-package de.spiritaner.maz.util.factories;
+package de.spiritaner.maz.util.factory;
 
 import javafx.util.StringConverter;
 

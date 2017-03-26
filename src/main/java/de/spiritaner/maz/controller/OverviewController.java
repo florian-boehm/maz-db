@@ -252,6 +252,10 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		this.editOnDoubleclick = editOnDoubleclick;
 	}
 
+	public Stage getStage() {
+		return stage;
+	}
+
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface Annotation {

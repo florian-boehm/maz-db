@@ -1,4 +1,4 @@
-package de.spiritaner.maz.view.components;
+package de.spiritaner.maz.view.component;
 
 import de.spiritaner.maz.controller.meta.MetadataEditorController;
 import javafx.scene.control.Tab;

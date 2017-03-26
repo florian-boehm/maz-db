@@ -1,7 +1,7 @@
 package de.spiritaner.maz.controller;
 
 import de.spiritaner.maz.dialog.ExceptionDialog;
-import de.spiritaner.maz.view.components.ImageTab;
+import de.spiritaner.maz.view.component.ImageTab;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

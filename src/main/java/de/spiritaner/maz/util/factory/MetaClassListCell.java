@@ -1,4 +1,4 @@
-package de.spiritaner.maz.util.factories;
+package de.spiritaner.maz.util.factory;
 
 import de.spiritaner.maz.model.meta.MetaClass;
 import javafx.scene.control.ListCell;

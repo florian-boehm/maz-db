@@ -4,7 +4,7 @@ import de.spiritaner.maz.controller.meta.RoleTypeEditorController;
 import de.spiritaner.maz.model.Role;
 import de.spiritaner.maz.model.meta.RoleType;
 import de.spiritaner.maz.util.DataDatabase;
-import de.spiritaner.maz.util.factories.MetaClassListCell;
+import de.spiritaner.maz.util.factory.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;

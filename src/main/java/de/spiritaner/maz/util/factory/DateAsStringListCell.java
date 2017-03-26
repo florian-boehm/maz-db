@@ -1,6 +1,5 @@
-package de.spiritaner.maz.util.factories;
+package de.spiritaner.maz.util.factory;
 
-import de.spiritaner.maz.model.Person;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TableCell;
 

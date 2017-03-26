@@ -3,7 +3,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.*?>
-<?import de.spiritaner.maz.view.components.MetadataEditorTab?>
+<?import de.spiritaner.maz.view.component.MetadataEditorTab?>
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.meta.MetadataOverviewController">
     <children>
         <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"

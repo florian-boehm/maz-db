@@ -4,7 +4,7 @@ import de.spiritaner.maz.controller.meta.ApprovalTypeEditorController;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.meta.ApprovalType;
 import de.spiritaner.maz.util.DataDatabase;
-import de.spiritaner.maz.util.factories.MetaClassListCell;
+import de.spiritaner.maz.util.factory.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
 

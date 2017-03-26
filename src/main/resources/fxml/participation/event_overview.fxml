@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToolBar?>
@@ -19,6 +20,8 @@
                         <Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#remove" text="Entfernen" />
                         <Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#edit" text="Bearbeiten" />
                         <Button mnemonicParsing="false" onAction="#create" text="Neu" />
+                  <Separator orientation="VERTICAL" />
+                  <Button mnemonicParsing="false" onAction="#createParticipantList" text="Teilnehmerliste" />
                     </items>
                 </ToolBar>
             </bottom>

@@ -4,24 +4,20 @@ import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.DataDatabase;
-import de.spiritaner.maz.util.factories.DateAsStringListCell;
+import de.spiritaner.maz.util.factory.DateAsStringListCell;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
-import org.controlsfx.control.table.TableFilter;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.query.dsl.QueryBuilder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @OverviewController.Annotation(fxmlFile = "/fxml/person/person_overview.fxml", objDesc = "Person")

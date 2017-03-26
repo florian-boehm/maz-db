@@ -3,7 +3,9 @@ package de.spiritaner.maz.controller.participation;
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.Event;
-import de.spiritaner.maz.util.factories.DateAsStringListCell;
+import de.spiritaner.maz.util.document.ParticipantList;
+import de.spiritaner.maz.util.factory.DateAsStringListCell;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.stage.Stage;
@@ -22,8 +24,6 @@ public class EventOverviewController extends OverviewController<Event> {
 	@FXML private TableColumn<Event, LocalDate> fromDateColumn;
 	@FXML private TableColumn<Event, LocalDate> toDateColumn;
 	@FXML private TableColumn<Event, Long> idColumn;
-
-	private Stage stage;
 
 	public EventOverviewController() {
 		super(Event.class, true);
@@ -45,11 +45,6 @@ public class EventOverviewController extends OverviewController<Event> {
 	}
 
 	@Override
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
-
-	@Override
 	protected void postInit() {
 		eventTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getEventType().descriptionProperty());
 		nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
@@ -60,5 +55,13 @@ public class EventOverviewController extends OverviewController<Event> {
 
 		fromDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
 		toDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
+	}
+
+	public void createParticipantList(ActionEvent actionEvent) {
+		Event selectedEvent = getTable().getSelectionModel().getSelectedItem();
+
+		if (selectedEvent != null) {
+			ParticipantList.forEvent(selectedEvent, getStage());
+		}
 	}
 }
