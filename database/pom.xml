@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>maz-db</artifactId>
+		<groupId>de.spiritaner.maz</groupId>
+		<version>0.4-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>database</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.9.10</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.192</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.svenkubiak</groupId>
+			<artifactId>jBCrypt</artifactId>
+			<version>0.4</version>
+		</dependency>
+
+		<!--dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
+		</dependency-->
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.2.8.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.2.8.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>5.2.8.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-envers</artifactId>
+			<version>5.2.8.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-java8</artifactId>
+			<version>5.2.8.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search-orm</artifactId>
+			<version>5.7.0.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.controlsfx</groupId>
+			<artifactId>controlsfx</artifactId>
+			<version>8.40.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.15</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.15</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>3.15</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>3.15</version>
+		</dependency>
+
+		<dependency>
+			<groupId>no.tornado</groupId>
+			<artifactId>tornadofx-controls</artifactId>
+			<version>1.0.5</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>de.spiritaner.maz.DatabaseApp</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>3.5.3</version>
+				<configuration>
+					<logging>warning</logging>
+				</configuration>
+				<executions>
+					<!-- those two reference databases will always be regenerated -->
+					<execution>
+						<id>update-data-ref</id>
+						<!--phase>process-resources</phase-->
+						<goals>
+							<goal>clearCheckSums</goal>
+							<goal>dropAll</goal>
+							<goal>update</goal>
+						</goals>
+						<configuration>
+							<changeLogFile>src/main/resources/liquibase/data/changelog.xml</changeLogFile>
+							<url>jdbc:h2:./target/dbfiles/data_ref</url>
+							<driver>org.h2.Driver</driver>
+							<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+						</configuration>
+					</execution>
+					<execution>
+						<id>update-users-ref</id>
+						<!--phase>process-resources</phase-->
+						<goals>
+							<goal>clearCheckSums</goal>
+							<goal>dropAll</goal>
+							<goal>update</goal>
+						</goals>
+						<configuration>
+							<changeLogFile>src/main/resources/liquibase/users/changelog.xml</changeLogFile>
+							<url>jdbc:h2:./target/dbfiles/users_ref</url>
+							<driver>org.h2.Driver</driver>
+							<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+						</configuration>
+					</execution>
+					<execution>
+						<id>diff-data-db</id>
+						<!--phase>process-resources</phase-->
+						<goals>
+							<goal>diff</goal>
+						</goals>
+						<configuration>
+							<diffChangeLogFile>src/main/resources/liquibase/data/changelog-${project.version}.xml
+							</diffChangeLogFile>
+							<changeLogFile>src/main/resources/liquibase/data/changelog.xml</changeLogFile>
+							<driver>org.h2.Driver</driver>
+							<url>jdbc:h2:./target/dbfiles/data_ref</url>
+							<!--username>admin</username>
+							<password>E4BCC47A694E87A900D9ABA3702C2351 test1234</password-->
+							<referenceDriver>org.h2.Driver</referenceDriver>
+							<referenceUrl>jdbc:h2:./target/dbfiles/data;CIPHER=AES</referenceUrl>
+							<referenceUsername>admin</referenceUsername>
+							<referencePassword>E87BCE57B684D88B8B50C72A405E7D4A test1234</referencePassword>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.5.0</version>
+				<executions>
+					<execution>
+						<id>run-maz-db</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>java</executable>
+					<arguments>
+						<argument>-classpath</argument>
+						<classpath/>
+						<argument>de.spiritaner.maz.DatabaseApp</argument>
+						<argument>-Duser.language=de</argument>
+					</arguments>
+					<mainClass>de.spiritaner.maz.DatabaseApp</mainClass>
+					<workingDirectory>target/</workingDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

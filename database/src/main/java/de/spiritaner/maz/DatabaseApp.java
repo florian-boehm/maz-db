@@ -20,9 +20,7 @@ public class DatabaseApp extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
-//		UserDatabase.createFirstUser("admin","admin");
-//		ExceptionDialog.show(new Exception("Just a test"));
-		logger.info("Starting maz-db version 0.3");
+		logger.info("Starting maz-db version 0.4");
 
 		try {
 			if (!UserDatabase.isPopulated()) {
@@ -36,18 +34,6 @@ public class DatabaseApp extends Application {
 			logger.warn(e);
 			e.printStackTrace();
 			logger.warn("Database is in use");
-		} catch(RuntimeException e) {
-			Throwable t = e.getCause();
-
-			while ((t != null) && !(t instanceof SchemaManagementException)) {
-				t = t.getCause();
-			}
-
-            if (t instanceof ConstraintViolationException) {
-			    logger.error("Das Datenbankschema stimmt nicht mit dem Objectmodel überein!");
-            }
-
-            ExceptionDialog.show(e);
 		}
 	}
 

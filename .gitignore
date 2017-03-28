@@ -10,3 +10,4 @@ buildNumber.properties
 
 .idea/
 maz-db.iml
+*/*.iml

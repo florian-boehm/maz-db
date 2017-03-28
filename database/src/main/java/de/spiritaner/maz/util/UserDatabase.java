@@ -2,10 +2,6 @@ package de.spiritaner.maz.util;
 
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.User;
-import liquibase.Liquibase;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.LiquibaseException;
-import liquibase.resource.ClassLoaderResourceAccessor;
 import org.apache.log4j.Logger;
 import org.hibernate.tool.schema.spi.SchemaManagementException;
 import org.mindrot.jbcrypt.BCrypt;
@@ -16,9 +12,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.xml.bind.DatatypeConverter;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -45,21 +38,7 @@ public class UserDatabase {
 			}
 
 			if(t instanceof SchemaManagementException) {
-				logger.warn("A new database schema has to be applied!");
 
-				try {
-					Connection conn = DriverManager.getConnection("jdbc:h2:./dbfiles/users", "", "");
-					JdbcConnection jdbcConn = new JdbcConnection(conn);
-					Liquibase liquibase = new Liquibase("./liquibase/users/changelog.xml", new ClassLoaderResourceAccessor(), jdbcConn);
-					liquibase.update("");
-					logger.warn("Database schema has been applied!");
-
-					factory = Persistence.createEntityManagerFactory("userDb");
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				} catch (LiquibaseException e1) {
-					e1.printStackTrace();
-				}
 			} else {
 				logger.error(e);
 				ExceptionDialog.show(e);
