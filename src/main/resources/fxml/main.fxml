@@ -32,6 +32,7 @@
 			<!--ImageTab closable="false" img="@../img/message_32.png" name="Kontaktwege"/>
 			<ImageTab closable="false" img="@../img/manager_32.png" name="Verwaltung"/>
 			<ImageTab closable="false" img="@../img/analysis_32.png" name="Analyse"/-->
+			<ImageTab closable="false" img="@../img/earth_32.png" name="Einsatzstellen" url="@yearabroad/site_page.fxml"/>
 			<ImageTab closable="false" img="@../img/tags_32.png" name="Metadaten" url="@meta/metadata_overview.fxml"/>
 			<!--ImageTab closable="false" img="@../img/warning_32.png" name="Warnungen"/-->
 		</TabPane>

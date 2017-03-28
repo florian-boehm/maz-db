@@ -104,7 +104,7 @@
         </addColumn>
     </changeSet>
     <changeSet author="Florian (generated)" id="1490383418946-11">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_6" tableName="PARTICIPATION"/>
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_6A" tableName="PARTICIPATION"/>
     </changeSet>
     <changeSet author="Florian (generated)" id="1490383418946-12">
         <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_7F" tableName="PARTICIPATIONTYPE_AUD"/>

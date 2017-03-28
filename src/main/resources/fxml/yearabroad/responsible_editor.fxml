@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.yearabroad.ResponsibleEditorController">
+	<children>
+
+		<Label maxHeight="1.7976931348623157E308" text="Personengruppe:" GridPane.hgrow="ALWAYS" />
+      <ComboBox fx:id="groupNameComboBox" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+      <Label text="Herkunftsland:" GridPane.rowIndex="1" />
+      <ComboBox fx:id="homeCountryComboBox" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+
+		<Label text="Tätigkeitsfeld:" GridPane.rowIndex="2" />
+      <ComboBox fx:id="jobDescriptionComboBox" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+	</children>
+	<columnConstraints>
+		<ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0" />
+		<ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+	</columnConstraints>
+	<rowConstraints>
+		<RowConstraints />
+      <RowConstraints />
+		<RowConstraints />
+	</rowConstraints>
+</GridPane>

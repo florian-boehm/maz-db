@@ -7,6 +7,7 @@ import de.spiritaner.maz.controller.participation.ParticipationOverviewControlle
 import de.spiritaner.maz.controller.relationship.RelationshipOverviewController;
 import de.spiritaner.maz.controller.residence.ResidenceOverviewController;
 import de.spiritaner.maz.controller.role.RoleOverviewController;
+import de.spiritaner.maz.controller.yearabroad.YearAbroadOverviewController;
 import de.spiritaner.maz.model.Person;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -69,6 +70,11 @@ public class PersonPageController implements Initializable, Controller {
 	@FXML
 	private RelationshipOverviewController personRelationshipsController;
 
+	@FXML
+	private AnchorPane personYearsAbroad;
+	@FXML
+	private YearAbroadOverviewController personYearsAbroadController;
+
 	private Stage stage;
 
 	@Override
@@ -107,6 +113,7 @@ public class PersonPageController implements Initializable, Controller {
 			case "participationTab": personParticipationsController.onReopen(); break;
 			case "roleTab": personRolesController.onReopen(); break;
 			case "relationshipTab": personRelationshipsController.onReopen(); break;
+			case "yearAbroadTab": personYearsAbroadController.onReopen(); break;
 		}
 	}
 
@@ -118,6 +125,7 @@ public class PersonPageController implements Initializable, Controller {
 			personParticipationsController.setPerson(person);
 			personRolesController.setPerson(person);
 			personRelationshipsController.setPerson(person);
+			personYearsAbroadController.setPerson(person);
 
 			detailsMasker.setVisible(false);
 
@@ -134,6 +142,7 @@ public class PersonPageController implements Initializable, Controller {
 		personContactMethodsController.setStage(stage);
 		personRolesController.setStage(stage);
 		personRelationshipsController.setStage(stage);
+		personYearsAbroadController.setStage(stage);
 	}
 
 	@Override

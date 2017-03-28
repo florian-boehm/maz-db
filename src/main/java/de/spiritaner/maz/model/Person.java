@@ -41,6 +41,7 @@ public class Person implements Identifiable {
 	private StringProperty birthplace;
 
 	private Gender gender;
+	private Residence preferredResidence;
 	private List<Residence> residences;
 	private Diocese diocese;
 	private List<Role> roles;
@@ -48,6 +49,8 @@ public class Person implements Identifiable {
 	private List<ContactMethod> contactMethods;
 	private List<Participation> participations;
 	private List<Relationship> relationships;
+	private List<Responsible> responsibles;
+	private List<YearAbroad> yearsAbroad;
 
 	public Person() {
 		id = new SimpleLongProperty();
@@ -278,6 +281,33 @@ public class Person implements Identifiable {
 	}
 	public void setRelationships(List<Relationship> relationships) {
 		this.relationships = relationships;
+	}
+
+	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+	public List<Responsible> getResponsibles() {
+		return responsibles;
+	}
+
+	public void setResponsibles(List<Responsible> responsibles) {
+		this.responsibles = responsibles;
+	}
+
+	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+	public List<YearAbroad> getYearsAbroad() {
+		return yearsAbroad;
+	}
+
+	public void setYearsAbroad(List<YearAbroad> yearsAbroad) {
+		this.yearsAbroad = yearsAbroad;
+	}
+
+	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+	public Residence getPreferredResidence() {
+		return preferredResidence;
+	}
+
+	public void setPreferredResidence(Residence preferredResidence) {
+		this.preferredResidence = preferredResidence;
 	}
 
 	@Transient

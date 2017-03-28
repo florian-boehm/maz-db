@@ -256,6 +256,22 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		return stage;
 	}
 
+	public void removeItem(T item) {
+		if(useFilter) {
+			tableFilter.getBackingList().remove(item);
+		} else {
+			table.getItems().remove(item);
+		}
+	}
+
+	public void addItem(T item) {
+		if(useFilter) {
+			tableFilter.getBackingList().add(item);
+		} else {
+			table.getItems().add(item);
+		}
+	}
+
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface Annotation {

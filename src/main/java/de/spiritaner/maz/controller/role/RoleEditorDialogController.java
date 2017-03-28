@@ -37,25 +37,9 @@ public class RoleEditorDialogController extends EditorController<Role> {
 	@FXML
 	private RoleEditorController roleEditorController;
 
-	private Stage stage;
-	private Role role;
-
 	@Override
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
-
-	@Override
-	public void setIdentifiable(Role obj) {
-		setRole(obj);
-	}
-
-	@Override
-	public void onReopen() {
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
+	public void setIdentifiable(Role role) {
+		super.setIdentifiable(role);
 
 		if (role != null) {
 			// Check if a person is already set in this role
@@ -77,6 +61,10 @@ public class RoleEditorDialogController extends EditorController<Role> {
 	}
 
 	@Override
+	public void onReopen() {
+	}
+
+	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 	}
 
@@ -89,17 +77,17 @@ public class RoleEditorDialogController extends EditorController<Role> {
 				EntityManager em = DataDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				role.setPerson(personEditorController.getAll(role.getPerson()));
-				roleEditorController.getAll(role);
+				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
+				roleEditorController.getAll(getIdentifiable());
 
 				try {
-					if (!em.contains(role)) em.merge(role);
+					Role managedRole = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
 
 					// Add backwards relationship too
-					if(!role.getPerson().getRoles().contains(role)) role.getPerson().getRoles().add(role);
+					if(!managedRole.getPerson().getRoles().contains(managedRole)) managedRole.getPerson().getRoles().add(managedRole);
 
 					em.getTransaction().commit();
-					stage.close();
+					getStage().close();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);
@@ -111,6 +99,6 @@ public class RoleEditorDialogController extends EditorController<Role> {
 	}
 
 	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> stage.close());
+		Platform.runLater(() -> getStage().close());
 	}
 }

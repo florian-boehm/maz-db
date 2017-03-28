@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.spiritaner.maz.controller.yearabroad.EPNumberEditorController">
+	<children>
+
+		<Label maxHeight="1.7976931348623157E308" text="EP-Nummer:" GridPane.hgrow="ALWAYS"/>
+
+		<TextField fx:id="epNumberField" GridPane.columnIndex="1"/>
+
+		<Label text="Beschreibung:" GridPane.rowIndex="1"/>
+
+		<TextField fx:id="descriptionField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+	</children>
+	<columnConstraints>
+		<ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0"/>
+		<ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
+	</columnConstraints>
+	<rowConstraints>
+		<RowConstraints/>
+		<RowConstraints/>
+	</rowConstraints>
+</GridPane>

@@ -1,5 +1,7 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.controller.role.RoleEditorDialogController;
+import de.spiritaner.maz.controller.yearabroad.YearAbroadEditorDialogController;
 import javafx.beans.property.*;
 import org.hibernate.envers.Audited;
 
@@ -12,6 +14,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Audited
+@Identifiable.Annotation(editorDialogClass = YearAbroadEditorDialogController.class, identifiableName = "Auslandsjahr")
 public class YearAbroad implements Identifiable {
 
 	private LongProperty id;
@@ -153,6 +156,11 @@ public class YearAbroad implements Identifiable {
 
 	public BooleanProperty weltwaertsPromotedProperty() {
 		return weltwaertsPromoted;
+	}
+
+	@Transient
+	public StringProperty weltwaertsPromotedStringProperty() {
+		return new SimpleStringProperty((weltwaertsPromoted.get()) ? "Ja" : "Nein");
 	}
 
 	public void setWeltwaertsPromoted(boolean weltwaertsPromoted) {

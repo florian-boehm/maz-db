@@ -31,6 +31,8 @@
     -fx-background-color: transparent;
 }
 
+/*
+// TODO this style is not good. maybe implement it in another way
 .button:disabled {
     -fx-opacity: 0.0;
-}
+}*/

@@ -15,6 +15,7 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 @Audited(targetAuditMode = NOT_AUDITED)
 @NamedQueries({
         @NamedQuery(name = "RoleType.findAll", query = "SELECT rt FROM RoleType rt"),
+        @NamedQuery(name = "RoleType.findByDesc", query = "SELECT rt FROM RoleType rt WHERE rt.description=:description"),
 })
 public class RoleType extends MetaClass {
 

@@ -51,7 +51,7 @@ public class RoleEditorController implements Initializable {
 
 	public void setReadonly(boolean readonly) {
 		roleTypeComboBox.setDisable(readonly);
-		addNewRoleTypeButton.setDisable(true);
+		addNewRoleTypeButton.setDisable(readonly);
 	}
 
 	public void loadRoleType() {

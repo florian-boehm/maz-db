@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.MaskerPane?>
+<SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0"
+           BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="de.spiritaner.maz.controller.yearabroad.SitePageController">
+	<items>
+		<fx:include fx:id="siteOverview" source="site_overview.fxml"/>
+		<AnchorPane fx:id="detailPane" minHeight="0.0" minWidth="0.0" prefHeight="252.0" prefWidth="746.0">
+			<children>
+				<TabPane fx:id="detailTabPane" prefHeight="535.0" prefWidth="526.0" tabClosingPolicy="UNAVAILABLE"
+				         AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+				         AnchorPane.topAnchor="0.0">
+					<tabs>
+						<Tab text="Verantwortliche" fx:id="responsibleTab">
+							<content>
+								<fx:include fx:id="siteResponsibles" source="responsible_overview.fxml"/>
+							</content>
+						</Tab>
+						<Tab text="Auslandsjahre" fx:id="yearAbroadTab">
+							<content>
+								<fx:include fx:id="siteYearsAbroad" source="yearabroad_overview.fxml"/>
+							</content>
+						</Tab>
+						<Tab text="EP-Nummern" fx:id="epNumberTab">
+							<content>
+								<fx:include fx:id="siteEPNumbers" source="epnumber_overview.fxml"/>
+							</content>
+						</Tab>
+					</tabs>
+				</TabPane>
+				<MaskerPane fx:id="detailsMasker" progressVisible="false"
+				            text="Bitte zuerst eine Einsatzstelle auswählen ..." AnchorPane.bottomAnchor="0.0"
+				            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+			</children>
+		</AnchorPane>
+	</items>
+</SplitPane>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.MaskerPane?>
+<AnchorPane fx:id="tablePane" minHeight="0.0" minWidth="0.0" prefHeight="520.0" prefWidth="689.0"
+            xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="de.spiritaner.maz.controller.yearabroad.SiteOverviewController">
+	<children>
+		<BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+		            AnchorPane.topAnchor="0.0">
+			<bottom>
+				<ToolBar fx:id="toolbar" nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="746.0"
+				         BorderPane.alignment="CENTER">
+					<items>
+						<Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#remove"
+						        text="Entfernen"/>
+						<Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#edit" text="Bearbeiten"/>
+						<Button mnemonicParsing="false" onAction="#create" text="Neu"/>
+					</items>
+				</ToolBar>
+			</bottom>
+			<center>
+				<ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+					<content>
+						<TableView fx:id="table"
+						           style="-fx-padding: 0; -fx-background-insets: 0px; -fx-background-color: #f4f4f4; -fx-border-width: 0 0 1 0; -fx-border-color: #c8c8c8;"
+						           tableMenuButtonVisible="true">
+							<columns>
+								<TableColumn fx:id="nameColumn" prefWidth="150.0" text="Name"/>
+								<TableColumn fx:id="organizationColumn" prefWidth="150.0" text="Organisation"/>
+								<TableColumn fx:id="idColumn" prefWidth="75.0" text="ID"/>
+							</columns>
+							<opaqueInsets>
+								<Insets/>
+							</opaqueInsets>
+							<columnResizePolicy>
+								<TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY"/>
+							</columnResizePolicy>
+						</TableView>
+					</content>
+				</ScrollPane>
+			</center>
+		</BorderPane>
+		<MaskerPane fx:id="masker" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+		            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+	</children>
+</AnchorPane>

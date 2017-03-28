@@ -1,5 +1,6 @@
 package de.spiritaner.maz.util;
 
+import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.User;
 import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
@@ -57,6 +58,8 @@ public class DataDatabase {
 				} catch (LiquibaseException e1) {
 					e1.printStackTrace();
 				}
+			} else {
+				ExceptionDialog.show(e);
 			}
 		}
 	}

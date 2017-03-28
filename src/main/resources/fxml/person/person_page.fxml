@@ -40,6 +40,11 @@
                                 <fx:include fx:id="personRelationships" source="../relationship/relationship_overview.fxml" />
                             </content>
                         </Tab>
+                        <Tab text="Auslandsjahre" fx:id="yearAbroadTab">
+                            <content>
+                                <fx:include fx:id="personYearsAbroad" source="../yearabroad/yearabroad_overview.fxml" />
+                            </content>
+                        </Tab>
                     </tabs>
                 </TabPane>
                 <MaskerPane fx:id="detailsMasker" progressVisible="false" text="Bitte zuerst eine Person auswählen ..." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

@@ -32,37 +32,12 @@ public class RoleOverviewController extends OverviewController<Role> {
 	}
 
 	@Override
-	protected void postCreate(Role obj) {
-
-	}
-
-	@Override
-	protected void preEdit(Role object) {
-
-	}
-
-	@Override
-	protected void preRemove(Role obsoleteEntity) {
-
-	}
-
-	@Override
-	protected void postRemove(Role obsoleteEntity) {
-
-	}
-
-	@Override
 	protected Collection<Role> preLoad(EntityManager em) {
 		if(person != null) {
 			Hibernate.initialize(person.getRoles());
 			return FXCollections.observableArrayList(person.getRoles());
 		}
 		return null;
-	}
-
-	@Override
-	protected void postLoad(Collection<Role> loadedObjs) {
-
 	}
 
 	@Override
@@ -73,11 +48,6 @@ public class RoleOverviewController extends OverviewController<Role> {
 	@Override
 	protected void handleException(RollbackException e) {
 		ExceptionDialog.show(e);
-	}
-
-	@Override
-	protected void preInit() {
-
 	}
 
 	@Override

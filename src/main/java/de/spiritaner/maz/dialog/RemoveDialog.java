@@ -111,7 +111,27 @@ public class RemoveDialog {
 		return alert;
 	}
 
-	public static <T extends Identifiable> Alert create(final T identifiable, final Stage stage) {
+	public static Alert create(EPNumber epNumber, Stage stage) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("EP-Nummer löschen");
+		alert.setHeaderText(null);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setContentText("EP-Nummer '" + epNumber.getNumber() + "' wirklich löschen?");
+		alert.initOwner(stage);
+		return alert;
+	}
+
+	public static Alert create(Site site, Stage stage) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Einsatzstelle löschen");
+		alert.setHeaderText(null);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setContentText("Einsatzstelle '" + site.getName() + "' wirklich löschen?");
+		alert.initOwner(stage);
+		return alert;
+	}
+
+	/*public static <T extends Identifiable> Alert create(final T identifiable, final Stage stage) {
 		final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		final Identifiable.Annotation annotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);
 		alert.setTitle(annotation.identifiableName() + " löschen");
@@ -120,5 +140,5 @@ public class RemoveDialog {
 		alert.setContentText(annotation.identifiableName() + " '" + identifiable.toString() + "' wirklich löschen?");
 		alert.initOwner(stage);
 		return alert;
-	}
+	}*/
 }
