@@ -8,19 +8,23 @@ import de.spiritaner.maz.dialog.OverviewDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.YearAbroad;
+import de.spiritaner.maz.util.DataDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import org.apache.log4j.Logger;
 
-import java.net.URL;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/yearabroad_editor_dialog.fxml", objDesc = "Auslandsjahr")
 public class YearAbroadEditorDialogController extends EditorController<YearAbroad> {
+
+	final static Logger logger = Logger.getLogger(YearAbroadEditorDialogController.class);
 
 	@FXML private Text titleText;
 	@FXML private GridPane siteEditor;
@@ -63,22 +67,32 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 		}
 	}
 
-	@Override
-	public void onReopen() {
-
-	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-
-	}
-
 	public void saveYearAbroad(ActionEvent actionEvent) {
-		System.out.println("TO BE IMPLEMENTED");
-	}
+		Platform.runLater(() -> {
+			boolean siteValid = siteEditorController.isValid();
+			boolean personValid = personEditorController.isValid();
 
-	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> getStage().close());
+			if(siteValid && personValid) {
+				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				em.getTransaction().begin();
+
+				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
+				getIdentifiable().setSite(siteEditorController.getAll(getIdentifiable().getSite()));
+				yearAbroadEditorController.getAll(getIdentifiable());
+
+				try {
+					YearAbroad managedYearAbroad = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
+					em.getTransaction().commit();
+					setResult(managedYearAbroad);
+					requestClose();
+				} catch (PersistenceException e) {
+					em.getTransaction().rollback();
+					logger.warn(e);
+				} finally {
+					em.close();
+				}
+			}
+		});
 	}
 
 	public void searchPerson(ActionEvent actionEvent) {

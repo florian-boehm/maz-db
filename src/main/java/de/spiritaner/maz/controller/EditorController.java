@@ -1,33 +1,74 @@
 package de.spiritaner.maz.controller;
 
 import de.spiritaner.maz.model.Identifiable;
-import javafx.fxml.Initializable;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
-public abstract class EditorController<T extends Identifiable> implements Controller, Initializable {
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
+public abstract class EditorController<T extends Identifiable> implements Controller {
 
 	private Stage stage;
 	private T identifiable;
+	private Optional result = Optional.empty();
+
+	public Stage getStage() {
+		return stage;
+	}
 
 	@Override
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
-	public Stage getStage() {
-		return stage;
+	public T getIdentifiable() {
+		return identifiable;
 	}
 
 	public void setIdentifiable(T obj) {
 		this.identifiable = obj;
 	}
 
-	public T getIdentifiable() {
-		return identifiable;
-	}
-
 	public String getIdentifiableName() {
 		Identifiable.Annotation annotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);
 		return annotation.identifiableName();
+	}
+
+	public void closeDialog(ActionEvent actionEvent) {
+		// Platform.runLater(() -> getStage().close());
+		requestClose();
+	}
+
+	@Override
+	public void onReopen() {
+	}
+
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+	}
+
+	public Optional getResult() {
+		return result;
+	}
+
+	public void setResult(T obj) {
+		this.result = Optional.of(obj);
+	}
+
+	public void setResult(Optional result) {
+		this.result = result;
+	}
+
+	public void requestClose() {
+		stage.fireEvent(
+				  new WindowEvent(
+							 stage,
+							 WindowEvent.WINDOW_CLOSE_REQUEST
+				  )
+		);
 	}
 }

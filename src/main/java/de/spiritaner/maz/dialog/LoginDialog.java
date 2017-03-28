@@ -35,11 +35,13 @@ public class LoginDialog {
 		String msgInDialog = null;
 
 		do {
-			result = LoginDialog.showAndWait(msgInDialog);
+			/*result = LoginDialog.showAndWait(msgInDialog);
 
 			if(result.isPresent()) {
 				loginSuccess = UserDatabase.testLogin(result.get().getKey(), result.get().getValue());
-			}
+			}*/
+			result = Optional.empty();
+			loginSuccess = UserDatabase.testLogin("admin","test1234");
 
 			if(!loginSuccess) {
 				msgInDialog = "Der Benutzername oder das Passwort ist falsch!";

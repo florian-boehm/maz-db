@@ -24,7 +24,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Collection;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -83,18 +82,26 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 	protected void preCreate(T newObject) {};
 
+	@SuppressWarnings("unchecked")
 	public void create(ActionEvent actionEvent) {
 		try {
 			T obj = cls.newInstance();
 			preCreate(obj);
 			Method method = EditorDialog.class.getMethod("showAndWait", Identifiable.class, Stage.class);
-			method.invoke(null, obj, stage);
-			postCreate(obj);
+			// Suppress warning needed for the following cast, because it will always be a correct cast
+			Optional<T> result = (Optional<T>) method.invoke(null, obj, stage);
+
+			result.ifPresent(managedObject -> {
+				postCreate(managedObject);
+				addItem(managedObject);
+			});
+
+			if(!result.isPresent()) {
+				load();
+			}
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			ExceptionDialog.show(e);
 		}
-
-		load();
 	}
 
 	protected void postCreate(T newObject) {};
@@ -119,7 +126,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		load();
 	}
 
-	protected void preRemove(T obsoleteEntity) {};
+	protected void preRemove(T obsoleteEntity, EntityManager em) {};
 
 	public void remove(final ActionEvent actionEvent) {
 		final T selectedObj = getTable().getSelectionModel().getSelectedItem();
@@ -134,9 +141,11 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 					EntityManager em = DataDatabase.getFactory().createEntityManager();
 					em.getTransaction().begin();
 					final T obsoleteEntity = em.find(cls, selectedObj.getId());
-					preRemove(obsoleteEntity);
+					preRemove(obsoleteEntity, em);
 					em.remove(obsoleteEntity);
 					em.getTransaction().commit();
+
+					removeItem(obsoleteEntity);
 
 					postRemove(obsoleteEntity);
 				} catch (RollbackException e) {
@@ -148,7 +157,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 			ExceptionDialog.show(e);
 		}
 
-		load();
+		//load();
 	}
 
 	protected void postRemove(T obsoleteEntity) {};

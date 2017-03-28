@@ -1,0 +1,163 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="Florian (generated)" id="1490693145211-1">
+        <createTable tableName="EPNUMBER">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="NUMBER" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SITEID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-2">
+        <createTable tableName="EPNUMBER_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="NUMBER" type="INT(10)"/>
+            <column name="SITEID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-3">
+        <createTable tableName="RESPONSIBLE">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GROUPNAME" type="VARCHAR(255)"/>
+            <column name="HOMECOUNTRY" type="VARCHAR(255)"/>
+            <column name="JOBDESCRIPTION" type="VARCHAR(255)"/>
+            <column name="PERSONID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SITEID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-4">
+        <createTable tableName="RESPONSIBLE_AUD">
+            <column name="ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REV" type="INT(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REVTYPE" type="TINYINT(3)"/>
+            <column name="GROUPNAME" type="VARCHAR(255)"/>
+            <column name="HOMECOUNTRY" type="VARCHAR(255)"/>
+            <column name="JOBDESCRIPTION" type="VARCHAR(255)"/>
+            <column name="PERSONID" type="BIGINT(19)"/>
+            <column name="SITEID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-5">
+        <addColumn tableName="PERSON">
+            <column name="PREFERREDRESIDENCEID" type="BIGINT(19)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-6">
+        <addColumn tableName="PERSON_AUD">
+            <column name="PREFERREDRESIDENCEID" type="BIGINT(19)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-7">
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_1" tableName="EPNUMBER"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-8">
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_9F" tableName="EPNUMBER_AUD"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-9">
+        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_A0" tableName="RESPONSIBLE_AUD"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-10">
+        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_EE" tableName="RESPONSIBLE"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-11">
+        <addUniqueConstraint columnNames="NUMBER" constraintName="UK_QW6Q7UGBA94V40JTLQQHVJXF5" tableName="EPNUMBER"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-12">
+        <createIndex indexName="FK3PCLYPBYRYXK4J7WY23YT3M5C_INDEX_9" tableName="EPNUMBER_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-13">
+        <createIndex indexName="FK4QFMG5K6SNS9HQ4I60QC2TP1T_INDEX_1" tableName="EPNUMBER">
+            <column name="SITEID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-14">
+        <createIndex indexName="FK9P5YADOL3B3Q8M0UTKFX96N2G_INDEX_E" tableName="RESPONSIBLE">
+            <column name="PERSONID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-15">
+        <createIndex indexName="FKAD1S3SVGYBSW8503YWQGBJR30_INDEX_E" tableName="RESPONSIBLE">
+            <column name="SITEID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-16">
+        <createIndex indexName="FKC1MT6CTFFKUWTAQ2TTH7A5YIJ_INDEX_8" tableName="PERSON">
+            <column name="PREFERREDRESIDENCEID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-17">
+        <createIndex indexName="FKOCFRR7GJUPC0DMVMO0N4LS4RP_INDEX_A" tableName="RESPONSIBLE_AUD">
+            <column name="REV"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-18">
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="EPNUMBER_AUD" constraintName="FK3PCLYPBYRYXK4J7WY23YT3M5C" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV" referencedTableName="REVINFO"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-19">
+        <addForeignKeyConstraint baseColumnNames="SITEID" baseTableName="EPNUMBER" constraintName="FK4QFMG5K6SNS9HQ4I60QC2TP1T" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="SITE"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-20">
+        <addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="RESPONSIBLE" constraintName="FK9P5YADOL3B3Q8M0UTKFX96N2G" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="PERSON"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-21">
+        <addForeignKeyConstraint baseColumnNames="SITEID" baseTableName="RESPONSIBLE" constraintName="FKAD1S3SVGYBSW8503YWQGBJR30" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="SITE"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-22">
+        <addForeignKeyConstraint baseColumnNames="PREFERREDRESIDENCEID" baseTableName="PERSON" constraintName="FKC1MT6CTFFKUWTAQ2TTH7A5YIJ" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="RESIDENCE"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-23">
+        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="RESPONSIBLE_AUD" constraintName="FKOCFRR7GJUPC0DMVMO0N4LS4RP" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV" referencedTableName="REVINFO"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-24">
+        <dropForeignKeyConstraint baseTableName="SITE_EP_NUMBERS" constraintName="FKGG0EYK402WY5A8HGM6LPVFDCR"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-25">
+        <dropForeignKeyConstraint baseTableName="SITE_EP_NUMBERS_AUD" constraintName="FKHJVI905D0O4TLGXEI8QBK6TUE"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-26">
+        <dropColumn columnName="PREFERREDADDRESS" tableName="RESIDENCE"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-27">
+        <dropColumn columnName="PREFERREDADDRESS" tableName="RESIDENCE_AUD"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-28">
+        <dropIndex indexName="FK1VWMTYPJ315M989OTQ2NJ1F40_INDEX_7" tableName="PARTICIPANT_AUD"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-29">
+        <dropIndex indexName="FKBHSN8PJUV4GFGV4IQPFSB2T31_INDEX_A" tableName="PARTICIPANT"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-30">
+        <dropIndex indexName="FKESEWPQOAK6SE5O8J8WJ2HWBPX_INDEX_A" tableName="PARTICIPANT"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-31">
+        <dropIndex indexName="FKJYJPLLJH27Q3VL4F05YEDP8UB_INDEX_1" tableName="PARTICIPANTTYPE_AUD"/>
+    </changeSet>
+    <changeSet author="Florian (generated)" id="1490693145211-32">
+        <dropIndex indexName="FKWJUKVBRFTUILLISKPAJ48VQJ_INDEX_A" tableName="PARTICIPANT"/>
+    </changeSet>
+</databaseChangeLog>

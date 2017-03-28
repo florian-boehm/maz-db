@@ -5,7 +5,10 @@
 	<groupId>de.spiritaner.maz</groupId>
 	<artifactId>maz-db</artifactId>
 	<version>0.4-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<modules>
+		<module>../maz-db-updater</module>
+	</modules>
+	<packaging>pom</packaging>
 
 	<name>maz-db</name>
 	<url>http://maven.apache.org</url>

@@ -67,6 +67,12 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 	}
 
 	@Override
+	protected void preRemove(Residence residence, EntityManager em) {
+		Person managedPerson = (em.contains(residence.getPerson())) ? residence.getPerson() : em.find(Person.class, residence.getPerson().getId());
+		managedPerson.setPreferredResidence(null);
+	}
+
+	@Override
 	protected void postInit() {
 		residenceTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getResidenceType().descriptionProperty());
 		preferredAddressColumn.setCellValueFactory(cellData -> cellData.getValue().preferredAddressProperty());

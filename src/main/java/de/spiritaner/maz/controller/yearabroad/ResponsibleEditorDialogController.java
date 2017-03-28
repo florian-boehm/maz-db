@@ -44,16 +44,6 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 	private ResponsibleEditorController responsibleEditorController;
 
 	@Override
-	public void onReopen() {
-
-	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-
-	}
-
-	@Override
 	public void setIdentifiable(Responsible responsible) {
 		super.setIdentifiable(responsible);
 
@@ -91,8 +81,8 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 
 					if(!managedResponsible.getSite().getResponsibles().contains(managedResponsible)) managedResponsible.getSite().getResponsibles().add(managedResponsible);
 
-					// Automatically add the role 'Einsatzstellenverantwortliche(r)'
-					RoleType siteResponsibleRoleType = em.createNamedQuery("RoleType.findByDesc", RoleType.class).setParameter("description","Einsatzstellenverantwortliche(r)").getSingleResult();
+					// Automatically add the role 'Ansprechperson Einsatzstelle'
+					RoleType siteResponsibleRoleType = em.createNamedQuery("RoleType.findByDesc", RoleType.class).setParameter("description","Ansprechperson Einsatzstelle").getSingleResult();
 					if(siteResponsibleRoleType != null) {
 						Hibernate.initialize(managedResponsible.getPerson().getRoles());
 						if(managedResponsible.getPerson().getRoles() == null || !managedResponsible.getPerson().getRoles().contains(siteResponsibleRoleType)) {
@@ -104,7 +94,8 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 					}
 
 					em.getTransaction().commit();
-					getStage().close();
+					setResult(managedResponsible);
+					requestClose();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);
@@ -113,10 +104,6 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 				}
 			}
 		});
-	}
-
-	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> getStage().close());
 	}
 
 	public void searchPerson(ActionEvent actionEvent) {

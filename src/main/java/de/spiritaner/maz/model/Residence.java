@@ -11,6 +11,7 @@ import javafx.beans.property.StringProperty;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import javax.xml.bind.SchemaOutputResolver;
 import java.util.ArrayList;
 
 /**
@@ -30,7 +31,6 @@ public class Residence implements Identifiable {
 	private Person person;
 	private Address address;
 	private ResidenceType residenceType;
-	private Boolean isPreferredAddress;
 
 	public Residence() {
 		id = new SimpleLongProperty();
@@ -80,16 +80,13 @@ public class Residence implements Identifiable {
 		this.residenceType = residenceType;
 	}
 
+	@Transient
 	public Boolean getPreferredAddress() {
-		return (isPreferredAddress == null) ? Boolean.FALSE : isPreferredAddress;
-	}
-
-	public void setPreferredAddress(Boolean preferredAddress) {
-		isPreferredAddress = preferredAddress;
+		return (getPerson() != null && getPerson().getPreferredResidence() != null) ? getPerson().getPreferredResidence().equals(this) : Boolean.FALSE;
 	}
 
 	public StringProperty preferredAddressProperty() {
-		return new SimpleStringProperty((isPreferredAddress) ? "Ja" : "Nein");
+		return new SimpleStringProperty((getPreferredAddress()) ? "Ja" : "Nein");
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/residence/residence_editor_dialog.fxml", objDesc = "Wohnort")
@@ -41,19 +42,9 @@ public class ResidenceEditorDialogController extends EditorController<Residence>
 	@FXML
 	private ResidenceEditorController residenceEditorController;
 
-	private Residence residence;
-
 	@Override
-	public void setIdentifiable(Residence obj) {
-		setResidence(obj);
-	}
-
-	@Override
-	public void onReopen() {
-	}
-
-	public void setResidence(Residence residence) {
-		this.residence = residence;
+	public void setIdentifiable(Residence residence) {
+		super.setIdentifiable(residence);
 
 		if (residence != null) {
 			// Check if a person is already set in this residence
@@ -78,10 +69,6 @@ public class ResidenceEditorDialogController extends EditorController<Residence>
 		}
 	}
 
-	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
-	}
-
 	public void saveResidence(ActionEvent actionEvent) {
 		Platform.runLater(() -> {
 			boolean addressValid = addressEditorController.isValid();
@@ -92,19 +79,27 @@ public class ResidenceEditorDialogController extends EditorController<Residence>
 				EntityManager em = DataDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				residence.setPerson(personEditorController.getAll(residence.getPerson()));
-				residence.setAddress(Address.findSame(em, addressEditorController.getAll(residence.getAddress())));
-				residenceEditorController.getAll(residence);
+				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
+				getIdentifiable().setAddress(Address.findSame(em, addressEditorController.getAll(getIdentifiable().getAddress())));
+				residenceEditorController.getAll(getIdentifiable());
 
 				try {
-					if (!em.contains(residence)) em.merge(residence);
+					Residence managedResidence = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
 
 					// Add backwards relationship too
-					if (!residence.getPerson().getResidences().contains(residence))
-						residence.getPerson().getResidences().add(residence);
+					// if (!managedResidence.getPerson().getResidences().contains(managedResidence)) managedResidence.getPerson().getResidences().add(managedResidence);
+					//if(getIdentifiable().getPerson().setResidences())
+
+					if (residenceEditorController.getPreferredResidence().isSelected()) {
+						managedResidence.getPerson().setPreferredResidence(managedResidence);
+					} else if(managedResidence.getPerson().getPreferredResidence() != null && managedResidence.getPerson().getPreferredResidence().equals(managedResidence)) {
+						managedResidence.getPerson().setPreferredResidence(null);
+					}
 
 					em.getTransaction().commit();
-					getStage().close();
+
+					setResult(managedResidence);
+					requestClose();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);
@@ -113,9 +108,5 @@ public class ResidenceEditorDialogController extends EditorController<Residence>
 				}
 			}
 		});
-	}
-
-	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> getStage().close());
 	}
 }

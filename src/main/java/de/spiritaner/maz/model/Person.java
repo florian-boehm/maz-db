@@ -301,7 +301,8 @@ public class Person implements Identifiable {
 		this.yearsAbroad = yearsAbroad;
 	}
 
-	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="preferredResidenceId")
 	public Residence getPreferredResidence() {
 		return preferredResidence;
 	}

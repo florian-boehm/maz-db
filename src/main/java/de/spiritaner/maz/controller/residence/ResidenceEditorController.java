@@ -47,7 +47,6 @@ public class ResidenceEditorController implements Initializable {
 
 	public Residence getAll(Residence residence) {
 		if (residence == null) residence = new Residence();
-		residence.setPreferredAddress(preferredResidence.isSelected());
 		residence.setResidenceType(residenceTypeComboBox.getValue());
 		return residence;
 	}
@@ -75,5 +74,9 @@ public class ResidenceEditorController implements Initializable {
 		new ResidenceTypeEditorController().create(actionEvent);
 
 		loadResidenceTypes();
+	}
+
+	public ToggleSwitch getPreferredResidence() {
+		return preferredResidence;
 	}
 }

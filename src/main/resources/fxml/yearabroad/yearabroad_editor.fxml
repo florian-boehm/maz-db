@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import tornadofx.control.DateTimePicker?>
 
 <GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.yearabroad.YearAbroadEditorController">
 	<children>
@@ -15,17 +16,19 @@
 		<TextField fx:id="jobDescriptionField" GridPane.columnIndex="1" />
 
 		<Label maxHeight="1.7976931348623157E308" text="Abreisedatum:" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-		<DatePicker fx:id="departureDatePicker" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+		<DatePicker fx:id="departureDatePicker" maxWidth="1.7976931348623157E308" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
 
 		<Label text="Rückreisedatum:" GridPane.rowIndex="3" />
-		<DatePicker fx:id="arrivalDatePicker" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+		<DatePicker fx:id="arrivalDatePicker" maxWidth="1.7976931348623157E308" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
 		<Label text="Abbruchdatum:" GridPane.columnIndex="3" />
-		<DatePicker fx:id="abortionDatePicker" maxWidth="1.7976931348623157E308" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" />
+		<DatePicker fx:id="abortionDatePicker" maxWidth="1.7976931348623157E308" showWeekNumbers="true" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" />
 		<Label text="Abbruchgrund:" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 		<TextArea fx:id="abortionReasonArea" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
 		<Separator orientation="VERTICAL" GridPane.columnIndex="2" GridPane.rowSpan="2147483647" />
 		<Label text="Details:" GridPane.rowIndex="1" />
 		<TextArea fx:id="detailsArea" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <DateTimePicker fx:id="missionDateTimePicker" format="dd.MM.yyyy HH:mm" maxWidth="1.7976931348623157E308" showWeekNumbers="true" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+      <Label text="Aussendung:" GridPane.columnIndex="3" GridPane.rowIndex="2" />
 	</children>
 	<columnConstraints>
 		<ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0" />

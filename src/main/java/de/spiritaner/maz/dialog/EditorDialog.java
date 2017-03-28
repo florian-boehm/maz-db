@@ -2,6 +2,7 @@ package de.spiritaner.maz.dialog;
 
 import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.model.Identifiable;
+import de.spiritaner.maz.model.Residence;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,11 +14,13 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Optional;
 
 public class EditorDialog<T extends EditorController> {
 
 	private final Stage stage;
 	private final T controller;
+	private Optional result = Optional.empty();
 
 	private EditorDialog(Stage parent, String fxmlFile, Identifiable identifiable, String identifiableName) throws IOException {
 		FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource(fxmlFile));
@@ -45,20 +48,28 @@ public class EditorDialog<T extends EditorController> {
 			stage.setMinHeight(stage.getHeight());
 			stage.setMinWidth(stage.getWidth());
 		});
+
+		stage.setOnCloseRequest(event -> {
+			System.out.println("got close request");
+			this.result = controller.getResult();
+		});
 	}
 
-	public void showAndWait() {
+	public Optional showAndWait() {
 		stage.showAndWait();
+		return this.result;
 	}
 
-	public static void showAndWait(Identifiable identifiable, Stage parent) {
+	public static Optional showAndWait(Identifiable identifiable, Stage parent) {
 		try {
 			final Identifiable.Annotation identifiableAnnotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);
 			final Annotation annotation = (Annotation) identifiableAnnotation.editorDialogClass().getAnnotation(Annotation.class);
-			new EditorDialog(parent, annotation.fxmlFile(), identifiable, annotation.objDesc()).showAndWait();
+			return new EditorDialog(parent, annotation.fxmlFile(), identifiable, annotation.objDesc()).showAndWait();
 		} catch (IOException e) {
 			ExceptionDialog.show(e);
 		}
+
+		return Optional.empty();
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

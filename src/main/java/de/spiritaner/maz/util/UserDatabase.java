@@ -60,6 +60,9 @@ public class UserDatabase {
 				} catch (LiquibaseException e1) {
 					e1.printStackTrace();
 				}
+			} else {
+				logger.error(e);
+				ExceptionDialog.show(e);
 			}
 		}
 

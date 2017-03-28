@@ -45,7 +45,7 @@ public class ApprovalOverviewController extends OverviewController<Approval> {
 	}
 
 	@Override
-	protected void preRemove(Approval obsoleteEntity) {
+	protected void preRemove(Approval obsoleteEntity, EntityManager em) {
 
 	}
 

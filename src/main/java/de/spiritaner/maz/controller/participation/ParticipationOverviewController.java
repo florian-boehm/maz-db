@@ -59,7 +59,7 @@ public class ParticipationOverviewController extends OverviewController<Particip
 	}
 
 	@Override
-	protected void preRemove(Participation obsoleteEntity) {
+	protected void preRemove(Participation obsoleteEntity, EntityManager em) {
 
 	}
 

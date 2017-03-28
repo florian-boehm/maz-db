@@ -131,6 +131,16 @@ public class RemoveDialog {
 		return alert;
 	}
 
+	public static Alert create(Residence site, Stage stage) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Wohnort löschen");
+		alert.setHeaderText(null);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setContentText("Wohnort '" + site.getAddress().getStreet() + " " + site.getAddress().getHouseNumber() + "' wirklich löschen?");
+		alert.initOwner(stage);
+		return alert;
+	}
+
 	/*public static <T extends Identifiable> Alert create(final T identifiable, final Stage stage) {
 		final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		final Identifiable.Annotation annotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);
