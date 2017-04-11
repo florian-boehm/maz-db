@@ -1,14 +1,14 @@
 package de.spiritaner.maz;
 
-import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.dialog.LoginDialog;
 import de.spiritaner.maz.util.UserDatabase;
 import de.spiritaner.maz.view.InitView;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
-import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.tool.schema.spi.SchemaManagementException;
+
+import java.io.PrintStream;
+import java.util.ResourceBundle;
 
 /**
  * @author Florian Schwab
@@ -20,7 +20,12 @@ public class DatabaseApp extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
-		logger.info("Starting maz-db version 0.4");
+		ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+		logger.info("Starting maz-db version "+guiText.getString("version"));
+
+		// Redirect stdout and stderr to log4j
+		System.setOut(createLoggingProxy(System.out));
+		System.setErr(createLoggingProxy(System.err));
 
 		try {
 			if (!UserDatabase.isPopulated()) {
@@ -30,11 +35,28 @@ public class DatabaseApp extends Application {
 			} else {
 				LoginDialog.showWaitAndExitOnFailure(primaryStage);
 			}
-		} catch(IllegalStateException e) {
-			logger.warn(e);
-			e.printStackTrace();
-			logger.warn("Database is in use");
+		} catch (Exception e) {
+			logger.error(e);
 		}
+	}
+
+	private PrintStream createLoggingProxy(PrintStream origStream) {
+		return new PrintStream(origStream) {
+			@Override
+			public void print(final String string) {
+				logger.info(string);
+			}
+
+			@Override
+			public void println(final String string) {
+				logger.info(string);
+			}
+
+			@Override
+			public void println(final Object obj) {
+				logger.info(obj+"\n");
+			}
+		};
 	}
 
 	/**

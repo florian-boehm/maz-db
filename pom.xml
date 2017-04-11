@@ -4,10 +4,9 @@
 
 	<groupId>de.spiritaner.maz</groupId>
 	<artifactId>maz-db</artifactId>
-	<version>0.4-SNAPSHOT</version>
+	<version>0.4</version>
 	<modules>
 		<module>database</module>
-		<module>database-updater</module>
 	</modules>
 	<packaging>pom</packaging>
 

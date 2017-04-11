@@ -16,6 +16,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Optional;
 
+@SuppressWarnings("unchecked")
 public class EditorDialog<T extends EditorController> {
 
 	private final Stage stage;

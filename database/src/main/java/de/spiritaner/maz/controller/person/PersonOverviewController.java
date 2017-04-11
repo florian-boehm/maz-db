@@ -73,7 +73,7 @@ public class PersonOverviewController extends OverviewController<Person> {
 	}
 
 	@Override
-	protected Collection preLoad(EntityManager em) {
+	protected Collection<Person> preLoad(EntityManager em) {
 		return em.createNamedQuery("Person.findAll", Person.class).getResultList();
 	}
 

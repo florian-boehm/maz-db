@@ -2,6 +2,10 @@ package de.spiritaner.maz.util;
 
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.User;
+import liquibase.Liquibase;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.LiquibaseException;
+import liquibase.resource.FileSystemResourceAccessor;
 import org.apache.log4j.Logger;
 import org.hibernate.tool.schema.spi.SchemaManagementException;
 import org.mindrot.jbcrypt.BCrypt;
@@ -11,9 +15,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.xml.bind.DatatypeConverter;
+import java.io.File;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.Iterator;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * @author Florian Schwab
@@ -25,20 +32,62 @@ public class UserDatabase {
 	private static EntityManagerFactory factory = null;
 
 	private synchronized static EntityManagerFactory getFactory() {
+		Map properties = new HashMap<>();
+
+		String path = Settings.get("database.path", "./dbfiles/");
+		String url = "jdbc:h2:"+path+"users";
+		url += ";LOCK_TIMEOUT=" + Settings.get("database.user.lock_timeout","5");
+		url += ";DEFAULT_LOCK_TIMEOUT=" + Settings.get("database.user.default_lock_timeout","5");
+		url += ";TRACE_LEVEL_FILE=" + Settings.get("database.user.trace_level_file","0");
+		url += ";TRACE_LEVEL_SYSTEM_OUT=" + Settings.get("database.user.trace_level_system_out","1");
+
+		properties.put("hibernate.connection.url", url);
+
 		try {
 			if(factory == null) {
-				factory = Persistence.createEntityManagerFactory("userDb");
+				factory = Persistence.createEntityManagerFactory("userDb", properties);
 			}
 		} catch (Exception e) {
-			// TODO This should only be done in extra updater application
-			Throwable t = e.getCause();
+			// Search for the cause of the exception
+			final Throwable rootCause = e.getCause();
+			Throwable t = rootCause;
 
-			while ((t != null) && !(t instanceof SchemaManagementException)) {
-				t = t.getCause();
-			}
+			boolean schemaManagementException = false;
+			boolean illegalStateException = false;
 
-			if(t instanceof SchemaManagementException) {
+			do {
+				if(t instanceof SchemaManagementException) schemaManagementException = true;
+				if(t instanceof IllegalStateException) illegalStateException = true;
+			} while((t = t.getCause()) != null);
 
+			if(schemaManagementException) {
+				logger.warn("Schema of the user database is not valid! Searching for liquibase files ...");
+				File liquibaseDir = new File("./liquibase");
+				File liquibaseVersion = new File("./liquibase/"+ResourceBundle.getBundle("lang.gui").getString("version")+".version");
+
+				if(liquibaseDir.exists() && liquibaseDir.isDirectory() && liquibaseVersion.exists()) {
+					logger.info("Found liquibase directory that matches the current version!");
+					logger.warn("Applying user database schema with liquibase now!");
+					File userChangelog = new File("./liquibase/users/changelog.xml");
+
+					try {
+						Connection conn = DriverManager.getConnection(url, "", "");
+						JdbcConnection jdbcConn = new JdbcConnection(conn);
+						Liquibase liquibase = new Liquibase(userChangelog.getAbsolutePath(), new FileSystemResourceAccessor(), jdbcConn);
+						liquibase.update("");
+						logger.info("Database schema has been applied to user database!");
+						logger.info("Try to reopen user database now!");
+
+						if(factory == null) {
+							factory = Persistence.createEntityManagerFactory("userDb", properties);
+						}
+					} catch (LiquibaseException | SQLException e1) {
+						logger.error(e1);
+					}
+				}
+			} else if (illegalStateException) {
+				logger.warn("User database is already in use!");
+				// TODO open read only here if necessary
 			} else {
 				logger.error(e);
 				ExceptionDialog.show(e);
@@ -53,8 +102,11 @@ public class UserDatabase {
 	 *
 	 * @return	boolean	true if at least one user exists; otherwise: false
 	 */
-	public static boolean isPopulated() {
-		return (getFactory().createEntityManager().createNamedQuery("User.findAll").getResultList().size() != 0);
+	public static boolean isPopulated() throws Exception {
+		EntityManagerFactory em = getFactory();
+		if(em == null) throw new Exception("Database connection could not be opened!");
+
+		return (em.createEntityManager().createNamedQuery("User.findAll").getResultList().size() != 0);
 	}
 
 	public static void createFirstUser(String username, String password) {

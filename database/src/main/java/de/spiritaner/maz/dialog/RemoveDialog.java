@@ -141,6 +141,26 @@ public class RemoveDialog {
 		return alert;
 	}
 
+	public static Alert create(Responsible responsible, Stage stage) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Verantwortliche(n) löschen");
+		alert.setHeaderText(null);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setContentText("Verantwortliche(n) '" + responsible.getPerson().getFullName() + "' von der Einsatzstelle '" + responsible.getSite().getName() + "' wirklich löschen?");
+		alert.initOwner(stage);
+		return alert;
+	}
+
+	public static Alert create(Role role, Stage stage) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Funktion löschen");
+		alert.setHeaderText(null);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setContentText("Funktion '" + role.getRoleType().getDescription() + "' von Person '" + role.getPerson().getFullName() + "' wirklich löschen?");
+		alert.initOwner(stage);
+		return alert;
+	}
+
 	/*public static <T extends Identifiable> Alert create(final T identifiable, final Stage stage) {
 		final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		final Identifiable.Annotation annotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);

@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>maz-db</artifactId>
 		<groupId>de.spiritaner.maz</groupId>
-		<version>0.4-SNAPSHOT</version>
+		<version>0.4</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
@@ -120,6 +120,25 @@
 			<groupId>no.tornado</groupId>
 			<artifactId>tornadofx-controls</artifactId>
 			<version>1.0.5</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-maven-plugin</artifactId>
+			<version>3.5.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
 		</dependency>
 	</dependencies>
 

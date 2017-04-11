@@ -1,22 +1,28 @@
 package de.spiritaner.maz.controller;
 
 import de.spiritaner.maz.dialog.LoginDialog;
-import de.spiritaner.maz.util.validator.TextValidator;
+import de.spiritaner.maz.util.Settings;
 import de.spiritaner.maz.util.UserDatabase;
+import de.spiritaner.maz.util.validator.TextValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
  * @author Florian Schwab
- * @version 0.0.1
  */
 public class InitController implements Initializable {
+
+	final static Logger logger = Logger.getLogger(InitController.class);
 
 	@FXML
 	private TextField usernameField;
@@ -50,9 +56,16 @@ public class InitController implements Initializable {
 		if(usernameValid && passwordValid && passwordCheckValid) {
 			UserDatabase.createFirstUser(usernameField.getText(), passwordField.getText());
 
-			if(UserDatabase.isPopulated() && stage != null) {
-				stage.hide();
-				LoginDialog.showWaitAndExitOnFailure(stage);
+			try {
+				if(UserDatabase.isPopulated() && stage != null) {
+					// Create the version file in the new created database directory
+					new File(Settings.get("database.path","./dbfiles/")+ResourceBundle.getBundle("lang.gui").getString("version")+".version").createNewFile();
+
+					stage.hide();
+					LoginDialog.showWaitAndExitOnFailure(stage);
+				}
+			} catch (Exception e) {
+				logger.error(e);
 			}
 		}
 	}
