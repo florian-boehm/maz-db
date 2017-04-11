@@ -21,6 +21,7 @@
                         <MetadataEditorTab text="Teilnehmerarten" fx:value="de.spiritaner.maz.controller.meta.ParticipationTypeEditorController" />
                         <MetadataEditorTab text="Beziehungsarten" fx:value="de.spiritaner.maz.controller.meta.RelationshipTypeEditorController" />
                         <MetadataEditorTab text="Anredearten" fx:value="de.spiritaner.maz.controller.meta.SalutationEditorController" />
+                        <MetadataEditorTab text="Personengruppen" fx:value="de.spiritaner.maz.controller.meta.PersonGroupEditorController" />
                     </tabs>
                 </TabPane>
             </content>

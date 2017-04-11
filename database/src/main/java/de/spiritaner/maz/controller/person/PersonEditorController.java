@@ -61,13 +61,13 @@ public class PersonEditorController implements Initializable {
 		firstnameFieldValidator = TextValidator.create(firstnameField).fieldName("Vorname").notEmpty(true).validateOnChange();
 		familynameFieldValidator = TextValidator.create(familynameField).fieldName("Nachname").notEmpty(true).validateOnChange();
 		birthdayDateValidator = DateValidator.create(birthdayDatePicker).fieldName("Geburtsdatum").notEmpty(true).past().validateOnChange();
-		genderComboBoxValidator = new ComboBoxValidator<Gender>(genderComboBox).fieldName("Geschlecht").isSelected(true).validateOnChange();
+		genderComboBoxValidator = new ComboBoxValidator<>(genderComboBox).fieldName("Geschlecht").isSelected(true).validateOnChange();
 
 		birthdayDatePicker.setConverter(new DatePickerFormatter());
 
-		genderComboBox.setCellFactory(column -> new MetaClassListCell<Gender>());
+		genderComboBox.setCellFactory(column -> new MetaClassListCell<>());
 		genderComboBox.setButtonCell(new MetaClassListCell<>());
-		dioceseComboBox.setCellFactory(column -> new MetaClassListCell<Diocese>());
+		dioceseComboBox.setCellFactory(column -> new MetaClassListCell<>());
 		dioceseComboBox.setButtonCell(new MetaClassListCell<>());
 
 		loadGender();

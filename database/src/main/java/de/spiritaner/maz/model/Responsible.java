@@ -1,6 +1,7 @@
 package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.controller.yearabroad.ResponsibleEditorDialogController;
+import de.spiritaner.maz.model.meta.PersonGroup;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,8 +14,6 @@ import javax.persistence.*;
 @Audited
 @Identifiable.Annotation(editorDialogClass = ResponsibleEditorDialogController.class, identifiableName = "Verantwortliche(n)")
 @NamedQueries({
-		  @NamedQuery(name = "Responsible.findGroupNamesDistinct", query = "SELECT DISTINCT(r.groupName) FROM Responsible r"),
-		  @NamedQuery(name = "Responsible.findGroupNamesDistinctForSite", query = "SELECT DISTINCT(r.groupName) FROM Responsible r WHERE r.site=:site"),
 		  @NamedQuery(name = "Responsible.findJobDescriptionsDistinct", query = "SELECT DISTINCT(r.jobDescription) FROM Responsible r"),
 		  @NamedQuery(name = "Responsible.findJobDescriptionsDistinctForSite", query = "SELECT DISTINCT(r.jobDescription) FROM Responsible r WHERE r.site=:site"),
 		  @NamedQuery(name = "Responsible.findHomeCountriesDistinct", query = "SELECT DISTINCT(r.homeCountry) FROM Responsible r"),
@@ -27,11 +26,10 @@ public class Responsible implements Identifiable {
 	private Site site;
 	private StringProperty homeCountry;
 	private StringProperty jobDescription;
-	private StringProperty groupName;
+	private PersonGroup personGroup;
 
 	public Responsible() {
 		id = new SimpleLongProperty();
-		groupName = new SimpleStringProperty();
 		homeCountry = new SimpleStringProperty();
 		jobDescription = new SimpleStringProperty();
 	}
@@ -71,16 +69,14 @@ public class Responsible implements Identifiable {
 		this.site = site;
 	}
 
-	public String getGroupName() {
-		return groupName.get();
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "personGroupId", nullable = false)
+	public PersonGroup getPersonGroup() {
+		return personGroup;
 	}
 
-	public StringProperty groupNameProperty() {
-		return groupName;
-	}
-
-	public void setGroupName(String groupName) {
-		this.groupName.set(groupName);
+	public void setPersonGroup(PersonGroup personGroup) {
+		this.personGroup = personGroup;
 	}
 
 	public String getHomeCountry() {

@@ -4,7 +4,7 @@
 
 	<groupId>de.spiritaner.maz</groupId>
 	<artifactId>maz-db</artifactId>
-	<version>0.4</version>
+	<version>0.5</version>
 	<modules>
 		<module>database</module>
 	</modules>

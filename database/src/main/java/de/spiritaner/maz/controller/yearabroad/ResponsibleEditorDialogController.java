@@ -52,6 +52,11 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 				responsibleEditorController.setSite(responsible.getSite());
 			}
 
+			if(responsible.getPerson() != null) {
+				personEditorController.setAll(responsible.getPerson());
+				personEditorController.setReadonly(true);
+			}
+
 			responsibleEditorController.setAll(responsible);
 
 			if (responsible.getId() != 0L) {
@@ -98,6 +103,7 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 					requestClose();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
+					e.printStackTrace();
 					logger.warn(e);
 				} finally {
 					em.close();

@@ -1,9 +1,14 @@
 package de.spiritaner.maz.controller.yearabroad;
 
+import de.spiritaner.maz.controller.meta.PersonGroupEditorController;
 import de.spiritaner.maz.model.Responsible;
 import de.spiritaner.maz.model.Site;
+import de.spiritaner.maz.model.meta.PersonGroup;
 import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.factory.MetaClassListCell;
+import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -21,21 +26,26 @@ public class ResponsibleEditorController implements Initializable {
 	@FXML
 	private ComboBox<String> jobDescriptionComboBox;
 	@FXML
-	private ComboBox<String> groupNameComboBox;
+	private ComboBox<PersonGroup> personGroupComboBox;
 	@FXML
 	private ComboBox<String> homeCountryComboBox;
 
 	private Site site;
+	private ComboBoxValidator<PersonGroup> personGroupValidator;
 
 	public void initialize(URL location, ResourceBundle resources) {
-		loadGroupNames();
+		loadPersonGroups();
 		loadJobDescriptions();
 		loadHomeCountries();
+
+		personGroupValidator = new ComboBoxValidator<>(personGroupComboBox).fieldName("Personengruppe").isSelected(true).validateOnChange();
+		personGroupComboBox.setCellFactory((column) -> new MetaClassListCell<>());
+		personGroupComboBox.setButtonCell(new MetaClassListCell<>());
 	}
 
 	public void setAll(Responsible responsible) {
 		jobDescriptionComboBox.setValue(responsible.getJobDescription());
-		groupNameComboBox.setValue(responsible.getGroupName());
+		personGroupComboBox.setValue(responsible.getPersonGroup());
 		homeCountryComboBox.setValue(responsible.getHomeCountry());
 	}
 
@@ -43,29 +53,25 @@ public class ResponsibleEditorController implements Initializable {
 		if (responsible == null) responsible = new Responsible();
 		responsible.setJobDescription(jobDescriptionComboBox.getValue());
 		responsible.setHomeCountry(homeCountryComboBox.getValue());
-		responsible.setGroupName(groupNameComboBox.getValue());
+		responsible.setPersonGroup(personGroupComboBox.getValue());
 		return responsible;
 	}
 
 	public void setReadonly(boolean readonly) {
 		jobDescriptionComboBox.setDisable(readonly);
-		groupNameComboBox.setDisable(readonly);
+		personGroupComboBox.setDisable(readonly);
 		homeCountryComboBox.setDisable(readonly);
 	}
 
-	private void loadGroupNames() {
+	private void loadPersonGroups() {
 		EntityManager em = DataDatabase.getFactory().createEntityManager();
 
-		TypedQuery<String> query;
-		if(site != null) {
-			query = em.createNamedQuery("Responsible.findGroupNamesDistinctForSite", String.class);
-			query.setParameter("site", site);
-		} else {
-			query = em.createNamedQuery("Responsible.findGroupNamesDistinct", String.class);
-		}
+		TypedQuery<PersonGroup> query = em.createNamedQuery("PersonGroup.findAll", PersonGroup.class);
 
-		groupNameComboBox.getItems().clear();
-		groupNameComboBox.getItems().addAll(FXCollections.observableArrayList(query.getResultList()));
+		PersonGroup selectedBefore = personGroupComboBox.getSelectionModel().getSelectedItem();
+		personGroupComboBox.getItems().clear();
+		personGroupComboBox.getItems().addAll(FXCollections.observableArrayList(query.getResultList()));
+		personGroupComboBox.getSelectionModel().select(selectedBefore);
 	}
 
 	private void loadHomeCountries() {
@@ -99,14 +105,20 @@ public class ResponsibleEditorController implements Initializable {
 	}
 
 	public boolean isValid() {
-		return true;
+		return personGroupValidator.validate();
 	}
 
 	public void setSite(Site site) {
 		this.site = site;
 
-		loadGroupNames();
+		loadPersonGroups();
 		loadHomeCountries();
 		loadJobDescriptions();
+	}
+
+	public void addNewPersonGroup(ActionEvent actionEvent) {
+		new PersonGroupEditorController().create(actionEvent);
+
+		loadPersonGroups();
 	}
 }

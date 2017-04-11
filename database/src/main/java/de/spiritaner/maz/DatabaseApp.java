@@ -54,7 +54,7 @@ public class DatabaseApp extends Application {
 
 			@Override
 			public void println(final Object obj) {
-				logger.info(obj+"\n");
+				logger.info(obj);
 			}
 		};
 	}

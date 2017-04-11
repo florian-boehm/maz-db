@@ -65,6 +65,7 @@
 		<class>de.spiritaner.maz.model.Relationship</class>
 		<class>de.spiritaner.maz.model.Responsible</class>
 		<class>de.spiritaner.maz.model.EPNumber</class>
+		<class>de.spiritaner.maz.model.meta.PersonGroup</class>
 
 		<properties>
 			<property name="connection.driver_class" value="org.h2.Driver"/>

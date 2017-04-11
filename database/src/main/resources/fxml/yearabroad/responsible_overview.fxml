@@ -32,7 +32,7 @@
 								<TableColumn fx:id="siteColumn" prefWidth="120.0" text="Einsatzstelle"/>
 								<TableColumn fx:id="homeCountryColumn" prefWidth="120.0" text="Heimatland"/>
 								<TableColumn fx:id="jobDescriptionColumn" prefWidth="120.0" text="Tätigkeitsfeld"/>
-								<TableColumn fx:id="groupColumn" prefWidth="120.0" text="Gruppe"/>
+								<TableColumn fx:id="personGroupColumn" prefWidth="120.0" text="Gruppe"/>
 								<TableColumn fx:id="idColumn" prefWidth="75.0" text="ID"/>
 							</columns>
 							<opaqueInsets>

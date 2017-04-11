@@ -25,7 +25,7 @@ public class ResponsibleOverviewController extends OverviewController<Responsibl
 	@FXML
 	private TableColumn<Responsible, String> siteColumn;
 	@FXML
-	private TableColumn<Responsible, String> groupColumn;
+	private TableColumn<Responsible, String> personGroupColumn;
 	@FXML
 	private TableColumn<Responsible, Long> idColumn;
 
@@ -65,7 +65,7 @@ public class ResponsibleOverviewController extends OverviewController<Responsibl
 		homeCountryColumn.setCellValueFactory(cellData -> cellData.getValue().homeCountryProperty());
 		personColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPerson().getFullName()));
 		siteColumn.setCellValueFactory(cellData -> cellData.getValue().getSite().nameProperty());
-		groupColumn.setCellValueFactory(cellData -> cellData.getValue().groupNameProperty());
+		personGroupColumn.setCellValueFactory(cellData -> cellData.getValue().getPersonGroup().descriptionProperty());
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 	}
 

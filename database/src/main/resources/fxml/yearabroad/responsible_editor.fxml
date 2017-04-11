@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -10,7 +12,14 @@
 	<children>
 
 		<Label maxHeight="1.7976931348623157E308" text="Personengruppe:" GridPane.hgrow="ALWAYS" />
-      <ComboBox fx:id="groupNameComboBox" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+      <BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+         <center>
+            <ComboBox fx:id="personGroupComboBox" maxWidth="1.7976931348623157E308" />
+         </center>
+         <right>
+            <Button fx:id="addGroupNameButton" mnemonicParsing="false" onAction="#addNewPersonGroup" text="+" BorderPane.alignment="CENTER" />
+         </right>
+      </BorderPane>
       <Label text="Herkunftsland:" GridPane.rowIndex="1" />
       <ComboBox fx:id="homeCountryComboBox" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
 
