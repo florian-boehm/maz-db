@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.residence;
 
-import de.spiritaner.maz.controller.meta.ResidenceTypeEditorController;
+import de.spiritaner.maz.controller.meta.ResidenceTypeOverviewController;
 import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.model.meta.ResidenceType;
 import de.spiritaner.maz.util.DataDatabase;
@@ -71,7 +71,7 @@ public class ResidenceEditorController implements Initializable {
 	}
 
 	public void addNewResidenceType(ActionEvent actionEvent) {
-		new ResidenceTypeEditorController().create(actionEvent);
+		new ResidenceTypeOverviewController().create(actionEvent);
 
 		loadResidenceTypes();
 	}

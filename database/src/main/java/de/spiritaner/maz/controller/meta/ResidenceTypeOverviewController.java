@@ -2,9 +2,9 @@ package de.spiritaner.maz.controller.meta;
 
 import de.spiritaner.maz.model.meta.ResidenceType;
 
-public class ResidenceTypeEditorController extends MetadataEditorController<ResidenceType> {
+public class ResidenceTypeOverviewController extends MetadataOverviewController<ResidenceType> {
 
-    public ResidenceTypeEditorController() {
+    public ResidenceTypeOverviewController() {
         super(ResidenceType.class);
     }
 

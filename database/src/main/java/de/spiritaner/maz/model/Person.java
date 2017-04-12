@@ -5,13 +5,18 @@ import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.meta.Salutation;
 import javafx.beans.property.*;
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.envers.Audited;
 import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,6 +65,15 @@ public class Person implements Identifiable {
 		birthday = new SimpleObjectProperty<>();
 		birthplace = new SimpleStringProperty();
 		birthName = new SimpleStringProperty();
+
+		residences = new ArrayList<>();
+		roles = new ArrayList<>();
+		approvals = new ArrayList<>();
+		contactMethods = new ArrayList<>();
+		participations = new ArrayList<>();
+		relationships = new ArrayList<>();
+		responsibles = new ArrayList<>();
+		yearsAbroad = new ArrayList<>();
 	}
 
 	/**
@@ -242,6 +256,7 @@ public class Person implements Identifiable {
 	 * All the approvals this specific person has.
 	 */
 	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+	@Cascade(org.hibernate.annotations.CascadeType.DELETE)
 	public List<Approval> getApprovals() { return approvals; }
 	public void setApprovals(List<Approval> approvals) { this.approvals = approvals; }
 

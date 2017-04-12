@@ -1,22 +1,22 @@
 package de.spiritaner.maz.view.component;
 
-import de.spiritaner.maz.controller.meta.MetadataEditorController;
+import de.spiritaner.maz.controller.meta.MetadataOverviewController;
 import javafx.scene.control.Tab;
 
 public class MetadataEditorTab extends Tab {
 
-    private MetadataEditorController metadataEditorController;
+    private MetadataOverviewController metadataOverviewController;
 
-    public MetadataEditorTab(MetadataEditorController metadataEditorController) {
+    public MetadataEditorTab(MetadataOverviewController metadataOverviewController) {
         setClosable(false);
-        this.metadataEditorController = metadataEditorController;
-        this.setContent(metadataEditorController);
+        this.metadataOverviewController = metadataOverviewController;
+        this.setContent(metadataOverviewController);
     }
 
     public static MetadataEditorTab valueOf(String metaClass) {
-        Class<? extends MetadataEditorController> cls = null;
+        Class<? extends MetadataOverviewController> cls = null;
         try {
-            cls = (Class<? extends MetadataEditorController>) Class.forName(metaClass);
+            cls = (Class<? extends MetadataOverviewController>) Class.forName(metaClass);
             return new MetadataEditorTab(cls.newInstance());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

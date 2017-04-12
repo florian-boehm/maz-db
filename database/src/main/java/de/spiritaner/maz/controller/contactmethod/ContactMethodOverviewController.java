@@ -9,12 +9,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import org.hibernate.Hibernate;
 
+import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.Collection;
 
 public class ContactMethodOverviewController extends OverviewController<ContactMethod> {
 
+	@FXML
+	private TableColumn<ContactMethod, String> preferredColumn;
+	@FXML
+	private TableColumn<ContactMethod, String> remarkColumn;
 	@FXML
 	private TableColumn<ContactMethod, String> contactMethodTypeColumn;
 	@FXML
@@ -62,6 +67,8 @@ public class ContactMethodOverviewController extends OverviewController<ContactM
 	protected void postInit() {
 		contactMethodTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getContactMethodType().descriptionProperty());
 		valueColumn.setCellValueFactory(cellData -> cellData.getValue().valueProperty());
+		preferredColumn.setCellValueFactory(cellData -> cellData.getValue().preferredContactMethodProperty());
+		remarkColumn.setCellValueFactory(cellData -> cellData.getValue().remarkProperty());
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 	}
 

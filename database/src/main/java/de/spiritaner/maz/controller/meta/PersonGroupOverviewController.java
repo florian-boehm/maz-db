@@ -2,9 +2,9 @@ package de.spiritaner.maz.controller.meta;
 
 import de.spiritaner.maz.model.meta.PersonGroup;
 
-public class PersonGroupEditorController extends MetadataEditorController<PersonGroup> {
+public class PersonGroupOverviewController extends MetadataOverviewController<PersonGroup> {
 
-    public PersonGroupEditorController() {
+    public PersonGroupOverviewController() {
         super(PersonGroup.class);
     }
 

@@ -27,8 +27,6 @@ public class EventEditorDialogController extends EditorController<Event> {
 	final static Logger logger = Logger.getLogger(EventEditorDialogController.class);
 
 	@FXML
-	private ToggleSwitch addressToggleSwitch;
-	@FXML
 	private Button saveEventButton;
 	@FXML
 	private Text titleText;
@@ -36,31 +34,12 @@ public class EventEditorDialogController extends EditorController<Event> {
 	private GridPane eventEditor;
 	@FXML
 	private EventEditorController eventEditorController;
-	@FXML
-	private GridPane addressEditor;
-	@FXML
-	private AddressEditorController addressEditorController;
-
-	private Event event;
 
 	@Override
-	public void setIdentifiable(Event obj) {
-		setEvent(obj);
-	}
-
-	@Override
-	public void onReopen() {
-	}
-
-	public void setEvent(Event event) {
-		this.event = event;
+	public void setIdentifiable(Event event) {
+		super.setIdentifiable(event);
 
 		if (event != null) {
-			// Check if a person is already set in this residence
-			if (event.getAddress() != null) {
-				addressEditorController.setAll(event.getAddress());
-			}
-
 			eventEditorController.setAll(event);
 
 			if (event.getId() != 0L) {
@@ -74,32 +53,29 @@ public class EventEditorDialogController extends EditorController<Event> {
 	}
 
 	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
-		addressToggleSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
-			addressEditorController.setReadonly(!newValue);
-		});
+	public void onReopen() {
+	}
 
-		addressToggleSwitch.setSelected(false);
-		addressEditorController.setReadonly(true);
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+
 	}
 
 	public void saveEvent(ActionEvent actionEvent) {
 		Platform.runLater(() -> {
-			boolean addressValid = (addressToggleSwitch.isSelected()) ? addressEditorController.isValid() : true;
 			boolean eventValid = eventEditorController.isValid();
 
-			if (addressValid && eventValid) {
+			if (eventValid) {
 				EntityManager em = DataDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				if(addressToggleSwitch.isSelected()) event.setAddress(Address.findSame(em, addressEditorController.getAll(event.getAddress())));
-				eventEditorController.getAll(event);
+				eventEditorController.getAll(getIdentifiable());
 
 				try {
-					if (!em.contains(event)) em.merge(event);
-
+					Event managedEvent = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
 					em.getTransaction().commit();
-					getStage().close();
+					setResult(managedEvent);
+					requestClose();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);

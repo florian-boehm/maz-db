@@ -5,9 +5,9 @@ import de.spiritaner.maz.model.meta.Gender;
 /**
  * Created by florian on 2/26/17.
  */
-public class GenderEditorController extends MetadataEditorController<Gender> {
+public class GenderOverviewController extends MetadataOverviewController<Gender> {
 
-    public GenderEditorController() {
+    public GenderOverviewController() {
         super(Gender.class);
     }
 

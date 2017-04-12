@@ -2,13 +2,17 @@ package de.spiritaner.maz.controller.person;
 
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.Person;
+import de.spiritaner.maz.model.meta.ApprovalType;
 import de.spiritaner.maz.util.DataDatabase;
 import de.spiritaner.maz.util.factory.DateAsStringListCell;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -85,6 +89,29 @@ public class PersonOverviewController extends OverviewController<Person> {
 	@Override
 	protected void handleException(RollbackException e) {
 		ExceptionDialog.show(e);
+	}
+
+	@Override
+	protected void postCreate(Person person) {
+		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		em.getTransaction().begin();
+
+		// Get a managed copy of the person
+		person = (em.contains(person)) ? person : em.merge(person);
+
+		// Create the three default approvals when a person is created
+		for(int approvalTypeId = 1; approvalTypeId <= 3; approvalTypeId++) {
+			Approval approval = new Approval();
+			approval.setPerson(person);
+			approval.setApprovalType(em.find(ApprovalType.class, Long.valueOf(approvalTypeId)));
+			approval.setApproved(false);
+
+			// Persist approval before
+			em.persist(approval);
+			person.getApprovals().add(approval);
+		}
+
+		em.getTransaction().commit();
 	}
 
 	public ToggleSwitch getPersonDetailsToggle() {

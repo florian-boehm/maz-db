@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public class Event implements Identifiable {
 
 	private List<Participation> participations;
 	private EventType eventType;
-	private Address address;
+	private StringProperty location;
 
 	public Event() {
 		id = new SimpleLongProperty();
@@ -44,6 +45,8 @@ public class Event implements Identifiable {
 		description = new SimpleStringProperty();
 		fromDate = new SimpleObjectProperty<>();
 		toDate = new SimpleObjectProperty<>();
+		location = new SimpleStringProperty();
+		participations = new ArrayList<>();
 	}
 
 	@Id
@@ -129,14 +132,17 @@ public class Event implements Identifiable {
 		this.eventType = eventType;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "addressId")
-	public Address getAddress() {
-		return address;
+	@Column(nullable = false)
+	public String getLocation() {
+		return location.get();
 	}
 
-	public void setAddress(Address address) {
-		this.address = address;
+	public StringProperty locationProperty() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location.set(location);
 	}
 
 	@Override

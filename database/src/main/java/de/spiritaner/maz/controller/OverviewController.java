@@ -80,7 +80,10 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		this.createButton = createButton;
 	}
 
-	protected void preCreate(T newObject) {};
+	protected void preCreate(T newObject) {
+	}
+
+	;
 
 	@SuppressWarnings("unchecked")
 	public void create(ActionEvent actionEvent) {
@@ -96,37 +99,59 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 				addItem(managedObject);
 			});
 
-			if(!result.isPresent()) {
+			// TODO not good here, check if it fails in other situations when disabled
+			/*if(!result.isPresent()) {
 				load();
-			}
+			}*/
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			ExceptionDialog.show(e);
 		}
 	}
 
-	protected void postCreate(T newObject) {};
+	protected void postCreate(T newObject) {
+	}
 
-	protected void preEdit(T object) {};
+	;
+
+	protected void preEdit(T object) {
+	}
+
+	;
+
+	protected void postEdit(T object) {
+	}
+
+	;
 
 	public void edit(ActionEvent actionEvent) {
 		editObj(null);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void editObj(T obj) {
 		try {
 			obj = (obj == null) ? table.getSelectionModel().getSelectedItem() : obj;
 			preEdit(obj);
-			Method method = EditorDialog.class.getMethod("showAndWait",  Identifiable.class, Stage.class);
-			method.invoke(null, obj, stage);
+			Method method = EditorDialog.class.getMethod("showAndWait", Identifiable.class, Stage.class);
+			Optional<T> result = (Optional<T>) method.invoke(null, obj, stage);
+			final T previousObject = obj;
+
+			result.ifPresent(managedObject -> {
+				postEdit(managedObject);
+				removeItem(previousObject);
+				addItem(managedObject);
+			});
 			//postCreate(object);
+			//load();
 		} catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			ExceptionDialog.show(e);
 		}
-
-		load();
 	}
 
-	protected void preRemove(T obsoleteEntity, EntityManager em) {};
+	protected void preRemove(T obsoleteEntity, EntityManager em) {
+	}
+
+	;
 
 	public void remove(final ActionEvent actionEvent) {
 		final T selectedObj = getTable().getSelectionModel().getSelectedItem();
@@ -160,7 +185,10 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		//load();
 	}
 
-	protected void postRemove(T obsoleteEntity) {};
+	protected void postRemove(T obsoleteEntity) {
+	}
+
+	;
 
 	public void load() {
 		Platform.runLater(() -> {
@@ -179,7 +207,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 				postLoad(result);
 
-				if(useFilter) {
+				if (useFilter) {
 					tableFilter.getBackingList().clear();
 					if (result != null) tableFilter.getBackingList().addAll(result);
 				} else {
@@ -197,31 +225,37 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 	protected abstract Collection<T> preLoad(EntityManager em);
 
-	protected void postLoad(Collection<T> loadedObjs) {};
+	protected void postLoad(Collection<T> loadedObjs) { }
 
 	protected abstract String getLoadingText();
 
 	protected abstract void handleException(RollbackException e);
 
 	@Override
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
-
-	@Override
 	public void onReopen() {
 		load();
 	}
 
-	protected void preInit() {};
+	protected void preInit() {
+	}
+
+	protected boolean isRemoveButtonDisabled(T oldVal, T newVal) {
+		return newVal == null;
+	}
+
+	;
+
+	protected boolean isEditButtonDisabled(T oldVal, T newVal) {
+		return newVal == null;
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		preInit();
 
 		getTable().getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
-			removeButton.setDisable(newVal == null);
-			editButton.setDisable(newVal == null);
+			removeButton.setDisable(isRemoveButtonDisabled(oldVal, newVal));
+			editButton.setDisable(isEditButtonDisabled(oldVal, newVal));
 		});
 
 		getTable().setRowFactory(tv -> {
@@ -236,7 +270,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 			return row;
 		});
 
-		if(useFilter) {
+		if (useFilter) {
 			TableFilter.Builder<T> tableFilterBuilder = TableFilter.forTableView(table);
 			tableFilter = tableFilterBuilder.apply();
 		}
@@ -246,11 +280,14 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		load();
 	}
 
-	protected void postInit() {};
+	protected void postInit() {
+	}
 
 	public MaskerPane getMasker() {
 		return masker;
 	}
+
+	;
 
 	public void setToolbarVisible(boolean visibility) {
 		toolbar.setVisible(visibility);
@@ -265,8 +302,13 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		return stage;
 	}
 
+	@Override
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
+
 	public void removeItem(T item) {
-		if(useFilter) {
+		if (useFilter) {
 			tableFilter.getBackingList().remove(item);
 		} else {
 			table.getItems().remove(item);
@@ -274,7 +316,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	}
 
 	public void addItem(T item) {
-		if(useFilter) {
+		if (useFilter) {
 			tableFilter.getBackingList().add(item);
 		} else {
 			table.getItems().add(item);
@@ -285,6 +327,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	@Target(ElementType.TYPE)
 	public @interface Annotation {
 		String fxmlFile() default "";
+
 		String objDesc() default "";
 	}
 }

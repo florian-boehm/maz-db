@@ -41,14 +41,48 @@ public class PersonEditorDialogController extends EditorController<Person> {
 	@FXML
 	private ComboBox<RevisionEntity<Person>> revisionList;
 
-	private Person person;
-
 	public void initialize(URL location, ResourceBundle resources) {
 
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void closeDialog(ActionEvent actionEvent) {
+		Platform.runLater(() -> getStage().close());
+	}
+
+	@Override
+	public void onReopen() {
+
+	}
+
+	public void savePerson(ActionEvent actionEvent) {
+		Platform.runLater(() -> {
+			// Check if the first name, family name and birthday are valid
+			boolean validation = personEditorController.isValid();
+
+			if (validation) {
+				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				em.getTransaction().begin();
+
+				personEditorController.getAll(getIdentifiable());
+
+				try {
+					Person managedPerson = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
+					em.getTransaction().commit();
+					setResult(managedPerson);
+					requestClose();
+				} catch (PersistenceException e) {
+					em.getTransaction().rollback();
+					logger.warn(e);
+				} finally {
+					em.close();
+				}
+			}
+		});
+	}
+
+	@Override
+	public void setIdentifiable(Person person) {
+		super.setIdentifiable(person);
 
 		if (person != null) {
 			personEditorController.setAll(person);
@@ -98,46 +132,5 @@ public class PersonEditorDialogController extends EditorController<Person> {
 				revisionList.getSelectionModel().selectLast();
 			}
 		}
-	}
-
-	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> getStage().close());
-	}
-
-	@Override
-	public void onReopen() {
-
-	}
-
-	public void savePerson(ActionEvent actionEvent) {
-		Platform.runLater(() -> {
-			// Check if the first name, family name and birthday are valid
-			boolean validation = personEditorController.isValid();
-
-			if (validation) {
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
-
-				Person tmpPerson = personEditorController.getAll((person.getId() != null) ? em.find(Person.class, person.getId()) : person);
-
-				try {
-					// Persist only if the person has not existed before
-					if (!em.contains(tmpPerson)) em.persist(tmpPerson);
-
-					em.getTransaction().commit();
-					getStage().close();
-				} catch (PersistenceException e) {
-					em.getTransaction().rollback();
-					logger.warn(e);
-				} finally {
-					em.close();
-				}
-			}
-		});
-	}
-
-	@Override
-	public void setIdentifiable(Person obj) {
-		setPerson(obj);
 	}
 }

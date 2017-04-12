@@ -5,9 +5,9 @@ import de.spiritaner.maz.model.meta.EventType;
 /**
  * Created by florian on 2/26/17.
  */
-public class EventTypeEditorController extends MetadataEditorController<EventType> {
+public class EventTypeOverviewController extends MetadataOverviewController<EventType> {
 
-    public EventTypeEditorController() {
+    public EventTypeOverviewController() {
         super(EventType.class);
     }
 

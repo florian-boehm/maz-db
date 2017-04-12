@@ -35,21 +35,6 @@ public class ApprovalOverviewController extends OverviewController<Approval> {
 	}
 
 	@Override
-	protected void postCreate(Approval obj) {
-
-	}
-
-	@Override
-	protected void preEdit(Approval object) {
-
-	}
-
-	@Override
-	protected void preRemove(Approval obsoleteEntity, EntityManager em) {
-
-	}
-
-	@Override
 	protected void postRemove(Approval obsoleteEntity) {
 		person.getApprovals().remove(obsoleteEntity);
 	}
@@ -65,11 +50,6 @@ public class ApprovalOverviewController extends OverviewController<Approval> {
 	}
 
 	@Override
-	protected void postLoad(Collection<Approval> loadedObjs) {
-
-	}
-
-	@Override
 	protected String getLoadingText() {
 		return "Lade Einwilligungen ...";
 	}
@@ -77,11 +57,6 @@ public class ApprovalOverviewController extends OverviewController<Approval> {
 	@Override
 	protected void handleException(RollbackException e) {
 		ExceptionDialog.show(e);
-	}
-
-	@Override
-	protected void preInit() {
-
 	}
 
 	@Override
@@ -106,6 +81,16 @@ public class ApprovalOverviewController extends OverviewController<Approval> {
 			};
 		});
 	}
+
+	@Override
+	protected boolean isRemoveButtonDisabled(Approval oldVal, Approval newVal) {
+		return newVal == null || (newVal.getApprovalType() != null && newVal.getApprovalType().getId() <= 3);
+	}
+
+	/*@Override
+	protected boolean isEditButtonDisabled(Approval oldVal, Approval newVal) {
+		return newVal == null || newVal.getApprovalType().getId() <= 3;
+	}*/
 
 	public void setPerson(Person person) {
 		this.person = person;

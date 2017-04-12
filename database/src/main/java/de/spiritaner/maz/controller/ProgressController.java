@@ -163,6 +163,7 @@ public class ProgressController implements Initializable {
 				// Extract only files that are in the liquibase folder
 				if (fileName.contains("liquibase")) {
 					fileName = fileName.substring(fileName.indexOf("liquibase"));
+					fileName = fileName.replace("liquibase","liquibase/"+version);
 
 					if (ze.isDirectory()) {
 						new File("./" + fileName + "/").mkdirs();
@@ -186,10 +187,8 @@ public class ProgressController implements Initializable {
 			zis.closeEntry();
 			zis.close();
 
-			new File("./liquibase/"+version+".version").createNewFile();
+			//new File("./liquibase/"+version+".version").createNewFile();
 		}
-
-		/**/
 	}
 
 	private void downloadVersionZip() throws IOException, ParseException {

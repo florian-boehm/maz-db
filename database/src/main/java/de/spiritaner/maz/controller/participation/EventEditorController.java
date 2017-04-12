@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.participation;
 
-import de.spiritaner.maz.controller.meta.EventTypeEditorController;
+import de.spiritaner.maz.controller.meta.EventTypeOverviewController;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.meta.EventType;
 import de.spiritaner.maz.util.DataDatabase;
@@ -21,9 +21,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.ResourceBundle;
 
-/**
- * Created by Florian on 8/13/2016.
- */
 public class EventEditorController implements Initializable {
 
 	final static Logger logger = Logger.getLogger(EventEditorController.class);
@@ -40,13 +37,17 @@ public class EventEditorController implements Initializable {
 	private ComboBox<EventType> eventTypeComboBox;
 	@FXML
 	private Button addNewEventTypeButton;
+	@FXML
+	private TextField locationField;
 
-	private TextValidator nameFieldValidator;
+	private TextValidator nameValidator;
 	private ComboBoxValidator<EventType> eventTypeValidator;
 	private DateValidator toDateValidator;
+	private TextValidator locationValidator;
 
 	public void initialize(URL location, ResourceBundle resources) {
-		nameFieldValidator = TextValidator.create(nameField).fieldName("Name").notEmpty(true).validateOnChange();
+		nameValidator = TextValidator.create(nameField).fieldName("Name").notEmpty(true).validateOnChange();
+		locationValidator = TextValidator.create(locationField).fieldName("Ort").notEmpty(true).validateOnChange();
 		eventTypeValidator = new ComboBoxValidator<>(eventTypeComboBox).fieldName("Veranstaltungsart").isSelected(true).validateOnChange();
 		toDateValidator = DateValidator.create(toDatePicker).fieldName("Bis-Datum").after(fromDatePicker).relationFieldName("Von-Datum").validateOnChange();
 
@@ -65,6 +66,7 @@ public class EventEditorController implements Initializable {
 		fromDatePicker.setValue(event.getFromDate());
 		toDatePicker.setValue(event.getToDate());
 		eventTypeComboBox.setValue(event.getEventType());
+		locationField.setText(event.getLocation());
 	}
 
 	public Event getAll(Event event) {
@@ -74,6 +76,7 @@ public class EventEditorController implements Initializable {
 		event.setFromDate(fromDatePicker.getValue());
 		event.setToDate(toDatePicker.getValue());
 		event.setEventType(eventTypeComboBox.getValue());
+		event.setLocation(locationField.getText());
 		return event;
 	}
 
@@ -85,6 +88,7 @@ public class EventEditorController implements Initializable {
 		toDatePicker.setDisable(readonly);
 		eventTypeComboBox.setDisable(readonly);
 		addNewEventTypeButton.setDisable(readonly);
+		locationField.setDisable(readonly);
 	}
 
 	public void loadEventType() {
@@ -98,15 +102,16 @@ public class EventEditorController implements Initializable {
 	}
 
 	public boolean isValid() {
-		boolean nameValid = nameFieldValidator.validate();
+		boolean nameValid = nameValidator.validate();
 		boolean eventTypeValid = eventTypeValidator.validate();
 		boolean toDateValid = toDateValidator.validate();
+		boolean locationValid = locationValidator.validate();
 
-		return nameValid && eventTypeValid && toDateValid;
+		return nameValid && eventTypeValid && toDateValid && locationValid;
 	}
 
 	public void addNewEventType(ActionEvent actionEvent) {
-		new EventTypeEditorController().create(actionEvent);
+		new EventTypeOverviewController().create(actionEvent);
 
 		loadEventType();
 	}

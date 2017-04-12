@@ -37,6 +37,7 @@ public class DatabaseApp extends Application {
 			}
 		} catch (Exception e) {
 			logger.error(e);
+			e.printStackTrace();
 		}
 	}
 

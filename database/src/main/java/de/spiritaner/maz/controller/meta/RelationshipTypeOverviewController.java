@@ -2,9 +2,9 @@ package de.spiritaner.maz.controller.meta;
 
 import de.spiritaner.maz.model.meta.RelationshipType;
 
-public class RelationshipTypeEditorController extends MetadataEditorController<RelationshipType> {
+public class RelationshipTypeOverviewController extends MetadataOverviewController<RelationshipType> {
 
-    public RelationshipTypeEditorController() {
+    public RelationshipTypeOverviewController() {
         super(RelationshipType.class);
     }
 

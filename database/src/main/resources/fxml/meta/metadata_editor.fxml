@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.spiritaner.maz.controller.meta.MetadataEditorController?>
+<?import de.spiritaner.maz.controller.meta.MetadataOverviewController?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
-<fx:root xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" type="de.spiritaner.maz.controller.meta.MetadataEditorController">
+<fx:root xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" type="MetadataOverviewController">
     <center>
         <TableView fx:id="metaClassTable" tableMenuButtonVisible="true">
             <columns>

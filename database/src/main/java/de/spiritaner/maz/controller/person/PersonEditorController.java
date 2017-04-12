@@ -1,7 +1,7 @@
 package de.spiritaner.maz.controller.person;
 
-import de.spiritaner.maz.controller.meta.DioceseEditorController;
-import de.spiritaner.maz.controller.meta.GenderEditorController;
+import de.spiritaner.maz.controller.meta.DioceseOverviewController;
+import de.spiritaner.maz.controller.meta.GenderOverviewController;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
@@ -52,14 +52,14 @@ public class PersonEditorController implements Initializable {
 	@FXML
 	private Button addNewDioceseButton;
 
-	private TextValidator firstnameFieldValidator;
-	private TextValidator familynameFieldValidator;
+	private TextValidator firstnameValidator;
+	private TextValidator familynameValidator;
 	private DateValidator birthdayDateValidator;
 	private ComboBoxValidator genderComboBoxValidator;
 
 	public void initialize(URL location, ResourceBundle resources) {
-		firstnameFieldValidator = TextValidator.create(firstnameField).fieldName("Vorname").notEmpty(true).validateOnChange();
-		familynameFieldValidator = TextValidator.create(familynameField).fieldName("Nachname").notEmpty(true).validateOnChange();
+		firstnameValidator = TextValidator.create(firstnameField).fieldName("Vorname").notEmpty(true).validateOnChange();
+		familynameValidator = TextValidator.create(familynameField).fieldName("Nachname").notEmpty(true).validateOnChange();
 		birthdayDateValidator = DateValidator.create(birthdayDatePicker).fieldName("Geburtsdatum").notEmpty(true).past().validateOnChange();
 		genderComboBoxValidator = new ComboBoxValidator<>(genderComboBox).fieldName("Geschlecht").isSelected(true).validateOnChange();
 
@@ -69,6 +69,8 @@ public class PersonEditorController implements Initializable {
 		genderComboBox.setButtonCell(new MetaClassListCell<>());
 		dioceseComboBox.setCellFactory(column -> new MetaClassListCell<>());
 		dioceseComboBox.setButtonCell(new MetaClassListCell<>());
+
+		firstnameField.requestFocus();
 
 		loadGender();
 		loadDiocese();
@@ -131,8 +133,8 @@ public class PersonEditorController implements Initializable {
 	}
 
 	public boolean isValid() {
-		boolean firstnameValid = firstnameFieldValidator.validate();
-		boolean familynameValid = familynameFieldValidator.validate();
+		boolean firstnameValid = firstnameValidator.validate();
+		boolean familynameValid = familynameValidator.validate();
 		/*boolean birthdayValid = birthdayDateValidator.validate();*/
 		/*boolean genderValid = genderComboBoxValidator.validate();*/
 
@@ -143,13 +145,13 @@ public class PersonEditorController implements Initializable {
 	}
 
 	public void addNewGender(ActionEvent actionEvent) {
-		new GenderEditorController().create(actionEvent);
+		new GenderOverviewController().create(actionEvent);
 
 		loadGender();
 	}
 
 	public void addNewDiocese(ActionEvent actionEvent) {
-		new DioceseEditorController().create(actionEvent);
+		new DioceseOverviewController().create(actionEvent);
 
 		loadDiocese();
 	}

@@ -5,9 +5,9 @@ import de.spiritaner.maz.model.meta.Diocese;
 /**
  * Created by florian on 2/26/17.
  */
-public class DioceseEditorController extends MetadataEditorController<Diocese> {
+public class DioceseOverviewController extends MetadataOverviewController<Diocese> {
 
-    public DioceseEditorController() {
+    public DioceseOverviewController() {
         super(Diocese.class);
     }
 

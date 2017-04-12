@@ -36,20 +36,9 @@ public class ContactMethodEditorDialogController extends EditorController<Contac
 	@FXML
 	private ContactMethodEditorController contactMethodEditorController;
 
-	private ContactMethod contactMethod;
-
 	@Override
-	public void setIdentifiable(ContactMethod obj) {
-		super.setIdentifiable(obj);
-		setContactMethod(obj);
-	}
-
-	@Override
-	public void onReopen() {
-	}
-
-	public void setContactMethod(ContactMethod contactMethod) {
-		this.contactMethod = contactMethod;
+	public void setIdentifiable(ContactMethod contactMethod) {
+		super.setIdentifiable(contactMethod);
 
 		if (contactMethod != null) {
 			// Check if a person is already set in this residence
@@ -71,6 +60,10 @@ public class ContactMethodEditorDialogController extends EditorController<Contac
 	}
 
 	@Override
+	public void onReopen() {
+	}
+
+	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 	}
 
@@ -83,17 +76,14 @@ public class ContactMethodEditorDialogController extends EditorController<Contac
 				EntityManager em = DataDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				contactMethod.setPerson(personEditorController.getAll(contactMethod.getPerson()));
-				contactMethodEditorController.getAll(contactMethod);
+				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
+				contactMethodEditorController.getAll(getIdentifiable());
 
 				try {
-					if (!em.contains(contactMethod)) em.merge(contactMethod);
+					ContactMethod managedContactMethod = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
 					em.getTransaction().commit();
-
-					// Add backwards relationship too
-					if(!contactMethod.getPerson().getContactMethods().contains(contactMethod)) contactMethod.getPerson().getContactMethods().add(contactMethod);
-
-					getStage().close();
+					setResult(managedContactMethod);
+					requestClose();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);

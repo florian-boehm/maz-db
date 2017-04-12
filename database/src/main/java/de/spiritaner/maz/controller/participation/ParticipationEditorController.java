@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.participation;
 
-import de.spiritaner.maz.controller.meta.ParticipationTypeEditorController;
+import de.spiritaner.maz.controller.meta.ParticipationTypeOverviewController;
 import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.meta.ParticipationType;
 import de.spiritaner.maz.util.DataDatabase;
@@ -77,7 +77,7 @@ public class ParticipationEditorController implements Initializable {
 	}
 
 	public void addNewParticipationType(ActionEvent actionEvent) {
-		new ParticipationTypeEditorController().create(actionEvent);
+		new ParticipationTypeOverviewController().create(actionEvent);
 
 		loadParticipantType();
 	}

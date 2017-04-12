@@ -4,24 +4,24 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.*?>
 <?import de.spiritaner.maz.view.component.MetadataEditorTab?>
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.meta.MetadataOverviewController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.meta.MetadataPageController">
     <children>
         <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                     AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" style="-fx-background-insets: 0px;">
             <content>
                 <TabPane fx:id="tabPane" style="-fx-padding: 0; -fx-background-insets: 0px; -fx-background-color: #f4f4f4; -fx-border-width: 0 0 1 0; -fx-border-color: #c8c8c8;" >
                     <tabs>
-                        <MetadataEditorTab text="Geschlechter" fx:value="de.spiritaner.maz.controller.meta.GenderEditorController"/>
-                        <MetadataEditorTab text="Diözese" fx:value="de.spiritaner.maz.controller.meta.DioceseEditorController"/>
-                        <MetadataEditorTab text="Funktionen" fx:value="de.spiritaner.maz.controller.meta.RoleTypeEditorController"/>
-                        <MetadataEditorTab text="Kontaktarten" fx:value="de.spiritaner.maz.controller.meta.ContactMethodTypeEditorController"/>
-                        <MetadataEditorTab text="Einwilligungen" fx:value="de.spiritaner.maz.controller.meta.ApprovalTypeEditorController"/>
-                        <MetadataEditorTab text="Veranstaltungsarten" fx:value="de.spiritaner.maz.controller.meta.EventTypeEditorController" />
-                        <MetadataEditorTab text="Wohnungsarten" fx:value="de.spiritaner.maz.controller.meta.ResidenceTypeEditorController" />
-                        <MetadataEditorTab text="Teilnehmerarten" fx:value="de.spiritaner.maz.controller.meta.ParticipationTypeEditorController" />
-                        <MetadataEditorTab text="Beziehungsarten" fx:value="de.spiritaner.maz.controller.meta.RelationshipTypeEditorController" />
-                        <MetadataEditorTab text="Anredearten" fx:value="de.spiritaner.maz.controller.meta.SalutationEditorController" />
-                        <MetadataEditorTab text="Personengruppen" fx:value="de.spiritaner.maz.controller.meta.PersonGroupEditorController" />
+                        <MetadataEditorTab text="Geschlechter" fx:value="de.spiritaner.maz.controller.meta.GenderOverviewController"/>
+                        <MetadataEditorTab text="Diözese" fx:value="de.spiritaner.maz.controller.meta.DioceseOverviewController"/>
+                        <MetadataEditorTab text="Funktionen" fx:value="de.spiritaner.maz.controller.meta.RoleTypeOverviewController"/>
+                        <MetadataEditorTab text="Kontaktarten" fx:value="de.spiritaner.maz.controller.meta.ContactMethodTypeOverviewController"/>
+                        <MetadataEditorTab text="Einwilligungen" fx:value="de.spiritaner.maz.controller.meta.ApprovalTypeOverviewController"/>
+                        <MetadataEditorTab text="Veranstaltungsarten" fx:value="de.spiritaner.maz.controller.meta.EventTypeOverviewController" />
+                        <MetadataEditorTab text="Wohnungsarten" fx:value="de.spiritaner.maz.controller.meta.ResidenceTypeOverviewController" />
+                        <MetadataEditorTab text="Teilnehmerarten" fx:value="de.spiritaner.maz.controller.meta.ParticipationTypeOverviewController" />
+                        <MetadataEditorTab text="Beziehungsarten" fx:value="de.spiritaner.maz.controller.meta.RelationshipTypeOverviewController" />
+                        <MetadataEditorTab text="Anredearten" fx:value="de.spiritaner.maz.controller.meta.SalutationOverviewController" />
+                        <MetadataEditorTab text="Personengruppen" fx:value="de.spiritaner.maz.controller.meta.PersonGroupOverviewController" />
                     </tabs>
                 </TabPane>
             </content>

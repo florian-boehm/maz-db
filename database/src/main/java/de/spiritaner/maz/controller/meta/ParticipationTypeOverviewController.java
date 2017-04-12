@@ -2,9 +2,9 @@ package de.spiritaner.maz.controller.meta;
 
 import de.spiritaner.maz.model.meta.ParticipationType;
 
-public class ParticipationTypeEditorController extends MetadataEditorController<ParticipationType> {
+public class ParticipationTypeOverviewController extends MetadataOverviewController<ParticipationType> {
 
-    public ParticipationTypeEditorController() {
+    public ParticipationTypeOverviewController() {
         super(ParticipationType.class);
     }
 

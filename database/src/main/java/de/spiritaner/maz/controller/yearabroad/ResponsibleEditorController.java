@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.yearabroad;
 
-import de.spiritaner.maz.controller.meta.PersonGroupEditorController;
+import de.spiritaner.maz.controller.meta.PersonGroupOverviewController;
 import de.spiritaner.maz.model.Responsible;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.meta.PersonGroup;
@@ -117,7 +117,7 @@ public class ResponsibleEditorController implements Initializable {
 	}
 
 	public void addNewPersonGroup(ActionEvent actionEvent) {
-		new PersonGroupEditorController().create(actionEvent);
+		new PersonGroupOverviewController().create(actionEvent);
 
 		loadPersonGroups();
 	}

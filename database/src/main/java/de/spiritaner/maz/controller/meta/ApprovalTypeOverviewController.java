@@ -5,9 +5,9 @@ import de.spiritaner.maz.model.meta.ApprovalType;
 /**
  * Created by florian on 2/26/17.
  */
-public class ApprovalTypeEditorController extends MetadataEditorController<ApprovalType> {
+public class ApprovalTypeOverviewController extends MetadataOverviewController<ApprovalType> {
 
-    public ApprovalTypeEditorController() {
+    public ApprovalTypeOverviewController() {
         super(ApprovalType.class);
     }
 

@@ -18,9 +18,9 @@ import java.util.Collection;
 @OverviewController.Annotation(fxmlFile = "/fxml/participation/event_overview.fxml", objDesc = "Veranstaltung")
 public class EventOverviewController extends OverviewController<Event> {
 
+	@FXML private TableColumn<Event, String> locationColumn;
 	@FXML private TableColumn<Event, String> eventTypeColumn;
 	@FXML private TableColumn<Event, String> nameColumn;
-	@FXML private TableColumn<Event, String> descriptionColumn;
 	@FXML private TableColumn<Event, LocalDate> fromDateColumn;
 	@FXML private TableColumn<Event, LocalDate> toDateColumn;
 	@FXML private TableColumn<Event, Long> idColumn;
@@ -48,7 +48,7 @@ public class EventOverviewController extends OverviewController<Event> {
 	protected void postInit() {
 		eventTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getEventType().descriptionProperty());
 		nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-		descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
+		locationColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
 		fromDateColumn.setCellValueFactory(cellData -> cellData.getValue().fromDateProperty());
 		toDateColumn.setCellValueFactory(cellData -> cellData.getValue().toDateProperty());
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());

@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.role;
 
-import de.spiritaner.maz.controller.meta.RoleTypeEditorController;
+import de.spiritaner.maz.controller.meta.RoleTypeOverviewController;
 import de.spiritaner.maz.model.Role;
 import de.spiritaner.maz.model.meta.RoleType;
 import de.spiritaner.maz.util.DataDatabase;
@@ -71,7 +71,7 @@ public class RoleEditorController implements Initializable {
 	}
 
 	public void addNewRoleType(ActionEvent actionEvent) {
-		new RoleTypeEditorController().create(actionEvent);
+		new RoleTypeOverviewController().create(actionEvent);
 
 		loadRoleType();
 	}

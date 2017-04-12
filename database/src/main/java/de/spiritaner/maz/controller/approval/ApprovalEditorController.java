@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.approval;
 
-import de.spiritaner.maz.controller.meta.ApprovalTypeEditorController;
+import de.spiritaner.maz.controller.meta.ApprovalTypeOverviewController;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.meta.ApprovalType;
 import de.spiritaner.maz.util.DataDatabase;
@@ -31,6 +31,7 @@ public class ApprovalEditorController implements Initializable {
 	@FXML
 	private ComboBox<ApprovalType> approvalTypeComboBox;
 
+	private boolean readOnly = false;
 	private ComboBoxValidator<ApprovalType> approvalTypeValidator;
 
 	public void initialize(URL location, ResourceBundle resources) {
@@ -55,6 +56,7 @@ public class ApprovalEditorController implements Initializable {
 	}
 
 	public void setReadonly(boolean readonly) {
+		this.readOnly = readonly;
 		approvedToggleSwitch.setDisable(readonly);
 		approvalTypeComboBox.setDisable(readonly);
 		addNewApprovalTypeButton.setDisable(readonly);
@@ -62,7 +64,7 @@ public class ApprovalEditorController implements Initializable {
 
 	public void loadApprovalType() {
 		EntityManager em = DataDatabase.getFactory().createEntityManager();
-		Collection<ApprovalType> result = em.createNamedQuery("ApprovalType.findAll", ApprovalType.class).getResultList();
+		Collection<ApprovalType> result = em.createNamedQuery("ApprovalType.findAllWithIdGreaterThanThree", ApprovalType.class).getResultList();
 
 		ApprovalType selectedBefore = approvalTypeComboBox.getValue();
 		approvalTypeComboBox.getItems().clear();
@@ -77,8 +79,12 @@ public class ApprovalEditorController implements Initializable {
 	}
 
 	public void addNewApprovalType(ActionEvent actionEvent) {
-		new ApprovalTypeEditorController().create(actionEvent);
+		new ApprovalTypeOverviewController().create(actionEvent);
 
 		loadApprovalType();
+	}
+
+	public boolean isReadOnly() {
+		return readOnly;
 	}
 }

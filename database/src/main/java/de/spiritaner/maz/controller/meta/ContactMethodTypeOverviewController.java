@@ -5,9 +5,9 @@ import de.spiritaner.maz.model.meta.ContactMethodType;
 /**
  * Created by florian on 2/26/17.
  */
-public class ContactMethodTypeEditorController extends MetadataEditorController<ContactMethodType> {
+public class ContactMethodTypeOverviewController extends MetadataOverviewController<ContactMethodType> {
 
-    public ContactMethodTypeEditorController() {
+    public ContactMethodTypeOverviewController() {
         super(ContactMethodType.class);
     }
 

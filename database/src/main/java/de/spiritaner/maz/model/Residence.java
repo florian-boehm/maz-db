@@ -85,11 +85,13 @@ public class Residence implements Identifiable {
 		return (getPerson() != null && getPerson().getPreferredResidence() != null) ? getPerson().getPreferredResidence().equals(this) : Boolean.FALSE;
 	}
 
+	@Transient
 	public StringProperty preferredAddressProperty() {
 		return new SimpleStringProperty((getPreferredAddress()) ? "Ja" : "Nein");
 	}
 
 	@Override
+	@Transient
 	public boolean equals(Object obj) {
 		return (obj instanceof Residence) && (((Residence) obj).getId().equals(this.getId()));
 	}

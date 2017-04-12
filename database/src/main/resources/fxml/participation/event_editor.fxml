@@ -18,9 +18,8 @@
         <Label maxHeight="1.7976931348623157E308" text="Name:" GridPane.hgrow="ALWAYS" />
 
         <TextField fx:id="nameField" GridPane.columnIndex="1" />
-
-        <Label text="Beschreibung:" GridPane.rowIndex="1" />
-      <TextArea fx:id="descriptionArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label text="Ort:" GridPane.rowIndex="1" />
+      <TextField fx:id="locationField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <Label text="Von:" GridPane.rowIndex="2" />
       <DatePicker fx:id="fromDatePicker" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="NEVER" />
         <Label text="Bis:" GridPane.rowIndex="3" />
@@ -49,12 +48,16 @@
             </Button>
          </right>
       </BorderPane>
+
+        <Label text="Beschreibung:" GridPane.rowIndex="5" />
+      <TextArea fx:id="descriptionArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
     </children>
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0" />
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
     </columnConstraints>
    <rowConstraints>
+      <RowConstraints />
       <RowConstraints />
       <RowConstraints />
       <RowConstraints />

@@ -5,9 +5,9 @@ import de.spiritaner.maz.model.meta.Salutation;
 /**
  * Created by florian on 2/26/17.
  */
-public class SalutationEditorController extends MetadataEditorController<Salutation> {
+public class SalutationOverviewController extends MetadataOverviewController<Salutation> {
 
-    public SalutationEditorController() {
+    public SalutationOverviewController() {
         super(Salutation.class);
     }
 

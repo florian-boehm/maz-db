@@ -51,7 +51,6 @@ public class EditorDialog<T extends EditorController> {
 		});
 
 		stage.setOnCloseRequest(event -> {
-			System.out.println("got close request");
 			this.result = controller.getResult();
 		});
 	}

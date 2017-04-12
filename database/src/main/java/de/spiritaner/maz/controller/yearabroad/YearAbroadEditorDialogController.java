@@ -81,6 +81,7 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 				yearAbroadEditorController.getAll(getIdentifiable());
 
 				try {
+					// TODO this is the best way to do it, so it should be copied over to other editor dialog controllers
 					YearAbroad managedYearAbroad = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
 					em.getTransaction().commit();
 					setResult(managedYearAbroad);

@@ -5,9 +5,9 @@ import de.spiritaner.maz.model.meta.RoleType;
 /**
  * Created by florian on 2/26/17.
  */
-public class RoleTypeEditorController extends MetadataEditorController<RoleType> {
+public class RoleTypeOverviewController extends MetadataOverviewController<RoleType> {
 
-    public RoleTypeEditorController() {
+    public RoleTypeOverviewController() {
         super(RoleType.class);
     }
 

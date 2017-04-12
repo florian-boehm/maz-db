@@ -1,7 +1,7 @@
 
 package de.spiritaner.maz.controller.relationship;
 
-import de.spiritaner.maz.controller.meta.RelationshipTypeEditorController;
+import de.spiritaner.maz.controller.meta.RelationshipTypeOverviewController;
 import de.spiritaner.maz.model.Relationship;
 import de.spiritaner.maz.model.meta.RelationshipType;
 import de.spiritaner.maz.util.DataDatabase;
@@ -128,7 +128,7 @@ public class RelationshipEditorController implements Initializable {
 	}
 
 	public void addNewRelationshipType(ActionEvent actionEvent) {
-		new RelationshipTypeEditorController().create(actionEvent);
+		new RelationshipTypeOverviewController().create(actionEvent);
 
 		loadRelationshipType();
 	}
