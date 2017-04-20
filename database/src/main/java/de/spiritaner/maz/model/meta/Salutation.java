@@ -1,5 +1,7 @@
 package de.spiritaner.maz.model.meta;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.Entity;
@@ -17,8 +19,14 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 @Entity
 @Audited(targetAuditMode = NOT_AUDITED)
 @NamedQueries({
-	@NamedQuery(name = "Salutation.findAll", query = "SELECT s FROM Salutation s"),
+		  @NamedQuery(name = "Salutation.findAll", query = "SELECT s FROM Salutation s"),
 })
 public class Salutation extends MetaClass {
 
+	public static Salutation createEmpty() {
+		Salutation result = new Salutation();
+		result.setDescription("-/-");
+		result.setId(-1L);
+		return result;
+	}
 }

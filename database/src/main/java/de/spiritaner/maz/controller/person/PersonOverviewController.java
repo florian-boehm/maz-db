@@ -5,8 +5,13 @@ import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.ApprovalType;
+import de.spiritaner.maz.model.meta.Diocese;
+import de.spiritaner.maz.model.meta.Gender;
+import de.spiritaner.maz.model.meta.Salutation;
 import de.spiritaner.maz.util.DataDatabase;
 import de.spiritaner.maz.util.factory.DateAsStringListCell;
+import de.spiritaner.maz.util.factory.MetaClassListCell;
+import de.spiritaner.maz.util.factory.MetaClassTableCell;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,9 +49,13 @@ public class PersonOverviewController extends OverviewController<Person> {
 	@FXML
 	private TableColumn<Person, LocalDate> ageColumn;
 	@FXML
-	private TableColumn<Person, String> genderColumn;
+	private TableColumn<Person, Gender> genderColumn;
 	@FXML
-	private TableColumn<Person, String> dioceseColumn;
+	private TableColumn<Person, Diocese> dioceseColumn;
+	@FXML
+	private TableColumn<Person, String> honorificColumn;
+	@FXML
+	private TableColumn<Person, Salutation> salutationColumn;
 	@FXML
 	private ToggleSwitch personDetailsToggle;
 	@FXML
@@ -63,13 +72,18 @@ public class PersonOverviewController extends OverviewController<Person> {
 		firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
 		familyNameColumn.setCellValueFactory(cellData -> cellData.getValue().familyNameProperty());
 		birthNameColumn.setCellValueFactory(cellData -> cellData.getValue().birthNameProperty());
-		genderColumn.setCellValueFactory(cellData -> cellData.getValue().getGender(true).descriptionProperty());
-		dioceseColumn.setCellValueFactory(cellData -> cellData.getValue().getDiocese(true).descriptionProperty());
+		genderColumn.setCellValueFactory(cellData -> cellData.getValue().genderProperty());
+		dioceseColumn.setCellValueFactory(cellData -> cellData.getValue().dioceseProperty());
 		birthdayColumn.setCellValueFactory(cellData -> cellData.getValue().birthdayProperty());
 		ageColumn.setCellValueFactory(cellData -> cellData.getValue().birthdayProperty());
 		birthplaceColumn.setCellValueFactory(cellData -> cellData.getValue().birthplaceProperty());
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+		honorificColumn.setCellValueFactory(cellData -> cellData.getValue().honorificProperty());
+		salutationColumn.setCellValueFactory(cellData -> cellData.getValue().salutationProperty());
 
+		genderColumn.setCellFactory(column -> new MetaClassTableCell<>());
+		dioceseColumn.setCellFactory(column -> new MetaClassTableCell<>());
+		salutationColumn.setCellFactory(column -> new MetaClassTableCell<>());
 		birthdayColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
 		ageColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCellYearsToNow());
 

@@ -4,6 +4,8 @@ import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Residence;
+import de.spiritaner.maz.model.meta.ResidenceType;
+import de.spiritaner.maz.util.factory.MetaClassTableCell;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -16,7 +18,7 @@ import java.util.Collection;
 public class ResidenceOverviewController extends OverviewController<Residence> {
 
 	@FXML
-	private TableColumn<Residence, String> residenceTypeColumn;
+	private TableColumn<Residence, ResidenceType> residenceTypeColumn;
 	@FXML
 	private TableColumn<Residence, String> preferredAddressColumn;
 	@FXML
@@ -74,7 +76,7 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 
 	@Override
 	protected void postInit() {
-		residenceTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getResidenceType().descriptionProperty());
+		residenceTypeColumn.setCellValueFactory(cellData -> cellData.getValue().residenceTypeProperty());
 		preferredAddressColumn.setCellValueFactory(cellData -> cellData.getValue().preferredAddressProperty());
 		streetColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().streetProperty());
 		houseNumberColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().houseNumberProperty());
@@ -84,6 +86,8 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 		countryColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().countryProperty());
 		additionColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().additionProperty());
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+
+		residenceTypeColumn.setCellFactory(column -> new MetaClassTableCell<>());
 	}
 
 	public void setPerson(Person person) {

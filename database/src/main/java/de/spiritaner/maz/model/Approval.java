@@ -2,10 +2,7 @@ package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.controller.approval.ApprovalEditorDialogController;
 import de.spiritaner.maz.model.meta.ApprovalType;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -17,17 +14,22 @@ import javax.persistence.*;
 @Entity
 @Audited
 @Identifiable.Annotation(editorDialogClass = ApprovalEditorDialogController.class, identifiableName = "Einwilligung")
+@NamedQueries({
+		  @NamedQuery(name = "Approval.findStdApprovalsForPerson", query = "SELECT a FROM Approval a WHERE a.approvalType<=100 AND a.person=:person")
+})
 public class Approval implements Identifiable {
 
 	private LongProperty id;
 
-	private Person person;
-	private ApprovalType approvalType;
+	private ObjectProperty<Person> person;
+	private ObjectProperty<ApprovalType> approvalType;
 	private BooleanProperty approved;
 
 	public Approval() {
 		approved = new SimpleBooleanProperty();
 		id = new SimpleLongProperty();
+		person = new SimpleObjectProperty<>();
+		approvalType = new SimpleObjectProperty<>();
 	}
 
 	@Id
@@ -43,19 +45,27 @@ public class Approval implements Identifiable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="personId", nullable = false)
 	public Person getPerson() {
-		return person;
+		return person.get();
 	}
 	public void setPerson(Person person) {
-		this.person = person;
+		this.person.set(person);
+	}
+
+	public ObjectProperty<Person> personProperty() {
+		return person;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "approvalTypeId", nullable = false)
 	public ApprovalType getApprovalType() {
-		return approvalType;
+		return approvalType.get();
 	}
 	public void setApprovalType(ApprovalType approvalType) {
-		this.approvalType = approvalType;
+		this.approvalType.set(approvalType);
+	}
+
+	public ObjectProperty<ApprovalType> approvalTypeProperty() {
+		return approvalType;
 	}
 
 	@Column(nullable = false)

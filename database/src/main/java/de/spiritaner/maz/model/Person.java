@@ -35,7 +35,7 @@ public class Person implements Identifiable {
 
 	private LongProperty id;
 
-	private Salutation salutation;
+	private ObjectProperty<Salutation> salutation;
 	private StringProperty honorific;
 
 	private StringProperty firstName;
@@ -45,10 +45,10 @@ public class Person implements Identifiable {
 	private ObjectProperty<LocalDate> birthday;
 	private StringProperty birthplace;
 
-	private Gender gender;
+	private ObjectProperty<Gender> gender;
 	private Residence preferredResidence;
 	private List<Residence> residences;
-	private Diocese diocese;
+	private ObjectProperty<Diocese> diocese;
 	private List<Role> roles;
 	private List<Approval> approvals;
 	private List<ContactMethod> contactMethods;
@@ -65,6 +65,9 @@ public class Person implements Identifiable {
 		birthday = new SimpleObjectProperty<>();
 		birthplace = new SimpleStringProperty();
 		birthName = new SimpleStringProperty();
+		salutation = new SimpleObjectProperty<>();
+		gender = new SimpleObjectProperty<>();
+		diocese = new SimpleObjectProperty<>();
 
 		residences = new ArrayList<>();
 		roles = new ArrayList<>();
@@ -100,10 +103,13 @@ public class Person implements Identifiable {
 	@ManyToOne(fetch=FetchType.EAGER, cascade = {CascadeType.PERSIST})
 	@JoinColumn(name="salutationId")
 	public Salutation getSalutation() {
-		return salutation;
+		return salutation.get();
 	}
 	public void setSalutation(Salutation salutation) {
-		this.salutation = salutation;
+		this.salutation.set(salutation);
+	}
+	public ObjectProperty<Salutation> salutationProperty() {
+		return salutation;
 	}
 
 	/**
@@ -210,13 +216,14 @@ public class Person implements Identifiable {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="genderId")
 	public Gender getGender() {
-		return gender;
+		return gender.get();
 	}
 	public void setGender(Gender gender) {
-		this.gender = gender;
+		this.gender.set(gender);
 	}
-	@Transient
-	public Gender getGender(boolean nullSave) { return (nullSave && gender == null) ? new Gender() : gender; }
+	public ObjectProperty<Gender> genderProperty() {
+		return gender;
+	}
 
 	/**
 	 * A list of all places associated with this person.
@@ -237,13 +244,14 @@ public class Person implements Identifiable {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="dioceseId")
 	public Diocese getDiocese() {
-		return diocese;
+		return diocese.get();
 	}
 	public void setDiocese(Diocese diocese) {
-		this.diocese = diocese;
+		this.diocese.set(diocese);
 	}
-	@Transient
-	public Diocese getDiocese(boolean nullSave) { return (nullSave && diocese == null) ? new Diocese() : diocese; }
+	public ObjectProperty<Diocese> dioceseProperty() {
+		return diocese;
+	}
 
 	/**
 	 * All the roles this specific person has.

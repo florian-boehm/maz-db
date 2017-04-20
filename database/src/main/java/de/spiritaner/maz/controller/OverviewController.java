@@ -16,6 +16,7 @@ import org.controlsfx.control.table.TableFilter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
+import javax.swing.text.html.Option;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -111,17 +112,12 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	protected void postCreate(T newObject) {
 	}
 
-	;
-
 	protected void preEdit(T object) {
 	}
 
-	;
 
-	protected void postEdit(T object) {
+	protected void postEdit(T previouslySelected, T edited) {
 	}
-
-	;
 
 	public void edit(ActionEvent actionEvent) {
 		editObj(null);
@@ -137,12 +133,10 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 			final T previousObject = obj;
 
 			result.ifPresent(managedObject -> {
-				postEdit(managedObject);
-				removeItem(previousObject);
-				addItem(managedObject);
+				postEdit(previousObject, managedObject);
 			});
-			//postCreate(object);
-			//load();
+
+			// Force the reload of the specifc item or the whole table
 		} catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			ExceptionDialog.show(e);
 		}
@@ -150,8 +144,6 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 	protected void preRemove(T obsoleteEntity, EntityManager em) {
 	}
-
-	;
 
 	public void remove(final ActionEvent actionEvent) {
 		final T selectedObj = getTable().getSelectionModel().getSelectedItem();
@@ -309,9 +301,9 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 	public void removeItem(T item) {
 		if (useFilter) {
-			tableFilter.getBackingList().remove(item);
+			if(tableFilter.getBackingList().contains(item)) tableFilter.getBackingList().remove(item);
 		} else {
-			table.getItems().remove(item);
+			if(table.getItems().contains(item)) table.getItems().remove(item);
 		}
 	}
 

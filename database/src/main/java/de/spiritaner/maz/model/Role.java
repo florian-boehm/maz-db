@@ -4,7 +4,9 @@ import de.spiritaner.maz.controller.participation.ParticipationEditorDialogContr
 import de.spiritaner.maz.controller.role.RoleEditorDialogController;
 import de.spiritaner.maz.model.meta.RoleType;
 import javafx.beans.property.LongProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -19,11 +21,13 @@ import javax.persistence.*;
 public class Role implements Identifiable {
 
 	private LongProperty id;
-	private Person person;
-	private RoleType roleType;
+	private ObjectProperty<Person> person;
+	private ObjectProperty<RoleType> roleType;
 
 	public Role() {
 		id = new SimpleLongProperty();
+		person = new SimpleObjectProperty<>();
+		roleType = new SimpleObjectProperty<>();
 	}
 
 	@Id
@@ -42,10 +46,14 @@ public class Role implements Identifiable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="personId", nullable = false)
 	public Person getPerson() {
-		return person;
+		return person.get();
 	}
 	public void setPerson(Person person) {
-		this.person = person;
+		this.person.set(person);
+	}
+
+	public ObjectProperty<Person> personProperty() {
+		return person;
 	}
 
 	/**
@@ -54,10 +62,14 @@ public class Role implements Identifiable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "roleTypeId", nullable = false)
 	public RoleType getRoleType() {
-		return roleType;
+		return roleType.get();
 	}
 	public void setRoleType(RoleType roleType) {
-		this.roleType = roleType;
+		this.roleType.set(roleType);
+	}
+
+	public ObjectProperty<RoleType> roleTypeProperty() {
+		return roleType;
 	}
 
 	@Override

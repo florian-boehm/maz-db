@@ -23,8 +23,8 @@ public class ContactMethod implements Identifiable {
 	private LongProperty id;
 	private StringProperty value;
 
-	private Person person;
-	private ContactMethodType contactMethodType;
+	private ObjectProperty<Person> person;
+	private ObjectProperty<ContactMethodType> contactMethodType;
 	private StringProperty remark;
 
 	private BooleanProperty preferred;
@@ -35,6 +35,9 @@ public class ContactMethod implements Identifiable {
 		remark = new SimpleStringProperty();
 		preferred = new SimpleBooleanProperty();
 		preferred.set(false);
+
+		person = new SimpleObjectProperty<>();
+		contactMethodType = new SimpleObjectProperty<>();
 	}
 
 	@Id
@@ -70,11 +73,15 @@ public class ContactMethod implements Identifiable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "personId", nullable = false)
 	public Person getPerson() {
-		return person;
+		return person.get();
 	}
 
 	public void setPerson(Person person) {
-		this.person = person;
+		this.person.set(person);
+	}
+
+	public ObjectProperty<Person> personProperty() {
+		return person;
 	}
 
 	/**
@@ -83,11 +90,15 @@ public class ContactMethod implements Identifiable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "contactMethodTypeId", nullable = false)
 	public ContactMethodType getContactMethodType() {
-		return contactMethodType;
+		return contactMethodType.get();
 	}
 
 	public void setContactMethodType(ContactMethodType contactMethodType) {
-		this.contactMethodType = contactMethodType;
+		this.contactMethodType.set(contactMethodType);
+	}
+
+	public ObjectProperty<ContactMethodType> contactMethodTypeProperty() {
+		return contactMethodType;
 	}
 
 	public boolean isPreferred() {
@@ -112,11 +123,6 @@ public class ContactMethod implements Identifiable {
 
 	public void setRemark(String remark) {
 		this.remark.set(remark);
-	}
-
-	@Transient
-	public StringProperty preferredContactMethodProperty() {
-		return new SimpleStringProperty((isPreferred()) ? "Ja" : "Nein");
 	}
 
 	@Override

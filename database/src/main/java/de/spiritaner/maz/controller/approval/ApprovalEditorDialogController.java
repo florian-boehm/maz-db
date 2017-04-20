@@ -17,7 +17,10 @@ import org.controlsfx.control.ToggleSwitch;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import javax.xml.crypto.Data;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/approval/approval_editor_dialog.fxml", objDesc = "Einwilligung")
@@ -54,23 +57,22 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 				personEditorController.setAll(approval.getPerson());
 				personEditorController.setReadonly(true);
 
-				logger.info("Approval List: "+getIdentifiable().getPerson().getApprovals());
-				logger.info("Size of approval list: "+getIdentifiable().getPerson().getApprovals().size());
-				for (Approval tmpApproval : approval.getPerson().getApprovals()) {
-					switch (tmpApproval.getApprovalType().getId().intValue()) {
+				approval.getPerson().getApprovals().forEach(singleApproval -> {
+					switch (singleApproval.getApprovalType().getId().intValue()) {
 						case 1:
-							photoApprovalToggleSwitch.setSelected(tmpApproval.isApproved());
+							photoApprovalToggleSwitch.setSelected(singleApproval.isApproved());
 							break;
 						case 2:
-							privacyPolicyToggleSwitch.setSelected(tmpApproval.isApproved());
+							privacyPolicyToggleSwitch.setSelected(singleApproval.isApproved());
 							break;
 						case 3:
-							newsletterToggleSwitch.setSelected(tmpApproval.isApproved());
+							newsletterToggleSwitch.setSelected(singleApproval.isApproved());
 							break;
 					}
-				}
+				});
 			}
 
+			// TODO There is a problem, sometimes the standard approvals don't trigger the readonly state
 			if (approval.getApprovalType() == null || approval.getApprovalType().getId() > 100) {
 				approvalEditorController.setAll(approval);
 			} else {
@@ -104,26 +106,22 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 				EntityManager em = DataDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				logger.info("Person: "+getIdentifiable().getPerson());
 				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
-
-				logger.info("Approval List: "+getIdentifiable().getPerson().getApprovals());
-				logger.info("Size of approval list: "+getIdentifiable().getPerson().getApprovals().size());
-				for (Approval tmpApproval : getIdentifiable().getPerson().getApprovals()) {
-					switch (tmpApproval.getApprovalType().getId().intValue()) {
+				getIdentifiable().getPerson().getApprovals().forEach(approval -> {
+					switch (approval.getApprovalType().getId().intValue()) {
 						case 1:
-							tmpApproval.setApproved(photoApprovalToggleSwitch.isSelected());
+							approval.setApproved(photoApprovalToggleSwitch.isSelected());
 							break;
 						case 2:
-							tmpApproval.setApproved(privacyPolicyToggleSwitch.isSelected());
+							approval.setApproved(privacyPolicyToggleSwitch.isSelected());
 							break;
 						case 3:
-							tmpApproval.setApproved(newsletterToggleSwitch.isSelected());
+							approval.setApproved(newsletterToggleSwitch.isSelected());
 							break;
 					}
 
-					em.merge(tmpApproval);
-				}
+					em.merge(approval);
+				});
 
 				approvalEditorController.getAll(getIdentifiable());
 
@@ -132,11 +130,11 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 						Approval managedApproval = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
 						em.getTransaction().commit();
 						setResult(managedApproval);
+					} else {
+						em.getTransaction().commit();
 					}
 
 					requestClose();
-					// Add backwards relationship too
-					//if(!approval.getPerson().getApprovals().contains(approval)) approval.getPerson().getApprovals().add(approval);
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);

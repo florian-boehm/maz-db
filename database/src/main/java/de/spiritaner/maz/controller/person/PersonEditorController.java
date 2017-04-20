@@ -2,9 +2,11 @@ package de.spiritaner.maz.controller.person;
 
 import de.spiritaner.maz.controller.meta.DioceseOverviewController;
 import de.spiritaner.maz.controller.meta.GenderOverviewController;
+import de.spiritaner.maz.controller.meta.SalutationOverviewController;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
+import de.spiritaner.maz.model.meta.Salutation;
 import de.spiritaner.maz.util.DataDatabase;
 import de.spiritaner.maz.util.factory.DatePickerFormatter;
 import de.spiritaner.maz.util.factory.MetaClassListCell;
@@ -51,17 +53,23 @@ public class PersonEditorController implements Initializable {
 	private ComboBox<Diocese> dioceseComboBox;
 	@FXML
 	private Button addNewDioceseButton;
+	@FXML
+	private ComboBox<Salutation> salutationComboBox;
+	@FXML
+	private Button addNewSalutationButton;
+	@FXML
+	private TextField honorificField;
 
 	private TextValidator firstnameValidator;
 	private TextValidator familynameValidator;
-	private DateValidator birthdayDateValidator;
-	private ComboBoxValidator genderComboBoxValidator;
+	//private DateValidator birthdayDateValidator;
+	//private ComboBoxValidator genderComboBoxValidator;
 
 	public void initialize(URL location, ResourceBundle resources) {
 		firstnameValidator = TextValidator.create(firstnameField).fieldName("Vorname").notEmpty(true).validateOnChange();
 		familynameValidator = TextValidator.create(familynameField).fieldName("Nachname").notEmpty(true).validateOnChange();
-		birthdayDateValidator = DateValidator.create(birthdayDatePicker).fieldName("Geburtsdatum").notEmpty(true).past().validateOnChange();
-		genderComboBoxValidator = new ComboBoxValidator<>(genderComboBox).fieldName("Geschlecht").isSelected(true).validateOnChange();
+		//birthdayDateValidator = DateValidator.create(birthdayDatePicker).fieldName("Geburtsdatum").notEmpty(true).past().validateOnChange();
+		//genderComboBoxValidator = new ComboBoxValidator<>(genderComboBox).fieldName("Geschlecht").isSelected(true).validateOnChange();
 
 		birthdayDatePicker.setConverter(new DatePickerFormatter());
 
@@ -69,11 +77,14 @@ public class PersonEditorController implements Initializable {
 		genderComboBox.setButtonCell(new MetaClassListCell<>());
 		dioceseComboBox.setCellFactory(column -> new MetaClassListCell<>());
 		dioceseComboBox.setButtonCell(new MetaClassListCell<>());
+		salutationComboBox.setCellFactory(column -> new MetaClassListCell<>());
+		salutationComboBox.setButtonCell(new MetaClassListCell<>());
 
 		firstnameField.requestFocus();
 
 		loadGender();
 		loadDiocese();
+		loadSalutation();
 	}
 
 	public void setAll(Person person) {
@@ -84,6 +95,8 @@ public class PersonEditorController implements Initializable {
 		birthplaceField.setText(person.getBirthplace());
 		genderComboBox.setValue(person.getGender());
 		dioceseComboBox.setValue(person.getDiocese());
+		salutationComboBox.setValue(person.getSalutation());
+		honorificField.setText(person.getHonorific());
 	}
 
 	public Person getAll(Person person) {
@@ -95,6 +108,8 @@ public class PersonEditorController implements Initializable {
 		person.setBirthplace(birthplaceField.getText());
 		person.setGender((genderComboBox.getSelectionModel().getSelectedIndex() <= 0) ? null : genderComboBox.getValue());
 		person.setDiocese((dioceseComboBox.getSelectionModel().getSelectedIndex() <= 0) ? null : dioceseComboBox.getValue());
+		person.setSalutation((salutationComboBox.getSelectionModel().getSelectedIndex() <= 0) ? null : salutationComboBox.getValue());
+		person.setHonorific(honorificField.getText());
 		return person;
 	}
 
@@ -108,9 +123,12 @@ public class PersonEditorController implements Initializable {
 		addNewGenderButton.setDisable(readonly);
 		dioceseComboBox.setDisable(readonly);
 		addNewDioceseButton.setDisable(readonly);
+		salutationComboBox.setDisable(readonly);
+		addNewSalutationButton.setDisable(readonly);
+		honorificField.setDisable(readonly);
 	}
 
-	public void loadGender() {
+	private void loadGender() {
 		EntityManager em = DataDatabase.getFactory().createEntityManager();
 		Collection<Gender> result = em.createNamedQuery("Gender.findAll", Gender.class).getResultList();
 
@@ -121,7 +139,7 @@ public class PersonEditorController implements Initializable {
 		genderComboBox.setValue(selectedBefore);
 	}
 
-	public void loadDiocese() {
+	private void loadDiocese() {
 		EntityManager em = DataDatabase.getFactory().createEntityManager();
 		Collection<Diocese> result = em.createNamedQuery("Diocese.findAll", Diocese.class).getResultList();
 
@@ -130,6 +148,17 @@ public class PersonEditorController implements Initializable {
 		dioceseComboBox.getItems().addAll(FXCollections.observableArrayList(result));
 		dioceseComboBox.getItems().add(0, Diocese.createEmpty());
 		dioceseComboBox.setValue(selectedBefore);
+	}
+
+	private void loadSalutation() {
+		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		Collection<Salutation> result = em.createNamedQuery("Salutation.findAll", Salutation.class).getResultList();
+
+		Salutation selectedBefore = salutationComboBox.getValue();
+		salutationComboBox.getItems().clear();
+		salutationComboBox.getItems().addAll(FXCollections.observableArrayList(result));
+		salutationComboBox.getItems().add(0, Salutation.createEmpty());
+		salutationComboBox.setValue(selectedBefore);
 	}
 
 	public boolean isValid() {
@@ -154,5 +183,11 @@ public class PersonEditorController implements Initializable {
 		new DioceseOverviewController().create(actionEvent);
 
 		loadDiocese();
+	}
+
+	public void addNewSalutation(ActionEvent actionEvent) {
+		new SalutationOverviewController().create(actionEvent);
+
+		loadSalutation();
 	}
 }

@@ -4,10 +4,7 @@ import de.spiritaner.maz.controller.participation.ParticipationEditorDialogContr
 import de.spiritaner.maz.controller.residence.ResidenceEditorDialogController;
 import de.spiritaner.maz.model.meta.ResidenceType;
 import de.spiritaner.maz.util.DataDatabase;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -28,12 +25,15 @@ import java.util.ArrayList;
 public class Residence implements Identifiable {
 
 	private LongProperty id;
-	private Person person;
-	private Address address;
-	private ResidenceType residenceType;
+	private ObjectProperty<Person> person;
+	private ObjectProperty<Address> address;
+	private ObjectProperty<ResidenceType> residenceType;
 
 	public Residence() {
 		id = new SimpleLongProperty();
+		person = new SimpleObjectProperty<>();
+		address = new SimpleObjectProperty<>();
+		residenceType = new SimpleObjectProperty<>();
 	}
 
 	@Id
@@ -53,31 +53,43 @@ public class Residence implements Identifiable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "personId", nullable = false)
 	public Person getPerson() {
-		return person;
+		return person.get();
 	}
 
 	public void setPerson(Person person) {
-		this.person = person;
+		this.person.set(person);
+	}
+
+	public ObjectProperty<Person> personProperty() {
+		return person;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "addressId", nullable = false)
 	public Address getAddress() {
-		return address;
+		return address.get();
 	}
 
 	public void setAddress(Address address) {
-		this.address = address;
+		this.address.set(address);
+	}
+
+	public ObjectProperty<Address> addressProperty() {
+		return address;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "residenceTypeId", nullable = false)
 	public ResidenceType getResidenceType() {
-		return residenceType;
+		return residenceType.get();
 	}
 
 	public void setResidenceType(ResidenceType residenceType) {
-		this.residenceType = residenceType;
+		this.residenceType.set(residenceType);
+	}
+
+	public ObjectProperty<ResidenceType> residenceTypeProperty() {
+		return residenceType;
 	}
 
 	@Transient

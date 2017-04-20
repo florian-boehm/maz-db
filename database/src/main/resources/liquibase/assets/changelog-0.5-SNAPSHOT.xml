@@ -5,29 +5,9 @@
 		  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
 		  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-	<changeSet id="20170412-1057" author="florian">
-		<delete tableName="GENDER">
-			<where>ID &lt;= 100</where>
-		</delete>
-		<delete tableName="DIOCESE">
-			<where>ID &lt;= 100</where>
-		</delete>
-		<delete tableName="CONTACTMETHODTYPE">
-			<where>ID &lt;= 100</where>
-		</delete>
-		<delete tableName="APPROVALTYPE">
-			<where>ID &lt;= 100</where>
-		</delete>
-		<delete tableName="ROLETYPE">
-			<where>ID &lt;= 100</where>
-		</delete>
-		<delete tableName="RESIDENCETYPE">
-			<where>ID &lt;= 100</where>
-		</delete>
-		<delete tableName="PARTICIPATIONTYPE">
-			<where>ID &lt;= 100</where>
-		</delete>
-		<insert tableName="GENDER">
+	<changeSet id="20170420-1213" runAlways="true" author="florian">
+		<customChange class="de.spiritaner.maz.util.AssetGenerator" />
+		<!--insert tableName="GENDER">
 			<column name="ID">1</column>
 			<column name="DESCRIPTION">Männlich</column>
 			<column name="REMOVABLE">FALSE</column>
@@ -309,5 +289,23 @@
 			<column name="REMOVABLE">FALSE</column>
 			<column name="EDITABLE">FALSE</column>
 		</insert>
+		<insert tableName="SALUTATION">
+			<column name="ID">1</column>
+			<column name="DESCRIPTION">Du</column>
+			<column name="REMOVABLE">FALSE</column>
+			<column name="EDITABLE">FALSE</column>
+		</insert>
+		<insert tableName="SALUTATION">
+			<column name="ID">1</column>
+			<column name="DESCRIPTION">Formell</column>
+			<column name="REMOVABLE">FALSE</column>
+			<column name="EDITABLE">FALSE</column>
+		</insert>
+		<insert tableName="SALUTATION">
+			<column name="ID">2</column>
+			<column name="DESCRIPTION">Informell</column>
+			<column name="REMOVABLE">FALSE</column>
+			<column name="EDITABLE">FALSE</column>
+		</insert-->
 	</changeSet>
 </databaseChangeLog>

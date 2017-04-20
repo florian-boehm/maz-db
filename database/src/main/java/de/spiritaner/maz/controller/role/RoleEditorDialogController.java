@@ -82,12 +82,13 @@ public class RoleEditorDialogController extends EditorController<Role> {
 
 				try {
 					Role managedRole = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
-
-					// Add backwards relationship too
-					if(!managedRole.getPerson().getRoles().contains(managedRole)) managedRole.getPerson().getRoles().add(managedRole);
-
 					em.getTransaction().commit();
-					getStage().close();
+
+					setResult(managedRole);
+					requestClose();
+					// Add backwards relationship too
+					//if(!managedRole.getPerson().getRoles().contains(managedRole)) managedRole.getPerson().getRoles().add(managedRole);
+					//getStage().close();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);

@@ -4,6 +4,9 @@ import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.model.Person;
+import de.spiritaner.maz.model.meta.ContactMethodType;
+import de.spiritaner.maz.util.factory.BooleanTableCell;
+import de.spiritaner.maz.util.factory.MetaClassTableCell;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -17,11 +20,11 @@ import java.util.Collection;
 public class ContactMethodOverviewController extends OverviewController<ContactMethod> {
 
 	@FXML
-	private TableColumn<ContactMethod, String> preferredColumn;
+	private TableColumn<ContactMethod, Boolean> preferredColumn;
 	@FXML
 	private TableColumn<ContactMethod, String> remarkColumn;
 	@FXML
-	private TableColumn<ContactMethod, String> contactMethodTypeColumn;
+	private TableColumn<ContactMethod, ContactMethodType> contactMethodTypeColumn;
 	@FXML
 	private TableColumn<ContactMethod, String> valueColumn;
 	@FXML
@@ -65,11 +68,14 @@ public class ContactMethodOverviewController extends OverviewController<ContactM
 
 	@Override
 	protected void postInit() {
-		contactMethodTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getContactMethodType().descriptionProperty());
+		contactMethodTypeColumn.setCellValueFactory(cellData -> cellData.getValue().contactMethodTypeProperty());
 		valueColumn.setCellValueFactory(cellData -> cellData.getValue().valueProperty());
-		preferredColumn.setCellValueFactory(cellData -> cellData.getValue().preferredContactMethodProperty());
+		preferredColumn.setCellValueFactory(cellData -> cellData.getValue().preferredProperty());
 		remarkColumn.setCellValueFactory(cellData -> cellData.getValue().remarkProperty());
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+
+		contactMethodTypeColumn.setCellFactory(column -> new MetaClassTableCell<>());
+		preferredColumn.setCellFactory(column -> new BooleanTableCell<>());
 	}
 
 	public void setPerson(Person person) {

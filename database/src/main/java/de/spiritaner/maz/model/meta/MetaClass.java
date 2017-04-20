@@ -1,7 +1,11 @@
 package de.spiritaner.maz.model.meta;
 
 import de.spiritaner.maz.model.Identifiable;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableStringValue;
+import javafx.beans.value.ObservableValue;
 
 import javax.persistence.*;
 
