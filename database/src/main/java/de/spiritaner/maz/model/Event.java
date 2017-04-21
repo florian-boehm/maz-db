@@ -17,7 +17,6 @@ import java.util.List;
 
 /**
  * @author Florian Schwab
- * @version 0.0.1
  */
 @Entity
 @Audited
@@ -36,7 +35,7 @@ public class Event implements Identifiable {
 	private ObjectProperty<LocalDate> toDate;
 
 	private List<Participation> participations;
-	private EventType eventType;
+	private ObjectProperty<EventType> eventType;
 	private StringProperty location;
 
 	public Event() {
@@ -47,6 +46,7 @@ public class Event implements Identifiable {
 		toDate = new SimpleObjectProperty<>();
 		location = new SimpleStringProperty();
 		participations = new ArrayList<>();
+		eventType = new SimpleObjectProperty<>();
 	}
 
 	@Id
@@ -125,11 +125,15 @@ public class Event implements Identifiable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "eventTypeId", nullable = false)
 	public EventType getEventType() {
-		return eventType;
+		return eventType.get();
 	}
 
 	public void setEventType(EventType eventType) {
-		this.eventType = eventType;
+		this.eventType.set(eventType);
+	}
+
+	public ObjectProperty<EventType> eventTypeProperty() {
+		return eventType;
 	}
 
 	@Column(nullable = false)

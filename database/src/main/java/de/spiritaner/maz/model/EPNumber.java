@@ -18,12 +18,13 @@ public class EPNumber implements Identifiable {
 	private LongProperty id;
 	private IntegerProperty number;
 	private StringProperty description;
-	private Site site;
+	private ObjectProperty<Site> site;
 
 	public EPNumber() {
 		id = new SimpleLongProperty();
 		number = new SimpleIntegerProperty();
 		description = new SimpleStringProperty();
+		site = new SimpleObjectProperty<>();
 	}
 
 	@Override
@@ -67,19 +68,28 @@ public class EPNumber implements Identifiable {
 		this.description.set(description);
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "siteId")
 	public Site getSite() {
-		return site;
+		return site.get();
 	}
 
 	public void setSite(Site site) {
-		this.site = site;
+		this.site.set(site);
+	}
+
+	public ObjectProperty<Site> siteProperty() {
+		return site;
 	}
 
 	@Transient
 	@Override
 	public boolean equals(Object obj) {
 		return (obj instanceof EPNumber) && ((EPNumber) obj).getId().equals(this.getId());
+	}
+
+	@Transient
+	public String toString() {
+		return /*getId() + " - " + */getNumber() + " - " + getDescription();
 	}
 }

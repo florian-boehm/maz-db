@@ -1,13 +1,17 @@
 package de.spiritaner.maz.controller.yearabroad;
 
-import de.spiritaner.maz.model.Address;
+import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.YearAbroad;
-import de.spiritaner.maz.util.validator.TextValidator;
+import de.spiritaner.maz.util.factory.DatePickerFormatter;
+import de.spiritaner.maz.util.factory.EPNumberCell;
+import de.spiritaner.maz.util.validator.ComboBoxValidator;
+import de.spiritaner.maz.util.validator.DateValidator;
+import de.spiritaner.maz.util.validator.EPNumberValidator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import org.controlsfx.control.ToggleSwitch;
+import tornadofx.control.DateTimePicker;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,10 +30,30 @@ public class YearAbroadEditorController implements Initializable {
 	private DatePicker abortionDatePicker;
 	@FXML
 	private TextArea abortionReasonArea;
+	@FXML
+	private DateTimePicker missionDateTimePicker;
+	@FXML
+	private ToggleSwitch weltwaertsPromotedToggleSwitch;
+	@FXML
+	private ComboBox<EPNumber> epNumberComboBox;
+
+	private DateValidator arrivalDateValidator;
+	private DateValidator departureDateValidator;
+	private EPNumberValidator epNumberValidator;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		arrivalDateValidator = DateValidator.create(arrivalDatePicker).fieldName("Rückreisedatum").relationFieldName("Abreisedatum").after(departureDatePicker).notEmpty(true).validateOnChange();
+		departureDateValidator = DateValidator.create(departureDatePicker).fieldName("Abreisedatum").notEmpty(true).validateOnChange();
+		epNumberValidator = new EPNumberValidator(epNumberComboBox).fieldName("EP-Nummer").isSelected(true).validateOnChange();
 
+		arrivalDatePicker.setConverter(new DatePickerFormatter());
+		abortionDatePicker.setConverter(new DatePickerFormatter());
+		departureDatePicker.setConverter(new DatePickerFormatter());
+		missionDateTimePicker.setConverter(new DatePickerFormatter());
+
+		epNumberComboBox.setCellFactory(param -> EPNumberCell.epNumberListCell());
+		epNumberComboBox.setButtonCell(EPNumberCell.epNumberListCell());
 	}
 
 	public void setAll(YearAbroad yearAbroad) {
@@ -39,6 +63,9 @@ public class YearAbroadEditorController implements Initializable {
 		arrivalDatePicker.setValue(yearAbroad.getArrivalDate());
 		abortionDatePicker.setValue(yearAbroad.getAbortionDate());
 		abortionReasonArea.setText(yearAbroad.getAbortionReason());
+		missionDateTimePicker.setValue(yearAbroad.getMissionDate());
+		weltwaertsPromotedToggleSwitch.setSelected(yearAbroad.isWeltwaertsPromoted());
+		epNumberComboBox.setValue(yearAbroad.getEpNumber());
 	}
 
 	public YearAbroad getAll(YearAbroad yearAbroad) {
@@ -49,6 +76,9 @@ public class YearAbroadEditorController implements Initializable {
 		yearAbroad.setArrivalDate(arrivalDatePicker.getValue());
 		yearAbroad.setAbortionDate(abortionDatePicker.getValue());
 		yearAbroad.setAbortionReason(abortionReasonArea.getText());
+		yearAbroad.setMissionDate(missionDateTimePicker.getValue());
+		yearAbroad.setWeltwaertsPromoted(weltwaertsPromotedToggleSwitch.isSelected());
+		yearAbroad.setEpNumber(epNumberComboBox.getValue());
 		return yearAbroad;
 	}
 
@@ -60,9 +90,29 @@ public class YearAbroadEditorController implements Initializable {
 		abortionDatePicker.setDisable(readonly);
 		abortionDatePicker.setDisable(readonly);
 		abortionReasonArea.setDisable(readonly);
+		missionDateTimePicker.setDisable(readonly);
+		weltwaertsPromotedToggleSwitch.setDisable(readonly);
+		epNumberComboBox.setDisable(readonly);
 	}
 
 	public boolean isValid() {
-		return true;
+		boolean departureDateValid = departureDateValidator.validate();
+		boolean arrivalDateValid = arrivalDateValidator.validate();
+		// TODO EPNumber validator is crying about a "not set epnumber" but it is set!
+		boolean epNumberValid = epNumberValidator.validate();
+
+		return departureDateValid && arrivalDateValid && epNumberValid;
+	}
+
+	public DatePicker getDepartureDatePicker() {
+		return departureDatePicker;
+	}
+
+	public DatePicker getArrivalDatePicker() {
+		return arrivalDatePicker;
+	}
+
+	public ComboBox<EPNumber> getEpNumberComboBox() {
+		return epNumberComboBox;
 	}
 }

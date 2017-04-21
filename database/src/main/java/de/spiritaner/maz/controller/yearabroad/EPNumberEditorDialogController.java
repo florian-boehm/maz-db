@@ -42,10 +42,11 @@ public class EPNumberEditorDialogController extends EditorController<EPNumber> {
 				epNumberEditorController.getAll(getIdentifiable());
 
 				try {
-					if(!em.contains(getIdentifiable())) em.merge(getIdentifiable());
+					EPNumber managedEPNumber = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
 					em.getTransaction().commit();
 
-					getStage().close();
+					setResult(managedEPNumber);
+					requestClose();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);

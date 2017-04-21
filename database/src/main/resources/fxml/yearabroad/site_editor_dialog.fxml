@@ -3,13 +3,11 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -52,7 +50,7 @@
 
 			<Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
 
-			<fx:include fx:id="epNumberOverview" prefHeight="200" prefWidth="200" source="epnumber_overview.fxml" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowIndex="6" />
+			<fx:include fx:id="epNumberOverview" prefHeight="200" prefWidth="200" source="epnumber_overview.fxml" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="6" />
 
 			<ButtonBar prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="7">
 				<buttons>
@@ -63,24 +61,8 @@
 					<Insets top="10.0" />
 				</GridPane.margin>
 			</ButtonBar>
-         <ListView fx:id="selectedEPNumberList" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-         <VBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="6" GridPane.vgrow="NEVER">
-            <children>
-               <Button fx:id="addEPNumberButton" mnemonicParsing="false" onAction="#addEPNumber" text="&gt;" />
-               <Button fx:id="removeEPNumberButton" mnemonicParsing="false" onAction="#removeEPNumber" text="&lt;" />
-            </children>
-         </VBox>
 
-			<Text style="-fx-font-weight: bold;" text="Verfügbare EP-Nummern" GridPane.columnIndex="0" GridPane.rowIndex="5">
-				<GridPane.margin>
-					<Insets />
-				</GridPane.margin>
-				<font>
-					<Font size="14.0" />
-				</font>
-			</Text>
-
-			<Text style="-fx-font-weight: bold;" text="Zugewiesene EP-Nummern" GridPane.columnIndex="2" GridPane.rowIndex="5" GridPane.halignment="LEFT" >
+			<Text style="-fx-font-weight: bold;" text="EP-Nummern" GridPane.columnIndex="0" GridPane.rowIndex="5">
 				<GridPane.margin>
 					<Insets />
 				</GridPane.margin>
@@ -102,6 +84,7 @@
 				<RowConstraints />
 				<RowConstraints />
 				<RowConstraints />
+            <RowConstraints />
 			</rowConstraints>
 		</GridPane>
 	</children>

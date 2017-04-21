@@ -68,6 +68,7 @@ public class AssetGenerator implements CustomSqlChange {
 				  // Residence type
 				  new RawSqlStatement("MERGE INTO PUBLIC.RESIDENCETYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('1', 'Studien-/Ausbildungsort', 'FALSE', 'FALSE')"),
 				  new RawSqlStatement("MERGE INTO PUBLIC.RESIDENCETYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('2', 'Elternhaus', 'FALSE', 'FALSE')"),
+				  new RawSqlStatement("MERGE INTO PUBLIC.RESIDENCETYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('3', 'Einsatzstelle', 'FALSE', 'FALSE')"),
 				  // Participation type
 				  new RawSqlStatement("MERGE INTO PUBLIC.PARTICIPATIONTYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('1', 'Teamer/in', 'FALSE', 'FALSE')"),
 				  new RawSqlStatement("MERGE INTO PUBLIC.PARTICIPATIONTYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('2', 'Teilnehmer/in', 'FALSE', 'FALSE')"),

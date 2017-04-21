@@ -29,7 +29,6 @@ import java.util.List;
 @Indexed
 @NamedQueries({
 	@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
-	//@NamedQuery(name="Person.fetchAllResidences",query="SELECT r FROM Residence where personId=:personId"),
 })
 public class Person implements Identifiable {
 

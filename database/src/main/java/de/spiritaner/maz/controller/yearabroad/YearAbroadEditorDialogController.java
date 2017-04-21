@@ -5,6 +5,7 @@ import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.controller.person.PersonOverviewController;
 import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.dialog.OverviewDialog;
+import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.YearAbroad;
@@ -19,7 +20,12 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/yearabroad_editor_dialog.fxml", objDesc = "Auslandsjahr")
 public class YearAbroadEditorDialogController extends EditorController<YearAbroad> {
@@ -38,6 +44,59 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 	@FXML private Button searchSiteButton;
 
 	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+		yearAbroadEditorController.getDepartureDatePicker().valueProperty().addListener((observable, oldValue, newValue) -> {
+			searchEPNumber();
+		});
+
+		yearAbroadEditorController.getArrivalDatePicker().valueProperty().addListener((observable, oldValue, newValue) -> {
+			searchEPNumber();
+		});
+	}
+
+	private void searchEPNumber() {
+		EPNumber previousEpNumber = yearAbroadEditorController.getEpNumberComboBox().getValue();
+		yearAbroadEditorController.getEpNumberComboBox().getItems().clear();
+
+		if(yearAbroadEditorController.getArrivalDatePicker().getValue() != null &&
+				  yearAbroadEditorController.getDepartureDatePicker().getValue() != null &&
+				  getIdentifiable() != null && getIdentifiable().getSite() != null) {
+			EntityManager em = DataDatabase.getFactory().createEntityManager();
+			em.getTransaction().begin();
+
+			TypedQuery<YearAbroad> query = em.createNamedQuery("YearAbroad.findAllOfSiteWithinDate", YearAbroad.class);
+			query.setParameter("site",getIdentifiable().getSite());
+			query.setParameter("departureDate", yearAbroadEditorController.getDepartureDatePicker().getValue());
+			query.setParameter("arrivalDate", yearAbroadEditorController.getArrivalDatePicker().getValue());
+
+			final List<EPNumber> availableEpNumbers = new ArrayList<>();
+			getIdentifiable().getSite().getEpNumbers().forEach(epNumber -> availableEpNumbers.add(epNumber));
+			//getIdentifiable().getSite().getEpNumbers().forEach(epNumber -> logger.info("all: "+epNumber));
+
+			query.getResultList().forEach(yearAbroad -> {
+				//logger.info("ep number may be in use: "+yearAbroad.getEpNumber());
+				//logger.info("year abroad ids: " + yearAbroad.getId() + " = " + getIdentifiable().getId());
+				if(!yearAbroad.equals(getIdentifiable()) && availableEpNumbers.contains(yearAbroad.getEpNumber())) {
+					//logger.info("remove: "+yearAbroad.getEpNumber());
+					availableEpNumbers.remove(yearAbroad.getEpNumber());
+				}
+			});
+
+			//availableEpNumbers.forEach(epNumber -> logger.info("available: "+epNumber));
+
+			yearAbroadEditorController.getEpNumberComboBox().getItems().addAll(availableEpNumbers);
+			em.getTransaction().commit();
+		} else if(getIdentifiable() != null && getIdentifiable().getSite() != null) {
+			//getIdentifiable().getSite().getEpNumbers().forEach(epNumber -> logger.info("all: "+epNumber));
+			yearAbroadEditorController.getEpNumberComboBox().getItems().addAll(getIdentifiable().getSite().getEpNumbers());
+		}
+
+		if(previousEpNumber != null && yearAbroadEditorController.getEpNumberComboBox().getItems().contains(previousEpNumber)) {
+			yearAbroadEditorController.getEpNumberComboBox().getSelectionModel().select(previousEpNumber);
+		}
+	}
+
+	@Override
 	public void setIdentifiable(YearAbroad yearAbroad) {
 		super.setIdentifiable(yearAbroad);
 
@@ -48,6 +107,8 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 			if (yearAbroad.getSite() != null) {
 				siteEditorController.setAll(yearAbroad.getSite());
 				searchSiteButton.setDisable(true);
+
+				searchEPNumber();
 			}
 
 			if (yearAbroad.getPerson() != null) {
@@ -71,8 +132,9 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 		Platform.runLater(() -> {
 			boolean siteValid = siteEditorController.isValid();
 			boolean personValid = personEditorController.isValid();
+			boolean yearAbroadValid = yearAbroadEditorController.isValid();
 
-			if(siteValid && personValid) {
+			if(siteValid && personValid && yearAbroadValid) {
 				EntityManager em = DataDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
@@ -113,6 +175,7 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 		result.ifPresent((Site site) -> {
 			getIdentifiable().setSite(site);
 			siteEditorController.setAll(site);
+			searchEPNumber();
 		});
 	}
 }

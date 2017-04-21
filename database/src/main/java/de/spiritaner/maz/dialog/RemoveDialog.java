@@ -161,14 +161,13 @@ public class RemoveDialog {
 		return alert;
 	}
 
-	/*public static <T extends Identifiable> Alert create(final T identifiable, final Stage stage) {
-		final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		final Identifiable.Annotation annotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);
-		alert.setTitle(annotation.identifiableName() + " löschen");
+	public static Alert create(YearAbroad yearAbroad, Stage stage) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Auslandsjahr löschen");
 		alert.setHeaderText(null);
 		alert.initStyle(StageStyle.UTILITY);
-		alert.setContentText(annotation.identifiableName() + " '" + identifiable.toString() + "' wirklich löschen?");
+		alert.setContentText("Auslandsjahr bei '" + yearAbroad.getSite().getName() + "' von Person '" + yearAbroad.getPerson().getFullName() + "' wirklich löschen?");
 		alert.initOwner(stage);
 		return alert;
-	}*/
+	}
 }

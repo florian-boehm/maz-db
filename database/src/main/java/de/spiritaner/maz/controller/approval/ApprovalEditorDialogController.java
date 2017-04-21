@@ -20,6 +20,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.xml.crypto.Data;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -72,7 +73,6 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 				});
 			}
 
-			// TODO There is a problem, sometimes the standard approvals don't trigger the readonly state
 			if (approval.getApprovalType() == null || approval.getApprovalType().getId() > 100) {
 				approvalEditorController.setAll(approval);
 			} else {
@@ -107,6 +107,7 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 				em.getTransaction().begin();
 
 				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
+
 				getIdentifiable().getPerson().getApprovals().forEach(approval -> {
 					switch (approval.getApprovalType().getId().intValue()) {
 						case 1:
@@ -119,11 +120,9 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 							approval.setApproved(newsletterToggleSwitch.isSelected());
 							break;
 					}
-
-					em.merge(approval);
 				});
 
-				approvalEditorController.getAll(getIdentifiable());
+				if(!approvalEditorController.isReadOnly()) approvalEditorController.getAll(getIdentifiable());
 
 				try {
 					if(!approvalEditorController.isReadOnly()) {

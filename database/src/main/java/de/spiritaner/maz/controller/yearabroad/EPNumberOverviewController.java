@@ -4,6 +4,8 @@ import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.Site;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import org.hibernate.Hibernate;
@@ -11,6 +13,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.Collection;
+import java.util.List;
 
 public class EPNumberOverviewController extends OverviewController<EPNumber> {
 
@@ -31,7 +34,16 @@ public class EPNumberOverviewController extends OverviewController<EPNumber> {
 	protected Collection<EPNumber> preLoad(EntityManager em) {
 		if(site != null) {
 			Hibernate.initialize(site.getEpNumbers());
-			return site.getEpNumbers();
+
+			Collection<EPNumber> allEpNumbers = FXCollections.observableArrayList();
+			if(site.getEpNumbers() != null) allEpNumbers.addAll(site.getEpNumbers());
+
+			if(site.getId() <= 0L) {
+				List<EPNumber> epNumbersWithoutSite = em.createNamedQuery("EPNumber.findAllWithoutSite", EPNumber.class).getResultList();
+				if (epNumbersWithoutSite.size() > 0) allEpNumbers.addAll(epNumbersWithoutSite);
+			}
+
+			return allEpNumbers;
 		} else {
 			return em.createNamedQuery("EPNumber.findAllWithoutSite", EPNumber.class).getResultList();
 		}

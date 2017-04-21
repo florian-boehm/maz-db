@@ -2,10 +2,13 @@ package de.spiritaner.maz.controller.yearabroad;
 
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.YearAbroad;
+import de.spiritaner.maz.util.factory.BooleanTableCell;
 import de.spiritaner.maz.util.factory.DateAsStringListCell;
+import de.spiritaner.maz.util.factory.EPNumberCell;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -31,7 +34,9 @@ public class YearAbroadOverviewController extends OverviewController<YearAbroad>
 	@FXML
 	private TableColumn<YearAbroad, LocalDate> abortionDateColumn;
 	@FXML
-	private TableColumn<YearAbroad, String> weltwaertsPromotedColumn;
+	private TableColumn<YearAbroad, Boolean> weltwaertsPromotedColumn;
+	@FXML
+	private TableColumn<YearAbroad, EPNumber> epNumberColumn;
 	@FXML
 	private TableColumn<YearAbroad, Long> idColumn;
 
@@ -72,10 +77,13 @@ public class YearAbroadOverviewController extends OverviewController<YearAbroad>
 		departureDateColumn.setCellValueFactory(cellData -> cellData.getValue().departureDateProperty());
 		arrivalDateColumn.setCellValueFactory(cellData -> cellData.getValue().arrivalDateProperty());
 		abortionDateColumn.setCellValueFactory(cellData -> cellData.getValue().abortionDateProperty());
-		weltwaertsPromotedColumn.setCellValueFactory(cellData -> cellData.getValue().weltwaertsPromotedStringProperty());
+		weltwaertsPromotedColumn.setCellValueFactory(cellData -> cellData.getValue().weltwaertsPromotedProperty());
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 		jobDescriptionColumn.setCellValueFactory(cellData -> cellData.getValue().jobDescriptionProperty());
+		epNumberColumn.setCellValueFactory(cellData -> cellData.getValue().epNumberProperty());
 
+		epNumberColumn.setCellFactory(column -> EPNumberCell.epNumberTableCell());
+		weltwaertsPromotedColumn.setCellFactory(column -> new BooleanTableCell<>());
 		departureDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
 		arrivalDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
 		abortionDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());

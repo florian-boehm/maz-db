@@ -74,7 +74,7 @@ public class ApprovalOverviewController extends OverviewController<Approval> {
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 
 		approvalTypeColumn.setCellFactory(column -> new MetaClassTableCell<>());
-		approvedColumn.setCellFactory(column -> new BooleanTableCell());
+		approvedColumn.setCellFactory(column -> new BooleanTableCell<>());
 	}
 
 	@Override

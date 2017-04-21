@@ -45,12 +45,6 @@ public class SiteEditorDialogController extends EditorController<Site> {
 	private EPNumberOverviewController epNumberOverviewController;
 	@FXML
 	private Text titleText;
-	@FXML
-	public ListView<EPNumber> selectedEPNumberList;
-	@FXML
-	private Button addEPNumberButton;
-	@FXML
-	private Button removeEPNumberButton;
 
 	private ArrayList<EPNumber> removedEPNumbers = new ArrayList<>();
 
@@ -62,20 +56,6 @@ public class SiteEditorDialogController extends EditorController<Site> {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		epNumberOverviewController.setStage(getStage());
-		selectedEPNumberList.setCellFactory(param -> new ListCell<EPNumber>() {
-			@Override
-			public void updateItem(EPNumber item, boolean empty) {
-				super.updateItem(item, empty);
-
-				if (empty) {
-					setText(null);
-					setGraphic(null);
-				} else {
-					setText(item == null ? "null" : item.getNumber() + " / " + item.getDescription());
-					setGraphic(null);
-				}
-			}
-		});
 	}
 
 	public void saveSite(ActionEvent actionEvent) {
@@ -88,7 +68,7 @@ public class SiteEditorDialogController extends EditorController<Site> {
 				em.getTransaction().begin();
 
 				getIdentifiable().setAddress(Address.findSame(em, addressEditorController.getAll(getIdentifiable().getAddress())));
-				getIdentifiable().setEpNumbers(selectedEPNumberList.getItems());
+				getIdentifiable().setEpNumbers(epNumberOverviewController.getTable().getItems());
 				siteEditorController.getAll(getIdentifiable());
 
 				try {
@@ -102,7 +82,7 @@ public class SiteEditorDialogController extends EditorController<Site> {
 
 					// Add site to all ep selected ep numbers afterwards
 					if(managedSite != null) {
-						for(EPNumber epNumber : selectedEPNumberList.getItems()) {
+						for(EPNumber epNumber : epNumberOverviewController.getTable().getItems()) {
 							final EPNumber managedEPNumber = (!em.contains(epNumber)) ? em.find(EPNumber.class, epNumber.getId()) : epNumber;
 							managedEPNumber.setSite(managedSite);
 							//em.merge(managedEPNumber);
@@ -110,7 +90,9 @@ public class SiteEditorDialogController extends EditorController<Site> {
 					}
 
 					em.getTransaction().commit();
-					getStage().close();
+					setResult(managedSite);
+					requestClose();
+					//getStage().close();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);
@@ -136,9 +118,7 @@ public class SiteEditorDialogController extends EditorController<Site> {
 				addressEditorController.setAll(site.getAddress());
 			}
 
-			if(site.getEpNumbers() != null) {
-				selectedEPNumberList.getItems().addAll(site.getEpNumbers());
-			}
+			epNumberOverviewController.setSite(site);
 
 			if (site.getId() != 0L) {
 				titleText.setText("Einsatzstelle bearbeiten");
@@ -149,27 +129,5 @@ public class SiteEditorDialogController extends EditorController<Site> {
 			}
 		}
 
-	}
-
-	public void addEPNumber(ActionEvent actionEvent) {
-		EPNumber epNumber = epNumberOverviewController.getTable().getSelectionModel().getSelectedItem();
-
-		if (epNumber != null && !selectedEPNumberList.getItems().contains(epNumber)) {
-			selectedEPNumberList.getItems().add(epNumber);
-			epNumberOverviewController.removeItem(epNumber);
-
-			if(removedEPNumbers.contains(epNumber)) removedEPNumbers.remove(epNumber);
-		}
-	}
-
-	public void removeEPNumber(ActionEvent actionEvent) {
-		EPNumber epNumber = selectedEPNumberList.getSelectionModel().getSelectedItem();
-
-		if (epNumber != null) {
-			selectedEPNumberList.getItems().remove(epNumber);
-			epNumberOverviewController.addItem(epNumber);
-
-			if(epNumber.getSite() != null && epNumber.getSite().equals(getIdentifiable())) removedEPNumbers.add(epNumber);
-		}
 	}
 }

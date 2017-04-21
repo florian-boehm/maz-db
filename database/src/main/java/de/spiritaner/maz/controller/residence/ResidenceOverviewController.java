@@ -4,6 +4,7 @@ import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Residence;
+import de.spiritaner.maz.model.YearAbroad;
 import de.spiritaner.maz.model.meta.ResidenceType;
 import de.spiritaner.maz.util.factory.MetaClassTableCell;
 import javafx.collections.FXCollections;
@@ -13,7 +14,10 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
+import javax.persistence.TypedQuery;
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 
 public class ResidenceOverviewController extends OverviewController<Residence> {
 
@@ -53,7 +57,25 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 	protected Collection<Residence> preLoad(EntityManager em) {
 		if(person != null) {
 			Hibernate.initialize(person.getResidences());
-			return FXCollections.observableArrayList(person.getResidences());
+
+			Collection<Residence> residences = FXCollections.observableArrayList(person.getResidences());
+
+			// Fetch year abroad addresses
+			TypedQuery<YearAbroad> query = em.createNamedQuery("YearAbroad.findCurrentOfPerson", YearAbroad.class);
+			query.setParameter("person",person);
+			query.setParameter("today", LocalDate.now());
+			query.getResultList().forEach(yearAbroad -> {
+				Residence tmpRes = new Residence();
+				tmpRes.setId(-1L);
+				tmpRes.setPerson(person);
+				tmpRes.setAddress(yearAbroad.getSite().getAddress());
+				tmpRes.setResidenceType(em.find(ResidenceType.class, 3L));
+				//if(!person.getResidences().contains(tmpRes)) person.getResidences().add(tmpRes);
+				person.setPreferredResidence(tmpRes);
+				residences.add(tmpRes);
+			});
+
+			return residences;
 		}
 		return null;
 	}
@@ -89,6 +111,17 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 
 		residenceTypeColumn.setCellFactory(column -> new MetaClassTableCell<>());
 	}
+
+	@Override
+	protected boolean isRemoveButtonDisabled(Residence oldVal, Residence newVal) {
+		return newVal == null || (newVal.getId() < 0);
+	}
+
+	@Override
+	protected boolean isEditButtonDisabled(Residence oldVal, Residence newVal) {
+		return newVal == null || (newVal.getId() < 0);
+	}
+
 
 	public void setPerson(Person person) {
 		this.person = person;

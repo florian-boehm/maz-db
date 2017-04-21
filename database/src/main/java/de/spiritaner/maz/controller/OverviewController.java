@@ -11,12 +11,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 import org.controlsfx.control.MaskerPane;
 import org.controlsfx.control.table.TableFilter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
-import javax.swing.text.html.Option;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -29,6 +29,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public abstract class OverviewController<T extends Identifiable> implements Controller, Initializable {
+
+	final static Logger logger = Logger.getLogger(OverviewController.class);
 
 	@FXML private MaskerPane masker;
 	@FXML private TableView<T> table;
@@ -84,8 +86,6 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	protected void preCreate(T newObject) {
 	}
 
-	;
-
 	@SuppressWarnings("unchecked")
 	public void create(ActionEvent actionEvent) {
 		try {
@@ -99,11 +99,6 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 				postCreate(managedObject);
 				addItem(managedObject);
 			});
-
-			// TODO not good here, check if it fails in other situations when disabled
-			/*if(!result.isPresent()) {
-				load();
-			}*/
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			ExceptionDialog.show(e);
 		}
@@ -136,7 +131,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 				postEdit(previousObject, managedObject);
 			});
 
-			// Force the reload of the specifc item or the whole table
+			if(!result.isPresent()) load();
 		} catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			ExceptionDialog.show(e);
 		}
@@ -180,8 +175,6 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	protected void postRemove(T obsoleteEntity) {
 	}
 
-	;
-
 	public void load() {
 		Platform.runLater(() -> {
 			try {
@@ -198,6 +191,8 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 				em.getTransaction().commit();
 
 				postLoad(result);
+
+				logger.debug("OverviewController "+this.getClass()+" is clearing now!");
 
 				if (useFilter) {
 					tableFilter.getBackingList().clear();
@@ -235,8 +230,6 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		return newVal == null;
 	}
 
-	;
-
 	protected boolean isEditButtonDisabled(T oldVal, T newVal) {
 		return newVal == null;
 	}
@@ -255,7 +248,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 			row.setOnMouseClicked(event -> {
 				if (event.getClickCount() == 2 && (!row.isEmpty()) && editOnDoubleclick) {
-					editObj(row.getItem());
+					if(!isEditButtonDisabled(null, row.getItem())) editObj(row.getItem());
 				}
 			});
 
@@ -278,8 +271,6 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	public MaskerPane getMasker() {
 		return masker;
 	}
-
-	;
 
 	public void setToolbarVisible(boolean visibility) {
 		toolbar.setVisible(visibility);
@@ -308,11 +299,21 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	}
 
 	public void addItem(T item) {
+		logger.debug("Adding item " + item.getClass() + " to "+this.getClass());
+
 		if (useFilter) {
 			tableFilter.getBackingList().add(item);
 		} else {
 			table.getItems().add(item);
 		}
+	}
+
+	public boolean isUseFilter() {
+		return useFilter;
+	}
+
+	public void setUseFilter(boolean useFilter) {
+		this.useFilter = useFilter;
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
