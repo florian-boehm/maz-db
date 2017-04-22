@@ -61,6 +61,7 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 			Collection<Residence> residences = FXCollections.observableArrayList(person.getResidences());
 
 			// Fetch year abroad addresses
+			// TODO take care of the abortion date too!
 			TypedQuery<YearAbroad> query = em.createNamedQuery("YearAbroad.findCurrentOfPerson", YearAbroad.class);
 			query.setParameter("person",person);
 			query.setParameter("today", LocalDate.now());

@@ -22,6 +22,7 @@
                         <MetadataEditorTab text="Beziehungsarten" fx:value="de.spiritaner.maz.controller.meta.RelationshipTypeOverviewController" />
                         <MetadataEditorTab text="Anredearten" fx:value="de.spiritaner.maz.controller.meta.SalutationOverviewController" />
                         <MetadataEditorTab text="Personengruppen" fx:value="de.spiritaner.maz.controller.meta.PersonGroupOverviewController" />
+                        <MetadataEditorTab text="Religionen" fx:value="de.spiritaner.maz.controller.meta.ReligionOverviewController" />
                     </tabs>
                 </TabPane>
             </content>

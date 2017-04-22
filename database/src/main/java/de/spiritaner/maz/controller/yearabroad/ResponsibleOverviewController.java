@@ -5,6 +5,8 @@ import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Responsible;
 import de.spiritaner.maz.model.Site;
+import de.spiritaner.maz.model.meta.PersonGroup;
+import de.spiritaner.maz.util.factory.MetaClassTableCell;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -25,7 +27,7 @@ public class ResponsibleOverviewController extends OverviewController<Responsibl
 	@FXML
 	private TableColumn<Responsible, String> siteColumn;
 	@FXML
-	private TableColumn<Responsible, String> personGroupColumn;
+	private TableColumn<Responsible, PersonGroup> personGroupColumn;
 	@FXML
 	private TableColumn<Responsible, Long> idColumn;
 
@@ -65,8 +67,10 @@ public class ResponsibleOverviewController extends OverviewController<Responsibl
 		homeCountryColumn.setCellValueFactory(cellData -> cellData.getValue().homeCountryProperty());
 		personColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPerson().getFullName()));
 		siteColumn.setCellValueFactory(cellData -> cellData.getValue().getSite().nameProperty());
-		personGroupColumn.setCellValueFactory(cellData -> cellData.getValue().getPersonGroup().descriptionProperty());
+		personGroupColumn.setCellValueFactory(cellData -> cellData.getValue().personGroupProperty());
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+
+		personGroupColumn.setCellFactory(column -> new MetaClassTableCell<>());
 	}
 
 	public void setSite(Site site) {

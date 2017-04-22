@@ -2,10 +2,12 @@ package de.spiritaner.maz.controller.person;
 
 import de.spiritaner.maz.controller.meta.DioceseOverviewController;
 import de.spiritaner.maz.controller.meta.GenderOverviewController;
+import de.spiritaner.maz.controller.meta.ReligionOverviewController;
 import de.spiritaner.maz.controller.meta.SalutationOverviewController;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
+import de.spiritaner.maz.model.meta.Religion;
 import de.spiritaner.maz.model.meta.Salutation;
 import de.spiritaner.maz.util.DataDatabase;
 import de.spiritaner.maz.util.factory.DatePickerFormatter;
@@ -59,6 +61,10 @@ public class PersonEditorController implements Initializable {
 	private Button addNewSalutationButton;
 	@FXML
 	private TextField honorificField;
+	@FXML
+	private ComboBox<Religion> religionComboBox;
+	@FXML
+	private Button addNewReligionButton;
 
 	private TextValidator firstnameValidator;
 	private TextValidator familynameValidator;
@@ -79,12 +85,13 @@ public class PersonEditorController implements Initializable {
 		dioceseComboBox.setButtonCell(new MetaClassListCell<>());
 		salutationComboBox.setCellFactory(column -> new MetaClassListCell<>());
 		salutationComboBox.setButtonCell(new MetaClassListCell<>());
-
-		firstnameField.requestFocus();
+		religionComboBox.setCellFactory(column -> new MetaClassListCell<>());
+		religionComboBox.setButtonCell(new MetaClassListCell<>());
 
 		loadGender();
 		loadDiocese();
 		loadSalutation();
+		loadReligion();
 	}
 
 	public void setAll(Person person) {
@@ -97,6 +104,7 @@ public class PersonEditorController implements Initializable {
 		dioceseComboBox.setValue(person.getDiocese());
 		salutationComboBox.setValue(person.getSalutation());
 		honorificField.setText(person.getHonorific());
+		religionComboBox.setValue(person.getReligion());
 	}
 
 	public Person getAll(Person person) {
@@ -110,6 +118,7 @@ public class PersonEditorController implements Initializable {
 		person.setDiocese((dioceseComboBox.getSelectionModel().getSelectedIndex() <= 0) ? null : dioceseComboBox.getValue());
 		person.setSalutation((salutationComboBox.getSelectionModel().getSelectedIndex() <= 0) ? null : salutationComboBox.getValue());
 		person.setHonorific(honorificField.getText());
+		person.setReligion((religionComboBox.getSelectionModel().getSelectedIndex() <= 0) ? null : religionComboBox.getValue());
 		return person;
 	}
 
@@ -126,6 +135,8 @@ public class PersonEditorController implements Initializable {
 		salutationComboBox.setDisable(readonly);
 		addNewSalutationButton.setDisable(readonly);
 		honorificField.setDisable(readonly);
+		religionComboBox.setDisable(readonly);
+		addNewReligionButton.setDisable(readonly);
 	}
 
 	private void loadGender() {
@@ -161,6 +172,17 @@ public class PersonEditorController implements Initializable {
 		salutationComboBox.setValue(selectedBefore);
 	}
 
+	private void loadReligion() {
+		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		Collection<Religion> result = em.createNamedQuery("Religion.findAll", Religion.class).getResultList();
+
+		Religion selectedBefore = religionComboBox.getValue();
+		religionComboBox.getItems().clear();
+		religionComboBox.getItems().addAll(FXCollections.observableArrayList(result));
+		religionComboBox.getItems().add(0, Religion.createEmpty());
+		religionComboBox.setValue(selectedBefore);
+	}
+
 	public boolean isValid() {
 		boolean firstnameValid = firstnameValidator.validate();
 		boolean familynameValid = familynameValidator.validate();
@@ -189,5 +211,11 @@ public class PersonEditorController implements Initializable {
 		new SalutationOverviewController().create(actionEvent);
 
 		loadSalutation();
+	}
+
+	public void addNewReligion(ActionEvent actionEvent) {
+		new ReligionOverviewController().create(actionEvent);
+
+		loadReligion();
 	}
 }

@@ -123,6 +123,7 @@ public class PersonEditorDialogController extends EditorController<Person> {
 				tmpRevisionEntity.setRevision(revision);
 				tmpRevisionEntity.setRevisionDate(reader.getRevisionDate(revision));
 				tmpRevisionEntity.initialize();
+
 				revisionList.getItems().add(tmpRevisionEntity);
 			}
 

@@ -82,6 +82,18 @@ public class AssetGenerator implements CustomSqlChange {
 				  new RawSqlStatement("MERGE INTO PUBLIC.RELATIONSHIPTYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('4', 'Sohn', 'FALSE', 'FALSE')"),
 				  new RawSqlStatement("MERGE INTO PUBLIC.RELATIONSHIPTYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('5', 'Bruder', 'FALSE', 'FALSE')"),
 				  new RawSqlStatement("MERGE INTO PUBLIC.RELATIONSHIPTYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('6', 'Schwester', 'FALSE', 'FALSE')"),
+				  // Religion
+				  new RawSqlStatement("MERGE INTO PUBLIC.RELIGION (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('1', 'Konfessionslos', 'FALSE', 'FALSE')"),
+				  new RawSqlStatement("MERGE INTO PUBLIC.RELIGION (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('2', 'Römisch-katholische Kirche', 'FALSE', 'FALSE')"),
+				  new RawSqlStatement("MERGE INTO PUBLIC.RELIGION (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('3', 'Evangelische Kirche', 'FALSE', 'FALSE')"),
+				  // Person group
+				  new RawSqlStatement("MERGE INTO PUBLIC.PERSONGROUP (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('1', 'Verantwortliche(r)', 'FALSE', 'FALSE')"),
+				  new RawSqlStatement("MERGE INTO PUBLIC.PERSONGROUP (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('2', 'Gemeinschaft', 'FALSE', 'FALSE')"),
+				  new RawSqlStatement("MERGE INTO PUBLIC.PERSONGROUP (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('3', 'Schwestern/Patres in der Gemeinschaft', 'FALSE', 'FALSE')"),
+				  new RawSqlStatement("MERGE INTO PUBLIC.PERSONGROUP (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('4', 'Partnerorganisation', 'FALSE', 'FALSE')"),
+				  new RawSqlStatement("MERGE INTO PUBLIC.PERSONGROUP (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('5', 'Kontakt in Deutschland', 'FALSE', 'FALSE')"),
+				  new RawSqlStatement("MERGE INTO PUBLIC.PERSONGROUP (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('6', 'Arbeitsplatz', 'FALSE', 'FALSE')"),
+				  new RawSqlStatement("MERGE INTO PUBLIC.PERSONGROUP (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('7', 'Externe(r) Mentor(in)', 'FALSE', 'FALSE')"),
 		};
 	}
 

@@ -4,10 +4,7 @@ import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.Person;
-import de.spiritaner.maz.model.meta.ApprovalType;
-import de.spiritaner.maz.model.meta.Diocese;
-import de.spiritaner.maz.model.meta.Gender;
-import de.spiritaner.maz.model.meta.Salutation;
+import de.spiritaner.maz.model.meta.*;
 import de.spiritaner.maz.util.DataDatabase;
 import de.spiritaner.maz.util.factory.DateAsStringListCell;
 import de.spiritaner.maz.util.factory.MetaClassListCell;
@@ -53,6 +50,8 @@ public class PersonOverviewController extends OverviewController<Person> {
 	@FXML
 	private TableColumn<Person, Diocese> dioceseColumn;
 	@FXML
+	private TableColumn<Person, Religion> religionColumn;
+	@FXML
 	private TableColumn<Person, String> honorificColumn;
 	@FXML
 	private TableColumn<Person, Salutation> salutationColumn;
@@ -80,9 +79,11 @@ public class PersonOverviewController extends OverviewController<Person> {
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 		honorificColumn.setCellValueFactory(cellData -> cellData.getValue().honorificProperty());
 		salutationColumn.setCellValueFactory(cellData -> cellData.getValue().salutationProperty());
+		religionColumn.setCellValueFactory(cellData -> cellData.getValue().religionProperty());
 
 		genderColumn.setCellFactory(column -> new MetaClassTableCell<>());
 		dioceseColumn.setCellFactory(column -> new MetaClassTableCell<>());
+		religionColumn.setCellFactory(column -> new MetaClassTableCell<>());
 		salutationColumn.setCellFactory(column -> new MetaClassTableCell<>());
 		birthdayColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
 		ageColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCellYearsToNow());

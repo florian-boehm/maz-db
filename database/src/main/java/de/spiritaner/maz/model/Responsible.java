@@ -2,10 +2,7 @@ package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.controller.yearabroad.ResponsibleEditorDialogController;
 import de.spiritaner.maz.model.meta.PersonGroup;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -22,16 +19,19 @@ import javax.persistence.*;
 public class Responsible implements Identifiable {
 
 	private LongProperty id;
-	private Person person;
-	private Site site;
+	private ObjectProperty<Person> person;
+	private ObjectProperty<Site> site;
 	private StringProperty homeCountry;
 	private StringProperty jobDescription;
-	private PersonGroup personGroup;
+	private ObjectProperty<PersonGroup> personGroup;
 
 	public Responsible() {
 		id = new SimpleLongProperty();
 		homeCountry = new SimpleStringProperty();
 		jobDescription = new SimpleStringProperty();
+		personGroup = new SimpleObjectProperty<>();
+		person = new SimpleObjectProperty<>();
+		site = new SimpleObjectProperty<>();
 	}
 
 	@Override
@@ -52,31 +52,43 @@ public class Responsible implements Identifiable {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinColumn(name = "personId", nullable = false)
 	public Person getPerson() {
-		return person;
+		return person.get();
 	}
 
 	public void setPerson(Person person) {
-		this.person = person;
+		this.person.set(person);
+	}
+
+	public ObjectProperty<Person> personProperty() {
+		return person;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "siteId", nullable = false)
 	public Site getSite() {
-		return site;
+		return site.get();
 	}
 
 	public void setSite(Site site) {
-		this.site = site;
+		this.site.set(site);
+	}
+
+	public ObjectProperty<Site> siteProperty() {
+		return site;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "personGroupId", nullable = false)
 	public PersonGroup getPersonGroup() {
-		return personGroup;
+		return personGroup.get();
 	}
 
 	public void setPersonGroup(PersonGroup personGroup) {
-		this.personGroup = personGroup;
+		this.personGroup.set(personGroup);
+	}
+
+	public ObjectProperty<PersonGroup> personGroupProperty() {
+		return personGroup;
 	}
 
 	public String getHomeCountry() {
