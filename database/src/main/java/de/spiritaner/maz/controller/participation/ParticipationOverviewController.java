@@ -7,9 +7,13 @@ import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.Person;
+import de.spiritaner.maz.model.meta.ParticipationType;
+import de.spiritaner.maz.util.factory.BooleanTableCell;
+import de.spiritaner.maz.util.factory.MetaClassTableCell;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import org.hibernate.Hibernate;
 
@@ -19,10 +23,10 @@ import java.util.Collection;
 
 public class ParticipationOverviewController extends OverviewController<Participation> {
 
-	@FXML private TableColumn<Participation, String> eventColumn;
-	@FXML private TableColumn<Participation, String> personColumn;
-	@FXML private TableColumn<Participation, String> participantTypeColumn;
-	@FXML private TableColumn<Participation, String> participatedColumn;
+	@FXML private TableColumn<Participation, Event> eventColumn;
+	@FXML private TableColumn<Participation, Person> personColumn;
+	@FXML private TableColumn<Participation, ParticipationType> participantTypeColumn;
+	@FXML private TableColumn<Participation, Boolean> participatedColumn;
 	@FXML private TableColumn<Participation, Long> idColumn;
 
 	// This controller can be person or participation centric
@@ -99,11 +103,40 @@ public class ParticipationOverviewController extends OverviewController<Particip
 
 	@Override
 	public void preInit() {
-		eventColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent().toString()));
-		personColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPerson().toString()));
-		participantTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getParticipationType().descriptionProperty());
-		participatedColumn.setCellValueFactory(cellData -> cellData.getValue().hasParticipatedStringProperty());
+		eventColumn.setCellValueFactory(cellData -> cellData.getValue().eventProperty());
+		personColumn.setCellValueFactory(cellData -> cellData.getValue().personProperty());
+		participantTypeColumn.setCellValueFactory(cellData -> cellData.getValue().participationTypeProperty());
+		participatedColumn.setCellValueFactory(cellData -> cellData.getValue().hasParticipatedProperty());
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+
+		participantTypeColumn.setCellFactory(column -> new MetaClassTableCell<>());
+		participatedColumn.setCellFactory(column -> new BooleanTableCell<>());
+		eventColumn.setCellFactory(column -> new TableCell<Participation, Event>() {
+			@Override
+			public  void updateItem(Event item, boolean empty) {
+				super.updateItem(item, empty);
+
+				if (item == null || empty) {
+					setText(null);
+					setStyle("");
+				} else {
+					setText(item.getName());
+				}
+			}
+		});
+		personColumn.setCellFactory(column -> new TableCell<Participation, Person>() {
+			@Override
+			public  void updateItem(Person item, boolean empty) {
+				super.updateItem(item, empty);
+
+				if (item == null || empty) {
+					setText(null);
+					setStyle("");
+				} else {
+					setText(item.getFullName());
+				}
+			}
+		});
 	}
 
 	@Override

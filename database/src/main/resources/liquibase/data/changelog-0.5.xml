@@ -1,365 +1,553 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <changeSet author="Florian (generated)" id="1493012436168-1">
-        <createTable tableName="HIBERNATE_SEQUENCES">
-            <column name="SEQUENCE_NAME" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="NEXT_VAL" type="BIGINT(19)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-2">
-        <createTable tableName="PERSONGROUP">
-            <column name="ID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="DESCRIPTION" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="EDITABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="REMOVABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-3">
-        <createTable tableName="PERSONGROUP_AUD">
-            <column name="ID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="REV" type="INT(10)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-4">
-        <createTable tableName="RELIGION">
-            <column name="ID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="DESCRIPTION" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="EDITABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="REMOVABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-5">
-        <createTable tableName="RELIGION_AUD">
-            <column name="ID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="REV" type="INT(10)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-6">
-        <addColumn tableName="APPROVALTYPE">
-            <column name="EDITABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-7">
-        <addColumn tableName="CONTACTMETHODTYPE">
-            <column name="EDITABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-8">
-        <addColumn tableName="DIOCESE">
-            <column name="EDITABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-9">
-        <addColumn tableName="EVENTTYPE">
-            <column name="EDITABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-10">
-        <addColumn tableName="GENDER">
-            <column name="EDITABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-11">
-        <addColumn tableName="PARTICIPATIONTYPE">
-            <column name="EDITABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-12">
-        <addColumn tableName="RELATIONSHIPTYPE">
-            <column name="EDITABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-13">
-        <addColumn tableName="RESIDENCETYPE">
-            <column name="EDITABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-14">
-        <addColumn tableName="ROLETYPE">
-            <column name="EDITABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-15">
-        <addColumn tableName="SALUTATION">
-            <column name="EDITABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-16">
-        <addColumn tableName="CONTACTMETHOD">
-            <column name="REMARK" type="VARCHAR(255 BYTE)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-17">
-        <addColumn tableName="EVENT">
-            <column name="LOCATION" type="VARCHAR(255 BYTE)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-18">
-        <addColumn tableName="APPROVALTYPE">
-            <column name="REMOVABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-19">
-        <addColumn tableName="CONTACTMETHODTYPE">
-            <column name="REMOVABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-20">
-        <addColumn tableName="DIOCESE">
-            <column name="REMOVABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-21">
-        <addColumn tableName="EVENTTYPE">
-            <column name="REMOVABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-22">
-        <addColumn tableName="GENDER">
-            <column name="REMOVABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-23">
-        <addColumn tableName="PARTICIPATIONTYPE">
-            <column name="REMOVABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-24">
-        <addColumn tableName="RELATIONSHIPTYPE">
-            <column name="REMOVABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-25">
-        <addColumn tableName="RESIDENCETYPE">
-            <column name="REMOVABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-26">
-        <addColumn tableName="ROLETYPE">
-            <column name="REMOVABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-27">
-        <addColumn tableName="SALUTATION">
-            <column name="REMOVABLE" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-28">
-        <addColumn tableName="RESPONSIBLE">
-            <column name="PERSONGROUPID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-29">
-        <addColumn tableName="CONTACTMETHOD_AUD">
-            <column name="REMARK" type="VARCHAR(255 BYTE)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-30">
-        <addColumn tableName="EVENT_AUD">
-            <column name="LOCATION" type="VARCHAR(255 BYTE)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-31">
-        <addColumn tableName="RESPONSIBLE_AUD">
-            <column name="PERSONGROUPID" type="BIGINT(19)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-32">
-        <addColumn tableName="YEARABROAD">
-            <column name="MISSIONDATE" type="DATE(8)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-33">
-        <addColumn tableName="YEARABROAD">
-            <column name="EPNUMBERID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-34">
-        <addColumn tableName="YEARABROAD_AUD">
-            <column name="MISSIONDATE" type="DATE(8)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-35">
-        <addColumn tableName="PERSON">
-            <column name="RELIGIONID" type="BIGINT(19)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-36">
-        <addColumn tableName="YEARABROAD_AUD">
-            <column name="EPNUMBERID" type="BIGINT(19)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-37">
-        <addColumn tableName="PERSON_AUD">
-            <column name="RELIGIONID" type="BIGINT(19)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-38">
-        <addPrimaryKey columnNames="SEQUENCE_NAME" constraintName="CONSTRAINT_59" tableName="HIBERNATE_SEQUENCES"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-39">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_67" tableName="PERSONGROUP"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-40">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_88" tableName="PERSONGROUP_AUD"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-41">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_D6" tableName="RELIGION_AUD"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-42">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_E0" tableName="RELIGION"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-43">
-        <createIndex indexName="FKCRXJUT71741YUC8M5JTD6I6HP_INDEX_A" tableName="YEARABROAD">
-            <column name="EPNUMBERID"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-44">
-        <createIndex indexName="FKK6LWXN2LKFWLLD9PPPUQB72MV_INDEX_D" tableName="RELIGION_AUD">
-            <column name="REV"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-45">
-        <createIndex indexName="FKNW37G138JS5MA2R1I4X47I466_INDEX_E" tableName="RESPONSIBLE">
-            <column name="PERSONGROUPID"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-46">
-        <createIndex indexName="FKPOTL49XD0VUY0K2XGA9TL6CMO_INDEX_8" tableName="PERSON">
-            <column name="RELIGIONID"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-47">
-        <createIndex indexName="FKRETVV5GN8LMH792SD2HUAU92J_INDEX_8" tableName="PERSONGROUP_AUD">
-            <column name="REV"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-48">
-        <addForeignKeyConstraint baseColumnNames="EPNUMBERID" baseTableName="YEARABROAD" constraintName="FKCRXJUT71741YUC8M5JTD6I6HP" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="EPNUMBER"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-49">
-        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="RELIGION_AUD" constraintName="FKK6LWXN2LKFWLLD9PPPUQB72MV" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV" referencedTableName="REVINFO"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-50">
-        <addForeignKeyConstraint baseColumnNames="PERSONGROUPID" baseTableName="RESPONSIBLE" constraintName="FKNW37G138JS5MA2R1I4X47I466" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="PERSONGROUP"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-51">
-        <addForeignKeyConstraint baseColumnNames="RELIGIONID" baseTableName="PERSON" constraintName="FKPOTL49XD0VUY0K2XGA9TL6CMO" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="RELIGION"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-52">
-        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="PERSONGROUP_AUD" constraintName="FKRETVV5GN8LMH792SD2HUAU92J" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV" referencedTableName="REVINFO"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-53">
-        <dropForeignKeyConstraint baseTableName="EVENT" constraintName="FKD4UUMOKC656F2W03AIO7LQN1T"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-54">
-        <dropTable tableName="PARTICIPANT"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-55">
-        <dropTable tableName="PARTICIPANTTYPE"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-56">
-        <dropTable tableName="PARTICIPANTTYPE_AUD"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-57">
-        <dropTable tableName="PARTICIPANT_AUD"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-58">
-        <dropTable tableName="SITE_EP_NUMBERS"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-59">
-        <dropTable tableName="SITE_EP_NUMBERS_AUD"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-60">
-        <dropColumn columnName="ADDRESSID" tableName="EVENT"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-61">
-        <dropColumn columnName="ADDRESSID" tableName="EVENT_AUD"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-62">
-        <dropColumn columnName="GROUPNAME" tableName="RESPONSIBLE"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-63">
-        <dropColumn columnName="GROUPNAME" tableName="RESPONSIBLE_AUD"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-64">
-        <addNotNullConstraint columnDataType="date" columnName="ARRIVALDATE" tableName="YEARABROAD"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1493012436168-65">
-        <addNotNullConstraint columnDataType="date" columnName="DEPARTUREDATE" tableName="YEARABROAD"/>
-    </changeSet>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+	<changeSet author="Florian (generated)" id="1493012436168-1">
+		<createTable tableName="HIBERNATE_SEQUENCES">
+			<column name="SEQUENCE_NAME" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="NEXT_VAL" type="BIGINT(19)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-2">
+		<createTable tableName="PERSONGROUP">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="DESCRIPTION" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="EDITABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REMOVABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-3">
+		<createTable tableName="PERSONGROUP_AUD">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REV" type="INT(10)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REVTYPE" type="TINYINT(3)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-4">
+		<createTable tableName="RELIGION">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="DESCRIPTION" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="EDITABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REMOVABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-5">
+		<createTable tableName="RELIGION_AUD">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REV" type="INT(10)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REVTYPE" type="TINYINT(3)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-6">
+		<addColumn tableName="APPROVALTYPE">
+			<column name="EDITABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-7">
+		<addColumn tableName="CONTACTMETHODTYPE">
+			<column name="EDITABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-8">
+		<addColumn tableName="DIOCESE">
+			<column name="EDITABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-9">
+		<addColumn tableName="EVENTTYPE">
+			<column name="EDITABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-10">
+		<addColumn tableName="GENDER">
+			<column name="EDITABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-11">
+		<addColumn tableName="PARTICIPATIONTYPE">
+			<column name="EDITABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-12">
+		<addColumn tableName="RELATIONSHIPTYPE">
+			<column name="EDITABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-13">
+		<addColumn tableName="RESIDENCETYPE">
+			<column name="EDITABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-14">
+		<addColumn tableName="ROLETYPE">
+			<column name="EDITABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-15">
+		<addColumn tableName="SALUTATION">
+			<column name="EDITABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-16">
+		<addColumn tableName="CONTACTMETHOD">
+			<column name="REMARK" type="VARCHAR(255 BYTE)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-17">
+		<addColumn tableName="EVENT">
+			<column name="LOCATION" type="VARCHAR(255 BYTE)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-18">
+		<addColumn tableName="APPROVALTYPE">
+			<column name="REMOVABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-19">
+		<addColumn tableName="CONTACTMETHODTYPE">
+			<column name="REMOVABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-20">
+		<addColumn tableName="DIOCESE">
+			<column name="REMOVABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-21">
+		<addColumn tableName="EVENTTYPE">
+			<column name="REMOVABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-22">
+		<addColumn tableName="GENDER">
+			<column name="REMOVABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-23">
+		<addColumn tableName="PARTICIPATIONTYPE">
+			<column name="REMOVABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-24">
+		<addColumn tableName="RELATIONSHIPTYPE">
+			<column name="REMOVABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-25">
+		<addColumn tableName="RESIDENCETYPE">
+			<column name="REMOVABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-26">
+		<addColumn tableName="ROLETYPE">
+			<column name="REMOVABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-27">
+		<addColumn tableName="SALUTATION">
+			<column name="REMOVABLE" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-28">
+		<addColumn tableName="RESPONSIBLE">
+			<column name="PERSONGROUPID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-29">
+		<addColumn tableName="CONTACTMETHOD_AUD">
+			<column name="REMARK" type="VARCHAR(255 BYTE)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-30">
+		<addColumn tableName="EVENT_AUD">
+			<column name="LOCATION" type="VARCHAR(255 BYTE)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-31">
+		<addColumn tableName="RESPONSIBLE_AUD">
+			<column name="PERSONGROUPID" type="BIGINT(19)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-32">
+		<addColumn tableName="YEARABROAD">
+			<column name="MISSIONDATE" type="DATE(8)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-33">
+		<addColumn tableName="YEARABROAD">
+			<column name="EPNUMBERID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-34">
+		<addColumn tableName="YEARABROAD_AUD">
+			<column name="MISSIONDATE" type="DATE(8)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-35">
+		<addColumn tableName="PERSON">
+			<column name="RELIGIONID" type="BIGINT(19)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-36">
+		<addColumn tableName="YEARABROAD_AUD">
+			<column name="EPNUMBERID" type="BIGINT(19)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-37">
+		<addColumn tableName="PERSON_AUD">
+			<column name="RELIGIONID" type="BIGINT(19)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-38">
+		<addPrimaryKey columnNames="SEQUENCE_NAME" constraintName="CONSTRAINT_59" tableName="HIBERNATE_SEQUENCES"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-39">
+		<addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_67" tableName="PERSONGROUP"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-40">
+		<addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_88" tableName="PERSONGROUP_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-41">
+		<addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_D6" tableName="RELIGION_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-42">
+		<addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_E0" tableName="RELIGION"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-43">
+		<createIndex indexName="FKCRXJUT71741YUC8M5JTD6I6HP_INDEX_A" tableName="YEARABROAD">
+			<column name="EPNUMBERID"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-44">
+		<createIndex indexName="FKK6LWXN2LKFWLLD9PPPUQB72MV_INDEX_D" tableName="RELIGION_AUD">
+			<column name="REV"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-45">
+		<createIndex indexName="FKNW37G138JS5MA2R1I4X47I466_INDEX_E" tableName="RESPONSIBLE">
+			<column name="PERSONGROUPID"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-46">
+		<createIndex indexName="FKPOTL49XD0VUY0K2XGA9TL6CMO_INDEX_8" tableName="PERSON">
+			<column name="RELIGIONID"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-47">
+		<createIndex indexName="FKRETVV5GN8LMH792SD2HUAU92J_INDEX_8" tableName="PERSONGROUP_AUD">
+			<column name="REV"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-48">
+		<addForeignKeyConstraint baseColumnNames="EPNUMBERID" baseTableName="YEARABROAD"
+		                         constraintName="FKCRXJUT71741YUC8M5JTD6I6HP" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+		                         referencedTableName="EPNUMBER"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-49">
+		<addForeignKeyConstraint baseColumnNames="REV" baseTableName="RELIGION_AUD"
+		                         constraintName="FKK6LWXN2LKFWLLD9PPPUQB72MV" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV"
+		                         referencedTableName="REVINFO"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-50">
+		<addForeignKeyConstraint baseColumnNames="PERSONGROUPID" baseTableName="RESPONSIBLE"
+		                         constraintName="FKNW37G138JS5MA2R1I4X47I466" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+		                         referencedTableName="PERSONGROUP"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-51">
+		<addForeignKeyConstraint baseColumnNames="RELIGIONID" baseTableName="PERSON"
+		                         constraintName="FKPOTL49XD0VUY0K2XGA9TL6CMO" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+		                         referencedTableName="RELIGION"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-52">
+		<addForeignKeyConstraint baseColumnNames="REV" baseTableName="PERSONGROUP_AUD"
+		                         constraintName="FKRETVV5GN8LMH792SD2HUAU92J" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV"
+		                         referencedTableName="REVINFO"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-53">
+		<dropForeignKeyConstraint baseTableName="EVENT" constraintName="FKD4UUMOKC656F2W03AIO7LQN1T"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-54">
+		<dropTable tableName="PARTICIPANT"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-55">
+		<dropTable tableName="PARTICIPANTTYPE"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-56">
+		<dropTable tableName="PARTICIPANTTYPE_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-57">
+		<dropTable tableName="PARTICIPANT_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-58">
+		<dropTable tableName="SITE_EP_NUMBERS"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-59">
+		<dropTable tableName="SITE_EP_NUMBERS_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-60">
+		<dropColumn columnName="ADDRESSID" tableName="EVENT"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-61">
+		<dropColumn columnName="ADDRESSID" tableName="EVENT_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-62">
+		<dropColumn columnName="GROUPNAME" tableName="RESPONSIBLE"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-63">
+		<dropColumn columnName="GROUPNAME" tableName="RESPONSIBLE_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-64">
+		<addNotNullConstraint columnDataType="date" columnName="ARRIVALDATE" tableName="YEARABROAD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493012436168-65">
+		<addNotNullConstraint columnDataType="date" columnName="DEPARTUREDATE" tableName="YEARABROAD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-1">
+		<createTable tableName="EXPERIENCEABROAD">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="COMMUNITY" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="DETAILS" type="VARCHAR(255)"/>
+			<column name="FROMDATE" type="date">
+				<constraints nullable="false"/>
+			</column>
+			<column name="LOCATION" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="TODATE" type="date">
+				<constraints nullable="false"/>
+			</column>
+			<column name="PERSONID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-2">
+		<createTable tableName="EXPERIENCEABROAD_AUD">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REV" type="INT(10)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REVTYPE" type="TINYINT(3)"/>
+			<column name="COMMUNITY" type="VARCHAR(255)"/>
+			<column name="DETAILS" type="VARCHAR(255)"/>
+			<column name="FROMDATE" type="date"/>
+			<column name="LOCATION" type="VARCHAR(255)"/>
+			<column name="TODATE" type="date"/>
+			<column name="PERSONID" type="BIGINT(19)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-3">
+		<createTable tableName="PARTICIPANT">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="HASPARTICIPATED" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="PERSONID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="PARTICIPANTTYPEID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="EVENTID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-4">
+		<createTable tableName="PARTICIPANTTYPE">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="DESCRIPTION" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-5">
+		<createTable tableName="PARTICIPANTTYPE_AUD">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REV" type="INT(10)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REVTYPE" type="TINYINT(3)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-6">
+		<createTable tableName="PARTICIPANT_AUD">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REV" type="INT(10)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REVTYPE" type="TINYINT(3)"/>
+			<column name="HASPARTICIPATED" type="BOOLEAN(1)"/>
+			<column name="PERSONID" type="BIGINT(19)"/>
+			<column name="PARTICIPANTTYPEID" type="BIGINT(19)"/>
+			<column name="EVENTID" type="BIGINT(19)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-7">
+		<createTable tableName="SITE_EP_NUMBERS">
+			<column name="EPNUMBER" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="VALUE" type="VARCHAR(255)"/>
+			<column name="ID" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-8">
+		<createTable tableName="SITE_EP_NUMBERS_AUD">
+			<column name="REV" type="INT(10)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="EPNUMBER" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="VALUE" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="ID" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REVTYPE" type="TINYINT(3)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-9">
+		<addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_19" tableName="PARTICIPANTTYPE_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-10">
+		<addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_2A" tableName="EXPERIENCEABROAD_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-11">
+		<addPrimaryKey columnNames="REV, EPNUMBER, VALUE, ID" constraintName="CONSTRAINT_4A"
+		               tableName="SITE_EP_NUMBERS_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-12">
+		<addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_6" tableName="EXPERIENCEABROAD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-13">
+		<addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_74" tableName="PARTICIPANT_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-14">
+		<addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_74C" tableName="PARTICIPANTTYPE"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-15">
+		<addPrimaryKey columnNames="EPNUMBER, ID" constraintName="CONSTRAINT_8E" tableName="SITE_EP_NUMBERS"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-16">
+		<addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_AE" tableName="PARTICIPANT"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-17">
+		<createIndex indexName="FKN6NYPDVJO9JREJ8WML7YMEA66_INDEX_6" tableName="EXPERIENCEABROAD">
+			<column name="PERSONID"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-18">
+		<createIndex indexName="FKPWQM99WTTYT9OVNF4KDNVPIMH_INDEX_2" tableName="EXPERIENCEABROAD_AUD">
+			<column name="REV"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-19">
+		<addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="EXPERIENCEABROAD"
+		                         constraintName="FKN6NYPDVJO9JREJ8WML7YMEA66" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+		                         referencedTableName="PERSON"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1493052508673-20">
+		<addForeignKeyConstraint baseColumnNames="REV" baseTableName="EXPERIENCEABROAD_AUD"
+		                         constraintName="FKPWQM99WTTYT9OVNF4KDNVPIMH" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV"
+		                         referencedTableName="REVINFO"/>
+	</changeSet>
 </databaseChangeLog>

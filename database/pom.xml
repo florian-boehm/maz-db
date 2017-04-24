@@ -93,35 +93,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.15</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>3.15</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-scratchpad</artifactId>
-			<version>3.15</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml-schemas</artifactId>
-			<version>3.15</version>
-		</dependency>
-
-		<dependency>
 			<groupId>no.tornado</groupId>
 			<artifactId>tornadofx-controls</artifactId>
 			<version>1.0.5</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.liquibase</groupId>
@@ -139,6 +114,12 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.docx4j</groupId>
+			<artifactId>docx4j</artifactId>
+			<version>3.3.3</version>
 		</dependency>
 	</dependencies>
 
@@ -222,7 +203,7 @@
 							<referenceDriver>org.h2.Driver</referenceDriver>
 							<referenceUrl>jdbc:h2:./target/dbfiles/data;CIPHER=AES</referenceUrl>
 							<referenceUsername>admin</referenceUsername>
-							<referencePassword>E87BCE57B684D88B8B50C72A405E7D4A test1234</referencePassword>
+							<referencePassword>72E0602751CFE29C0AE10E09F2FA6A9E test1234</referencePassword>
 						</configuration>
 					</execution>
 				</executions>

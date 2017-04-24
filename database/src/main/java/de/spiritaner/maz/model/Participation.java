@@ -16,17 +16,20 @@ import javax.persistence.*;
 @Identifiable.Annotation(editorDialogClass = ParticipationEditorDialogController.class, identifiableName = "Teilnahme")
 public class Participation implements Identifiable {
 
-	LongProperty id;
+	private LongProperty id;
 
-	private Person person;
-	private Event event;
-	private ParticipationType participationType;
+	private ObjectProperty<Person> person;
+	private ObjectProperty<Event> event;
+	private ObjectProperty<ParticipationType> participationType;
 
 	private BooleanProperty hasParticipated;
 
 	public Participation() {
 		id = new SimpleLongProperty();
 		hasParticipated = new SimpleBooleanProperty();
+		person = new SimpleObjectProperty<>();
+		event = new SimpleObjectProperty<>();
+		participationType = new SimpleObjectProperty<>();
 	}
 
 	@Id
@@ -44,35 +47,39 @@ public class Participation implements Identifiable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="personId", nullable = false)
 	public Person getPerson() {
-		return person;
+		return person.get();
 	}
 	public void setPerson(Person person) {
-		this.person = person;
+		this.person.set(person);
+	}
+	public ObjectProperty<Person> personProperty() {
+		return person;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="eventId", nullable = false)
 	public Event getEvent() {
-		return event;
+		return event.get();
 	}
 	public void setEvent(Event event) {
-		this.event = event;
+		this.event.set(event);
+	}
+	public ObjectProperty<Event> eventProperty() {
+		return event;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "participantTypeId", nullable = false)
-	public ParticipationType getParticipationType() { return participationType; }
-	public void setParticipationType(ParticipationType type) { this.participationType = type; }
+	public ParticipationType getParticipationType() { return participationType.get(); }
+	public void setParticipationType(ParticipationType type) { this.participationType.set(type); }
+	public ObjectProperty<ParticipationType> participationTypeProperty() {
+		return participationType;
+	}
 
 	@Column(nullable = false)
 	public Boolean getHasParticipated() { return hasParticipated.get(); }
 	public void setHasParticipated(Boolean hasParticipated) { this.hasParticipated.set(hasParticipated); }
 	public BooleanProperty hasParticipatedProperty() { return hasParticipated; }
-
-	@Transient
-	public StringProperty hasParticipatedStringProperty() {
-		return new SimpleStringProperty((hasParticipated.get()) ? "Ja" : "Nein");
-	}
 
 	@Transient
 	@Override

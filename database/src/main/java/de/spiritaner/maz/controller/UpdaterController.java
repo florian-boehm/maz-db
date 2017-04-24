@@ -38,7 +38,7 @@ public class UpdaterController implements Initializable {
 	@FXML
 	private ProgressIndicator progressIndicator;
 	@FXML
-	private TextFlow changesTextFlow;
+	private TextArea changesTextArea;
 
 	private final String baseURL = "https://api.github.com/repos/fschwab/maz-db/";
 	private String currentVersion = "";
@@ -96,23 +96,24 @@ public class UpdaterController implements Initializable {
 					latestVersionLabel.setVisible(true);
 					updateDatabaseButton.setVisible(true);
 
-					Font defaultFont = Font.getDefault();
+					//Font defaultFont = Font.getDefault();
 
-					for(String line : ((String) jsonObject.get("body")).split("\\n")) {
+					/*for(String line : ((String) jsonObject.get("body")).split("\\n")) {
 						Text richText = new Text(line);
 
-						System.out.println("#"+line);
+						//System.out.println("#"+line);
 
-						if(line.startsWith("*") && line.endsWith("*"))
-							richText.setFont(Font.font(defaultFont.getFamily(), FontPosture.ITALIC, defaultFont.getSize()));
+						//if(line.startsWith("*") && line.endsWith("*"))
+						//	richText.setFont(Font.font(defaultFont.getFamily(), FontPosture.ITALIC, defaultFont.getSize()));
 
 						changesTextFlow.getChildren().add(richText);
-					}
+					}*/
+					changesTextArea.setText((String) jsonObject.get("body"));
 				} else {
 					latestVersionLabel.setText("(aktuell)");
 					latestVersionLabel.setVisible(true);
-					changesTextFlow.setVisible(false);
-					changesTextFlow.setManaged(false);
+					changesTextArea.setVisible(false);
+					changesTextArea.setManaged(false);
 				}
 
 				stage.sizeToScene();

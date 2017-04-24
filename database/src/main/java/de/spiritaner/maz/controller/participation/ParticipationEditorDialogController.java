@@ -49,19 +49,9 @@ public class ParticipationEditorDialogController extends EditorController<Partic
 	@FXML
 	private Button searchPersonButton;
 
-	private Participation participation;
-
 	@Override
-	public void setIdentifiable(Participation obj) {
-		setParticipation(obj);
-	}
-
-	@Override
-	public void onReopen() {
-	}
-
-	public void setParticipation(Participation participation) {
-		this.participation = participation;
+	public void setIdentifiable(Participation participation) {
+		super.setIdentifiable(participation);
 
 		if (participation != null) {
 			if (participation.getEvent() != null) {
@@ -79,13 +69,17 @@ public class ParticipationEditorDialogController extends EditorController<Partic
 			participationEditorController.setAll(participation);
 
 			if (participation.getId() != 0L) {
-				titleText.setText("Teilnehmer bearbeiten");
+				titleText.setText(getIdentifiableName() + " bearbeiten");
 				saveParticipantButton.setText("Speichern");
 			} else {
-				titleText.setText("Teilnehmer anlegen");
+				titleText.setText(getIdentifiableName() + " anlegen");
 				saveParticipantButton.setText("Anlegen");
 			}
 		}
+	}
+
+	@Override
+	public void onReopen() {
 	}
 
 	@Override
@@ -103,20 +97,21 @@ public class ParticipationEditorDialogController extends EditorController<Partic
 				EntityManager em = DataDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				participation.setEvent(eventEditorController.getAll(participation.getEvent()));
-				participation.setPerson(personEditorController.getAll(participation.getPerson()));
-				participationEditorController.getAll(participation);
+				getIdentifiable().setEvent(eventEditorController.getAll(getIdentifiable().getEvent()));
+				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
+				participationEditorController.getAll(getIdentifiable());
 
 				try {
-					Participation managedParticipation = (!em.contains(participation)) ? em.merge(participation) : participation;
+					Participation managedParticipation = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
 					em.getTransaction().commit();
 
-					if(managedParticipation != null) {
-						if(!participation.getPerson().getParticipations().contains(managedParticipation)) participation.getPerson().getParticipations().add(managedParticipation);
-						if(!participation.getEvent().getParticipations().contains(managedParticipation)) participation.getEvent().getParticipations().add(managedParticipation);
-					}
+					//if(managedParticipation != null) {
+					//	if(!getIdentifiable().getPerson().getParticipations().contains(managedParticipation)) getIdentifiable().getPerson().getParticipations().add(managedParticipation);
+					//	if(!getIdentifiable().getEvent().getParticipations().contains(managedParticipation)) getIdentifiable().getEvent().getParticipations().add(managedParticipation);
+					//}
 
-					getStage().close();
+					setResult(managedParticipation);
+					requestClose();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
 					logger.warn(e);
@@ -136,7 +131,7 @@ public class ParticipationEditorDialogController extends EditorController<Partic
 		Optional<Event> result = dialog.showAndWait(getStage());
 
 		result.ifPresent((Event event) -> {
-			participation.setEvent(event);
+			getIdentifiable().setEvent(event);
 			eventEditorController.setAll(event);
 		});
 	}
@@ -146,7 +141,7 @@ public class ParticipationEditorDialogController extends EditorController<Partic
 		Optional<Person> result = dialog.showAndWait(getStage());
 
 		result.ifPresent((Person person) -> {
-			participation.setPerson(person);
+			getIdentifiable().setPerson(person);
 			personEditorController.setAll(person);
 		});
 	}

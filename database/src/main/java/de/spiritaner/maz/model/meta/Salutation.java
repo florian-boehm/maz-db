@@ -1,7 +1,5 @@
 package de.spiritaner.maz.model.meta;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.Entity;

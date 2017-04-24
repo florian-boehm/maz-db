@@ -62,7 +62,7 @@
       <RowConstraints />
       <RowConstraints />
       <RowConstraints />
-      <RowConstraints />
+      <RowConstraints valignment="TOP" />
    </rowConstraints>
 
 </GridPane>
