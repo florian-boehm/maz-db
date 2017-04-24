@@ -2,6 +2,7 @@ package de.spiritaner.maz.controller.residence;
 
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.model.YearAbroad;
@@ -87,8 +88,8 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 	}
 
 	@Override
-	protected void handleException(RollbackException e) {
-		ExceptionDialog.show(e);
+	protected void handleException(RollbackException e, Residence residence) {
+		RemoveDialog.showFailureAndWait("Wohnort","Wohnort", e);
 	}
 
 	@Override

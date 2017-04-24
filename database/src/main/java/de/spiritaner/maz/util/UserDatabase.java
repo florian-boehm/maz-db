@@ -61,14 +61,16 @@ public class UserDatabase {
 			} while((t = t.getCause()) != null);
 
 			if(schemaManagementException) {
+				final String version = ResourceBundle.getBundle("lang.gui").getString("version");
+
 				logger.warn("Schema of the user database is not valid! Searching for liquibase files ...");
 				File liquibaseDir = new File("./liquibase");
-				File liquibaseVersionDir = new File("./liquibase/"+ResourceBundle.getBundle("lang.gui").getString("version")+"/");
+				File liquibaseVersionDir = new File("./liquibase/"+version+"/");
 
 				if(liquibaseDir.exists() && liquibaseDir.isDirectory() && liquibaseVersionDir.exists() && liquibaseVersionDir.isDirectory()) {
 					logger.info("Found liquibase directory that matches the current version!");
 					logger.warn("Applying user database schema with liquibase now!");
-					File userChangelog = new File("./liquibase/users/changelog.xml");
+					File userChangelog = new File(liquibaseVersionDir.getPath()+"/users/changelog.xml");
 
 					try {
 						Connection conn = DriverManager.getConnection(url, "", "");

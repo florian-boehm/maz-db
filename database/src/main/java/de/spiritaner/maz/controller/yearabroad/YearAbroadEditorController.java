@@ -98,7 +98,6 @@ public class YearAbroadEditorController implements Initializable {
 	public boolean isValid() {
 		boolean departureDateValid = departureDateValidator.validate();
 		boolean arrivalDateValid = arrivalDateValidator.validate();
-		// TODO EPNumber validator is crying about a "not set epnumber" but it is set!
 		boolean epNumberValid = epNumberValidator.validate();
 
 		return departureDateValid && arrivalDateValid && epNumberValid;

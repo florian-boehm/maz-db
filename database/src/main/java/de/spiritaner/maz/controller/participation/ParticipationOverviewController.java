@@ -2,6 +2,8 @@ package de.spiritaner.maz.controller.participation;
 
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.dialog.RemoveDialog;
+import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.Person;
@@ -64,8 +66,8 @@ public class ParticipationOverviewController extends OverviewController<Particip
 	}
 
 	@Override
-	protected void handleException(RollbackException e) {
-		ExceptionDialog.show(e);
+	protected void handleException(RollbackException e, Participation participation) {
+		RemoveDialog.showFailureAndWait("Teilnahme","Teilnahme von '"+participation.getPerson().getFullName()+"' an '"+participation.getEvent().getName()+"'", e);
 	}
 
 	@Override

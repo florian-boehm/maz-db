@@ -2,7 +2,9 @@ package de.spiritaner.maz.controller.person;
 
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Approval;
+import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.*;
 import de.spiritaner.maz.util.DataDatabase;
@@ -17,11 +19,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
+import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.query.dsl.QueryBuilder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
+import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
@@ -102,8 +106,8 @@ public class PersonOverviewController extends OverviewController<Person> {
 	}
 
 	@Override
-	protected void handleException(RollbackException e) {
-		ExceptionDialog.show(e);
+	protected void handleException(RollbackException e, Person selectedPerson) {
+		RemoveDialog.showFailureAndWait("Person","Person ("+selectedPerson.getFullName()+")", e);
 	}
 
 	@Override
@@ -133,7 +137,9 @@ public class PersonOverviewController extends OverviewController<Person> {
 		return personDetailsToggle;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void searchForPersons(ActionEvent actionEvent) {
+		// TODO implement full text search
 		EntityManager em = DataDatabase.getFactory().createEntityManager();
 		FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(em);
 		em.getTransaction().begin();
@@ -151,7 +157,7 @@ public class PersonOverviewController extends OverviewController<Person> {
 				  fullTextEntityManager.createFullTextQuery(luceneQuery, Person.class);
 
 		// execute search
-		List result = jpaQuery.getResultList();
+		List<Person> result = jpaQuery.getResultList();
 
 		getTable().getItems().clear();
 		getTable().getItems().addAll(FXCollections.observableArrayList(result));

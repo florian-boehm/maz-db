@@ -17,6 +17,10 @@ public class RemoveDialog {
 	}
 
 	public static void showFailureAndWait(MetaClass metaClassObj, String metaName, Exception e) {
+		RemoveDialog.showFailureAndWait("Metadaten", metaName + " '" + metaClassObj.getDescription()+"'",e);
+	}
+
+	public static void showFailureAndWait(String objName, String headerPrefix, Exception e) {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.setTitle("Ein Fehler ist aufgetreten!");
 
@@ -26,13 +30,13 @@ public class RemoveDialog {
 		}
 
 		if (t instanceof ConstraintViolationException) {
-			alert.setContentText("Der Löschvorgang würde die Datenintegrität verletzten. Möglicherweise verwendet ein anderes Objekt in der Datenbank diese Metadaten bereits.");
+			alert.setContentText("Der Löschvorgang würde die Datenintegrität verletzten. Möglicherweise verwendet ein anderes Objekt in der Datenbank diese "+objName+" bereits.");
 		} else {
 			ExceptionDialog.show(e);
 		}
 
 		alert.initStyle(StageStyle.UTILITY);
-		alert.setHeaderText(metaName + " '" + metaClassObj.getDescription() + "' konnte nicht gelöscht werden!");
+		alert.setHeaderText(headerPrefix + " konnte nicht gelöscht werden!");
 		alert.showAndWait();
 	}
 

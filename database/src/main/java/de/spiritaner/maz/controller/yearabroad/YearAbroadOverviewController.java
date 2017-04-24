@@ -2,10 +2,8 @@ package de.spiritaner.maz.controller.yearabroad;
 
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
-import de.spiritaner.maz.model.EPNumber;
-import de.spiritaner.maz.model.Person;
-import de.spiritaner.maz.model.Site;
-import de.spiritaner.maz.model.YearAbroad;
+import de.spiritaner.maz.dialog.RemoveDialog;
+import de.spiritaner.maz.model.*;
 import de.spiritaner.maz.util.factory.BooleanTableCell;
 import de.spiritaner.maz.util.factory.DateAsStringListCell;
 import de.spiritaner.maz.util.factory.EPNumberCell;
@@ -66,8 +64,9 @@ public class YearAbroadOverviewController extends OverviewController<YearAbroad>
 	}
 
 	@Override
-	protected void handleException(RollbackException e) {
-		ExceptionDialog.show(e);
+	protected void handleException(RollbackException e, YearAbroad yearAbroad) {
+		// TODO choose better text here
+		RemoveDialog.showFailureAndWait("Auslandsjahr","Auslandsjahr", e);
 	}
 
 	@Override

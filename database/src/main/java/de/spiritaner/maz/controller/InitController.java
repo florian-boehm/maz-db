@@ -7,9 +7,13 @@ import de.spiritaner.maz.util.validator.TextValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
@@ -61,7 +65,10 @@ public class InitController implements Initializable {
 					// Create the version file in the new created database directory
 					new File(Settings.get("database.path","./dbfiles/")+ResourceBundle.getBundle("lang.gui").getString("version")+".version").createNewFile();
 
-					stage.hide();
+					stage.setScene(new Scene(new Label("Bitte warten ...")));
+					stage.setTitle("Bitte warten ...");
+					stage.sizeToScene();
+
 					LoginDialog.showWaitAndExitOnFailure(stage);
 				}
 			} catch (Exception e) {

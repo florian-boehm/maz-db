@@ -161,8 +161,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 					postRemove(obsoleteEntity);
 				} catch (RollbackException e) {
-					// TODO show graphical error message in better way
-					handleException(e);
+					handleException(e, selectedObj);
 				}
 			}
 		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -205,7 +204,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 				//table.getSelectionModel().select(previousSelected);
 				masker.setVisible(false);
 			} catch (RollbackException e) {
-				handleException(e);
+				logger.error(e);
 			}
 		});
 	}
@@ -216,7 +215,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 	protected abstract String getLoadingText();
 
-	protected abstract void handleException(RollbackException e);
+	protected abstract void handleException(RollbackException e, T selectedObj);
 
 	@Override
 	public void onReopen() {

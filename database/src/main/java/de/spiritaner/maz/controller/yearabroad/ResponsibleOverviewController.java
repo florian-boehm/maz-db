@@ -2,8 +2,10 @@ package de.spiritaner.maz.controller.yearabroad;
 
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Responsible;
+import de.spiritaner.maz.model.Role;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.meta.PersonGroup;
 import de.spiritaner.maz.util.factory.MetaClassTableCell;
@@ -57,8 +59,9 @@ public class ResponsibleOverviewController extends OverviewController<Responsibl
 	}
 
 	@Override
-	protected void handleException(RollbackException e) {
-		ExceptionDialog.show(e);
+	protected void handleException(RollbackException e, Responsible responsible) {
+		// TODO choose better text here
+		RemoveDialog.showFailureAndWait("Verantwortliche(r)","Verantwortliche(r)", e);
 	}
 
 	@Override

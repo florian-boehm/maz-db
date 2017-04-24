@@ -2,6 +2,7 @@ package de.spiritaner.maz.controller.contactmethod;
 
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.ContactMethodType;
@@ -62,8 +63,8 @@ public class ContactMethodOverviewController extends OverviewController<ContactM
 	}
 
 	@Override
-	protected void handleException(RollbackException e) {
-		ExceptionDialog.show(e);
+	protected void handleException(RollbackException e, ContactMethod contactMethod) {
+		RemoveDialog.showFailureAndWait("Kontaktweg","Kontaktweg '"+contactMethod.getValue()+"'", e);
 	}
 
 	@Override
