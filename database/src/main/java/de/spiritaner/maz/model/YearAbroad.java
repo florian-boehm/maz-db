@@ -73,7 +73,6 @@ public class YearAbroad implements Identifiable {
 	public void setPerson(Person person) {
 		this.person.set(person);
 	}
-
 	public ObjectProperty<Person> personProperty() {
 		return person;
 	}

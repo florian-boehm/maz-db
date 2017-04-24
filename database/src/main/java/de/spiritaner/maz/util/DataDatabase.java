@@ -37,7 +37,7 @@ public class DataDatabase {
 		url += ";TRACE_LEVEL_FILE=" + Settings.get("database.data.trace_level_file","0");
 		url += ";TRACE_LEVEL_SYSTEM_OUT=" + Settings.get("database.data.trace_level_system_out","1");
 
-		Map properties = new HashMap<>();
+		Map<String, String> properties = new HashMap<>();
 		properties.put("hibernate.connection.url", url);
 		properties.put("hibernate.connection.username", user.getUsername());
 		properties.put("hibernate.connection.password", DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());

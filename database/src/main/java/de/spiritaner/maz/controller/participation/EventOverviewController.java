@@ -2,6 +2,7 @@ package de.spiritaner.maz.controller.participation;
 
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.meta.EventType;
 import de.spiritaner.maz.util.document.ParticipantList;
@@ -31,8 +32,8 @@ public class EventOverviewController extends OverviewController<Event> {
 	}
 
 	@Override
-	protected void handleException(RollbackException e) {
-		ExceptionDialog.show(e);
+	protected void handleException(RollbackException e, Event event) {
+		RemoveDialog.showFailureAndWait("Event","Event",e);
 	}
 
 	@Override

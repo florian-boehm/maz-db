@@ -2,6 +2,7 @@ package de.spiritaner.maz.controller.yearabroad;
 
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Site;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -35,8 +36,8 @@ public class SiteOverviewController extends OverviewController<Site> {
 	}
 
 	@Override
-	protected void handleException(RollbackException e) {
-		ExceptionDialog.show(e);
+	protected void handleException(RollbackException e, Site site) {
+		RemoveDialog.showFailureAndWait("Einsatzstelle","Einsatzstelle",e);
 	}
 
 	@Override

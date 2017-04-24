@@ -58,6 +58,7 @@ public class Person implements Identifiable {
 	private List<Relationship> relationships;
 	private List<Responsible> responsibles;
 	private List<YearAbroad> yearsAbroad;
+	private List<ExperienceAbroad> experiencesAbroad;
 
 	public Person() {
 		id = new SimpleLongProperty();
@@ -81,6 +82,7 @@ public class Person implements Identifiable {
 		relationships = new ArrayList<>();
 		responsibles = new ArrayList<>();
 		yearsAbroad = new ArrayList<>();
+		experiencesAbroad = new ArrayList<>();
 	}
 
 	/**
@@ -366,6 +368,15 @@ public class Person implements Identifiable {
 		this.yearsAbroad = yearsAbroad;
 	}
 
+	@OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+	public List<ExperienceAbroad> getExperiencesAbroad() {
+		return experiencesAbroad;
+	}
+
+	public void setExperiencesAbroad(List<ExperienceAbroad> experiencesAbroad) {
+		this.experiencesAbroad = experiencesAbroad;
+	}
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "preferredResidenceId")
 	public Residence getPreferredResidence() {
@@ -396,6 +407,8 @@ public class Person implements Identifiable {
 	public ObjectProperty<Religion> religionProperty() {
 		return religion;
 	}
+
+
 
 	@Transient
 	@Override

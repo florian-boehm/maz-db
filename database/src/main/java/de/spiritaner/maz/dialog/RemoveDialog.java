@@ -174,4 +174,19 @@ public class RemoveDialog {
 		alert.initOwner(stage);
 		return alert;
 	}
+
+	public static Alert create(ExperienceAbroad experienceAbroad, Stage stage) {
+		return generate(experienceAbroad, stage, "bei '" + experienceAbroad.getCommunity() + "' von Person '" + experienceAbroad.getPerson().getFullName() + "'");
+	}
+
+	private static Alert generate(Identifiable identifiable, Stage stage, String details) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		Identifiable.Annotation annotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);
+		alert.setTitle(annotation.identifiableName() + " löschen");
+		alert.setHeaderText(null);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setContentText(annotation.identifiableName() + ((details.isEmpty()) ? "" : " " + details) + " wirklich löschen?");
+		alert.initOwner(stage);
+		return alert;
+	}
 }

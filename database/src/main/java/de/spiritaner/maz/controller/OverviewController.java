@@ -100,6 +100,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 				addItem(managedObject);
 			});
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+			logger.error(e);
 			ExceptionDialog.show(e);
 		}
 	}
@@ -133,6 +134,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 			if(!result.isPresent()) load();
 		} catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+			logger.error(e);
 			ExceptionDialog.show(e);
 		}
 	}
@@ -161,10 +163,12 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 					postRemove(obsoleteEntity);
 				} catch (RollbackException e) {
+					logger.warn(e);
 					handleException(e, selectedObj);
 				}
 			}
 		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+			logger.error(e);
 			ExceptionDialog.show(e);
 		}
 

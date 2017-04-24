@@ -2,6 +2,7 @@ package de.spiritaner.maz.controller.yearabroad;
 
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.Site;
 import javafx.collections.FXCollections;
@@ -55,8 +56,8 @@ public class EPNumberOverviewController extends OverviewController<EPNumber> {
 	}
 
 	@Override
-	protected void handleException(RollbackException e) {
-		ExceptionDialog.show(e);
+	protected void handleException(RollbackException e, EPNumber epNumber) {
+		RemoveDialog.showFailureAndWait("EP-Nummer","EP-Nummer",e);
 	}
 
 	@Override

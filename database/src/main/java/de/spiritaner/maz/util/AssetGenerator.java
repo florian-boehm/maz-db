@@ -55,8 +55,8 @@ public class AssetGenerator implements CustomSqlChange {
 				  new RawSqlStatement("MERGE INTO PUBLIC.DIOCESE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('26', 'Trier', 'FALSE', 'FALSE')"),
 				  new RawSqlStatement("MERGE INTO PUBLIC.DIOCESE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('26', 'Würzburg', 'FALSE', 'FALSE')"),
 				  // Approval type
-				  new RawSqlStatement("MERGE INTO PUBLIC.APPROVALTYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('1', 'Fotoerklärung', 'FALSE', 'FALSE')"),
-				  new RawSqlStatement("MERGE INTO PUBLIC.APPROVALTYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('2', 'Datenschutzerklärung', 'FALSE', 'FALSE')"),
+				  new RawSqlStatement("MERGE INTO PUBLIC.APPROVALTYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('1', 'Datenschutzerklärung', 'FALSE', 'FALSE')"),
+				  new RawSqlStatement("MERGE INTO PUBLIC.APPROVALTYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('2', 'Fotoerklärung', 'FALSE', 'FALSE')"),
 				  new RawSqlStatement("MERGE INTO PUBLIC.APPROVALTYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('3', 'Rundbrief', 'FALSE', 'FALSE')"),
 				  // Role type
 				  new RawSqlStatement("MERGE INTO PUBLIC.ROLETYPE (ID, DESCRIPTION, REMOVABLE, EDITABLE) VALUES ('1', 'Ansprechperson Einsatzstelle', 'FALSE', 'FALSE')"),

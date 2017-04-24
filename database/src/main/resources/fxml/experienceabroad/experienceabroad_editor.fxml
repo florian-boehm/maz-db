@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.experienceabroad.ExperienceAbroadEditorController">
+    <children>
+        <Label text="(Ordens-) Gemeinschaft:" />
+      <TextField fx:id="communityField" GridPane.columnIndex="1" />
+      <Label text="Ort:" GridPane.rowIndex="1" />
+      <TextField fx:id="locationField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label maxHeight="1.7976931348623157E308" text="Details:" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+      <TextArea fx:id="detailsTextArea" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label text="Von:" GridPane.rowIndex="3" />
+      <DatePicker fx:id="fromDatePicker" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+      <Label text="Bis:" GridPane.rowIndex="4" />
+      <DatePicker fx:id="toDatePicker" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+    </children>
+    <columnConstraints>
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="130.0" minWidth="130.0" />
+        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+    </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+
+</GridPane>

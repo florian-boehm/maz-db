@@ -61,10 +61,10 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 				approval.getPerson().getApprovals().forEach(singleApproval -> {
 					switch (singleApproval.getApprovalType().getId().intValue()) {
 						case 1:
-							photoApprovalToggleSwitch.setSelected(singleApproval.isApproved());
+							privacyPolicyToggleSwitch.setSelected(singleApproval.isApproved());
 							break;
 						case 2:
-							privacyPolicyToggleSwitch.setSelected(singleApproval.isApproved());
+							photoApprovalToggleSwitch.setSelected(singleApproval.isApproved());
 							break;
 						case 3:
 							newsletterToggleSwitch.setSelected(singleApproval.isApproved());
@@ -73,6 +73,9 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 				});
 			}
 
+			photoApprovalToggleSwitch.setDisable(!privacyPolicyToggleSwitch.isSelected());
+			newsletterToggleSwitch.setDisable(!privacyPolicyToggleSwitch.isSelected());
+
 			if (approval.getApprovalType() == null || approval.getApprovalType().getId() > 100) {
 				approvalEditorController.setAll(approval);
 			} else {
@@ -80,10 +83,10 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 			}
 
 			if (approval.getId() != 0L) {
-				titleText.setText("Einwilligung bearbeiten");
+				titleText.setText(getIdentifiableName() + " bearbeiten");
 				saveApprovalButton.setText("Speichern");
 			} else {
-				titleText.setText("Einwilligung anlegen");
+				titleText.setText(getIdentifiableName() + " anlegen");
 				saveApprovalButton.setText("Anlegen");
 			}
 		}
@@ -95,6 +98,10 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		privacyPolicyToggleSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			photoApprovalToggleSwitch.setDisable(!newValue);
+			newsletterToggleSwitch.setDisable(!newValue);
+		});
 	}
 
 	public void saveApproval(ActionEvent actionEvent) {
@@ -108,19 +115,28 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 
 				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
 
-				getIdentifiable().getPerson().getApprovals().forEach(approval -> {
+				boolean privacyPolicyApproved = false;
+
+				for(Approval approval : getIdentifiable().getPerson().getApprovals()) {
 					switch (approval.getApprovalType().getId().intValue()) {
 						case 1:
-							approval.setApproved(photoApprovalToggleSwitch.isSelected());
+							approval.setApproved(privacyPolicyToggleSwitch.isSelected());
+							privacyPolicyApproved = privacyPolicyToggleSwitch.isSelected();
 							break;
 						case 2:
-							approval.setApproved(privacyPolicyToggleSwitch.isSelected());
+							approval.setApproved(photoApprovalToggleSwitch.isSelected());
 							break;
 						case 3:
 							approval.setApproved(newsletterToggleSwitch.isSelected());
 							break;
 					}
-				});
+				}
+
+				if(!privacyPolicyApproved) {
+					getIdentifiable().getPerson().getApprovals().forEach(approval -> {
+						if(approval.getId() == 2 || approval.getId() == 3) approval.setApproved(false);
+					});
+				}
 
 				if(!approvalEditorController.isReadOnly()) approvalEditorController.getAll(getIdentifiable());
 

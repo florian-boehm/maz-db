@@ -87,14 +87,27 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 					if(!managedResponsible.getSite().getResponsibles().contains(managedResponsible)) managedResponsible.getSite().getResponsibles().add(managedResponsible);
 
 					// Automatically add the role 'Ansprechperson Einsatzstelle'
-					RoleType siteResponsibleRoleType = em.createNamedQuery("RoleType.findByDesc", RoleType.class).setParameter("description","Ansprechperson Einsatzstelle").getSingleResult();
+					//RoleType siteResponsibleRoleType = em.createNamedQuery("RoleType.findByDesc", RoleType.class).setParameter("description","Ansprechperson Einsatzstelle").getSingleResult();
+					RoleType siteResponsibleRoleType = em.find(RoleType.class, 1L);
+
 					if(siteResponsibleRoleType != null) {
 						Hibernate.initialize(managedResponsible.getPerson().getRoles());
-						if(managedResponsible.getPerson().getRoles() == null || !managedResponsible.getPerson().getRoles().contains(siteResponsibleRoleType)) {
-							Role role = new Role();
-							role.setPerson(managedResponsible.getPerson());
-							role.setRoleType(siteResponsibleRoleType);
-							em.merge(role);
+
+						if(managedResponsible.getPerson().getRoles() != null) {
+							boolean roleAlreadyExists = false;
+
+							for (Role role : managedResponsible.getPerson().getRoles()) {
+								if (role.getRoleType().getId() == 1L) {
+									roleAlreadyExists = true;
+								}
+							}
+
+							if (!roleAlreadyExists) {
+								Role role = new Role();
+								role.setPerson(managedResponsible.getPerson());
+								role.setRoleType(siteResponsibleRoleType);
+								em.merge(role);
+							}
 						}
 					}
 

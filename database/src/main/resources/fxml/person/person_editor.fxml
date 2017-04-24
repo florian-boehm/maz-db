@@ -112,7 +112,7 @@
       </BorderPane>
     </children>
     <columnConstraints>
-        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="110.0" minWidth="110.0" />
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="130.0" minWidth="130.0" />
         <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
     </columnConstraints>
    <rowConstraints>
