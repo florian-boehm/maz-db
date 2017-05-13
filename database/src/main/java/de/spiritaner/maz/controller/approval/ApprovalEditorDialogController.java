@@ -100,7 +100,7 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		privacyPolicyToggleSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
 			photoApprovalToggleSwitch.setDisable(!newValue);
-			newsletterToggleSwitch.setDisable(!newValue);
+			//newsletterToggleSwitch.setDisable(!newValue);
 		});
 	}
 

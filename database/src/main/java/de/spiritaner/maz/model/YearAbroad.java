@@ -33,7 +33,8 @@ public class YearAbroad implements Identifiable {
 	private StringProperty details;
 	private StringProperty abortionReason;
 
-	private BooleanProperty weltwaertsPromoted;
+	private BooleanProperty wwPromoted;
+	private IntegerProperty wwMonths;
 	private ObjectProperty<EPNumber> epNumber;
 
 	public YearAbroad() {
@@ -42,7 +43,8 @@ public class YearAbroad implements Identifiable {
 		arrivalDate = new SimpleObjectProperty<>();
 		jobDescription = new SimpleStringProperty();
 		details = new SimpleStringProperty();
-		weltwaertsPromoted = new SimpleBooleanProperty();
+		wwPromoted = new SimpleBooleanProperty();
+		wwMonths = new SimpleIntegerProperty();
 		abortionDate = new SimpleObjectProperty<>();
 		abortionReason = new SimpleStringProperty();
 		missionDate = new SimpleObjectProperty<>();
@@ -168,16 +170,16 @@ public class YearAbroad implements Identifiable {
 		this.abortionReason.set(abortionReason);
 	}
 
-	public boolean isWeltwaertsPromoted() {
-		return weltwaertsPromoted.get();
+	public boolean getWwPromoted() {
+		return wwPromoted.get();
 	}
 
-	public BooleanProperty weltwaertsPromotedProperty() {
-		return weltwaertsPromoted;
+	public BooleanProperty wwPromotedProperty() {
+		return wwPromoted;
 	}
 
-	public void setWeltwaertsPromoted(boolean weltwaertsPromoted) {
-		this.weltwaertsPromoted.set(weltwaertsPromoted);
+	public void setWwPromoted(boolean wwPromoted) {
+		this.wwPromoted.set(wwPromoted);
 	}
 
 	public LocalDate getMissionDate() {
@@ -210,5 +212,17 @@ public class YearAbroad implements Identifiable {
 
 	public void setEpNumber(EPNumber epNumber) {
 		this.epNumber.set(epNumber);
+	}
+
+	public int getWwMonths() {
+		return wwMonths.get();
+	}
+
+	public IntegerProperty wwMonthsProperty() {
+		return wwMonths;
+	}
+
+	public void setWwMonths(int wwMonths) {
+		this.wwMonths.set(wwMonths);
 	}
 }

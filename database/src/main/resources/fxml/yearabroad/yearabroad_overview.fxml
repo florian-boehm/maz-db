@@ -34,7 +34,7 @@
 								<TableColumn fx:id="departureDateColumn" prefWidth="120.0" text="Abreisedatum"/>
 								<TableColumn fx:id="arrivalDateColumn" prefWidth="120.0" text="Rückreisedatum"/>
 								<TableColumn fx:id="abortionDateColumn" prefWidth="120.0" text="Abbruchdatum"/>
-								<TableColumn fx:id="weltwaertsPromotedColumn" prefWidth="120.0" text="Weltwärtsgefördert"/>
+								<TableColumn fx:id="wwPromotedColumn" prefWidth="120.0" text="Weltwärtsgefördert"/>
 								<TableColumn fx:id="epNumberColumn" prefWidth="120.0" text="EP-Nummer"/>
 								<TableColumn fx:id="idColumn" prefWidth="75.0" text="ID"/>
 							</columns>

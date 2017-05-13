@@ -4,9 +4,9 @@ import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.YearAbroad;
 import de.spiritaner.maz.util.factory.DatePickerFormatter;
 import de.spiritaner.maz.util.factory.EPNumberCell;
-import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.DateValidator;
 import de.spiritaner.maz.util.validator.EPNumberValidator;
+import de.spiritaner.maz.util.validator.TextValidator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -18,6 +18,8 @@ import java.util.ResourceBundle;
 
 public class YearAbroadEditorController implements Initializable {
 
+	@FXML
+	private TextField wwMonthsField;
 	@FXML
 	private TextField jobDescriptionField;
 	@FXML
@@ -40,17 +42,25 @@ public class YearAbroadEditorController implements Initializable {
 	private DateValidator arrivalDateValidator;
 	private DateValidator departureDateValidator;
 	private EPNumberValidator epNumberValidator;
+	private TextValidator wwMonthsValidator;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		arrivalDateValidator = DateValidator.create(arrivalDatePicker).fieldName("Rückreisedatum").relationFieldName("Abreisedatum").after(departureDatePicker).notEmpty(true).validateOnChange();
 		departureDateValidator = DateValidator.create(departureDatePicker).fieldName("Abreisedatum").notEmpty(true).validateOnChange();
 		epNumberValidator = new EPNumberValidator(epNumberComboBox).fieldName("EP-Nummer").isSelected(true).validateOnChange();
+		wwMonthsValidator = TextValidator.create(wwMonthsField).fieldName("Anzahl Monate (ww)").notEmpty(true).justNumbers().validateOnChange();
 
 		arrivalDatePicker.setConverter(new DatePickerFormatter());
 		abortionDatePicker.setConverter(new DatePickerFormatter());
 		departureDatePicker.setConverter(new DatePickerFormatter());
 		missionDateTimePicker.setConverter(new DatePickerFormatter());
+
+		wwMonthsField.setDisable(true);
+
+		weltwaertsPromotedToggleSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			wwMonthsField.setDisable(!newValue);
+		});
 
 		epNumberComboBox.setCellFactory(param -> EPNumberCell.epNumberListCell());
 		epNumberComboBox.setButtonCell(EPNumberCell.epNumberListCell());
@@ -64,8 +74,9 @@ public class YearAbroadEditorController implements Initializable {
 		abortionDatePicker.setValue(yearAbroad.getAbortionDate());
 		abortionReasonArea.setText(yearAbroad.getAbortionReason());
 		missionDateTimePicker.setValue(yearAbroad.getMissionDate());
-		weltwaertsPromotedToggleSwitch.setSelected(yearAbroad.isWeltwaertsPromoted());
+		weltwaertsPromotedToggleSwitch.setSelected(yearAbroad.getWwPromoted());
 		epNumberComboBox.setValue(yearAbroad.getEpNumber());
+		wwMonthsField.setText(String.valueOf(yearAbroad.getWwMonths()));
 	}
 
 	public YearAbroad getAll(YearAbroad yearAbroad) {
@@ -77,8 +88,9 @@ public class YearAbroadEditorController implements Initializable {
 		yearAbroad.setAbortionDate(abortionDatePicker.getValue());
 		yearAbroad.setAbortionReason(abortionReasonArea.getText());
 		yearAbroad.setMissionDate(missionDateTimePicker.getValue());
-		yearAbroad.setWeltwaertsPromoted(weltwaertsPromotedToggleSwitch.isSelected());
+		yearAbroad.setWwPromoted(weltwaertsPromotedToggleSwitch.isSelected());
 		yearAbroad.setEpNumber(epNumberComboBox.getValue());
+		yearAbroad.setWwMonths(Integer.parseInt(wwMonthsField.getText()));
 		return yearAbroad;
 	}
 
@@ -93,14 +105,16 @@ public class YearAbroadEditorController implements Initializable {
 		missionDateTimePicker.setDisable(readonly);
 		weltwaertsPromotedToggleSwitch.setDisable(readonly);
 		epNumberComboBox.setDisable(readonly);
+		wwMonthsField.setDisable(readonly);
 	}
 
 	public boolean isValid() {
 		boolean departureDateValid = departureDateValidator.validate();
 		boolean arrivalDateValid = arrivalDateValidator.validate();
 		boolean epNumberValid = epNumberValidator.validate();
+		boolean wwMonthsValid = (wwMonthsField.isDisable()) || wwMonthsValidator.validate();
 
-		return departureDateValid && arrivalDateValid && epNumberValid;
+		return departureDateValid && arrivalDateValid && epNumberValid && wwMonthsValid;
 	}
 
 	public DatePicker getDepartureDatePicker() {

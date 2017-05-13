@@ -24,6 +24,7 @@ public class TextValidator {
 	private Integer maxLength;
 	private Boolean notEmpty;
 	private Boolean justText;
+	private Boolean justNumbers;
 	private ArrayList<String> removeAll;
 	private TextField originalField;
 
@@ -99,6 +100,11 @@ public class TextValidator {
 		return this;
 	}
 
+	public TextValidator justNumbers() {
+		this.justNumbers = true;
+		return this;
+	}
+
 	public boolean validate(String oldValue, String newValue) {
 		boolean result = true;
 
@@ -118,7 +124,7 @@ public class TextValidator {
 
 		vbox.getChildren().clear();
 
-		if (justText != null && justText == true) {
+		if (justText != null && justText) {
 			String after = newText.replaceAll("[^a-zA-Z0-9-_]", "");
 			if (!after.equals(newText)) {
 				result = false;
@@ -126,6 +132,14 @@ public class TextValidator {
 			}
 
 //			textField.setText(textField.getText().replaceAll("[^a-zA-Z0-9-_]",""));
+		}
+
+		if (justNumbers != null && justNumbers) {
+			String after = newText.replaceAll("[^0-9]", "");
+			if (!after.equals(newText)) {
+				result = false;
+				addMsg(fieldName + "darf nur Zahlen enthalten!");
+			}
 		}
 
 		// Check if the text is shorter than allowed
