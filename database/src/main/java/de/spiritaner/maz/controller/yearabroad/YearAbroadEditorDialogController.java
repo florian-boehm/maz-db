@@ -45,39 +45,37 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		yearAbroadEditorController.getDepartureDatePicker().valueProperty().addListener((observable, oldValue, newValue) -> {
-			searchEPNumber();
-		});
+		yearAbroadEditorController.getDepartureDatePicker().valueProperty().addListener((observable, oldValue, newValue) -> searchEPNumber());
 
-		yearAbroadEditorController.getArrivalDatePicker().valueProperty().addListener((observable, oldValue, newValue) -> {
+		/*yearAbroadEditorController.getArrivalDatePicker().valueProperty().addListener((observable, oldValue, newValue) -> {
 			searchEPNumber();
-		});
+		});*/
 	}
 
 	private void searchEPNumber() {
 		EPNumber previousEpNumber = yearAbroadEditorController.getEpNumberComboBox().getValue();
 		yearAbroadEditorController.getEpNumberComboBox().getItems().clear();
 
-		if(yearAbroadEditorController.getArrivalDatePicker().getValue() != null &&
+		if(/*yearAbroadEditorController.getArrivalDatePicker().getValue() != null &&*/
 				  yearAbroadEditorController.getDepartureDatePicker().getValue() != null &&
 				  getIdentifiable() != null && getIdentifiable().getSite() != null) {
 			EntityManager em = DataDatabase.getFactory().createEntityManager();
 			em.getTransaction().begin();
 
-			TypedQuery<YearAbroad> query = em.createNamedQuery("YearAbroad.findAllOfSiteWithinDate", YearAbroad.class);
+			TypedQuery<YearAbroad> query = em.createNamedQuery("YearAbroad.findAllOfSiteInYear", YearAbroad.class);
 			query.setParameter("site",getIdentifiable().getSite());
-			query.setParameter("departureDate", yearAbroadEditorController.getDepartureDatePicker().getValue());
-			query.setParameter("arrivalDate", yearAbroadEditorController.getArrivalDatePicker().getValue());
+			query.setParameter("year", yearAbroadEditorController.getDepartureDatePicker().getValue().getYear());
+			/*query.setParameter("arrivalDate", yearAbroadEditorController.getArrivalDatePicker().getValue());*/
 
 			final List<EPNumber> availableEpNumbers = new ArrayList<>();
 			getIdentifiable().getSite().getEpNumbers().forEach(epNumber -> availableEpNumbers.add(epNumber));
 			//getIdentifiable().getSite().getEpNumbers().forEach(epNumber -> logger.info("all: "+epNumber));
 
 			query.getResultList().forEach(yearAbroad -> {
-				//logger.info("ep number may be in use: "+yearAbroad.getEpNumber());
-				//logger.info("year abroad ids: " + yearAbroad.getId() + " = " + getIdentifiable().getId());
+				logger.info("ep number may be in use: "+yearAbroad.getEpNumber());
+				logger.info("year abroad ids: " + yearAbroad.getId() + " = " + getIdentifiable().getId());
 				if(!yearAbroad.equals(getIdentifiable()) && availableEpNumbers.contains(yearAbroad.getEpNumber())) {
-					//logger.info("remove: "+yearAbroad.getEpNumber());
+					logger.info("remove: "+yearAbroad.getEpNumber());
 					availableEpNumbers.remove(yearAbroad.getEpNumber());
 				}
 			});

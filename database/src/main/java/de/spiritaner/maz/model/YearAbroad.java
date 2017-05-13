@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Identifiable.Annotation(editorDialogClass = YearAbroadEditorDialogController.class, identifiableName = "Auslandsjahr")
 @NamedQueries({
 		  @NamedQuery(name = "YearAbroad.findAllOfSiteWithinDate", query = "SELECT ya FROM YearAbroad ya WHERE ya.site=:site AND ((ya.departureDate BETWEEN :departureDate AND :arrivalDate) OR (ya.arrivalDate BETWEEN :departureDate AND :arrivalDate))"),
+		  @NamedQuery(name = "YearAbroad.findAllOfSiteInYear", query = "SELECT ya FROM YearAbroad ya WHERE ya.site=:site AND YEAR(ya.departureDate) = :year"),
 		  @NamedQuery(name = "YearAbroad.findCurrentOfPerson", query = "SELECT ya FROM YearAbroad ya WHERE ya.person=:person AND (:today BETWEEN ya.departureDate AND ya.arrivalDate)")
 })
 public class YearAbroad implements Identifiable {

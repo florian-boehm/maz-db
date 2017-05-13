@@ -73,7 +73,7 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 				});
 			}
 
-			photoApprovalToggleSwitch.setDisable(!privacyPolicyToggleSwitch.isSelected());
+			// not needed: photoApprovalToggleSwitch.setDisable(!privacyPolicyToggleSwitch.isSelected());
 			newsletterToggleSwitch.setDisable(!privacyPolicyToggleSwitch.isSelected());
 
 			if (approval.getApprovalType() == null || approval.getApprovalType().getId() > 100) {

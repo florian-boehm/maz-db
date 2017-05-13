@@ -1,21 +1,15 @@
 package de.spiritaner.maz.util.document;
 
 import de.spiritaner.maz.model.Event;
-import de.spiritaner.maz.model.Participation;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
-import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.docx4j.model.fields.merge.DataFieldName;
 import org.docx4j.model.fields.merge.MailMerger;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSimpleField;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
