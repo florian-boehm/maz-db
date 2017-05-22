@@ -121,7 +121,7 @@ public class User {
 				unencryptedDatabaseKey = cipher.doFinal(encryptedDatabaseKey);
 			} catch (Exception e) {
 				// TODO handle correct
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
 

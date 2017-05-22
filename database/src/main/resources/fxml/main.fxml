@@ -29,7 +29,7 @@
 			<!--ImageTab closable="false" img="@../img/map_32.png" name="Adressen"/-->
 			<ImageTab closable="false" img="@../img/event_32.png" name="Veranstaltungen"
 			          url="@participation/event_page.fxml"/>
-			<ImageTab closable="false" img="@../img/docs_32.png" name="Mail" url="@document/document_page.fxml"/>
+			<ImageTab closable="false" img="@../img/docs_32.png" name="Dokumente" url="@document/document_page.fxml"/>
 			<!--ImageTab closable="false" img="@../img/manager_32.png" name="Verwaltung"/>
 			<ImageTab closable="false" img="@../img/analysis_32.png" name="Analyse"/-->
 			<ImageTab closable="false" img="@../img/earth_32.png" name="Einsatzstellen" url="@yearabroad/site_page.fxml"/>

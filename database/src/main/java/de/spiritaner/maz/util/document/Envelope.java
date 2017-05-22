@@ -20,50 +20,49 @@ public class Envelope {
 
 				int i = 1;
 
+				MailMergeData data = new MailMergeData();
+				String[] headers = {"title", "name", "additional", "street", "city", "country"};
+				data.getHeaders().addAll(Arrays.asList(headers));
+
 				for (Person person : persons) {
 					person.initVolatiles();
 
-					try {
-						mpc.setProgress(true, "Speichere Ausgabedatei ...", ((double) i++) / persons.size());
+					mpc.setProgress(true, "Speichere Ausgabedatei ...", ((double) i++) / persons.size());
 
-						MailMergeData data = new MailMergeData();
-						String[] headers = {"title", "name", "additional", "street", "city", "country"};
-						data.getHeaders().addAll(Arrays.asList(headers));
+					if (person.getPreferredResidence() != null) {
+						Address address = person.getPreferredResidence().getAddress();
+						String genderPrefix = "";
 
-						if (person.getPreferredResidence() != null) {
-							Address address = person.getPreferredResidence().getAddress();
-							String genderPrefix = "";
-
-							if (person.getGender() != null) {
-								switch (person.getGender().getId().intValue()) {
-									case 1:
-										genderPrefix = "Herr ";
-										break;
-									case 2:
-										genderPrefix = "Frau ";
-										break;
-									default:
-										genderPrefix = "";
-								}
+						if (person.getGender() != null) {
+							switch (person.getGender().getId().intValue()) {
+								case 1:
+									genderPrefix = "Herr ";
+									break;
+								case 2:
+									genderPrefix = "Frau ";
+									break;
+								default:
+									genderPrefix = "";
 							}
-
-							String[] personAddressHeader = {
-									  genderPrefix + ((person.getHonorific() == null) ? "" : person.getHonorific()),
-									  person.getFullName(),
-									  address.getAddition(),
-									  address.getStreet() + " " + address.getHouseNumber(),
-									  address.getPostCode() + " " + address.getCity(),
-									  address.getState() + " - " + address.getCountry(),
-							};
-
-							data.getData().add(Arrays.asList(personAddressHeader));
-
-							MailMerge.merge(template, outFile, data);
 						}
-					} catch (Exception e) {
-						e.printStackTrace();
-						logger.error(e);
+
+						String[] personAddressHeader = {
+								  genderPrefix + ((person.getHonorific() == null) ? "" : person.getHonorific()),
+								  person.getFullName(),
+								  address.getAddition(),
+								  address.getStreet() + " " + address.getHouseNumber(),
+								  address.getPostCode() + " " + address.getCity(),
+								  address.getState() + " - " + address.getCountry(),
+						};
+
+						data.getData().add(Arrays.asList(personAddressHeader));
 					}
+				}
+
+				try {
+					MailMerge.merge(template, outFile, data);
+				} catch (Exception e) {
+					logger.error(e);
 				}
 
 				logger.info("Envelopes were created at " + outFile.getAbsolutePath());
