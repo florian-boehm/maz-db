@@ -1,83 +1,78 @@
 package de.spiritaner.maz.util.document;
 
+import de.spiritaner.maz.controller.DocumentPageController;
+import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.Event;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import de.spiritaner.maz.util.DataDatabase;
 import org.apache.log4j.Logger;
-import org.docx4j.model.fields.merge.DataFieldName;
-import org.docx4j.model.fields.merge.MailMerger;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.hibernate.Hibernate;
 
+import javax.persistence.EntityManager;
 import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class ParticipantList {
 
 	final static Logger logger = Logger.getLogger(ParticipantList.class);
 
-	public static void forEvent(Event event, Stage stage) {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Vorlage laden");
-		File wordDocument = fileChooser.showOpenDialog(stage);
-
-		if(wordDocument != null) {
-			if(wordDocument.getName().endsWith(".docx")) {
+	public static void createForEvent(final Event event, final File template, final File outFile, final DocumentPageController mpc) {
+		if (template != null && outFile != null) {
+			if (template.getName().endsWith(".docx")) {
 				try {
-					WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(wordDocument);
-
-					final List<Map<DataFieldName, String>> data = new ArrayList<Map<DataFieldName, String>>();
 					final StringBuffer firstNameBuffer = new StringBuffer();
 					final StringBuffer familyNameBuffer = new StringBuffer();
 					final StringBuffer participatedBuffer = new StringBuffer();
+					final StringBuffer photoApprovalBuffer = new StringBuffer();
+
+					mpc.setProgress(true, "Bereite Daten vor ...", -1);
 
 					event.getParticipations().forEach(participation -> {
-						firstNameBuffer.append(participation.getPerson().getFirstName()+"\n");
-						familyNameBuffer.append(participation.getPerson().getFamilyName()+"\n");
+						firstNameBuffer.append(participation.getPerson().getFirstName() + "\n");
+						familyNameBuffer.append(participation.getPerson().getFamilyName() + "\n");
 						participatedBuffer.append((participation.getHasParticipated()) ? "Ja\n" : "Nein\n");
+
+						// Load photo approval information from participating person
+						EntityManager em = DataDatabase.getFactory().createEntityManager();
+						em.getTransaction().begin();
+						Hibernate.initialize(participation.getPerson().getApprovals());
+						List<Approval> approvals = participation.getPerson().getApprovals();
+
+						approvals.forEach(approval -> {
+							if (approval.getApprovalType().getId() == 2)
+								photoApprovalBuffer.append(approval.isApproved() ? "Ja\n" : "Nein\n");
+						});
+
+						em.getTransaction().commit();
 					});
 
-					Map<DataFieldName, String> item = new HashMap<DataFieldName, String>();
-					item.put(new DataFieldName("eventTitle"), event.getName());
 					final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-					item.put(new DataFieldName("eventBegin"), dtf.format(event.getFromDate()));
-					item.put(new DataFieldName("eventEnd"), dtf.format(event.getToDate()));
 
-					item.put(new DataFieldName("participantFirstName"), firstNameBuffer.toString());
-					item.put(new DataFieldName("participantFamilyName"), familyNameBuffer.toString());
-					item.put(new DataFieldName("hasParticipated"), participatedBuffer.toString());
-					data.add(item);
+					final MailMergeData data = new MailMergeData();
+					String[] headers = {"eventTitle", "eventBegin", "eventEnd", "eventLocation", "participantFirstName", "participantFamilyName", "hasParticipated", "participantPhotoApproval"};
+					data.getHeaders().addAll(Arrays.asList(headers));
 
-					MailMerger.setMERGEFIELDInOutput(MailMerger.OutputField.KEEP_MERGEFIELD);
-					MailMerger.performMerge(wordMLPackage, item, true);
+					final ArrayList<String> eventData = new ArrayList<>();
+					eventData.add(0, event.getName());
+					eventData.add(1, dtf.format(event.getFromDate()));
+					eventData.add(2, dtf.format(event.getToDate()));
+					eventData.add(3, event.getLocation());
+					eventData.add(4, firstNameBuffer.toString().trim());
+					eventData.add(5, familyNameBuffer.toString().trim());
+					eventData.add(6, participatedBuffer.toString().trim());
+					eventData.add(7, photoApprovalBuffer.toString().trim());
 
-					wordMLPackage.save(new File(wordDocument.getParent()+"/out.docx"));
-				} catch (Docx4JException e) {
-					e.printStackTrace();
+					data.getData().add(eventData);
+
+					mpc.setProgress(true, "Füge Daten in Vorlage ein ...", -1);
+					MailMerge.merge(template, outFile, data);
+					mpc.setProgress(true, "Speichere Ausgabedatei ...", -1);
+					logger.info("Participant list was created at " + outFile.getAbsolutePath());
+				} catch (Exception e) {
+					logger.error(e);
 				}
-
-				/*try
-				{
-					FileInputStream fis = new FileInputStream(wordDocument.getAbsolutePath());
-					XWPFDocument document = new XWPFDocument(fis);
-					XWPFWordExtractor extractor = new XWPFWordExtractor(document);
-
-					logger.info(extractor.getText());
-
-					for(XWPFParagraph paragraph : document.getParagraphs()) {
-						for(CTSimpleField field : paragraph.getCTP().getFldSimpleArray()) {
-							System.out.println(field.getInstr());
-						}
-					}
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}*/
 			}
 		}
 	}

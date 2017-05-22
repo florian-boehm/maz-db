@@ -65,6 +65,12 @@ public class PersonEditorDialogController extends EditorController<Person> {
 
 				personEditorController.getAll(getIdentifiable());
 
+				// This has to be checked here because if the person is currently at the year abroad the
+				// preferred address id would be lower than zero and this would lead to an error on merge/persist!
+				if(getIdentifiable().getPreferredResidence() != null && getIdentifiable().getPreferredResidence().getId() < 0) {
+					getIdentifiable().setPreferredResidence(null);
+				}
+
 				try {
 					Person managedPerson = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
 					em.getTransaction().commit();

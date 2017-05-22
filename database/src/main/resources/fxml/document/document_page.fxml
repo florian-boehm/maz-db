@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import org.controlsfx.control.MaskerPane?>
+
+<TabPane fx:id="tabPane" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.DocumentPageController">
+	<tabs>
+		<Tab fx:id="docTab" text="Dokument">
+			<content>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+					<children>
+						<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<content>
+								<AnchorPane>
+									<children>
+										<BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+											<center>
+												<GridPane hgap="10.0" vgap="10.0">
+													<columnConstraints>
+														<ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" percentWidth="100.0" />
+													</columnConstraints>
+													<rowConstraints>
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="SOMETIMES" />
+													</rowConstraints>
+													<children>
+														<RadioButton fx:id="mailRadioButton" disable="true" mnemonicParsing="false" text="E-Mail" GridPane.rowIndex="2">
+															<toggleGroup>
+																<ToggleGroup fx:id="documentType" />
+															</toggleGroup>
+														</RadioButton>
+														<RadioButton fx:id="participantListRadioButton" mnemonicParsing="false" text="Teilnehmerliste" toggleGroup="$documentType" GridPane.rowIndex="3" />
+														<RadioButton fx:id="envelopeRadioButton" mnemonicParsing="false" text="Briefumschläge" toggleGroup="$documentType" GridPane.rowIndex="4" />
+														<TextFlow GridPane.rowIndex="1">
+															<children>
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bitte wählen Sie aus, welche Art von  Dokument sie erstellen möchten:" />
+															</children>
+														</TextFlow>
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dokumentart">
+															<font>
+																<Font name="System Bold" size="14.0" />
+															</font>
+														</Text>
+														<Separator prefWidth="200.0" GridPane.rowIndex="5" />
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Vorlage" GridPane.rowIndex="6">
+															<font>
+																<Font name="System Bold" size="14.0" />
+															</font>
+														</Text>
+														<HBox GridPane.rowIndex="7">
+															<children>
+																<ComboBox fx:id="templateComboBox" maxWidth="300.0" HBox.hgrow="ALWAYS" />
+																<Button fx:id="templateOtherButton" mnemonicParsing="false" onAction="#loadCustomTemplate" text="... weitere" />
+															</children>
+														</HBox>
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Vorschau" GridPane.rowIndex="9">
+															<font>
+																<Font name="System Bold" size="14.0" />
+															</font>
+														</Text>
+														<ImageView fx:id="templatePreviewImage" pickOnBounds="true" preserveRatio="true" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+															<image>
+																<Image url="@../../img/docs/participant_list.png" />
+															</image>
+															<GridPane.margin>
+																<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+															</GridPane.margin>
+															<viewport>
+																<Rectangle2D />
+															</viewport>
+														</ImageView>
+														<Separator prefWidth="200.0" GridPane.rowIndex="8" />
+													</children>
+													<BorderPane.margin>
+														<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+													</BorderPane.margin>
+												</GridPane>
+											</center>
+											<bottom>
+												<ButtonBar prefHeight="40.0" prefWidth="200.0" style="-fx-border-width: 1 0 0 0; -fx-border-color: #c8c8c8;" BorderPane.alignment="CENTER">
+													<buttons>
+														<Button fx:id="docNextButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#docNext" text="Weiter" />
+													</buttons>
+													<BorderPane.margin>
+														<Insets />
+													</BorderPane.margin>
+													<padding>
+														<Insets left="10.0" right="10.0" />
+													</padding>
+												</ButtonBar>
+											</bottom>
+										</BorderPane>
+									</children>
+								</AnchorPane>
+							</content>
+						</ScrollPane>
+					</children>
+				</AnchorPane>
+			</content>
+		</Tab>
+		<Tab fx:id="eventTab" text="Event">
+			<content>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+					<children>
+						<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<content>
+								<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+									<children>
+										<BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+											<bottom>
+												<ButtonBar prefHeight="40.0" prefWidth="200.0" style="-fx-border-color: #c8c8c8; -fx-border-width: 1 0 0 0;" BorderPane.alignment="CENTER">
+													<buttons>
+														<Button fx:id="eventBackButton" mnemonicParsing="false" onAction="#eventBack" text="Zurück" />
+														<Button fx:id="eventNextButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#eventNext" text="Weiter" />
+													</buttons>
+													<padding>
+														<Insets left="10.0" right="10.0" />
+													</padding>
+												</ButtonBar>
+											</bottom>
+											<center>
+												<GridPane hgap="10.0" vgap="10.0" BorderPane.alignment="CENTER">
+													<columnConstraints>
+														<ColumnConstraints hgrow="ALWAYS" />
+														<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+													</columnConstraints>
+													<rowConstraints>
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints valignment="TOP" vgrow="NEVER" />
+														<RowConstraints valignment="TOP" vgrow="NEVER" />
+														<RowConstraints valignment="TOP" vgrow="NEVER" />
+														<RowConstraints valignment="TOP" vgrow="NEVER" />
+														<RowConstraints valignment="TOP" vgrow="SOMETIMES" />
+													</rowConstraints>
+													<children>
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Veranstaltung">
+															<font>
+																<Font name="System Bold" size="14.0" />
+															</font>
+														</Text>
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Veranstaltung" GridPane.columnSpan="2147483647">
+															<font>
+																<Font name="System Bold" size="14.0" />
+															</font>
+														</Text>
+														<fx:include fx:id="eventOverview" source="../participation/event_overview.fxml" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+														<Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Felder frei lassen" GridPane.rowIndex="3">
+															<font>
+																<Font name="System Bold" size="14.0" />
+															</font>
+														</Text>
+														<TextFlow GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
+															<children>
+																<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bitte wählen Sie nur die Felder aus, die nicht mit Werten gefüllt werden sollen. Dies ist zum Beispiel dann hilfreich, wenn die Teilnehmerliste bei Veranstaltungen ausgelegt werden soll, damit die Teilnehmer dort unterschreiben können." />
+															</children>
+														</TextFlow>
+														<CheckBox fx:id="eventNameCheckBox" mnemonicParsing="false" text="Veranstaltungsname" GridPane.rowIndex="5" />
+														<CheckBox fx:id="eventBeginCheckBox" mnemonicParsing="false" text="Veranstaltungsbegin" GridPane.rowIndex="6" />
+														<CheckBox fx:id="eventEndCheckBox" mnemonicParsing="false" text="Veranstaltungsende" GridPane.rowIndex="7" />
+														<CheckBox fx:id="eventLocationCheckBox" mnemonicParsing="false" text="Veranstaltungsort" GridPane.rowIndex="8" />
+														<CheckBox fx:id="participantFirstNameCheckBox" mnemonicParsing="false" text="Teilnehmervorname" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+														<CheckBox fx:id="participantFamilyNameCheckBox" mnemonicParsing="false" text="Teilnehmernachname" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+														<CheckBox fx:id="hasParticipatedCheckBox" mnemonicParsing="false" text="Teilnehmer hat teilgenommen" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+														<CheckBox fx:id="participantPhotoApprovalCheckBox" mnemonicParsing="false" text="Teilnehmer Fotoerklärung" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+													</children>
+													<BorderPane.margin>
+														<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+													</BorderPane.margin>
+												</GridPane>
+											</center>
+										</BorderPane>
+									</children>
+								</AnchorPane>
+							</content>
+						</ScrollPane>
+					</children>
+				</AnchorPane>
+			</content>
+		</Tab>
+		<Tab fx:id="personTab" text="Personen">
+			<content>
+				<AnchorPane minHeight="0.0" minWidth="0.0">
+					<children>
+						<ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<content>
+								<AnchorPane minHeight="0.0" minWidth="0.0">
+									<children>
+										<BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+											<bottom>
+												<ButtonBar prefHeight="40.0" prefWidth="200.0" style="-fx-border-color: #c8c8c8; -fx-border-width: 1 0 0 0;" BorderPane.alignment="CENTER">
+													<buttons>
+														<Button fx:id="personBackButton" mnemonicParsing="false" onAction="#personBack" text="Zurück" />
+														<Button fx:id="personNextButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#personNext" text="Weiter" />
+													</buttons>
+													<BorderPane.margin>
+														<Insets />
+													</BorderPane.margin>
+													<padding>
+														<Insets left="10.0" right="10.0" />
+													</padding>
+												</ButtonBar>
+											</bottom>
+											<center>
+												<GridPane hgap="10.0" vgap="10.0" BorderPane.alignment="CENTER">
+													<columnConstraints>
+														<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+														<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+													</columnConstraints>
+													<rowConstraints>
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+													</rowConstraints>
+													<BorderPane.margin>
+														<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+													</BorderPane.margin>
+													<children>
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Person(en)">
+															<font>
+																<Font name="System Bold" size="14.0" />
+															</font>
+														</Text>
+														<HBox style="-fx-border-color: #c8c8c8; -fx-border-width: 1;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+															<fx:include fx:id="personOverview" source="../person/person_overview.fxml" />
+														</HBox>
+														<Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Filter" GridPane.rowIndex="3">
+															<font>
+																<Font name="System Bold" size="14.0" />
+															</font>
+														</Text>
+														<CheckBox mnemonicParsing="false" text="Nur Personen mit Rundbrief-Zustimmung anzeigen" GridPane.rowIndex="4" />
+														<CheckBox mnemonicParsing="false" text="Nur Personen mit folgenden Funktionen anzeigen:" GridPane.rowIndex="5" />
+														<ListView prefHeight="100.0" GridPane.rowIndex="6" />
+													</children>
+												</GridPane>
+											</center>
+										</BorderPane>
+									</children>
+								</AnchorPane>
+							</content>
+						</ScrollPane>
+					</children>
+				</AnchorPane>
+			</content>
+		</Tab>
+		<Tab fx:id="outTab" text="Ausgabe">
+			<content>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+					<children>
+						<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<content>
+								<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+									<children>
+										<BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+											<center>
+												<GridPane hgap="10.0" vgap="10.0" BorderPane.alignment="CENTER">
+													<columnConstraints>
+														<ColumnConstraints hgrow="NEVER" minWidth="130.0" prefWidth="130.0" />
+														<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+													</columnConstraints>
+													<rowConstraints>
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints vgrow="NEVER" />
+														<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+													</rowConstraints>
+													<children>
+														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ausgabe">
+															<font>
+																<Font name="System Bold" size="14.0" />
+															</font>
+														</Text>
+														<Label text="Pfad:" GridPane.rowIndex="2" />
+														<Label text="Zielformat:" GridPane.rowIndex="1" />
+														<HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+															<children>
+																<ComboBox fx:id="fileTypeComboBox" />
+																<Text fx:id="fileTypeHint" strokeType="OUTSIDE" strokeWidth="0.0" text="Hinweis: Ausgabe erfolgt in mehreren Einzeldokumenten!" visible="false" />
+															</children>
+														</HBox>
+														<HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+															<children>
+																<TextField fx:id="outFilePathTextField" HBox.hgrow="ALWAYS" />
+																<Button fx:id="outFileSearchButton" mnemonicParsing="false" onAction="#searchOutFile" text="..." />
+															</children>
+														</HBox>
+													</children>
+													<BorderPane.margin>
+														<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+													</BorderPane.margin>
+												</GridPane>
+											</center>
+											<bottom>
+												<ButtonBar prefHeight="40.0" prefWidth="200.0" style="-fx-border-color: #c8c8c8; -fx-border-width: 1 0 0 0;" BorderPane.alignment="CENTER">
+													<buttons>
+														<Button fx:id="outBackButton" mnemonicParsing="false" onAction="#outBack" text="Zurück" />
+														<Button fx:id="outFinishButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#outFinish" text="Fertigstellen" />
+													</buttons>
+													<padding>
+														<Insets left="10.0" right="10.0" />
+													</padding>
+												</ButtonBar>
+											</bottom>
+										</BorderPane>
+                              <MaskerPane fx:id="progressMasker" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+									</children>
+								</AnchorPane>
+							</content>
+						</ScrollPane>
+					</children>
+				</AnchorPane>
+			</content>
+		</Tab>
+	</tabs>
+</TabPane>

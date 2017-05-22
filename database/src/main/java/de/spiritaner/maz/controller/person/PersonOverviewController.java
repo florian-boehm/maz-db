@@ -1,15 +1,12 @@
 package de.spiritaner.maz.controller.person;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Approval;
-import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.*;
 import de.spiritaner.maz.util.DataDatabase;
 import de.spiritaner.maz.util.factory.DateAsStringListCell;
-import de.spiritaner.maz.util.factory.MetaClassListCell;
 import de.spiritaner.maz.util.factory.MetaClassTableCell;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -19,13 +16,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
-import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.query.dsl.QueryBuilder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
-import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;

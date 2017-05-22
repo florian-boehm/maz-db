@@ -34,6 +34,8 @@ public class UserDatabase {
 	private synchronized static EntityManagerFactory getFactory() {
 		Map properties = new HashMap<>();
 
+		// TODO copy paste
+
 		String path = Settings.get("database.path", "./dbfiles/");
 		String url = "jdbc:h2:"+path+"users";
 		url += ";LOCK_TIMEOUT=" + Settings.get("database.user.lock_timeout","5");

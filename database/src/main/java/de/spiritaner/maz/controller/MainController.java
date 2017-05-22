@@ -1,6 +1,7 @@
 package de.spiritaner.maz.controller;
 
 import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.dialog.OverviewDialog;
 import de.spiritaner.maz.dialog.UpdaterDialog;
 import de.spiritaner.maz.view.component.ImageTab;
 import javafx.application.Platform;
@@ -42,6 +43,9 @@ public class MainController implements Initializable, Controller {
 							final FXMLLoader loader = new FXMLLoader(new URL(imgTab.getUrl()));
 							final Parent root = loader.load();
 							final Controller controller = loader.getController();
+
+							if(imgTab.getUrl().contains("document_page.fxml"))
+								root.getStylesheets().add(OverviewDialog.class.getClass().getResource("/css/wizard_tabs.css").toExternalForm());
 
 							// Save the controller for later usage
 							controllers.put(imgTab.getUrl(), controller);

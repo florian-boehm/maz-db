@@ -60,11 +60,12 @@ public class EventOverviewController extends OverviewController<Event> {
 		toDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
 	}
 
-	public void createParticipantList(ActionEvent actionEvent) {
+	// TODO remove this here because document/document generation is done on an extra page
+	/*public void createParticipantList(ActionEvent actionEvent) {
 		Event selectedEvent = getTable().getSelectionModel().getSelectedItem();
 
 		if (selectedEvent != null) {
-			ParticipantList.forEvent(selectedEvent, getStage());
+			ParticipantList.createForEvent(selectedEvent, getStage());
 		}
-	}
+	}*/
 }

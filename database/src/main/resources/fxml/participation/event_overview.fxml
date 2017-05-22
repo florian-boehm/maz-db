@@ -20,8 +20,8 @@
                         <Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#remove" text="Entfernen" />
                         <Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#edit" text="Bearbeiten" />
                         <Button mnemonicParsing="false" onAction="#create" text="Neu" />
-                  <Separator orientation="VERTICAL" />
-                  <Button mnemonicParsing="false" onAction="#createParticipantList" text="Teilnehmerliste" />
+                  <!--Separator orientation="VERTICAL" />
+                  <Button mnemonicParsing="false" onAction="#createParticipantList" text="Teilnehmerliste" /-->
                     </items>
                 </ToolBar>
             </bottom>

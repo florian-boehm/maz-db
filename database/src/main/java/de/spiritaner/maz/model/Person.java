@@ -1,10 +1,8 @@
 package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.controller.person.PersonEditorDialogController;
-import de.spiritaner.maz.model.meta.Diocese;
-import de.spiritaner.maz.model.meta.Gender;
-import de.spiritaner.maz.model.meta.Religion;
-import de.spiritaner.maz.model.meta.Salutation;
+import de.spiritaner.maz.model.meta.*;
+import de.spiritaner.maz.util.DataDatabase;
 import javafx.beans.property.*;
 import org.hibernate.annotations.*;
 import org.hibernate.envers.Audited;
@@ -31,7 +29,7 @@ import java.util.List;
 @NamedQueries({
 		  @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
 })
-public class Person implements Identifiable {
+public class Person extends PartialVolatileEntity implements Identifiable {
 
 	private LongProperty id;
 
@@ -408,7 +406,25 @@ public class Person implements Identifiable {
 		return religion;
 	}
 
+	@Transient
+	@Override
+	protected void initialize() {
+		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		TypedQuery<YearAbroad> query = em.createNamedQuery("YearAbroad.findCurrentOfPerson", YearAbroad.class);
+		query.setParameter("person", this);
+		query.setParameter("today", LocalDate.now());
 
+		// TODO take care of the abortion date too!
+		for (YearAbroad yearAbroad : query.getResultList()) {
+			Residence tmpRes = new Residence();
+			tmpRes.setId(-1L);
+			tmpRes.setPerson(this);
+			tmpRes.setAddress(yearAbroad.getSite().getAddress());
+			tmpRes.setResidenceType(em.find(ResidenceType.class, 3L));
+			this.setPreferredResidence(tmpRes);
+			if (!residences.contains(tmpRes)) residences.add(tmpRes);
+		}
+	}
 
 	@Transient
 	@Override

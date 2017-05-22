@@ -1,15 +1,11 @@
 package de.spiritaner.maz.model;
 
-import de.spiritaner.maz.controller.participation.ParticipationEditorDialogController;
 import de.spiritaner.maz.controller.residence.ResidenceEditorDialogController;
 import de.spiritaner.maz.model.meta.ResidenceType;
-import de.spiritaner.maz.util.DataDatabase;
 import javafx.beans.property.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import javax.xml.bind.SchemaOutputResolver;
-import java.util.ArrayList;
 
 /**
  * @author Florian Schwab

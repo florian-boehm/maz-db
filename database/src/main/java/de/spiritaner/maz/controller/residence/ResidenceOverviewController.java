@@ -58,26 +58,8 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 	protected Collection<Residence> preLoad(EntityManager em) {
 		if(person != null) {
 			Hibernate.initialize(person.getResidences());
-
-			Collection<Residence> residences = FXCollections.observableArrayList(person.getResidences());
-
-			// Fetch year abroad addresses
-			// TODO take care of the abortion date too!
-			TypedQuery<YearAbroad> query = em.createNamedQuery("YearAbroad.findCurrentOfPerson", YearAbroad.class);
-			query.setParameter("person",person);
-			query.setParameter("today", LocalDate.now());
-			query.getResultList().forEach(yearAbroad -> {
-				Residence tmpRes = new Residence();
-				tmpRes.setId(-1L);
-				tmpRes.setPerson(person);
-				tmpRes.setAddress(yearAbroad.getSite().getAddress());
-				tmpRes.setResidenceType(em.find(ResidenceType.class, 3L));
-				//if(!person.getResidences().contains(tmpRes)) person.getResidences().add(tmpRes);
-				person.setPreferredResidence(tmpRes);
-				residences.add(tmpRes);
-			});
-
-			return residences;
+			person.initVolatiles();
+			return FXCollections.observableArrayList(person.getResidences());
 		}
 		return null;
 	}

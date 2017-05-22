@@ -99,8 +99,8 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		privacyPolicyToggleSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
-			photoApprovalToggleSwitch.setDisable(!newValue);
-			//newsletterToggleSwitch.setDisable(!newValue);
+			//photoApprovalToggleSwitch.setDisable(!newValue);
+			newsletterToggleSwitch.setDisable(!newValue);
 		});
 	}
 
@@ -115,27 +115,23 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 
 				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
 
-				boolean privacyPolicyApproved = false;
-
 				for(Approval approval : getIdentifiable().getPerson().getApprovals()) {
+					Approval managedApproval = (!em.contains(approval)) ? em.merge(approval) : approval;
+
 					switch (approval.getApprovalType().getId().intValue()) {
 						case 1:
+							managedApproval.setApproved(privacyPolicyToggleSwitch.isSelected());
 							approval.setApproved(privacyPolicyToggleSwitch.isSelected());
-							privacyPolicyApproved = privacyPolicyToggleSwitch.isSelected();
 							break;
 						case 2:
 							approval.setApproved(photoApprovalToggleSwitch.isSelected());
+							managedApproval.setApproved(photoApprovalToggleSwitch.isSelected());
 							break;
 						case 3:
-							approval.setApproved(newsletterToggleSwitch.isSelected());
+							approval.setApproved(privacyPolicyToggleSwitch.isSelected() && newsletterToggleSwitch.isSelected());
+							managedApproval.setApproved(privacyPolicyToggleSwitch.isSelected() && newsletterToggleSwitch.isSelected());
 							break;
 					}
-				}
-
-				if(!privacyPolicyApproved) {
-					getIdentifiable().getPerson().getApprovals().forEach(approval -> {
-						if(approval.getId() == 2 || approval.getId() == 3) approval.setApproved(false);
-					});
 				}
 
 				if(!approvalEditorController.isReadOnly()) approvalEditorController.getAll(getIdentifiable());
