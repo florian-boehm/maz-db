@@ -3,7 +3,7 @@ package de.spiritaner.maz.util.document;
 import de.spiritaner.maz.controller.DocumentPageController;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.Event;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 

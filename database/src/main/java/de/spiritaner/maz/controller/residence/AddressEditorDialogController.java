@@ -3,7 +3,7 @@ package de.spiritaner.maz.controller.residence;
 import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.model.Address;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

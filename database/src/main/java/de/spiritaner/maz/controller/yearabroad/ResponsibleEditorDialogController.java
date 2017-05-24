@@ -9,7 +9,7 @@ import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Responsible;
 import de.spiritaner.maz.model.Role;
 import de.spiritaner.maz.model.meta.RoleType;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,9 +21,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
-import java.net.URL;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/responsible_editor_dialog.fxml", objDesc = "Verantwortliche(n)")
 public class ResponsibleEditorDialogController extends EditorController<Responsible> {

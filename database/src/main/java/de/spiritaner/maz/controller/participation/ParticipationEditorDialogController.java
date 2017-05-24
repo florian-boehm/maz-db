@@ -8,7 +8,7 @@ import de.spiritaner.maz.dialog.OverviewDialog;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.Person;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

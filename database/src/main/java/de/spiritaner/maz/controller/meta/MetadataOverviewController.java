@@ -6,7 +6,7 @@ import de.spiritaner.maz.dialog.MetadataEditorDialog;
 import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.model.meta.MetaClass;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

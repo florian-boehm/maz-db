@@ -1,28 +1,20 @@
 package de.spiritaner.maz.controller.approval;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Approval;
-import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.ApprovalType;
-import de.spiritaner.maz.util.DataDatabase;
 import de.spiritaner.maz.util.factory.BooleanTableCell;
 import de.spiritaner.maz.util.factory.MetaClassTableCell;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
-import javax.persistence.TypedQuery;
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 public class ApprovalOverviewController extends OverviewController<Approval> {
 

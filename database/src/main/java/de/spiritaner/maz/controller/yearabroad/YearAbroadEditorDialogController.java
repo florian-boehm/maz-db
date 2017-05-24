@@ -9,7 +9,7 @@ import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.YearAbroad;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

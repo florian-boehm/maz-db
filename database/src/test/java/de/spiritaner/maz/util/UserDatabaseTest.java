@@ -1,5 +1,6 @@
 package de.spiritaner.maz.util;
 
+import de.spiritaner.maz.util.database.UserDatabase;
 import org.testng.ITestContext;
 import org.testng.TestRunner;
 import org.testng.annotations.*;

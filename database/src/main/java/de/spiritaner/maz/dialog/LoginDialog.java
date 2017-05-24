@@ -1,18 +1,14 @@
 package de.spiritaner.maz.dialog;
 
 import de.spiritaner.maz.util.Settings;
-import de.spiritaner.maz.util.UserDatabase;
+import de.spiritaner.maz.util.database.UserDatabase;
 import de.spiritaner.maz.view.MainView;
 import javafx.application.Platform;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,10 +18,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.common.util.impl.Log;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -52,7 +46,7 @@ public class LoginDialog {
 			result = LoginDialog.showAndWait(msgInDialog);
 
 			if(result.isPresent()) {
-				loginSuccess = UserDatabase.testLogin(result.get().getKey(), result.get().getValue());
+				loginSuccess = UserDatabase.validateLogin(result.get().getKey(), result.get().getValue());
 			}
 
 			if(!loginSuccess) {

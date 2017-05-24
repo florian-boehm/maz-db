@@ -4,9 +4,8 @@ import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.model.Approval;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,11 +16,7 @@ import org.controlsfx.control.ToggleSwitch;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
-import javax.xml.crypto.Data;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/approval/approval_editor_dialog.fxml", objDesc = "Einwilligung")

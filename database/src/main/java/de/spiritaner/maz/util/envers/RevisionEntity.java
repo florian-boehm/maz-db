@@ -4,8 +4,7 @@ import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
-import de.spiritaner.maz.util.DataDatabase;
-import javafx.scene.control.ListCell;
+import de.spiritaner.maz.util.database.DataDatabase;
 
 import javax.persistence.EntityManager;
 import java.text.SimpleDateFormat;

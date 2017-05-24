@@ -4,14 +4,13 @@ import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.model.Role;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;

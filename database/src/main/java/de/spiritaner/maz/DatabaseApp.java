@@ -1,7 +1,8 @@
 package de.spiritaner.maz;
 
+import de.spiritaner.maz.dialog.ExceptionDialog;
 import de.spiritaner.maz.dialog.LoginDialog;
-import de.spiritaner.maz.util.UserDatabase;
+import de.spiritaner.maz.util.database.UserDatabase;
 import de.spiritaner.maz.view.InitView;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -37,7 +38,7 @@ public class DatabaseApp extends Application {
 			}
 		} catch (Exception e) {
 			logger.error(e);
-			e.printStackTrace();
+			ExceptionDialog.show(e);
 		}
 	}
 

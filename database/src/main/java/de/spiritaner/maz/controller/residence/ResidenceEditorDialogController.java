@@ -5,7 +5,7 @@ import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.dialog.EditorDialog;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.Residence;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,9 +16,6 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
-import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/residence/residence_editor_dialog.fxml", objDesc = "Wohnort")
 public class ResidenceEditorDialogController extends EditorController<Residence> {

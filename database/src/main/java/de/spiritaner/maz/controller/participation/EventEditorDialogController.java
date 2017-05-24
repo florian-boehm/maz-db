@@ -1,12 +1,9 @@
 package de.spiritaner.maz.controller.participation;
 
 import de.spiritaner.maz.controller.EditorController;
-import de.spiritaner.maz.controller.residence.AddressEditorController;
 import de.spiritaner.maz.dialog.EditorDialog;
-import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.Event;
-import de.spiritaner.maz.util.DataDatabase;
-import de.spiritaner.maz.util.validator.DateValidator;
+import de.spiritaner.maz.util.database.DataDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import org.apache.log4j.Logger;
-import org.controlsfx.control.ToggleSwitch;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;

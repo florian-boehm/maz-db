@@ -4,7 +4,7 @@ package de.spiritaner.maz.controller.relationship;
 import de.spiritaner.maz.controller.meta.RelationshipTypeOverviewController;
 import de.spiritaner.maz.model.Relationship;
 import de.spiritaner.maz.model.meta.RelationshipType;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import de.spiritaner.maz.util.factory.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.TextValidator;

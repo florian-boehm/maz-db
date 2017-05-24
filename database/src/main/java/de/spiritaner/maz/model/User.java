@@ -1,6 +1,5 @@
 package de.spiritaner.maz.model;
 
-import de.spiritaner.maz.util.UserDatabase;
 import org.apache.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 

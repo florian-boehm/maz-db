@@ -4,7 +4,7 @@ import de.spiritaner.maz.controller.meta.PersonGroupOverviewController;
 import de.spiritaner.maz.model.Responsible;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.meta.PersonGroup;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import de.spiritaner.maz.util.factory.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;

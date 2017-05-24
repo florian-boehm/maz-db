@@ -2,7 +2,7 @@ package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.controller.person.PersonEditorDialogController;
 import de.spiritaner.maz.model.meta.*;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import javafx.beans.property.*;
 import org.hibernate.annotations.*;
 import org.hibernate.envers.Audited;

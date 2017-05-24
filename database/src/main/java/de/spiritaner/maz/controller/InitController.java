@@ -2,7 +2,7 @@ package de.spiritaner.maz.controller;
 
 import de.spiritaner.maz.dialog.LoginDialog;
 import de.spiritaner.maz.util.Settings;
-import de.spiritaner.maz.util.UserDatabase;
+import de.spiritaner.maz.util.database.UserDatabase;
 import de.spiritaner.maz.util.validator.TextValidator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,8 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 

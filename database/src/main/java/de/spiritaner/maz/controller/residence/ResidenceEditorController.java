@@ -3,7 +3,7 @@ package de.spiritaner.maz.controller.residence;
 import de.spiritaner.maz.controller.meta.ResidenceTypeOverviewController;
 import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.model.meta.ResidenceType;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import de.spiritaner.maz.util.factory.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;

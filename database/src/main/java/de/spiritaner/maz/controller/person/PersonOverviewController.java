@@ -5,7 +5,7 @@ import de.spiritaner.maz.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.*;
-import de.spiritaner.maz.util.DataDatabase;
+import de.spiritaner.maz.util.database.DataDatabase;
 import de.spiritaner.maz.util.factory.DateAsStringListCell;
 import de.spiritaner.maz.util.factory.MetaClassTableCell;
 import javafx.collections.FXCollections;

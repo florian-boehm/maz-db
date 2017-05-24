@@ -1,199 +1,226 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <changeSet author="Florian (generated)" id="1489743138718-1">
-        <addUniqueConstraint columnNames="STREET, HOUSENUMBER, POSTCODE, CITY, STATE, COUNTRY, ADDITION" constraintName="UK5QRG909ON1L40ELCOIG84407X" tableName="ADDRESS"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1489743138718-2">
-        <addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="PARTICIPANT" constraintName="FKBOHAICOSUAUM8VPO8ELPEKWOY" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="PERSON"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1489743138718-3">
-        <addForeignKeyConstraint baseColumnNames="EVENTID" baseTableName="PARTICIPANT" constraintName="FKE00KF38RE9O8BFS8CJIB1WTFY" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="EVENT"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1489743138718-4">
-        <dropForeignKeyConstraint baseTableName="PARTICIPANT" constraintName="FKESEWPQOAK6SE5O8J8WJ2HWBPX"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1489743138718-5">
-        <dropForeignKeyConstraint baseTableName="PARTICIPANT" constraintName="FKWJUKVBRFTUILLISKPAJ48VQJ"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1489743138718-6">
-        <dropNotNullConstraint columnDataType="bigint(19)" columnName="ADDRESSID" tableName="EVENT"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-1">
-        <createTable tableName="PARTICIPATION">
-            <column name="ID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="HASPARTICIPATED" type="BOOLEAN(1)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="EVENTID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="PARTICIPANTTYPEID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="PERSONID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-2">
-        <createTable tableName="PARTICIPATIONTYPE">
-            <column name="ID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="DESCRIPTION" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-3">
-        <createTable tableName="PARTICIPATIONTYPE_AUD">
-            <column name="ID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="REV" type="INT(10)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-4">
-        <createTable tableName="PARTICIPATION_AUD">
-            <column name="ID" type="BIGINT(19)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="REV" type="INT(10)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="REVTYPE" type="TINYINT(3)"/>
-            <column name="HASPARTICIPATED" type="BOOLEAN(1)"/>
-            <column name="EVENTID" type="BIGINT(19)"/>
-            <column name="PARTICIPANTTYPEID" type="BIGINT(19)"/>
-            <column name="PERSONID" type="BIGINT(19)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-5">
-        <addColumn tableName="RELATIONSHIP">
-            <column name="TOPERSONFAMILYNAME" type="VARCHAR(255 BYTE)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-6">
-        <addColumn tableName="RELATIONSHIP">
-            <column name="TOPERSONFIRSTNAME" type="VARCHAR(255 BYTE)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-7">
-        <addColumn tableName="RELATIONSHIP_AUD">
-            <column name="TOPERSONFAMILYNAME" type="VARCHAR(255 BYTE)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-8">
-        <addColumn tableName="RELATIONSHIP_AUD">
-            <column name="TOPERSONFIRSTNAME" type="VARCHAR(255 BYTE)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-9">
-        <addColumn tableName="RELATIONSHIP">
-            <column name="TOPERSONID" type="BIGINT(19)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-10">
-        <addColumn tableName="RELATIONSHIP_AUD">
-            <column name="TOPERSONID" type="BIGINT(19)"/>
-        </addColumn>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-11">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_6A" tableName="PARTICIPATION"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-12">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_7F" tableName="PARTICIPATIONTYPE_AUD"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-13">
-        <addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_8F" tableName="PARTICIPATION_AUD"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-14">
-        <addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_8F5" tableName="PARTICIPATIONTYPE"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-15">
-        <createIndex indexName="FK3PX2SG6R6SSK6RHWY0PJI5GGU_INDEX_6" tableName="PARTICIPATION">
-            <column name="PERSONID"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-16">
-        <createIndex indexName="FK61T1B21TOQ8CAQ358K670CD3Q_INDEX_8" tableName="PARTICIPATION_AUD">
-            <column name="REV"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-17">
-        <createIndex indexName="FKBH4Q52UMXSKQGH2A0C1FJ15Y2_INDEX_6" tableName="PARTICIPATION">
-            <column name="PARTICIPANTTYPEID"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-18">
-        <createIndex indexName="FKBNDVFBFSLGTQ2609KHHW74HDE_INDEX_7" tableName="RELATIONSHIP">
-            <column name="TOPERSONID"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-19">
-        <createIndex indexName="FKCWDAOH1A29FI6VOX4PYK588KO_INDEX_6" tableName="PARTICIPATION">
-            <column name="EVENTID"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-20">
-        <createIndex indexName="FKH0M2QM2QP7225H75T62BCNL8N_INDEX_7" tableName="PARTICIPATIONTYPE_AUD">
-            <column name="REV"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-21">
-        <addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="PARTICIPATION" constraintName="FK3PX2SG6R6SSK6RHWY0PJI5GGU" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="PERSON"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-22">
-        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="PARTICIPATION_AUD" constraintName="FK61T1B21TOQ8CAQ358K670CD3Q" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV" referencedTableName="REVINFO"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-23">
-        <addForeignKeyConstraint baseColumnNames="PARTICIPANTTYPEID" baseTableName="PARTICIPATION" constraintName="FKBH4Q52UMXSKQGH2A0C1FJ15Y2" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="PARTICIPATIONTYPE"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-24">
-        <addForeignKeyConstraint baseColumnNames="TOPERSONID" baseTableName="RELATIONSHIP" constraintName="FKBNDVFBFSLGTQ2609KHHW74HDE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="PERSON"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-25">
-        <addForeignKeyConstraint baseColumnNames="EVENTID" baseTableName="PARTICIPATION" constraintName="FKCWDAOH1A29FI6VOX4PYK588KO" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="EVENT"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-26">
-        <addForeignKeyConstraint baseColumnNames="REV" baseTableName="PARTICIPATIONTYPE_AUD" constraintName="FKH0M2QM2QP7225H75T62BCNL8N" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV" referencedTableName="REVINFO"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-27">
-        <dropForeignKeyConstraint baseTableName="PARTICIPANT_AUD" constraintName="FK1VWMTYPJ315M989OTQ2NJ1F40"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-28">
-        <dropForeignKeyConstraint baseTableName="PARTICIPANT" constraintName="FKBHSN8PJUV4GFGV4IQPFSB2T31"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-29">
-        <dropForeignKeyConstraint baseTableName="PARTICIPANT" constraintName="FKBOHAICOSUAUM8VPO8ELPEKWOY"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-30">
-        <dropForeignKeyConstraint baseTableName="RELATIONSHIP" constraintName="FKDGHQSN6HEFW8X9KHUU7NE0T6A"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-31">
-        <dropForeignKeyConstraint baseTableName="PARTICIPANT" constraintName="FKE00KF38RE9O8BFS8CJIB1WTFY"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-32">
-        <dropForeignKeyConstraint baseTableName="PARTICIPANTTYPE_AUD" constraintName="FKJYJPLLJH27Q3VL4F05YEDP8UB"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-33">
-        <dropColumn columnName="GETPERSONID" tableName="RELATIONSHIP"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-34">
-        <dropColumn columnName="GETPERSONID" tableName="RELATIONSHIP_AUD"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-35">
-        <dropColumn columnName="TOPERSONNAME" tableName="RELATIONSHIP"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-36">
-        <dropColumn columnName="TOPERSONNAME" tableName="RELATIONSHIP_AUD"/>
-    </changeSet>
-    <changeSet author="Florian (generated)" id="1490383418946-37">
-        <dropNotNullConstraint columnDataType="date" columnName="BIRTHDAY" tableName="PERSON"/>
-    </changeSet>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+	<changeSet author="Florian (generated)" id="1489743138718-1">
+		<addUniqueConstraint columnNames="STREET, HOUSENUMBER, POSTCODE, CITY, STATE, COUNTRY, ADDITION"
+		                     constraintName="UK5QRG909ON1L40ELCOIG84407X" tableName="ADDRESS"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1489743138718-2">
+		<addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="PARTICIPANT"
+		                         constraintName="FKBOHAICOSUAUM8VPO8ELPEKWOY" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+		                         referencedTableName="PERSON"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1489743138718-3">
+		<addForeignKeyConstraint baseColumnNames="EVENTID" baseTableName="PARTICIPANT"
+		                         constraintName="FKE00KF38RE9O8BFS8CJIB1WTFY" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+		                         referencedTableName="EVENT"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1489743138718-4">
+		<dropForeignKeyConstraint baseTableName="PARTICIPANT" constraintName="FKESEWPQOAK6SE5O8J8WJ2HWBPX"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1489743138718-5">
+		<dropForeignKeyConstraint baseTableName="PARTICIPANT" constraintName="FKWJUKVBRFTUILLISKPAJ48VQJ"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1489743138718-6">
+		<dropNotNullConstraint columnDataType="bigint(19)" columnName="ADDRESSID" tableName="EVENT"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-1">
+		<createTable tableName="PARTICIPATION">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="HASPARTICIPATED" type="BOOLEAN(1)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="EVENTID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="PARTICIPANTTYPEID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="PERSONID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-2">
+		<createTable tableName="PARTICIPATIONTYPE">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="DESCRIPTION" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-3">
+		<createTable tableName="PARTICIPATIONTYPE_AUD">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REV" type="INT(10)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REVTYPE" type="TINYINT(3)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-4">
+		<createTable tableName="PARTICIPATION_AUD">
+			<column name="ID" type="BIGINT(19)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REV" type="INT(10)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="REVTYPE" type="TINYINT(3)"/>
+			<column name="HASPARTICIPATED" type="BOOLEAN(1)"/>
+			<column name="EVENTID" type="BIGINT(19)"/>
+			<column name="PARTICIPANTTYPEID" type="BIGINT(19)"/>
+			<column name="PERSONID" type="BIGINT(19)"/>
+		</createTable>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-5">
+		<addColumn tableName="RELATIONSHIP">
+			<column name="TOPERSONFAMILYNAME" type="VARCHAR(255 BYTE)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-6">
+		<addColumn tableName="RELATIONSHIP">
+			<column name="TOPERSONFIRSTNAME" type="VARCHAR(255 BYTE)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-7">
+		<addColumn tableName="RELATIONSHIP_AUD">
+			<column name="TOPERSONFAMILYNAME" type="VARCHAR(255 BYTE)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-8">
+		<addColumn tableName="RELATIONSHIP_AUD">
+			<column name="TOPERSONFIRSTNAME" type="VARCHAR(255 BYTE)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-9">
+		<addColumn tableName="RELATIONSHIP">
+			<column name="TOPERSONID" type="BIGINT(19)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-10">
+		<addColumn tableName="RELATIONSHIP_AUD">
+			<column name="TOPERSONID" type="BIGINT(19)"/>
+		</addColumn>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-11">
+		<addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_6A" tableName="PARTICIPATION"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-12">
+		<addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_7F" tableName="PARTICIPATIONTYPE_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-13">
+		<addPrimaryKey columnNames="ID, REV" constraintName="CONSTRAINT_8F" tableName="PARTICIPATION_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-14">
+		<addPrimaryKey columnNames="ID" constraintName="CONSTRAINT_8F5" tableName="PARTICIPATIONTYPE"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-15">
+		<createIndex indexName="FK3PX2SG6R6SSK6RHWY0PJI5GGU_INDEX_6" tableName="PARTICIPATION">
+			<column name="PERSONID"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-16">
+		<createIndex indexName="FK61T1B21TOQ8CAQ358K670CD3Q_INDEX_8" tableName="PARTICIPATION_AUD">
+			<column name="REV"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-17">
+		<createIndex indexName="FKBH4Q52UMXSKQGH2A0C1FJ15Y2_INDEX_6" tableName="PARTICIPATION">
+			<column name="PARTICIPANTTYPEID"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-18">
+		<createIndex indexName="FKBNDVFBFSLGTQ2609KHHW74HDE_INDEX_7" tableName="RELATIONSHIP">
+			<column name="TOPERSONID"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-19">
+		<createIndex indexName="FKCWDAOH1A29FI6VOX4PYK588KO_INDEX_6" tableName="PARTICIPATION">
+			<column name="EVENTID"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-20">
+		<createIndex indexName="FKH0M2QM2QP7225H75T62BCNL8N_INDEX_7" tableName="PARTICIPATIONTYPE_AUD">
+			<column name="REV"/>
+		</createIndex>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-21">
+		<addForeignKeyConstraint baseColumnNames="PERSONID" baseTableName="PARTICIPATION"
+		                         constraintName="FK3PX2SG6R6SSK6RHWY0PJI5GGU" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+		                         referencedTableName="PERSON"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-22">
+		<addForeignKeyConstraint baseColumnNames="REV" baseTableName="PARTICIPATION_AUD"
+		                         constraintName="FK61T1B21TOQ8CAQ358K670CD3Q" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV"
+		                         referencedTableName="REVINFO"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-23">
+		<addForeignKeyConstraint baseColumnNames="PARTICIPANTTYPEID" baseTableName="PARTICIPATION"
+		                         constraintName="FKBH4Q52UMXSKQGH2A0C1FJ15Y2" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+		                         referencedTableName="PARTICIPATIONTYPE"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-24">
+		<addForeignKeyConstraint baseColumnNames="TOPERSONID" baseTableName="RELATIONSHIP"
+		                         constraintName="FKBNDVFBFSLGTQ2609KHHW74HDE" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+		                         referencedTableName="PERSON"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-25">
+		<addForeignKeyConstraint baseColumnNames="EVENTID" baseTableName="PARTICIPATION"
+		                         constraintName="FKCWDAOH1A29FI6VOX4PYK588KO" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID"
+		                         referencedTableName="EVENT"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-26">
+		<addForeignKeyConstraint baseColumnNames="REV" baseTableName="PARTICIPATIONTYPE_AUD"
+		                         constraintName="FKH0M2QM2QP7225H75T62BCNL8N" deferrable="false" initiallyDeferred="false"
+		                         onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="REV"
+		                         referencedTableName="REVINFO"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-27">
+		<dropForeignKeyConstraint baseTableName="PARTICIPANT_AUD" constraintName="FK1VWMTYPJ315M989OTQ2NJ1F40"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-28">
+		<dropForeignKeyConstraint baseTableName="PARTICIPANT" constraintName="FKBHSN8PJUV4GFGV4IQPFSB2T31"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-29">
+		<dropForeignKeyConstraint baseTableName="PARTICIPANT" constraintName="FKBOHAICOSUAUM8VPO8ELPEKWOY"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-30">
+		<dropForeignKeyConstraint baseTableName="RELATIONSHIP" constraintName="FKDGHQSN6HEFW8X9KHUU7NE0T6A"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-31">
+		<dropForeignKeyConstraint baseTableName="PARTICIPANT" constraintName="FKE00KF38RE9O8BFS8CJIB1WTFY"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-32">
+		<dropForeignKeyConstraint baseTableName="PARTICIPANTTYPE_AUD" constraintName="FKJYJPLLJH27Q3VL4F05YEDP8UB"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-33">
+		<dropColumn columnName="GETPERSONID" tableName="RELATIONSHIP"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-34">
+		<dropColumn columnName="GETPERSONID" tableName="RELATIONSHIP_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-35">
+		<dropColumn columnName="TOPERSONNAME" tableName="RELATIONSHIP"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-36">
+		<dropColumn columnName="TOPERSONNAME" tableName="RELATIONSHIP_AUD"/>
+	</changeSet>
+	<changeSet author="Florian (generated)" id="1490383418946-37">
+		<dropNotNullConstraint columnDataType="date" columnName="BIRTHDAY" tableName="PERSON"/>
+	</changeSet>
 </databaseChangeLog>

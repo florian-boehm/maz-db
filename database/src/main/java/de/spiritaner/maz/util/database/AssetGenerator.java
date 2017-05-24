@@ -1,4 +1,4 @@
-package de.spiritaner.maz.util;
+package de.spiritaner.maz.util.database;
 
 import liquibase.change.custom.CustomSqlChange;
 import liquibase.database.Database;
