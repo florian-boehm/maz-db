@@ -5,7 +5,7 @@ import de.spiritaner.maz.controller.meta.RelationshipTypeOverviewController;
 import de.spiritaner.maz.model.Relationship;
 import de.spiritaner.maz.model.meta.RelationshipType;
 import de.spiritaner.maz.util.database.DataDatabase;
-import de.spiritaner.maz.util.factory.MetaClassListCell;
+import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
 import javafx.collections.FXCollections;

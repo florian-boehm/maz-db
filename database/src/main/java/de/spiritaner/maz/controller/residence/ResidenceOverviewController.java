@@ -1,13 +1,11 @@
 package de.spiritaner.maz.controller.residence;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.dialog.ExceptionDialog;
-import de.spiritaner.maz.dialog.RemoveDialog;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Residence;
-import de.spiritaner.maz.model.YearAbroad;
 import de.spiritaner.maz.model.meta.ResidenceType;
-import de.spiritaner.maz.util.factory.MetaClassTableCell;
+import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -15,10 +13,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
-import javax.persistence.TypedQuery;
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 
 public class ResidenceOverviewController extends OverviewController<Residence> {
 

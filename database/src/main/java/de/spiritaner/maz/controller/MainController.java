@@ -1,8 +1,7 @@
 package de.spiritaner.maz.controller;
 
-import de.spiritaner.maz.dialog.ExceptionDialog;
-import de.spiritaner.maz.dialog.OverviewDialog;
-import de.spiritaner.maz.dialog.UpdaterDialog;
+import de.spiritaner.maz.view.dialog.ExceptionDialog;
+import de.spiritaner.maz.view.dialog.OverviewDialog;
 import de.spiritaner.maz.view.component.ImageTab;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -13,12 +12,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable, Controller {
@@ -77,10 +73,6 @@ public class MainController implements Initializable, Controller {
 
 	public void closeApplication(ActionEvent actionEvent) {
 		Platform.exit();
-	}
-
-	public void showVersion(ActionEvent actionEvent) {
-		UpdaterDialog.showAndWait(stage);
 	}
 
 	public void showLicense(ActionEvent actionEvent) {

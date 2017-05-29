@@ -1,16 +1,13 @@
 package de.spiritaner.maz.controller.participation;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.dialog.ExceptionDialog;
-import de.spiritaner.maz.dialog.RemoveDialog;
-import de.spiritaner.maz.model.ContactMethod;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.ParticipationType;
-import de.spiritaner.maz.util.factory.BooleanTableCell;
-import de.spiritaner.maz.util.factory.MetaClassTableCell;
-import javafx.beans.property.SimpleStringProperty;
+import de.spiritaner.maz.view.renderer.BooleanTableCell;
+import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableCell;

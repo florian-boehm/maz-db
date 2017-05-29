@@ -1,4 +1,4 @@
-package de.spiritaner.maz.util.factory;
+package de.spiritaner.maz.view.renderer;
 
 import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.YearAbroad;

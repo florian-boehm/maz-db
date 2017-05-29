@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.MaskerPane?>
+
+<AnchorPane prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.LoginController">
+    <children>
+        <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <left>
+                <ScrollPane hbarPolicy="NEVER" pannable="true" style="-fx-background-insets: 0;" BorderPane.alignment="CENTER">
+                    <content>
+                        <VBox alignment="TOP_CENTER" spacing="10.0">
+                            <children>
+                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../img/logo.png" />
+                                    </image>
+                                    <VBox.margin>
+                                        <Insets left="25.0" right="25.0" top="15.0" />
+                                    </VBox.margin>
+                                </ImageView>
+                                <Label fx:id="versionLabel" text="Version 0.5" textFill="#797979">
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                    <padding>
+                                        <Insets bottom="15.0" />
+                                    </padding>
+                                </Label>
+                                <Separator prefWidth="200.0" />
+                                <GridPane hgap="10.0" vgap="10.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="105.0" minWidth="105.0" prefWidth="105.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints vgrow="SOMETIMES" />
+                                        <RowConstraints vgrow="SOMETIMES" />
+                                        <RowConstraints vgrow="NEVER" />
+                                        <RowConstraints vgrow="SOMETIMES" />
+                                        <RowConstraints vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="20.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                        <RowConstraints vgrow="ALWAYS" />
+                                        <RowConstraints vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <Label fx:id="usernameLabel" text="Benutzername:" />
+                                        <TextField fx:id="usernameField" GridPane.columnIndex="1" />
+                                        <Label fx:id="passwordLabel" text="Passwort:" GridPane.rowIndex="1" />
+                              <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <Button fx:id="initButton" disable="true" mnemonicParsing="false" onAction="#initDatabase" style="-fx-background-color: transparent;" text="Anlegen" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+                                            <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/add_16.png" />
+                                                    </image>
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND" />
+                                                    </cursor>
+                                                </ImageView>
+                                            </graphic>
+                                            <GridPane.margin>
+                                                <Insets left="85.0" />
+                                            </GridPane.margin>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </Button>
+                                        <Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#removeDbBackup" style="-fx-background-color: transparent;" text="Entfernen" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="5">
+                                            <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/remove_16.png" />
+                                                    </image>
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND" />
+                                                    </cursor>
+                                                </ImageView>
+                                            </graphic>
+                                            <GridPane.margin>
+                                                <Insets left="85.0" />
+                                            </GridPane.margin>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </Button>
+                                        <Button fx:id="loginButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#tryLogin" style="-fx-background-color: transparent;" text="Anmelden" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                            <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/login_16.png" />
+                                                    </image>
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND" />
+                                                    </cursor>
+                                                </ImageView>
+                                            </graphic>
+                                            <GridPane.margin>
+                                                <Insets left="85.0" />
+                                            </GridPane.margin>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </Button>
+                                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#selectDbParentDirectory" style="-fx-background-color: transparent;" text="Suchen" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                                            <graphic>
+                                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/search_16.png" />
+                                                    </image>
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND" />
+                                                    </cursor>
+                                                </ImageView>
+                                            </graphic>
+                                            <GridPane.margin>
+                                                <Insets left="85.0" />
+                                            </GridPane.margin>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </Button>
+                                        <Button fx:id="updateButton" disable="true" mnemonicParsing="false" onAction="#startUpdate" style="-fx-background-color: transparent;" text="Aktualisieren" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                                            <graphic>
+                                                <ImageView fx:id="updateButtonImage" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../img/update_16.png" />
+                                                    </image>
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND" />
+                                                    </cursor>
+                                                </ImageView>
+                                            </graphic>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                            <GridPane.margin>
+                                                <Insets left="85.0" />
+                                            </GridPane.margin>
+                                        </Button>
+                              <Label fx:id="errorLabel" text="Fehlermeldung" textFill="RED" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                    <padding>
+                                        <Insets top="15.0" />
+                                    </padding>
+                                </GridPane>
+                            </children>
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                            </padding>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </left>
+            <center>
+                <VBox BorderPane.alignment="CENTER">
+                    <children>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" minWidth="400.0" style="-fx-background-insets: 0;" VBox.vgrow="ALWAYS">
+                            <content>
+                                <ListView fx:id="databaseListView" style="-fx-focus-color: transparent; -fx-background-insets: 0px, 0 0 1 1;" />
+                            </content>
+                        </ScrollPane>
+                        <VBox fx:id="updateBox" spacing="10.0">
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <Label fx:id="updateStatusLabel" text="Ein Update steht zur Verfügung!" />
+                                        <Hyperlink fx:id="updateLink" onAction="#openReleasePage" text="Was ist neu?" />
+                                    </children>
+                                </HBox>
+                                <!--ProgressBar fx:id="updateProgressBar" maxWidth="1.7976931348623157E308" progress="0.0" /-->
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </VBox>
+                    </children>
+                </VBox>
+            </center>
+        </BorderPane>
+      <MaskerPane fx:id="updateProgress" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+    </children>
+</AnchorPane>

@@ -1,7 +1,7 @@
 package de.spiritaner.maz.controller.person;
 
 import de.spiritaner.maz.controller.EditorController;
-import de.spiritaner.maz.dialog.EditorDialog;
+import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.database.DataDatabase;
 import de.spiritaner.maz.util.envers.RevisionEntity;

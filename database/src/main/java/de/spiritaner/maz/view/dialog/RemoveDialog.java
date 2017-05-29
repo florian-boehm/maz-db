@@ -1,4 +1,4 @@
-package de.spiritaner.maz.dialog;
+package de.spiritaner.maz.view.dialog;
 
 import de.spiritaner.maz.model.*;
 import de.spiritaner.maz.model.meta.MetaClass;

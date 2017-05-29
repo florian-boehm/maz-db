@@ -1,12 +1,10 @@
 package de.spiritaner.maz.controller.yearabroad;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.dialog.ExceptionDialog;
-import de.spiritaner.maz.dialog.RemoveDialog;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.Site;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import org.hibernate.Hibernate;

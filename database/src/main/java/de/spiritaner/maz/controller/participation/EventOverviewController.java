@@ -1,14 +1,11 @@
 package de.spiritaner.maz.controller.participation;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.dialog.ExceptionDialog;
-import de.spiritaner.maz.dialog.RemoveDialog;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.meta.EventType;
-import de.spiritaner.maz.util.document.ParticipantList;
-import de.spiritaner.maz.util.factory.DateAsStringListCell;
-import de.spiritaner.maz.util.factory.MetaClassTableCell;
-import javafx.event.ActionEvent;
+import de.spiritaner.maz.view.renderer.DateAsStringListCell;
+import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 

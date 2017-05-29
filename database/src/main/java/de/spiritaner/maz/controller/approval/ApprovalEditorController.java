@@ -4,7 +4,7 @@ import de.spiritaner.maz.controller.meta.ApprovalTypeOverviewController;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.meta.ApprovalType;
 import de.spiritaner.maz.util.database.DataDatabase;
-import de.spiritaner.maz.util.factory.MetaClassListCell;
+import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;

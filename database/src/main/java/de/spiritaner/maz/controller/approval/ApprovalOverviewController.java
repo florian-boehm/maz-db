@@ -1,12 +1,12 @@
 package de.spiritaner.maz.controller.approval;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.dialog.RemoveDialog;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.ApprovalType;
-import de.spiritaner.maz.util.factory.BooleanTableCell;
-import de.spiritaner.maz.util.factory.MetaClassTableCell;
+import de.spiritaner.maz.view.renderer.BooleanTableCell;
+import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;

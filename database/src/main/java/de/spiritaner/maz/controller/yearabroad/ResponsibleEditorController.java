@@ -5,7 +5,7 @@ import de.spiritaner.maz.model.Responsible;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.meta.PersonGroup;
 import de.spiritaner.maz.util.database.DataDatabase;
-import de.spiritaner.maz.util.factory.MetaClassListCell;
+import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;

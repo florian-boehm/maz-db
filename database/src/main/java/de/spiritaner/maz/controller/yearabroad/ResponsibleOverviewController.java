@@ -1,14 +1,12 @@
 package de.spiritaner.maz.controller.yearabroad;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.dialog.ExceptionDialog;
-import de.spiritaner.maz.dialog.RemoveDialog;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Responsible;
-import de.spiritaner.maz.model.Role;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.meta.PersonGroup;
-import de.spiritaner.maz.util.factory.MetaClassTableCell;
+import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;

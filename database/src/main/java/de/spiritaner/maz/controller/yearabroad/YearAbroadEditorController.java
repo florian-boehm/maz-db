@@ -2,8 +2,8 @@ package de.spiritaner.maz.controller.yearabroad;
 
 import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.YearAbroad;
-import de.spiritaner.maz.util.factory.DatePickerFormatter;
-import de.spiritaner.maz.util.factory.EPNumberCell;
+import de.spiritaner.maz.view.renderer.DatePickerFormatter;
+import de.spiritaner.maz.view.renderer.EPNumberCell;
 import de.spiritaner.maz.util.validator.DateValidator;
 import de.spiritaner.maz.util.validator.EPNumberValidator;
 import de.spiritaner.maz.util.validator.TextValidator;

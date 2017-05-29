@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>maz-db</artifactId>
 		<groupId>de.spiritaner.maz</groupId>
-		<version>0.5</version>
+		<version>0.6</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
@@ -221,7 +221,7 @@
 							<referenceDriver>org.h2.Driver</referenceDriver>
 							<referenceUrl>jdbc:h2:./target/dbfiles/data;CIPHER=AES</referenceUrl>
 							<referenceUsername>admin</referenceUsername>
-							<referencePassword>72E0602751CFE29C0AE10E09F2FA6A9E test1234</referencePassword>
+							<referencePassword>2F6CEC6AACB9A2663186534A16B51FC2 test1234</referencePassword>
 						</configuration>
 					</execution>
 				</executions>

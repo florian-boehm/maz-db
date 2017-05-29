@@ -1,13 +1,10 @@
 package de.spiritaner.maz.controller.experienceabroad;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.dialog.RemoveDialog;
-import de.spiritaner.maz.model.ContactMethod;
-import de.spiritaner.maz.model.Event;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.ExperienceAbroad;
 import de.spiritaner.maz.model.Person;
-import de.spiritaner.maz.model.meta.EventType;
-import de.spiritaner.maz.util.factory.DateAsStringListCell;
+import de.spiritaner.maz.view.renderer.DateAsStringListCell;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;

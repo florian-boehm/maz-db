@@ -2,7 +2,7 @@ package de.spiritaner.maz.controller.residence;
 
 import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
-import de.spiritaner.maz.dialog.EditorDialog;
+import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.util.database.DataDatabase;

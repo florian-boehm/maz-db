@@ -2,7 +2,7 @@ package de.spiritaner.maz.controller.role;
 
 import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
-import de.spiritaner.maz.dialog.EditorDialog;
+import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.Role;
 import de.spiritaner.maz.util.database.DataDatabase;
 import javafx.application.Platform;

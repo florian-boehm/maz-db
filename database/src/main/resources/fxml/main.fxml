@@ -14,7 +14,6 @@
 			<menus>
 				<Menu mnemonicParsing="false" text="Anwendung">
 					<items>
-						<MenuItem mnemonicParsing="false" onAction="#showVersion" text="Version/Updates"/>
 						<MenuItem mnemonicParsing="false" text="Hilfe"/>
 						<!--MenuItem mnemonicParsing="false" text="Updates" /-->
 						<MenuItem mnemonicParsing="false" onAction="#showLicense" text="Über"/>

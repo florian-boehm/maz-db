@@ -1,4 +1,4 @@
-package de.spiritaner.maz.util.factory;
+package de.spiritaner.maz.view.renderer;
 
 import javafx.scene.control.TableCell;
 

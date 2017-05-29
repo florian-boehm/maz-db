@@ -4,7 +4,7 @@ import de.spiritaner.maz.controller.participation.EventOverviewController;
 import de.spiritaner.maz.controller.person.PersonOverviewController;
 import de.spiritaner.maz.util.document.Envelope;
 import de.spiritaner.maz.util.document.ParticipantList;
-import de.spiritaner.maz.util.factory.TemplateFileListCell;
+import de.spiritaner.maz.view.renderer.TemplateFileListCell;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

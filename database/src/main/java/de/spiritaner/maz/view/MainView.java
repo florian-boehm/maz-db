@@ -1,7 +1,7 @@
 package de.spiritaner.maz.view;
 
 import de.spiritaner.maz.controller.MainController;
-import de.spiritaner.maz.dialog.ExceptionDialog;
+import de.spiritaner.maz.view.dialog.ExceptionDialog;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,42 +12,44 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 
 /**
- * Created by Florian on 8/13/2016.
+ * @author Florian Schwab
+ * @version 2017.05.29
  */
 public class MainView extends Scene {
 
-	final static Logger logger = Logger.getLogger(InitView.class);
+    final static Logger logger = Logger.getLogger(InitView.class);
 
-	public static MainView populateStage(Stage primaryStage) {
-		try {
-			final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource("/fxml/main.fxml"));
-			final Parent root = loader.load();
-			final MainController controller = loader.getController();
-			controller.setStage(primaryStage);
+    public static MainView populateStage(Stage stage) {
+        try {
+            final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource("/fxml/main.fxml"));
+            final Parent root = loader.load();
+            final MainController controller = loader.getController();
+            controller.setStage(stage);
 
-			final MainView scene = new MainView(root);
+            final MainView scene = new MainView(root);
 //			scene.getStylesheets().add(InitView.class.getClass().getResource("/css/validation.css").toExternalForm());
-			scene.getStylesheets().add(MainView.class.getClass().getResource("/css/side_tabs.css").toExternalForm());
+            scene.getStylesheets().add(MainView.class.getClass().getResource("/css/side_tabs.css").toExternalForm());
 
-			primaryStage.setScene(scene);
-			primaryStage.setResizable(true);
-			primaryStage.sizeToScene();
-			primaryStage.setMinHeight(600);
-			primaryStage.setMinWidth(800);
-			primaryStage.setMaxHeight(4000);
-			primaryStage.setMaxWidth(4000);
-			primaryStage.setTitle("MaZ-Datenbank");
-			primaryStage.getIcons().add(new Image(InitView.class.getClass().getResource("/img/db_32.png").toString()));
+            stage.setScene(scene);
+            stage.setResizable(true);
+            stage.sizeToScene();
+            stage.setMinHeight(600);
+            stage.setMinWidth(800);
+            stage.setMaxHeight(4000);
+            stage.setMaxWidth(4000);
+            stage.setTitle("MaZ-Datenbank");
+            stage.getIcons().clear();
+            stage.getIcons().add(new Image(InitView.class.getClass().getResource("/img/db_32.png").toString()));
 
-			return scene;
-		} catch (IOException e) {
-			ExceptionDialog.show(e);
-		}
+            return scene;
+        } catch (IOException e) {
+            ExceptionDialog.show(e);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	private MainView(Parent root) {
-		super(root);
-	}
+    private MainView(Parent root) {
+        super(root);
+    }
 }

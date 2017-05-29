@@ -1,8 +1,7 @@
-package de.spiritaner.maz.dialog;
+package de.spiritaner.maz.view.dialog;
 
 import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.model.Identifiable;
-import de.spiritaner.maz.model.Residence;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

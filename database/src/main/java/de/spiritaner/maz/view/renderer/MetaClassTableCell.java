@@ -1,9 +1,9 @@
-package de.spiritaner.maz.util.factory;
+package de.spiritaner.maz.view.renderer;
 
 import de.spiritaner.maz.model.meta.MetaClass;
-import javafx.scene.control.ListCell;
+import javafx.scene.control.TableCell;
 
-public class MetaClassListCell<T extends MetaClass> extends ListCell<T> {
+public class MetaClassTableCell<S, T extends MetaClass> extends TableCell<S, T> {
 
 	@Override
 	public void updateItem(T item, boolean empty) {

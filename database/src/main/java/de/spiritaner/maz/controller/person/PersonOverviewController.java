@@ -1,13 +1,13 @@
 package de.spiritaner.maz.controller.person;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.dialog.RemoveDialog;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.*;
 import de.spiritaner.maz.util.database.DataDatabase;
-import de.spiritaner.maz.util.factory.DateAsStringListCell;
-import de.spiritaner.maz.util.factory.MetaClassTableCell;
+import de.spiritaner.maz.view.renderer.DateAsStringListCell;
+import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
