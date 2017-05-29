@@ -1,5 +1,6 @@
 package de.spiritaner.maz.controller;
 
+import de.spiritaner.maz.model.User;
 import de.spiritaner.maz.util.Settings;
 import de.spiritaner.maz.util.UpdateHelper;
 import de.spiritaner.maz.util.database.DataDatabase;
@@ -97,8 +98,8 @@ public class LoginController implements Controller {
 
         usernameField.setPromptText(guiText.getString("username"));
         passwordField.setPromptText(guiText.getString("password"));
-        usernameLabel.setText(guiText.getString("username"));
-        passwordLabel.setText(guiText.getString("password"));
+        usernameLabel.setText(guiText.getString("username")+":");
+        passwordLabel.setText(guiText.getString("password")+":");
 
         loginButton.setText(guiText.getString("login"));
         initButton.setText(guiText.getString("init"));
@@ -151,7 +152,8 @@ public class LoginController implements Controller {
         final boolean enable = (updateAvailable.get() &&
                 selectedDb != null &&
                 selectedDb.getAbsolutePath().endsWith("dbfiles") &&
-                !(new File(selectedDb, "db.lock").exists())) && checkLoginPreconditions();
+                !(new File(selectedDb, "db.lock").exists()) &&
+                checkLoginPreconditions());
 
         updateButton.setDisable(!enable);
         return enable;
@@ -159,7 +161,11 @@ public class LoginController implements Controller {
 
     private boolean checkLoginPreconditions() {
         final File selectedDb = databaseListView.getSelectionModel().getSelectedItem();
-        final boolean enable = (!usernameField.getText().trim().isEmpty() && !passwordField.getText().trim().isEmpty() && selectedDb != null);
+        final File versionFile = new File(selectedDb,Settings.get("version")+".version");
+        final boolean enable = (!usernameField.getText().trim().isEmpty() &&
+                !passwordField.getText().trim().isEmpty() &&
+                selectedDb != null &&
+                versionFile.exists());
 
         loginButton.setDisable(!enable);
         return enable;
@@ -233,7 +239,7 @@ public class LoginController implements Controller {
     public void searchDbFilesFolder() {
         final String version = ResourceBundle.getBundle("lang.gui").getString("version");
         final File workingDirectory = new File(Settings.get("database.parent","./"));
-        File[] dbDirs = workingDirectory.listFiles((current, name) -> new File(current, name).isDirectory() && name.startsWith("dbfiles") && new File(current, name + "/" + version + ".version").exists());
+        File[] dbDirs = workingDirectory.listFiles((current, name) -> new File(current, name).isDirectory() && name.startsWith("dbfiles") /*&& new File(current, name + "/" + version + ".version").exists()*/);
 
         databaseListView.getItems().clear();
 
@@ -296,7 +302,7 @@ public class LoginController implements Controller {
                 new Thread(() -> {
                     setUpdateProgress("Anmeldung läuft ...", -1);
 
-                    boolean loginSuccess = UserDatabase.validateLogin(usernameField.getText(), passwordField.getText());
+                    boolean loginSuccess = UserDatabase.validateLogin(new User(usernameField.getText(), passwordField.getText()), true);
 
                     if (loginSuccess) {
                         Platform.runLater(() -> MainView.populateStage(stage));
@@ -345,10 +351,23 @@ public class LoginController implements Controller {
 
     public void startUpdate(final ActionEvent actionEvent) {
         if (checkUpdatePreconditions()) {
-            final File selectedDb = databaseListView.getSelectionModel().getSelectedItem();
-            Settings.set("database.path", selectedDb.getAbsolutePath());
-            updateProgress.setVisible(true);
-            new UpdateHelper(this, releaseJsonString).startUpdate();
+            new Thread(() -> {
+                final File selectedDb = databaseListView.getSelectionModel().getSelectedItem();
+                Settings.set("database.path", selectedDb.getAbsolutePath());
+
+                updateProgress.setVisible(true);
+                setUpdateProgress("Anmeldung läuft ...", -1);
+
+                User user = new User(usernameField.getText(), passwordField.getText());
+                boolean loginSuccess = UserDatabase.validateLogin(user,false);
+
+                if (loginSuccess) {
+                    new UpdateHelper(this, releaseJsonString, user).startUpdate();
+                } else {
+                    setUpdateProgress(null, -1);
+                    setErrorMsg(ResourceBundle.getBundle("lang.gui").getString("login_failed"));
+                }
+            }).start();
         }
     }
 

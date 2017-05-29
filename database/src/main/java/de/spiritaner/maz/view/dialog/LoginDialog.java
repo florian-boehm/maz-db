@@ -20,13 +20,14 @@ import java.util.ResourceBundle;
  * This dialog shows a username field, password field and selector for the current database directory.
  *
  * @author Florian Schwab
- * @version 2017.05.23
+ * @version 2017.05.29
  */
 public class LoginDialog extends Scene {
 
     final static Logger logger = Logger.getLogger(LoginDialog.class);
 
-    public static LoginDialog populateStage(final Stage stage) {
+    // TODO copy this behavior to other populateStage methods, so that they return the controllers that are more usefull
+    public static LoginController populateStage(final Stage stage) {
         try {
             final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
             final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource("/fxml/login_dialog.fxml"));
@@ -60,7 +61,7 @@ public class LoginDialog extends Scene {
                 });
             });
 
-            return scene;
+            return controller;
         } catch (IOException e) {
             ExceptionDialog.show(e);
         }

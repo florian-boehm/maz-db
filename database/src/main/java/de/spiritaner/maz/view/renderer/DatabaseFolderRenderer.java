@@ -1,5 +1,6 @@
 package de.spiritaner.maz.view.renderer;
 
+import de.spiritaner.maz.util.Settings;
 import javafx.scene.control.ListCell;
 
 import java.io.File;
@@ -26,7 +27,13 @@ public class DatabaseFolderRenderer extends ListCell<File> {
             setStyle("");
             //setText(guiText.getString("none"));
         } else {
+            final File versionFile = new File(item, Settings.get("version","")+".version");
             String postFix = (new File(item, "db.lock").exists()) ? " (Lesezugriff)" : "";
+
+            if(!versionFile.exists()) {
+                setDisable(true);
+                postFix += " (alte Version)";
+            }
 
             if (item.getName().equals("dbfiles")) {
                 setText(guiText.getString("current")+postFix);

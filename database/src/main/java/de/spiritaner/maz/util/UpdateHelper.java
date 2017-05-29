@@ -1,9 +1,16 @@
 package de.spiritaner.maz.util;
 
 import de.spiritaner.maz.controller.LoginController;
+import de.spiritaner.maz.model.User;
+import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.UserDatabase;
 import javafx.concurrent.Task;
 import javafx.scene.control.ProgressIndicator;
+import liquibase.Liquibase;
+import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
+import liquibase.resource.ClassLoaderResourceAccessor;
+import liquibase.resource.FileSystemResourceAccessor;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -11,34 +18,41 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
  * @author Florian Schwab
- * @version 2017.05.25
+ * @version 2017.05.29
  */
 public class UpdateHelper {
 
     private final static Logger logger = Logger.getLogger(LoginController.class);
     private final LoginController loginController;
     private final String releaseJsonString;
+    private User user;
     private File sourceFile;
     private File backupFolder;
     private File binaryJarFile;
 
-    public UpdateHelper(final LoginController loginController, final String releaseJsonString) {
+    public UpdateHelper(final LoginController loginController, final String releaseJsonString, final User user) {
         this.loginController = loginController;
         this.releaseJsonString = releaseJsonString;
+        this.user = user;
     }
 
     public void startUpdate() {
@@ -53,17 +67,32 @@ public class UpdateHelper {
 
                     downloadAssets();
                     downloadVersionZip();
-                    backupDatabaseFiles();
                     extractLiquibaseChangelogs();
+                    backupDatabaseFiles();
+                    updateUserDatabase();
+                    updateCoreDatabase();
                     createVersionFileInCurrentDir();
                     updateBatchFiles();
                     deleteVersionZip();
+                    deleteLiquibaseFolder();
 
                     restartApplication();
 
                     loginController.setUpdateProgress("Update fertig, bitte Anwendung neustarten!", 1.0);
                 } catch (Exception e) {
                     logger.error(e);
+                    logger.error("Restoring backup");
+
+                    final File targetDbDir = new File(Settings.get("database.path", "./dbfiles/"));
+
+                    if (targetDbDir.exists() && backupFolder.exists()) {
+                        loginController.setUpdateProgress("Backup wird wiederhergestellt!", ProgressIndicator.INDETERMINATE_PROGRESS);
+                        FileUtils.deleteDirectory(targetDbDir);
+                        FileUtils.copyDirectory(backupFolder, targetDbDir);
+                    }
+
+                    deleteVersionZip();
+                    deleteLiquibaseFolder();
                 } finally {
                     //Platform.setImplicitExit(true);
                 }
@@ -73,6 +102,41 @@ public class UpdateHelper {
         };
 
         new Thread(task).start();
+    }
+
+    private void deleteLiquibaseFolder() throws IOException {
+        FileUtils.deleteDirectory(new File("./liquibase"));
+    }
+
+    private void updateUserDatabase() throws SQLException, ParseException, LiquibaseException {
+        loginController.setUpdateProgress("Aktualisiere Benutzerdatenbank!", ProgressIndicator.INDETERMINATE_PROGRESS);
+        final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
+        final String version = (String) releaseInfo.get("tag_name");
+
+        Map<String, String> properties = new HashMap<>();
+        UserDatabase.initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"));
+
+        Connection conn = DriverManager.getConnection(properties.get("hibernate.connection.url"), "", "");
+        JdbcConnection jdbcConn = new JdbcConnection(conn);
+        Liquibase liquibase = new Liquibase("./liquibase/"+version+"/users/changelog.xml", new FileSystemResourceAccessor(), jdbcConn);
+        liquibase.update("");
+
+        logger.info("Database schema has been applied to user database!");
+    }
+
+    private void updateCoreDatabase() throws SQLException, ParseException, LiquibaseException {
+        loginController.setUpdateProgress("Aktualisiere Stammdatenbank!", ProgressIndicator.INDETERMINATE_PROGRESS);
+        final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
+        final String version = (String) releaseInfo.get("tag_name");
+
+        Map<String, String> properties = new HashMap<>();
+        DataDatabase.initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"), user);
+
+        Connection conn = DriverManager.getConnection(properties.get("hibernate.connection.url"), user.getUsername(), DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
+        JdbcConnection jdbcConn = new JdbcConnection(conn);
+        Liquibase liquibase = new Liquibase("./liquibase/"+version+"/data/changelog.xml", new FileSystemResourceAccessor(), jdbcConn);
+
+        logger.info("Database schema has been applied to data database!");
     }
 
     private void restartApplication() throws URISyntaxException {
@@ -109,10 +173,6 @@ public class UpdateHelper {
                 }
             }
         }).start();
-
-        //builder.start();
-        //Platform.exit();
-        //System.exit(0);
     }
 
     private void createVersionFileInCurrentDir() throws ParseException, IOException {

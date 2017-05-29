@@ -47,6 +47,15 @@ public class User {
 	@Column(nullable = false)
 	private String databaseKeySalt;
 
+	public User() {
+
+	}
+
+	public User(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
+
 	@PrePersist @PreUpdate
 	public void hashPassword() throws Exception {
 		// If the unencrypted user password is set and it is not empty ...

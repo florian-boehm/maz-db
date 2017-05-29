@@ -1,12 +1,19 @@
 package de.spiritaner.maz;
 
+import de.spiritaner.maz.controller.LoginController;
+import de.spiritaner.maz.model.User;
+import de.spiritaner.maz.util.Settings;
 import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.UserDatabase;
 import de.spiritaner.maz.view.dialog.LoginDialog;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.crypto.Data;
 import java.io.PrintStream;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**

@@ -189,24 +189,24 @@ public class UserDatabase {
     /**
      * This method is used to valid a username and password combination against the database
      *
-     * @param username The name of the user that needs to be validated
-     * @param password The password of the user
+     * @param user The user that needs to be validated
      * @return
      */
-    public static boolean validateLogin(String username, String password) {
+    public static boolean validateLogin(User user, boolean autoInitDb) {
         try {
             final EntityManager em = getFactory(false).createEntityManager();
-            final List<User> userList = em.createNamedQuery("User.findByUsername", User.class).setParameter("username", username).getResultList();
+            final List<User> userList = em.createNamedQuery("User.findByUsername", User.class).setParameter("username", user.getUsername()).getResultList();
             final Iterator<User> iter = userList.iterator();
             boolean passwordCorrect = false;
 
             if(iter.hasNext()) {
-                final User user = iter.next();
-                passwordCorrect = BCrypt.checkpw(password, user.getPasswordHash());
+                final User userFromDb = iter.next();
+                passwordCorrect = BCrypt.checkpw(user.getPassword(), user.getPasswordHash());
 
                 if (passwordCorrect) {
-                    user.setPassword(password);
-                    DataDatabase.initFactory(user);
+                    user.setUnencryptedDatabaseKey(userFromDb.getUnencryptedDatabaseKey());
+
+                    if(autoInitDb) DataDatabase.initFactory(user);
                     // TODO disable this here before release!
                     logger.info("Decrypted database aes key is '" + DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + "'");
                 }
@@ -227,7 +227,7 @@ public class UserDatabase {
      * @param properties The properties map, will be cleared before initialization!
      * @param path       The path to the database file
      */
-    private static void initDatabaseProperties(Map<String, String> properties, String path) {
+    public static void initDatabaseProperties(Map<String, String> properties, String path) {
         properties.clear();
 
         String url = "jdbc:h2:" + path + "users";

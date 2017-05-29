@@ -151,7 +151,7 @@ public class DataDatabase {
      * @param path       The path to the database file
      * @param user       The user that is needed for authentication and encryption
      */
-    private static void initDatabaseProperties(Map<String, String> properties, String path, User user) {
+    public static void initDatabaseProperties(Map<String, String> properties, String path, User user) {
         properties.clear();
 
         String url = "jdbc:h2:" + path + "data;CIPHER=AES";
@@ -171,5 +171,9 @@ public class DataDatabase {
         Map<String, String> properties = new HashMap<>();
         initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"), user);
         runLiquibaseUpdate(properties.get("hibernate.connection.url"), user);
+    }
+
+    public static void update(User user) throws SQLException, LiquibaseException {
+        init(user);
     }
 }
