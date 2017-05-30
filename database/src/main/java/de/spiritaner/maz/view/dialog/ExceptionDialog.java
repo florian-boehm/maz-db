@@ -13,7 +13,11 @@ import java.io.StringWriter;
 
 public class ExceptionDialog {
 
-    public static void show(Exception e) {
+    public static void show(final Exception e) {
+        show(e, false);
+    }
+
+    public static void show(final Exception e, final boolean closeOnExit) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Exception Dialog");
@@ -47,12 +51,8 @@ public class ExceptionDialog {
             alert.getDialogPane().setExpandableContent(expContent);
 
             alert.showAndWait();
+
+            if(closeOnExit) Platform.exit();
         });
-    }
-
-    public static void show(Exception e, boolean closeOnExit) {
-        show(e);
-
-        if(closeOnExit) Platform.exit();
     }
 }

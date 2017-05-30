@@ -3,7 +3,9 @@ package de.spiritaner.maz.util;
 import de.spiritaner.maz.controller.LoginController;
 import de.spiritaner.maz.model.User;
 import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.DatabaseFolder;
 import de.spiritaner.maz.util.database.UserDatabase;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.ProgressIndicator;
 import liquibase.Liquibase;
@@ -32,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -41,271 +44,325 @@ import java.util.zip.ZipInputStream;
  */
 public class UpdateHelper {
 
-    private final static Logger logger = Logger.getLogger(LoginController.class);
-    private final LoginController loginController;
-    private final String releaseJsonString;
-    private User user;
-    private File sourceFile;
-    private File backupFolder;
-    private File binaryJarFile;
+	private final static Logger logger = Logger.getLogger(UpdateHelper.class);
+	private final LoginController loginController;
+	private final String releaseJsonString;
+	private final int waitTime = 3000;
+	private final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+	private User user;
+	private File sourceFile;
+	private File backupFolder;
+	private File binaryJarFile;
+	private DatabaseFolder dbFolder;
 
-    public UpdateHelper(final LoginController loginController, final String releaseJsonString, final User user) {
-        this.loginController = loginController;
-        this.releaseJsonString = releaseJsonString;
-        this.user = user;
-    }
+	public UpdateHelper(final LoginController loginController, final String releaseJsonString, final User user) {
+		this.loginController = loginController;
+		this.releaseJsonString = releaseJsonString;
+		this.user = user;
+		this.dbFolder = new DatabaseFolder(Settings.get("database.path", "./dbfiles/"));
+	}
 
-    public void startUpdate() {
-        //loginController.getStage().setOnCloseRequest(event -> event.consume());
+	public void startDbMigration() {
+		logger.info("Starting db migration for " + dbFolder.getAbsolutePath());
 
-        Task task = new Task() {
-            @Override
-            protected Object call() throws Exception {
-                try {
-                    //Platform.setImplicitExit(false);
-                    loginController.setUpdateProgress("Vorbereitung des Updates!", ProgressIndicator.INDETERMINATE_PROGRESS);
+		Task task = new Task() {
+			@Override
+			protected Object call() throws Exception {
+				try {
+					loginController.setUpdateProgress("Aktualisiere Benutzerdatenbank!", ProgressIndicator.INDETERMINATE_PROGRESS);
+					UserDatabase.update();
+					loginController.setUpdateProgress("Aktualisiere Stammdatenbank!", ProgressIndicator.INDETERMINATE_PROGRESS);
+					DataDatabase.update(user);
 
-                    downloadAssets();
-                    downloadVersionZip();
-                    extractLiquibaseChangelogs();
-                    backupDatabaseFiles();
-                    updateUserDatabase();
-                    updateCoreDatabase();
-                    createVersionFileInCurrentDir();
-                    updateBatchFiles();
-                    deleteVersionZip();
-                    deleteLiquibaseFolder();
+					for (File versionFile : dbFolder.listFiles((current, name) -> name.endsWith(".version"))) {
+						versionFile.delete();
+					}
 
-                    restartApplication();
+					new File(dbFolder, guiText.getString("version") + ".version").createNewFile();
 
-                    loginController.setUpdateProgress("Update fertig, bitte Anwendung neustarten!", 1.0);
-                } catch (Exception e) {
-                    logger.error(e);
-                    logger.error("Restoring backup");
+					loginController.setUpdateProgress("Update erfolgreich!", 1.0);
+					Thread.sleep(waitTime);
+					loginController.setUpdateProgress(null, -1);
+				} catch (Exception e) {
+					logger.error(e);
+					e.printStackTrace();
+					logger.error("Restoring backup");
 
-                    final File targetDbDir = new File(Settings.get("database.path", "./dbfiles/"));
+					if (dbFolder.exists() && backupFolder.exists()) {
+						loginController.setUpdateProgress("Backup wird wiederhergestellt!", ProgressIndicator.INDETERMINATE_PROGRESS);
+						FileUtils.deleteDirectory(dbFolder);
+						FileUtils.copyDirectory(backupFolder, dbFolder);
+					}
 
-                    if (targetDbDir.exists() && backupFolder.exists()) {
-                        loginController.setUpdateProgress("Backup wird wiederhergestellt!", ProgressIndicator.INDETERMINATE_PROGRESS);
-                        FileUtils.deleteDirectory(targetDbDir);
-                        FileUtils.copyDirectory(backupFolder, targetDbDir);
-                    }
+					deleteVersionZip();
+					deleteLiquibaseFolder();
 
-                    deleteVersionZip();
-                    deleteLiquibaseFolder();
-                } finally {
-                    //Platform.setImplicitExit(true);
-                }
+					loginController.setUpdateProgress("Update ist fehlgeschlagen!", 1);
+					Thread.sleep(waitTime);
+					loginController.setUpdateProgress(null, -1);
+					Platform.runLater(() -> loginController.searchDbFilesFolder());
+				} finally {
+					//Platform.setImplicitExit(true);
+				}
 
-                return null;
-            }
-        };
+				return null;
+			}
+		};
 
-        new Thread(task).start();
-    }
+		new Thread(task).start();
+	}
 
-    private void deleteLiquibaseFolder() throws IOException {
-        FileUtils.deleteDirectory(new File("./liquibase"));
-    }
+	public void startFullUpdate() {
+		logger.info("Starting full update for " + dbFolder.getAbsolutePath());
 
-    private void updateUserDatabase() throws SQLException, ParseException, LiquibaseException {
-        loginController.setUpdateProgress("Aktualisiere Benutzerdatenbank!", ProgressIndicator.INDETERMINATE_PROGRESS);
-        final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
-        final String version = (String) releaseInfo.get("tag_name");
+		Task task = new Task() {
+			@Override
+			protected Object call() throws Exception {
+				try {
+					//Platform.setImplicitExit(false);
+					loginController.setUpdateProgress("Vorbereitung des Updates!", ProgressIndicator.INDETERMINATE_PROGRESS);
 
-        Map<String, String> properties = new HashMap<>();
-        UserDatabase.initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"));
+					downloadAssets();
+					downloadVersionZip();
+					extractLiquibaseChangelogs();
+					backupDatabaseFiles();
+					updateUserDatabase();
+					updateCoreDatabase();
+					createVersionFileInCurrentDir();
+					updateBatchFiles();
+					deleteVersionZip();
+					deleteLiquibaseFolder();
 
-        Connection conn = DriverManager.getConnection(properties.get("hibernate.connection.url"), "", "");
-        JdbcConnection jdbcConn = new JdbcConnection(conn);
-        Liquibase liquibase = new Liquibase("./liquibase/"+version+"/users/changelog.xml", new FileSystemResourceAccessor(), jdbcConn);
-        liquibase.update("");
+					restartApplication();
 
-        logger.info("Database schema has been applied to user database!");
-    }
+					loginController.setUpdateProgress("Update fertig, bitte Anwendung neustarten!", 1.0);
+				} catch (Exception e) {
+					logger.error(e);
+					logger.error("Restoring backup");
 
-    private void updateCoreDatabase() throws SQLException, ParseException, LiquibaseException {
-        loginController.setUpdateProgress("Aktualisiere Stammdatenbank!", ProgressIndicator.INDETERMINATE_PROGRESS);
-        final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
-        final String version = (String) releaseInfo.get("tag_name");
+					if (dbFolder.exists() && backupFolder.exists()) {
+						loginController.setUpdateProgress("Backup wird wiederhergestellt!", ProgressIndicator.INDETERMINATE_PROGRESS);
+						FileUtils.deleteDirectory(dbFolder);
+						FileUtils.copyDirectory(backupFolder, dbFolder);
+					}
 
-        Map<String, String> properties = new HashMap<>();
-        DataDatabase.initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"), user);
+					deleteVersionZip();
+					deleteLiquibaseFolder();
+				}
 
-        Connection conn = DriverManager.getConnection(properties.get("hibernate.connection.url"), user.getUsername(), DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
-        JdbcConnection jdbcConn = new JdbcConnection(conn);
-        Liquibase liquibase = new Liquibase("./liquibase/"+version+"/data/changelog.xml", new FileSystemResourceAccessor(), jdbcConn);
+				return null;
+			}
+		};
 
-        logger.info("Database schema has been applied to data database!");
-    }
+		new Thread(task).start();
+	}
 
-    private void restartApplication() throws URISyntaxException {
-        final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+	private void deleteLiquibaseFolder() throws IOException {
+		FileUtils.deleteDirectory(new File("./liquibase"));
+	}
 
-        // Build command: java -jar application.jar
-        final ArrayList<String> command = new ArrayList<String>();
-        command.add(javaBin);
-        command.add("-jar");
-        command.add(binaryJarFile.getPath());
+	private void updateUserDatabase() throws SQLException, ParseException, LiquibaseException {
+		loginController.setUpdateProgress("Aktualisiere Benutzerdatenbank!", ProgressIndicator.INDETERMINATE_PROGRESS);
+		final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
+		final String version = (String) releaseInfo.get("tag_name");
 
-        final ProcessBuilder builder = new ProcessBuilder(command);
+		Map<String, String> properties = new HashMap<>();
+		UserDatabase.initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"));
 
-        // Show auto close in masker
-        new Thread(new Runnable() {
+		Connection conn = DriverManager.getConnection(properties.get("hibernate.connection.url"), "", "");
+		JdbcConnection jdbcConn = new JdbcConnection(conn);
+		Liquibase liquibase = new Liquibase("./liquibase/" + version + "/users/changelog.xml", new FileSystemResourceAccessor(), jdbcConn);
+		liquibase.update("");
 
-            private long timer = 3000;
+		logger.info("Database schema has been applied to user database!");
+	}
 
-            @Override
-            public void run() {
-                long before = System.currentTimeMillis();
+	private void updateCoreDatabase() throws SQLException, ParseException, LiquibaseException {
+		loginController.setUpdateProgress("Aktualisiere Stammdatenbank!", ProgressIndicator.INDETERMINATE_PROGRESS);
+		final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
+		final String version = (String) releaseInfo.get("tag_name");
 
-                while(timer > 0) {
-                    loginController.setUpdateProgress("Neustart in " + timer / 1000 + " Sekunden", (3000-timer)/1000.0);
-                    timer -= (System.currentTimeMillis() - before);
-                    before = System.currentTimeMillis();
-                }
+		Map<String, String> properties = new HashMap<>();
+		DataDatabase.initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"), user);
 
-                try {
-                    builder.start();
-                    System.exit(0);
-                } catch (IOException e) {
-                    logger.error(e);
-                }
-            }
-        }).start();
-    }
+		Connection conn = DriverManager.getConnection(properties.get("hibernate.connection.url"), user.getUsername(), DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
+		JdbcConnection jdbcConn = new JdbcConnection(conn);
+		Liquibase liquibase = new Liquibase("./liquibase/" + version + "/data/changelog.xml", new FileSystemResourceAccessor(), jdbcConn);
 
-    private void createVersionFileInCurrentDir() throws ParseException, IOException {
-        final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
-        final String version = (String) releaseInfo.get("tag_name");
-        new File(Settings.get("database.path", "./dbfiles/") + version + ".version").createNewFile();
-    }
+		logger.info("Database schema has been applied to data database!");
+	}
 
-    private void deleteVersionZip() {
-        if (sourceFile != null && sourceFile.exists()) sourceFile.delete();
-    }
+	private void restartApplication() throws URISyntaxException {
+		final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
 
-    private void updateBatchFiles() throws IOException {
-        final File runBatchOld = new File("./run_old.bat");
-        final File runBatch = new File("./run.bat");
+		// Build command: java -jar application.jar
+		final ArrayList<String> command = new ArrayList<String>();
+		command.add(javaBin);
+		command.add("-jar");
+		command.add(binaryJarFile.getPath());
 
-        if (runBatchOld.exists()) runBatchOld.delete();
-        if (runBatch.exists()) {
-            FileUtils.copyFile(runBatch, runBatchOld);
-            runBatch.delete();
-        }
+		final ProcessBuilder builder = new ProcessBuilder(command);
 
-        final PrintWriter writer = new PrintWriter(new FileWriter(runBatch));
-        //start javaw -jar database-0.4-jar-with-dependencies.jar
-        writer.write("start javaw -jar " + binaryJarFile.getPath() + "\n");
-        writer.flush();
-        writer.close();
-    }
+		// Show auto close in masker
+		new Thread(new Runnable() {
 
-    private void backupDatabaseFiles() throws IOException {
-        final File sourceDbDir = new File(Settings.get("database.path", "./dbfiles/"));
+			private long timer = waitTime;
 
-        if (sourceDbDir.exists()) {
-            loginController.setUpdateProgress("Anlegen des Datenbank-Backups!", ProgressIndicator.INDETERMINATE_PROGRESS);
+			@Override
+			public void run() {
+				long before = System.currentTimeMillis();
 
-            final LocalDateTime now = LocalDateTime.now();
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
-            backupFolder = new File(Settings.get("database.parent") + "/dbfiles-" + now.format(formatter) + "/");
-            FileUtils.copyDirectory(sourceDbDir, backupFolder);
-        }
-    }
+				while (timer > 0) {
+					loginController.setUpdateProgress("Neustart in " + timer / 1000 + " Sekunden", (waitTime - timer) / 1000.0);
+					timer -= (System.currentTimeMillis() - before);
+					before = System.currentTimeMillis();
+				}
 
-    private void extractLiquibaseChangelogs() throws IOException, SQLException, LiquibaseException, ParseException {
-        if (sourceFile != null && sourceFile.exists()) {
-            loginController.setUpdateProgress("Entpacke Liquibase-Dateien!", ProgressIndicator.INDETERMINATE_PROGRESS);
+				try {
+					builder.start();
+					System.exit(0);
+				} catch (IOException e) {
+					logger.error(e);
+				}
+			}
+		}).start();
+	}
 
-            final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
-            final String version = (String) releaseInfo.get("tag_name");
+	private void createVersionFileInCurrentDir() throws ParseException, IOException {
+		final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
+		final String version = (String) releaseInfo.get("tag_name");
+		final File[] versionFiles = dbFolder.listFiles((current, name) -> name.endsWith(".version"));
 
-            logger.info("Extract liquibase files from 'source.zip' to './liquibase'");
+		for (File f : versionFiles) {
+			f.delete();
+		}
 
-            final ZipInputStream zis = new ZipInputStream(new FileInputStream(sourceFile.getAbsolutePath()));
-            ZipEntry ze;
-            byte[] buffer = new byte[1024];
+		new File(dbFolder, version + ".version").createNewFile();
+	}
 
-            while ((ze = zis.getNextEntry()) != null) {
-                String fileName = ze.getName();
+	private void deleteVersionZip() {
+		if (sourceFile != null && sourceFile.exists()) sourceFile.delete();
+	}
 
-                // Extract only files that are in the liquibase folder
-                if (fileName.contains("liquibase")) {
-                    fileName = fileName.substring(fileName.indexOf("liquibase"));
-                    fileName = fileName.replace("liquibase", "liquibase/" + version);
+	private void updateBatchFiles() throws IOException {
+		final File runBatchOld = new File("./run_old.bat");
+		final File runBatch = new File("./run.bat");
 
-                    if (ze.isDirectory()) {
-                        new File("./" + fileName + "/").mkdirs();
-                    } else {
-                        File newFile = new File("./" + fileName);
-                        new File(newFile.getParent()).mkdirs();
+		if (runBatchOld.exists()) runBatchOld.delete();
+		if (runBatch.exists()) {
+			FileUtils.copyFile(runBatch, runBatchOld);
+			runBatch.delete();
+		}
 
-                        FileOutputStream fos = new FileOutputStream(newFile);
+		final PrintWriter writer = new PrintWriter(new FileWriter(runBatch));
+		//start javaw -jar database-0.4-jar-with-dependencies.jar
+		writer.write("start javaw -jar " + binaryJarFile.getPath() + "\n");
+		writer.flush();
+		writer.close();
+	}
 
-                        int len;
-                        while ((len = zis.read(buffer)) > 0) {
-                            fos.write(buffer, 0, len);
-                        }
+	private void backupDatabaseFiles() throws IOException {
+		if (dbFolder.exists()) {
+			loginController.setUpdateProgress("Anlegen des Datenbank-Backups!", ProgressIndicator.INDETERMINATE_PROGRESS);
 
-                        fos.close();
-                        logger.info("File extract: " + newFile.getAbsoluteFile());
-                    }
-                }
-            }
+			final LocalDateTime now = LocalDateTime.now();
+			final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+			backupFolder = new DatabaseFolder(Settings.get("database.parent") + "/dbfiles-" + now.format(formatter) + "/");
+			FileUtils.copyDirectory(dbFolder, backupFolder);
+		}
+	}
 
-            zis.closeEntry();
-            zis.close();
+	private void extractLiquibaseChangelogs() throws IOException, SQLException, LiquibaseException, ParseException {
+		if (sourceFile != null && sourceFile.exists()) {
+			loginController.setUpdateProgress("Entpacke Liquibase-Dateien!", ProgressIndicator.INDETERMINATE_PROGRESS);
 
-            //new File("./liquibase/"+version+".version").createNewFile();
-        }
-    }
+			final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
+			final String version = (String) releaseInfo.get("tag_name");
 
-    private void downloadVersionZip() throws IOException, ParseException {
-        loginController.setUpdateProgress("Lade Update-Datei!", ProgressIndicator.INDETERMINATE_PROGRESS);
+			logger.info("Extract liquibase files from 'source.zip' to './liquibase'");
 
-        final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
-        final String zipUrl = (String) releaseInfo.get("zipball_url");
-        sourceFile = new File("./source.zip");
-        FileUtils.copyURLToFile(new URL(zipUrl), sourceFile);
-        logger.info("Downloaded source to './source.zip'");
-    }
+			final ZipInputStream zis = new ZipInputStream(new FileInputStream(sourceFile.getAbsolutePath()));
+			ZipEntry ze;
+			byte[] buffer = new byte[1024];
 
-    private void downloadAssets() throws IOException, ParseException {
-        final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
-        final JSONArray assetArray = (JSONArray) releaseInfo.get("assets");
+			while ((ze = zis.getNextEntry()) != null) {
+				String fileName = ze.getName();
 
-        for (Object assetObj : assetArray) {
-            final JSONObject asset = (JSONObject) assetObj;
-            final String assetName = (String) asset.get("name");
+				// Extract only files that are in the liquibase folder
+				if (fileName.contains("liquibase")) {
+					fileName = fileName.substring(fileName.indexOf("liquibase"));
+					fileName = fileName.replace("liquibase", "liquibase/" + version);
 
-            if (assetName.startsWith("database")) binaryJarFile = new File("./" + assetName);
+					if (ze.isDirectory()) {
+						new File("./" + fileName + "/").mkdirs();
+					} else {
+						File newFile = new File("./" + fileName);
+						new File(newFile.getParent()).mkdirs();
 
-            if (assetName.endsWith(".jar") && !new File(assetName).exists()) {
-                final String downloadUrl = (String) asset.get("browser_download_url");
-                final long fileSize = (Long) asset.get("size");
+						FileOutputStream fos = new FileOutputStream(newFile);
 
-                loginController.setUpdateProgress("Lade Datei '" + assetName + "' herunter!", 0);
+						int len;
+						while ((len = zis.read(buffer)) > 0) {
+							fos.write(buffer, 0, len);
+						}
 
-                final URL website = new URL(downloadUrl);
-                final ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-                final FileOutputStream fos = new FileOutputStream(assetName);
+						fos.close();
+						logger.info("File extract: " + newFile.getAbsoluteFile());
+					}
+				}
+			}
 
-                long readBytes;
-                long alreadyRead = 0L;
-                int chunkSize = 4096;
+			zis.closeEntry();
+			zis.close();
 
-                while ((readBytes = fos.getChannel().transferFrom(rbc, alreadyRead, chunkSize)) > 0) {
-                    alreadyRead += readBytes;
-                    final double percentage = (double) alreadyRead / (double) fileSize;
+			//new File("./liquibase/"+version+".version").createNewFile();
+		}
+	}
 
-                    loginController.setUpdateProgress("Lade Datei '" + assetName + "' herunter!", percentage);
-                }
+	private void downloadVersionZip() throws IOException, ParseException {
+		loginController.setUpdateProgress("Lade Update-Datei!", ProgressIndicator.INDETERMINATE_PROGRESS);
 
-                logger.info("Asset '" + assetName + "' downloaded!");
-                logger.info("Filesize: " + alreadyRead + "/" + fileSize + " bytes");
-            }
-        }
-    }
+		final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
+		final String zipUrl = (String) releaseInfo.get("zipball_url");
+		sourceFile = new File("./source.zip");
+		FileUtils.copyURLToFile(new URL(zipUrl), sourceFile);
+		logger.info("Downloaded source to './source.zip'");
+	}
+
+	private void downloadAssets() throws IOException, ParseException {
+		final JSONObject releaseInfo = (JSONObject) new JSONParser().parse(releaseJsonString);
+		final JSONArray assetArray = (JSONArray) releaseInfo.get("assets");
+
+		for (Object assetObj : assetArray) {
+			final JSONObject asset = (JSONObject) assetObj;
+			final String assetName = (String) asset.get("name");
+
+			if (assetName.startsWith("database")) binaryJarFile = new File("./" + assetName);
+
+			if (assetName.endsWith(".jar") && !new File(assetName).exists()) {
+				final String downloadUrl = (String) asset.get("browser_download_url");
+				final long fileSize = (Long) asset.get("size");
+
+				loginController.setUpdateProgress("Lade Datei '" + assetName + "' herunter!", 0);
+
+				final URL website = new URL(downloadUrl);
+				final ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+				final FileOutputStream fos = new FileOutputStream(assetName);
+
+				long readBytes;
+				long alreadyRead = 0L;
+				int chunkSize = 4096;
+
+				while ((readBytes = fos.getChannel().transferFrom(rbc, alreadyRead, chunkSize)) > 0) {
+					alreadyRead += readBytes;
+					final double percentage = (double) alreadyRead / (double) fileSize;
+
+					loginController.setUpdateProgress("Lade Datei '" + assetName + "' herunter!", percentage);
+				}
+
+				logger.info("Asset '" + assetName + "' downloaded!");
+				logger.info("Filesize: " + alreadyRead + "/" + fileSize + " bytes");
+			}
+		}
+	}
 }

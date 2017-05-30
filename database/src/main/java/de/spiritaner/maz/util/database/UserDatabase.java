@@ -51,7 +51,7 @@ public class UserDatabase {
         // Retrieve the database folder from settings or the user specific path
         final String path = Settings.get("database.path", "./dbfiles/");
         final Map<String, String> properties = new HashMap<>();
-        final File userDbOrig = new File(path + DB_FILE_NAME);
+        final File userDbOrig = new File(path + File.separatorChar + DB_FILE_NAME);
 
         try {
             // If no exclusive access is needed, then we can copy the database to the systems preferred temporary directory
@@ -201,9 +201,10 @@ public class UserDatabase {
 
             if(iter.hasNext()) {
                 final User userFromDb = iter.next();
-                passwordCorrect = BCrypt.checkpw(user.getPassword(), user.getPasswordHash());
+                passwordCorrect = BCrypt.checkpw(user.getPassword(), userFromDb.getPasswordHash());
 
                 if (passwordCorrect) {
+                    userFromDb.setPassword(user.getPassword());
                     user.setUnencryptedDatabaseKey(userFromDb.getUnencryptedDatabaseKey());
 
                     if(autoInitDb) DataDatabase.initFactory(user);
@@ -215,7 +216,7 @@ public class UserDatabase {
             return passwordCorrect;
         } catch (Exception e) {
             logger.error(e);
-            ExceptionDialog.show(e);
+            ExceptionDialog.show(e, true);
         }
 
         return false;
@@ -243,6 +244,10 @@ public class UserDatabase {
         Map<String, String> properties = new HashMap<>();
         initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"));
         runLiquibaseUpdate(properties.get("hibernate.connection.url"));
-        createUser(user);
+        if(user != null) createUser(user);
+    }
+
+    public static void update() throws SQLException, LiquibaseException {
+        init(null);
     }
 }

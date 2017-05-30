@@ -1,8 +1,10 @@
 package de.spiritaner.maz.view.renderer;
 
 import de.spiritaner.maz.util.Settings;
+import de.spiritaner.maz.util.database.DatabaseFolder;
 import javafx.scene.control.ListCell;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -11,39 +13,20 @@ import java.util.ResourceBundle;
  * @author Florian Schwab
  * @version 2017.05.25
  */
-public class DatabaseFolderRenderer extends ListCell<File> {
+public class DatabaseFolderRenderer extends ListCell<DatabaseFolder> {
 
-    final DateTimeFormatter fromFormatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
-    final DateTimeFormatter toFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
     final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
 
     @Override
-    public void updateItem(File item, boolean empty) {
+    public void updateItem(DatabaseFolder item, boolean empty) {
         super.updateItem(item, empty);
         setPrefHeight(40.0);
 
         if (item == null || empty) {
             setText(null);
             setStyle("");
-            //setText(guiText.getString("none"));
         } else {
-            final File versionFile = new File(item, Settings.get("version","")+".version");
-            String postFix = (new File(item, "db.lock").exists()) ? " (Lesezugriff)" : "";
-
-            if(!versionFile.exists()) {
-                setDisable(true);
-                postFix += " (alte Version)";
-            }
-
-            if (item.getName().equals("dbfiles")) {
-                setText(guiText.getString("current")+postFix);
-            } else if (item.getName().contains("-")) {
-                String name = item.getName();
-                String time = name.substring(name.indexOf("-") + 1);
-                setText(guiText.getString("backup") + " (" + toFormatter.format(fromFormatter.parse(time)) + ")"+postFix);
-            } else {
-                setText(item.getName()+postFix);
-            }
+            setText(item.getDisplayName());
         }
     }
 }

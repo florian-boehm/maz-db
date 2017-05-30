@@ -85,9 +85,9 @@ public class DataDatabase {
             }
 
             if (schemaManagementException) {
-                throw new DatabaseException("Database schema is invalid!");
+                throw new DatabaseException("Database schema is invalid", e);
             } else if (illegalStateException) {
-                throw new DatabaseException("Data database is already in use!");
+                throw new DatabaseException("Data database is already in use!", e);
             } else {
                 throw e;
             }
