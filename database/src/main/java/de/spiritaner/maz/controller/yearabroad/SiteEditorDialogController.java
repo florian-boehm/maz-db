@@ -6,7 +6,7 @@ import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.Site;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,7 +62,7 @@ public class SiteEditorDialogController extends EditorController<Site> {
 			boolean addressValid = addressEditorController.isValid();
 
 			if (siteValid && addressValid) {
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
 				getIdentifiable().setAddress(Address.findSame(em, addressEditorController.getAll(getIdentifiable().getAddress())));

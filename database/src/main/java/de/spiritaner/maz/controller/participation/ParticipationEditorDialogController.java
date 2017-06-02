@@ -8,7 +8,7 @@ import de.spiritaner.maz.view.dialog.OverviewDialog;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.Person;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -94,7 +94,7 @@ public class ParticipationEditorDialogController extends EditorController<Partic
 			boolean participationValid = participationEditorController.isValid();
 
 			if (personValid && eventValid && participationValid) {
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
 				getIdentifiable().setEvent(eventEditorController.getAll(getIdentifiable().getEvent()));

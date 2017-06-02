@@ -3,7 +3,7 @@ package de.spiritaner.maz.controller.person;
 import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.Person;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.envers.RevisionEntity;
 import de.spiritaner.maz.util.envers.RevisionEntityListCell;
 import javafx.application.Platform;
@@ -58,7 +58,7 @@ public class PersonEditorDialogController extends EditorController<Person> {
 			boolean validation = personEditorController.isValid();
 
 			if (validation) {
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
 				personEditorController.getAll(getIdentifiable());
@@ -99,7 +99,7 @@ public class PersonEditorDialogController extends EditorController<Person> {
 				savePersonButton.setText("Anlegen");
 			}
 
-			final AuditReader reader = AuditReaderFactory.get(DataDatabase.getFactory().createEntityManager());
+			final AuditReader reader = AuditReaderFactory.get(CoreDatabase.getFactory().createEntityManager());
 			final List<Number> revisions = reader.getRevisions(Person.class, person.getId());
 
 			if(revisions.size() > 0) {

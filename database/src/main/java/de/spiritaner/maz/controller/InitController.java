@@ -1,30 +1,24 @@
 package de.spiritaner.maz.controller;
 
 import de.spiritaner.maz.model.User;
-import de.spiritaner.maz.util.database.DataDatabase;
-import de.spiritaner.maz.view.dialog.ExceptionDialog;
-import de.spiritaner.maz.view.dialog.LoginDialog;
 import de.spiritaner.maz.util.Settings;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.database.UserDatabase;
 import de.spiritaner.maz.util.validator.TextValidator;
+import de.spiritaner.maz.view.dialog.ExceptionDialog;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import liquibase.exception.LiquibaseException;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.MaskerPane;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 /**
@@ -88,7 +82,7 @@ public class InitController implements Initializable {
                     logger.info(user.getUnencryptedDatabaseKey());
 
                     Platform.runLater(() -> maskerPane.setText("Lege Stammdatenbank an ..."));
-                    DataDatabase.init(user);
+                    CoreDatabase.init(user);
 
                     if (UserDatabase.isPopulated()/* && stage != null*/) {
                         // Create the version file in the new created database directory

@@ -9,7 +9,7 @@ import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.meta.Religion;
 import de.spiritaner.maz.model.meta.Salutation;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.renderer.DatePickerFormatter;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.util.validator.TextValidator;
@@ -138,7 +138,7 @@ public class PersonEditorController implements Initializable {
 	}
 
 	private void loadGender() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		Collection<Gender> result = em.createNamedQuery("Gender.findAll", Gender.class).getResultList();
 
 		Gender selectedBefore = genderComboBox.getValue();
@@ -149,7 +149,7 @@ public class PersonEditorController implements Initializable {
 	}
 
 	private void loadDiocese() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		Collection<Diocese> result = em.createNamedQuery("Diocese.findAll", Diocese.class).getResultList();
 
 		Diocese selectedBefore = dioceseComboBox.getValue();
@@ -160,7 +160,7 @@ public class PersonEditorController implements Initializable {
 	}
 
 	private void loadSalutation() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		Collection<Salutation> result = em.createNamedQuery("Salutation.findAll", Salutation.class).getResultList();
 
 		Salutation selectedBefore = salutationComboBox.getValue();
@@ -171,7 +171,7 @@ public class PersonEditorController implements Initializable {
 	}
 
 	private void loadReligion() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		Collection<Religion> result = em.createNamedQuery("Religion.findAll", Religion.class).getResultList();
 
 		Religion selectedBefore = religionComboBox.getValue();

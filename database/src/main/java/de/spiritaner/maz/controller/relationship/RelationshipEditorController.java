@@ -4,7 +4,7 @@ package de.spiritaner.maz.controller.relationship;
 import de.spiritaner.maz.controller.meta.RelationshipTypeOverviewController;
 import de.spiritaner.maz.model.Relationship;
 import de.spiritaner.maz.model.meta.RelationshipType;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
@@ -104,7 +104,7 @@ public class RelationshipEditorController implements Initializable {
 	}
 
 	public void loadRelationshipType() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		Collection<RelationshipType> result = em.createNamedQuery("RelationshipType.findAll", RelationshipType.class).getResultList();
 
 		RelationshipType selectedBefore = relationshipTypeComboBox.getValue();

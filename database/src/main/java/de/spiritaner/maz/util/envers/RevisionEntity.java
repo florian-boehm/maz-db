@@ -4,7 +4,7 @@ import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 
 import javax.persistence.EntityManager;
 import java.text.SimpleDateFormat;
@@ -48,7 +48,7 @@ public class RevisionEntity<T extends Identifiable> {
 	public void initialize() {
 		if(this.entity instanceof Person) {
 			Person person = (Person) entity;
-			EntityManager em = DataDatabase.getFactory().createEntityManager();
+			EntityManager em = CoreDatabase.getFactory().createEntityManager();
 
 			if(person.getGender() != null) person.setGender(em.find(Gender.class, person.getGender().getId()));
 			if(person.getDiocese() != null) person.setDiocese(em.find(Diocese.class, person.getDiocese().getId()));

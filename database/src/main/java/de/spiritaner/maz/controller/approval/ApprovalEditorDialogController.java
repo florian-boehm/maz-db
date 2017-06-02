@@ -4,7 +4,7 @@ import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.Approval;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -105,7 +105,7 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 			boolean approvalValid = (approvalEditorController.isReadOnly()) || approvalEditorController.isValid();
 
 			if (personValid && approvalValid) {
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
 				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));

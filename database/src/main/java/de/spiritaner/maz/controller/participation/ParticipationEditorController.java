@@ -3,7 +3,7 @@ package de.spiritaner.maz.controller.participation;
 import de.spiritaner.maz.controller.meta.ParticipationTypeOverviewController;
 import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.meta.ParticipationType;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
@@ -61,7 +61,7 @@ public class ParticipationEditorController implements Initializable {
 	}
 
 	public void loadParticipantType() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		Collection<ParticipationType> result = em.createNamedQuery("ParticipationType.findAll", ParticipationType.class).getResultList();
 
 		ParticipationType selectedBefore = participationTypeComboBox.getValue();

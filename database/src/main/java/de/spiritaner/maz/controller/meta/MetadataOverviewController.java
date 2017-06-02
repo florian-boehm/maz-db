@@ -6,7 +6,7 @@ import de.spiritaner.maz.view.dialog.MetadataEditorDialog;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.model.meta.MetaClass;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,7 +36,7 @@ public abstract class MetadataOverviewController<T extends MetaClass> extends Bo
 	@FXML private Button removeMetadata;
 	@FXML private Button editMetadata;
 
-	protected EntityManager em = DataDatabase.getFactory().createEntityManager();
+	protected EntityManager em = CoreDatabase.getFactory().createEntityManager();
 	private Class<T> cls;
 
 	public MetadataOverviewController(Class<T> cls) {

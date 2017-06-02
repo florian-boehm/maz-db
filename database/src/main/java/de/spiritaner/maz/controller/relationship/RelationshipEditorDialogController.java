@@ -7,7 +7,7 @@ import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.view.dialog.OverviewDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Relationship;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -108,7 +108,7 @@ public class RelationshipEditorDialogController extends EditorController<Relatio
 			boolean relationshipValid = relationshipEditorController.isValid();
 
 			if (toPersonValid && fromPersonValid && relationshipValid) {
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
 				if(relationshipEditorController.getPersonFromDatabaseToggleSwitch().isSelected()) {

@@ -9,7 +9,7 @@ import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Responsible;
 import de.spiritaner.maz.model.Role;
 import de.spiritaner.maz.model.meta.RoleType;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -73,7 +73,7 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 			boolean responsibleValid = responsibleEditorController.isValid();
 
 			if (personValid && responsibleValid) {
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
 				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));

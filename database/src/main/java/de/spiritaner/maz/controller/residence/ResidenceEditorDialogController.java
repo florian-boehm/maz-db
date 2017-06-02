@@ -5,7 +5,7 @@ import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.Residence;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -73,7 +73,7 @@ public class ResidenceEditorDialogController extends EditorController<Residence>
 			boolean residenceValid = residenceEditorController.isValid();
 
 			if (addressValid && personValid && residenceValid) {
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
 				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));

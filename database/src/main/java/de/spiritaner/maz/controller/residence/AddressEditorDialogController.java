@@ -3,7 +3,7 @@ package de.spiritaner.maz.controller.residence;
 import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.Address;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,7 +55,7 @@ public class AddressEditorDialogController extends EditorController<Address> {
         boolean validation = addressEditorController.isValid();
 
         if(validation) {
-            EntityManager em = DataDatabase.getFactory().createEntityManager();
+            EntityManager em = CoreDatabase.getFactory().createEntityManager();
             em.getTransaction().begin();
 
             Address tmpAddress = addressEditorController.getAll((address == null) ? new Address() : em.find(Address.class, address.getId()));

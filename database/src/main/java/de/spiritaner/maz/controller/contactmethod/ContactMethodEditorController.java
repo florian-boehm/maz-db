@@ -3,7 +3,7 @@ package de.spiritaner.maz.controller.contactmethod;
 import de.spiritaner.maz.controller.meta.ContactMethodTypeOverviewController;
 import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.model.meta.ContactMethodType;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
@@ -73,7 +73,7 @@ public class ContactMethodEditorController implements Initializable {
 	}
 
 	public void loadContactMethodType() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		Collection<ContactMethodType> result = em.createNamedQuery("ContactMethodType.findAll", ContactMethodType.class).getResultList();
 
 		ContactMethodType selectedBefore = contactMethodTypeComboBox.getValue();

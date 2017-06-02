@@ -4,7 +4,7 @@ import de.spiritaner.maz.controller.meta.PersonGroupOverviewController;
 import de.spiritaner.maz.model.Responsible;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.meta.PersonGroup;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
@@ -64,7 +64,7 @@ public class ResponsibleEditorController implements Initializable {
 	}
 
 	private void loadPersonGroups() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 
 		TypedQuery<PersonGroup> query = em.createNamedQuery("PersonGroup.findAll", PersonGroup.class);
 
@@ -75,7 +75,7 @@ public class ResponsibleEditorController implements Initializable {
 	}
 
 	private void loadHomeCountries() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 
 		TypedQuery<String> query;
 		if(site != null) {
@@ -90,7 +90,7 @@ public class ResponsibleEditorController implements Initializable {
 	}
 
 	private void loadJobDescriptions() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 
 		TypedQuery<String> query;
 		if(site != null) {

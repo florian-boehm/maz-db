@@ -5,7 +5,7 @@ import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.*;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.renderer.DateAsStringListCell;
 import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.collections.FXCollections;
@@ -107,7 +107,7 @@ public class PersonOverviewController extends OverviewController<Person> {
 
 	@Override
 	protected void postCreate(Person person) {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		em.getTransaction().begin();
 
 		// Get a managed copy of the person
@@ -135,7 +135,7 @@ public class PersonOverviewController extends OverviewController<Person> {
 	@SuppressWarnings("unchecked")
 	public void searchForPersons(ActionEvent actionEvent) {
 		// TODO implement full text search
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(em);
 		em.getTransaction().begin();
 

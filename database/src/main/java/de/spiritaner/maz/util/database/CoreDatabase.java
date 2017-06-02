@@ -2,11 +2,6 @@ package de.spiritaner.maz.util.database;
 
 import de.spiritaner.maz.model.User;
 import de.spiritaner.maz.util.Settings;
-import de.spiritaner.maz.view.dialog.ExceptionDialog;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
@@ -25,7 +20,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Service class for accessing the database that stores productive data.
@@ -33,13 +27,13 @@ import java.util.Optional;
  * @author Florian Schwab
  * @version 2017.05.28
  */
-public class DataDatabase {
-    private static final Logger logger = Logger.getLogger(DataDatabase.class);
+public class CoreDatabase {
+    private static final Logger logger = Logger.getLogger(CoreDatabase.class);
     public static final String LOCK_FILE = "db.lock";
-    private static final String DB_FILE_NAME = "data.mv.db";
+    private static final String DB_FILE_NAME = "core.mv.db";
     private static EntityManagerFactory factory = null;
 
-    private DataDatabase() {
+    private CoreDatabase() {
 
     }
 
@@ -62,6 +56,7 @@ public class DataDatabase {
 
                     runAssetGeneration(properties.get("hibernate.connection.url"), user);
                 } catch (IOException e) {
+                    e.printStackTrace();
                     throw new Exception("Failed to create temporary file for inclusive access!");
                 }
             } else if (exclusiveAccess && factory == null) {
@@ -100,7 +95,7 @@ public class DataDatabase {
     }
 
     /**
-     * (Re)create the assets in the data database
+     * (Re)create the assets in the core database
      *
      * @param url  The connection URL to the database
      * @param user The user that is needed for authentication and encryption
@@ -129,10 +124,10 @@ public class DataDatabase {
     private static void runLiquibaseUpdate(String url, User user) throws SQLException, LiquibaseException {
         Connection conn = DriverManager.getConnection(url, user.getUsername(), DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
         JdbcConnection jdbcConn = new JdbcConnection(conn);
-        Liquibase liquibase = new Liquibase("./liquibase/data/changelog.xml", new ClassLoaderResourceAccessor(), jdbcConn);
+        Liquibase liquibase = new Liquibase("liquibase/core/changelog.xml", new ClassLoaderResourceAccessor(), jdbcConn);
         liquibase.update("");
 
-        logger.info("Database schema has been applied to data database!");
+        logger.info("Database schema has been applied to core database!");
     }
 
     /**
@@ -154,11 +149,11 @@ public class DataDatabase {
     private static void initDatabaseProperties(Map<String, String> properties, String path, User user) {
         properties.clear();
 
-        String url = "jdbc:h2:" + path + "data;CIPHER=AES";
-        url += ";LOCK_TIMEOUT=" + Settings.get("database.data.lock_timeout", "5");
-        url += ";DEFAULT_LOCK_TIMEOUT=" + Settings.get("database.data.default_lock_timeout", "5");
-        url += ";TRACE_LEVEL_FILE=" + Settings.get("database.data.trace_level_file", "0");
-        url += ";TRACE_LEVEL_SYSTEM_OUT=" + Settings.get("database.data.trace_level_system_out", "1");
+        String url = "jdbc:h2:" + path + "core;CIPHER=AES";
+        url += ";LOCK_TIMEOUT=" + Settings.get("database.core.lock_timeout", "5");
+        url += ";DEFAULT_LOCK_TIMEOUT=" + Settings.get("database.core.default_lock_timeout", "5");
+        url += ";TRACE_LEVEL_FILE=" + Settings.get("database.core.trace_level_file", "0");
+        url += ";TRACE_LEVEL_SYSTEM_OUT=" + Settings.get("database.core.trace_level_system_out", "1");
 
         properties.put("hibernate.connection.url", url);
         properties.put("hibernate.connection.username", user.getUsername());

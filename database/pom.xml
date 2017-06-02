@@ -175,7 +175,7 @@
 				<executions>
 					<!-- those two reference databases will always be regenerated -->
 					<execution>
-						<id>update-data-ref</id>
+						<id>update-core-ref</id>
 						<!--phase>process-resources</phase-->
 						<goals>
 							<goal>clearCheckSums</goal>
@@ -183,8 +183,8 @@
 							<goal>update</goal>
 						</goals>
 						<configuration>
-							<changeLogFile>src/main/resources/liquibase/data/changelog.xml</changeLogFile>
-							<url>jdbc:h2:./target/dbfiles/data_ref</url>
+							<changeLogFile>src/main/resources/liquibase/core/changelog.xml</changeLogFile>
+							<url>jdbc:h2:./target/dbfiles/core_ref</url>
 							<driver>org.h2.Driver</driver>
 							<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
 						</configuration>
@@ -205,21 +205,21 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>diff-data-db</id>
+						<id>diff-core-db</id>
 						<!--phase>process-resources</phase-->
 						<goals>
 							<goal>diff</goal>
 						</goals>
 						<configuration>
-							<diffChangeLogFile>src/main/resources/liquibase/data/changelog-${project.version}.xml
+							<diffChangeLogFile>src/main/resources/liquibase/core/changelog-${project.version}.xml
 							</diffChangeLogFile>
-							<changeLogFile>src/main/resources/liquibase/data/changelog.xml</changeLogFile>
+							<changeLogFile>src/main/resources/liquibase/core/changelog.xml</changeLogFile>
 							<driver>org.h2.Driver</driver>
-							<url>jdbc:h2:./target/dbfiles/data_ref</url>
+							<url>jdbc:h2:./target/dbfiles/core_ref</url>
 							<!--username>admin</username>
 							<password>E4BCC47A694E87A900D9ABA3702C2351 test1234</password-->
 							<referenceDriver>org.h2.Driver</referenceDriver>
-							<referenceUrl>jdbc:h2:./target/dbfiles/data;CIPHER=AES</referenceUrl>
+							<referenceUrl>jdbc:h2:./target/dbfiles/core;CIPHER=AES</referenceUrl>
 							<referenceUsername>admin</referenceUsername>
 							<referencePassword>2F6CEC6AACB9A2663186534A16B51FC2 test1234</referencePassword>
 						</configuration>

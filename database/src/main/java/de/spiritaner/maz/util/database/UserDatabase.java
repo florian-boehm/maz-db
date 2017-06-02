@@ -167,7 +167,7 @@ public class UserDatabase {
             em.persist(user);
             em.getTransaction().commit();
 
-            // Reset the unencrypted database key so that it can be used in data database initialization
+            // Reset the unencrypted database key so that it can be used in core database initialization
             user.setUnencryptedDatabaseKey(unencryptedDbKey);
             user.setPassword(password);
         } catch (DatabaseException e) {
@@ -206,7 +206,7 @@ public class UserDatabase {
 
                 if (passwordCorrect) {
                     user.setPassword(password);
-                    DataDatabase.initFactory(user);
+                    CoreDatabase.initFactory(user);
                     // TODO disable this here before release!
                     logger.info("Decrypted database aes key is '" + DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + "'");
                 }

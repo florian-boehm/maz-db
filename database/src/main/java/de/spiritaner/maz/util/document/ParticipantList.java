@@ -3,7 +3,7 @@ package de.spiritaner.maz.util.document;
 import de.spiritaner.maz.controller.DocumentPageController;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.Event;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 
@@ -35,7 +35,7 @@ public class ParticipantList {
 						participatedBuffer.append((participation.getHasParticipated()) ? "Ja\n" : "Nein\n");
 
 						// Load photo approval information from participating person
-						EntityManager em = DataDatabase.getFactory().createEntityManager();
+						EntityManager em = CoreDatabase.getFactory().createEntityManager();
 						em.getTransaction().begin();
 						Hibernate.initialize(participation.getPerson().getApprovals());
 						List<Approval> approvals = participation.getPerson().getApprovals();

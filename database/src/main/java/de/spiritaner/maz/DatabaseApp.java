@@ -1,6 +1,5 @@
 package de.spiritaner.maz;
 
-import de.spiritaner.maz.util.database.DataDatabase;
 import de.spiritaner.maz.view.dialog.LoginDialog;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -10,8 +9,10 @@ import java.io.PrintStream;
 import java.util.ResourceBundle;
 
 /**
+ * The database application entry point
+ *
  * @author Florian Schwab
- * @version 0.0.1
+ * @version 2017.06.02
  */
 public class DatabaseApp extends Application {
 
@@ -26,6 +27,7 @@ public class DatabaseApp extends Application {
         System.setOut(createLoggingProxy(System.out));
         System.setErr(createLoggingProxy(System.err));
 
+        // Populating the stage means, loading fxml and other dependencies
         LoginDialog.populateStage(primaryStage);
         primaryStage.show();
     }

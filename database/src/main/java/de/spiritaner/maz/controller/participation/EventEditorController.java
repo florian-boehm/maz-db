@@ -3,7 +3,7 @@ package de.spiritaner.maz.controller.participation;
 import de.spiritaner.maz.controller.meta.EventTypeOverviewController;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.meta.EventType;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.renderer.DatePickerFormatter;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
@@ -92,7 +92,7 @@ public class EventEditorController implements Initializable {
 	}
 
 	public void loadEventType() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		Collection<EventType> result = em.createNamedQuery("EventType.findAll", EventType.class).getResultList();
 
 		EventType selectedBefore = eventTypeComboBox.getValue();

@@ -3,7 +3,7 @@ package de.spiritaner.maz.controller.participation;
 import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.Event;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,7 +62,7 @@ public class EventEditorDialogController extends EditorController<Event> {
 			boolean eventValid = eventEditorController.isValid();
 
 			if (eventValid) {
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
 				eventEditorController.getAll(getIdentifiable());

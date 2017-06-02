@@ -3,7 +3,7 @@ package de.spiritaner.maz.controller.role;
 import de.spiritaner.maz.controller.meta.RoleTypeOverviewController;
 import de.spiritaner.maz.model.Role;
 import de.spiritaner.maz.model.meta.RoleType;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
@@ -55,7 +55,7 @@ public class RoleEditorController implements Initializable {
 	}
 
 	public void loadRoleType() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		Collection<RoleType> result = em.createNamedQuery("RoleType.findAll", RoleType.class).getResultList();
 
 		RoleType selectedBefore = roleTypeComboBox.getValue();

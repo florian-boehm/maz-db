@@ -3,7 +3,7 @@ package de.spiritaner.maz.controller.approval;
 import de.spiritaner.maz.controller.meta.ApprovalTypeOverviewController;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.meta.ApprovalType;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import javafx.collections.FXCollections;
@@ -63,7 +63,7 @@ public class ApprovalEditorController implements Initializable {
 	}
 
 	public void loadApprovalType() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		Collection<ApprovalType> result = em.createNamedQuery("ApprovalType.findAllWithIdGreaterThanThree", ApprovalType.class).getResultList();
 
 		ApprovalType selectedBefore = approvalTypeComboBox.getValue();

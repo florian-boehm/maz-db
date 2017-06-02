@@ -2,7 +2,7 @@ package de.spiritaner.maz.controller;
 
 import de.spiritaner.maz.util.Settings;
 import de.spiritaner.maz.util.UpdateHelper;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.database.UserDatabase;
 import de.spiritaner.maz.view.InitView;
 import de.spiritaner.maz.view.MainView;
@@ -268,7 +268,7 @@ public class LoginController implements Controller {
     public void tryLogin(final ActionEvent actionEvent) {
         updateProgress.setVisible(true);
 
-        final File lockFile = new File(Settings.get("database.path","./dbfiles/") + DataDatabase.LOCK_FILE);
+        final File lockFile = new File(Settings.get("database.path","./dbfiles/") + CoreDatabase.LOCK_FILE);
 
         if(lockFile.exists()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -290,6 +290,7 @@ public class LoginController implements Controller {
                 logger.warn(result.toString());
 
                 if(result.get().equals(new ButtonType("Erzwingen", ButtonBar.ButtonData.FINISH))) {
+                    logger.info("IN HERE DELETE THE LOCK FILE");
                     lockFile.delete();
                 }
 

@@ -9,7 +9,7 @@ import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.YearAbroad;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,7 +59,7 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 		if(/*yearAbroadEditorController.getArrivalDatePicker().getValue() != null &&*/
 				  yearAbroadEditorController.getDepartureDatePicker().getValue() != null &&
 				  getIdentifiable() != null && getIdentifiable().getSite() != null) {
-			EntityManager em = DataDatabase.getFactory().createEntityManager();
+			EntityManager em = CoreDatabase.getFactory().createEntityManager();
 			em.getTransaction().begin();
 
 			TypedQuery<YearAbroad> query = em.createNamedQuery("YearAbroad.findAllOfSiteInYear", YearAbroad.class);
@@ -133,7 +133,7 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 			boolean yearAbroadValid = yearAbroadEditorController.isValid();
 
 			if(siteValid && personValid && yearAbroadValid) {
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
 				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));

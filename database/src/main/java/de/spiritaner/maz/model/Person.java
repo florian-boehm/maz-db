@@ -2,7 +2,7 @@ package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.controller.person.PersonEditorDialogController;
 import de.spiritaner.maz.model.meta.*;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.beans.property.*;
 import org.hibernate.annotations.*;
 import org.hibernate.envers.Audited;
@@ -409,7 +409,7 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 	@Transient
 	@Override
 	protected void initialize() {
-		EntityManager em = DataDatabase.getFactory().createEntityManager();
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		TypedQuery<YearAbroad> query = em.createNamedQuery("YearAbroad.findCurrentOfPerson", YearAbroad.class);
 		query.setParameter("person", this);
 		query.setParameter("today", LocalDate.now());

@@ -4,7 +4,7 @@ import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.view.dialog.ExceptionDialog;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Identifiable;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -152,7 +152,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 			if (result.get() == ButtonType.OK) {
 				try {
-					EntityManager em = DataDatabase.getFactory().createEntityManager();
+					EntityManager em = CoreDatabase.getFactory().createEntityManager();
 					em.getTransaction().begin();
 					final T obsoleteEntity = em.find(cls, selectedObj.getId());
 					preRemove(obsoleteEntity, em);
@@ -188,7 +188,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 				//T previousSelected = table.getSelectionModel().getSelectedItem();
 				//table.getSelectionModel().clearSelection();
 
-				EntityManager em = DataDatabase.getFactory().createEntityManager();
+				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 				Collection<T> result = preLoad(em);
 				em.getTransaction().commit();
