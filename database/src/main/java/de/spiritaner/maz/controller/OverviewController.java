@@ -128,11 +128,9 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 			Optional<T> result = (Optional<T>) method.invoke(null, obj, stage);
 			final T previousObject = obj;
 
-			result.ifPresent(managedObject -> {
-				postEdit(previousObject, managedObject);
-			});
+			result.ifPresent(managedObject -> postEdit(previousObject, managedObject));
 
-			if(!result.isPresent()) load();
+			if(!result.isPresent())	load();
 		} catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			logger.error(e);
 			ExceptionDialog.show(e);
@@ -187,6 +185,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 				//T previousSelected = table.getSelectionModel().getSelectedItem();
 				//table.getSelectionModel().clearSelection();
+				int rowNr = preSelect();
 
 				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
@@ -205,12 +204,22 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 					if (result != null) table.getItems().addAll(result);
 				}
 
+				postSelect(rowNr);
+
 				//table.getSelectionModel().select(previousSelected);
 				masker.setVisible(false);
 			} catch (RollbackException e) {
 				logger.error(e);
 			}
 		});
+	}
+
+	protected int preSelect() {
+		return -1;
+	}
+
+	protected void postSelect(int rowNr) {
+
 	}
 
 	protected abstract Collection<T> preLoad(EntityManager em);

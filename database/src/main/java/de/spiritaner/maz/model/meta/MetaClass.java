@@ -74,7 +74,7 @@ abstract public class MetaClass implements Identifiable {
 	@Transient
 	@Override
 	public String toString() {
-		return (id.get() == 0L) ? "" : id.get() + " - " + description.get();
+		return (id.get() == 0L) ? "" : /*id.get() + " - " +*/ description.get();
 	}
 
 	@Transient

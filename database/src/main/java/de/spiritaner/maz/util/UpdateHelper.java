@@ -2,7 +2,7 @@ package de.spiritaner.maz.util;
 
 import de.spiritaner.maz.controller.LoginController;
 import de.spiritaner.maz.model.User;
-import de.spiritaner.maz.util.database.DataDatabase;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.database.DatabaseFolder;
 import de.spiritaner.maz.util.database.UserDatabase;
 import javafx.application.Platform;
@@ -11,7 +11,6 @@ import javafx.scene.control.ProgressIndicator;
 import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
-import liquibase.resource.ClassLoaderResourceAccessor;
 import liquibase.resource.FileSystemResourceAccessor;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -72,7 +71,7 @@ public class UpdateHelper {
 					loginController.setUpdateProgress("Aktualisiere Benutzerdatenbank!", ProgressIndicator.INDETERMINATE_PROGRESS);
 					UserDatabase.update();
 					loginController.setUpdateProgress("Aktualisiere Stammdatenbank!", ProgressIndicator.INDETERMINATE_PROGRESS);
-					DataDatabase.update(user);
+					CoreDatabase.update(user);
 
 					for (File versionFile : dbFolder.listFiles((current, name) -> name.endsWith(".version"))) {
 						versionFile.delete();
@@ -183,7 +182,7 @@ public class UpdateHelper {
 		final String version = (String) releaseInfo.get("tag_name");
 
 		Map<String, String> properties = new HashMap<>();
-		DataDatabase.initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"), user);
+		CoreDatabase.initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"), user);
 
 		Connection conn = DriverManager.getConnection(properties.get("hibernate.connection.url"), user.getUsername(), DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
 		JdbcConnection jdbcConn = new JdbcConnection(conn);

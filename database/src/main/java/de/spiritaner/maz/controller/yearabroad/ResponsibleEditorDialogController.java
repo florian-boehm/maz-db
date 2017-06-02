@@ -86,7 +86,7 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 
 					// Automatically add the role 'Ansprechperson Einsatzstelle'
 					//RoleType siteResponsibleRoleType = em.createNamedQuery("RoleType.findByDesc", RoleType.class).setParameter("description","Ansprechperson Einsatzstelle").getSingleResult();
-					RoleType siteResponsibleRoleType = em.find(RoleType.class, 1L);
+					RoleType siteResponsibleRoleType = em.find(RoleType.class, 9L);
 
 					if(siteResponsibleRoleType != null) {
 						Hibernate.initialize(managedResponsible.getPerson().getRoles());

@@ -132,6 +132,16 @@ public class PersonOverviewController extends OverviewController<Person> {
 		return personDetailsToggle;
 	}
 
+	@Override
+	protected int preSelect() {
+		return getTable().getSelectionModel().getSelectedIndex();
+	}
+
+	@Override
+	protected void postSelect(int index) {
+		getTable().getSelectionModel().select(index);
+	}
+
 	@SuppressWarnings("unchecked")
 	public void searchForPersons(ActionEvent actionEvent) {
 		// TODO implement full text search

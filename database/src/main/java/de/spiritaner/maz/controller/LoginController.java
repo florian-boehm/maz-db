@@ -274,12 +274,14 @@ public class LoginController implements Controller {
 
 	public void tryLogin(final ActionEvent actionEvent) {
 		setUpdateProgress("Anmeldung läuft ...", -1);
-		updateProgress.setVisible(true);
+		Platform.runLater(() -> updateProgress.setVisible(true));
 
 		final boolean loginSuccess = UserDatabase.validateLogin(new User(usernameField.getText(), passwordField.getText()), false);
 
 		if(loginSuccess) {
 			final File lockFile = new File(Settings.get("database.path", "./dbfiles/") + CoreDatabase.LOCK_FILE);
+			final ButtonType readonly = new ButtonType("Lesezugriff", ButtonBar.ButtonData.FINISH);
+			final ButtonType force = new ButtonType("Erzwingen", ButtonBar.ButtonData.APPLY);
 			Optional<ButtonType> result = Optional.empty();
 
 			if (lockFile.exists()) {
@@ -291,17 +293,17 @@ public class LoginController implements Controller {
 						  "Sie den Schreibzugriff auf die Datenbank trotzdem versuchen.");
 				alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 				alert.getButtonTypes().clear();
-				alert.getButtonTypes().add(new ButtonType("Erzwingen", ButtonBar.ButtonData.FINISH));
-				alert.getButtonTypes().add(new ButtonType("Lesezugriff", ButtonBar.ButtonData.APPLY));
+				alert.getButtonTypes().add(readonly);
+				alert.getButtonTypes().add(force);
 				alert.getButtonTypes().add(ButtonType.CANCEL);
 
 				result = alert.showAndWait();
 			}
 
 			if (!lockFile.exists() || (result.isPresent() && result.get() != ButtonType.CANCEL)) {
-				if (result.isPresent() && result.get().equals(new ButtonType("Erzwingen", ButtonBar.ButtonData.FINISH))) {
+				if (result.isPresent() && result.get().equals(force)) {
 					lockFile.delete();
-                    logger.info("IN HERE DELETE THE LOCK FILE");
+					logger.info("IN HERE DELETE THE LOCK FILE");
 				}
 
 				new Thread(() -> {
