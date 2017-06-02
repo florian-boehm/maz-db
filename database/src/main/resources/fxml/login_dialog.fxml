@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
@@ -182,10 +181,10 @@
                     <children>
                         <ScrollPane fitToHeight="true" fitToWidth="true" minWidth="400.0" style="-fx-background-insets: 0;" VBox.vgrow="ALWAYS">
                             <content>
-                                <ListView fx:id="databaseListView" style="-fx-focus-color: transparent; -fx-background-insets: 0px, 0 0 1 1;" />
+                                <ListView fx:id="databaseListView" style="-fx-focus-color: transparent; -fx-background-insets: 0px, 1 0 1 1;" />
                             </content>
                         </ScrollPane>
-                        <VBox fx:id="updateBox" spacing="10.0">
+                        <VBox fx:id="updateBox" spacing="10.0" visible="false">
                             <children>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>

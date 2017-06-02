@@ -1,8 +1,10 @@
 package de.spiritaner.maz.controller;
 
+import de.spiritaner.maz.model.User;
 import de.spiritaner.maz.util.Settings;
 import de.spiritaner.maz.util.UpdateHelper;
 import de.spiritaner.maz.util.database.CoreDatabase;
+import de.spiritaner.maz.util.database.DatabaseFolder;
 import de.spiritaner.maz.util.database.UserDatabase;
 import de.spiritaner.maz.view.InitView;
 import de.spiritaner.maz.view.MainView;
@@ -46,128 +48,135 @@ import java.util.ResourceBundle;
  */
 public class LoginController implements Controller {
 
-    final static Logger logger = Logger.getLogger(LoginController.class);
+	final static Logger logger = Logger.getLogger(LoginController.class);
 
-    @FXML
-    private MaskerPane updateProgress;
-    @FXML
-    private Hyperlink updateLink;
-    @FXML
-    private ListView<File> databaseListView;
-    @FXML
-    private Label versionLabel;
-    @FXML
-    private Label usernameLabel;
-    @FXML
-    private Label passwordLabel;
-    @FXML
-    private Label errorLabel;
-    @FXML
-    private TextField usernameField;
-    @FXML
-    private PasswordField passwordField;
-    @FXML
-    private Button loginButton;
-    @FXML
-    private Button initButton;
-    @FXML
-    private Button removeButton;
-    @FXML
-    private Button searchButton;
-    @FXML
-    private Button updateButton;
-    @FXML
-    private ImageView updateButtonImage;
-    @FXML
-    private VBox updateBox;
-    @FXML
-    private Label updateStatusLabel;
-    //@FXML
-    //private ProgressBar updateProgressBar;
+	@FXML
+	private MaskerPane updateProgress;
+	@FXML
+	private Hyperlink updateLink;
+	@FXML
+	private ListView<DatabaseFolder> databaseListView;
+	@FXML
+	private Label versionLabel;
+	@FXML
+	private Label usernameLabel;
+	@FXML
+	private Label passwordLabel;
+	@FXML
+	private Label errorLabel;
+	@FXML
+	private TextField usernameField;
+	@FXML
+	private PasswordField passwordField;
+	@FXML
+	private Button loginButton;
+	@FXML
+	private Button initButton;
+	@FXML
+	private Button removeButton;
+	@FXML
+	private Button searchButton;
+	@FXML
+	private Button updateButton;
+	@FXML
+	private ImageView updateButtonImage;
+	@FXML
+	private VBox updateBox;
+	@FXML
+	private Label updateStatusLabel;
+	//@FXML
+	//private ProgressBar updateProgressBar;
 
-    private Stage stage;
-    private String releasePageLink = "";
-    private String releaseJsonString = "";
-    private BooleanProperty updateAvailable = new SimpleBooleanProperty(Boolean.FALSE);
+	private Stage stage;
+	private String releasePageLink = "";
+	private String releaseJsonString = "";
+	private BooleanProperty updateAvailable = new SimpleBooleanProperty(Boolean.FALSE);
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
-        versionLabel.setText("Version " + guiText.getString("version"));
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+		final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+		versionLabel.setText("Version " + guiText.getString("version"));
 
-        usernameField.setPromptText(guiText.getString("username"));
-        passwordField.setPromptText(guiText.getString("password"));
-        usernameLabel.setText(guiText.getString("username"));
-        passwordLabel.setText(guiText.getString("password"));
+		usernameField.setPromptText(guiText.getString("username"));
+		passwordField.setPromptText(guiText.getString("password"));
+		usernameLabel.setText(guiText.getString("username") + ":");
+		passwordLabel.setText(guiText.getString("password") + ":");
 
-        loginButton.setText(guiText.getString("login"));
-        initButton.setText(guiText.getString("init"));
-        removeButton.setText(guiText.getString("remove"));
-        searchButton.setText(guiText.getString("search"));
-        updateButton.setText(guiText.getString("update"));
+		loginButton.setText(guiText.getString("login"));
+		initButton.setText(guiText.getString("init"));
+		removeButton.setText(guiText.getString("remove"));
+		searchButton.setText(guiText.getString("search"));
+		updateButton.setText(guiText.getString("update"));
 
-        setErrorMsg(null);
+		setErrorMsg(null);
 
-        updateBox.setVisible(false);
-        updateBox.setManaged(false);
+		updateBox.setVisible(false);
+		updateBox.setManaged(false);
 
-        databaseListView.setCellFactory(fileListView -> new DatabaseFolderRenderer());
-        databaseListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        databaseListView.getItems().addListener((ListChangeListener<File>) change -> {
-            initButton.setDisable(new File(Settings.get("database.parent", "./"), "./dbfiles").exists());
-            checkUpdatePreconditions();
-            checkRemovePreconditions();
-        });
-        databaseListView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            checkUpdatePreconditions();
-            checkRemovePreconditions();
-            checkLoginPreconditions();
-        });
+		databaseListView.setCellFactory(fileListView -> new DatabaseFolderRenderer());
+		databaseListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		databaseListView.getItems().addListener((ListChangeListener<File>) change -> {
+			initButton.setDisable(new File(Settings.get("database.parent", "./"), "./dbfiles").exists());
+			checkUpdatePreconditions();
+			checkRemovePreconditions();
+		});
+		databaseListView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+			checkUpdatePreconditions();
+			checkRemovePreconditions();
+			checkLoginPreconditions();
+		});
 
-        // Disable/enable login button
-        usernameField.textProperty().addListener((observableValue, oldValue, newValue) -> {
-            checkLoginPreconditions();
-            checkUpdatePreconditions();
-        });
-        passwordField.textProperty().addListener((observableValue, oldValue, newValue) -> {
-            checkLoginPreconditions();
-            checkUpdatePreconditions();
-        });
+		// Disable/enable login button
+		usernameField.textProperty().addListener((observableValue, oldValue, newValue) -> {
+			checkLoginPreconditions();
+			checkUpdatePreconditions();
+		});
+		passwordField.textProperty().addListener((observableValue, oldValue, newValue) -> {
+			checkLoginPreconditions();
+			checkUpdatePreconditions();
+		});
 
-        new Thread(this::searchForUpdate).start();
-        searchDbFilesFolder();
-    }
+		new Thread(this::searchForUpdate).start();
+		searchDbFilesFolder();
+	}
 
-    private boolean checkRemovePreconditions() {
-        final File selectedDb = databaseListView.getSelectionModel().getSelectedItem();
-        final boolean enable = (selectedDb != null && !selectedDb.getAbsolutePath().endsWith("dbfiles") && !(new File(selectedDb, "db.lock").exists()));
+	private boolean checkRemovePreconditions() {
+		final DatabaseFolder selectedDb = databaseListView.getSelectionModel().getSelectedItem();
+		final boolean enable = selectedDb != null &&
+				  !selectedDb.isMainDir() &&
+				  !selectedDb.isLocked();
 
-        removeButton.setDisable(!enable);
-        return enable;
-    }
+		removeButton.setDisable(!enable);
+		return enable;
+	}
 
-    private boolean checkUpdatePreconditions() {
-        final File selectedDb = databaseListView.getSelectionModel().getSelectedItem();
-        final boolean enable = (updateAvailable.get() &&
-                selectedDb != null &&
-                selectedDb.getAbsolutePath().endsWith("dbfiles") &&
-                !(new File(selectedDb, "db.lock").exists())) && checkLoginPreconditions();
+	private boolean checkUpdatePreconditions() {
+		final DatabaseFolder selectedDb = databaseListView.getSelectionModel().getSelectedItem();
+		final boolean enable = selectedDb != null &&
+				  (updateAvailable.get() || selectedDb.isOutdated()) &&
+				  selectedDb.isMainDir() &&
+				  !selectedDb.isLocked() &&
+				  !usernameField.getText().trim().isEmpty() &&
+				  !passwordField.getText().trim().isEmpty();
 
-        updateButton.setDisable(!enable);
-        return enable;
-    }
+		updateButton.setDisable(!enable);
+		return enable;
+	}
 
-    private boolean checkLoginPreconditions() {
-        final File selectedDb = databaseListView.getSelectionModel().getSelectedItem();
-        final boolean enable = (!usernameField.getText().trim().isEmpty() && !passwordField.getText().trim().isEmpty() && selectedDb != null);
+	private boolean checkLoginPreconditions() {
+		final DatabaseFolder selectedDb = databaseListView.getSelectionModel().getSelectedItem();
+		final boolean enable = selectedDb != null &&
+				  !usernameField.getText().trim().isEmpty() &&
+				  !passwordField.getText().trim().isEmpty() &&
+				  !selectedDb.isOutdated();
 
-        loginButton.setDisable(!enable);
-        return enable;
-    }
+		loginButton.setDisable(!enable);
+		return enable;
+	}
 
-    private void searchForUpdate() {
-        /*final RotateTransition rt = new RotateTransition(Duration.millis(2000), updateButtonImage);
-        Platform.runLater(() -> {
+	private void searchForUpdate() {
+		  /*final RotateTransition rt = new RotateTransition(Duration.millis(2000), updateButtonImage);
+		  Platform.runLater(() -> {
             rt.setByAngle(-360);
             rt.setCycleCount(Animation.INDEFINITE);
             rt.setAutoReverse(false);
@@ -175,211 +184,231 @@ public class LoginController implements Controller {
             rt.setDelay(Duration.ZERO);
             rt.play();
         });*/
-        logger.info("Start searching for updates");
+		logger.info("Start searching for updates");
 
-        try {
-            final String currentVersion = ResourceBundle.getBundle("lang.gui").getString("version");
-            final URL url = new URL("https://api.github.com/repos/fschwab/maz-db/releases/latest");
-            final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.addRequestProperty("http.agent", "database-updater-app");
+		try {
+			final String currentVersion = ResourceBundle.getBundle("lang.gui").getString("version");
+			final URL url = new URL("https://api.github.com/repos/fschwab/maz-db/releases/latest");
+			final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.addRequestProperty("http.agent", "database-updater-app");
 
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code " + conn.getResponseCode());
-            }
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code " + conn.getResponseCode());
+			}
 
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String part;
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String part;
 
-            while ((part = reader.readLine()) != null) {
-                releaseJsonString += part;
-            }
+			while ((part = reader.readLine()) != null) {
+				releaseJsonString += part;
+			}
 
-            conn.disconnect();
+			conn.disconnect();
 
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) parser.parse(releaseJsonString);
-            final String tagName = (String) jsonObject.get("tag_name");
-            releasePageLink = (String) jsonObject.get("html_url");
+			JSONParser parser = new JSONParser();
+			JSONObject jsonObject = (JSONObject) parser.parse(releaseJsonString);
+			final String tagName = (String) jsonObject.get("tag_name");
+			releasePageLink = (String) jsonObject.get("html_url");
 
-            Platform.runLater(() -> {
-                if (true /*!tagName.equals(currentVersion)*/) {
-                    logger.info("Found new release " + tagName + " on github");
-                    updateBox.setManaged(true);
-                    updateBox.setVisible(true);
+			Platform.runLater(() -> {
+				final Double newVersion = Double.parseDouble(tagName);
+				final Double oldVersion = Double.parseDouble(currentVersion);
 
-                    updateAvailable.set(Boolean.TRUE);
-                    checkUpdatePreconditions();
-                }
-                //stage.sizeToScene();
-            });
-        } catch (IOException | ParseException e) {
-            logger.error(e);
-        }
+				if (newVersion > oldVersion) {
+					logger.info("Found new release " + tagName + " on github");
+					updateBox.setManaged(true);
+					updateBox.setVisible(true);
 
-        //Platform.runLater(() -> rt.stop());
-    }
+					updateAvailable.set(Boolean.TRUE);
+					checkUpdatePreconditions();
+				}
+				//stage.sizeToScene();
+			});
+		} catch (IOException | ParseException e) {
+			logger.error(e);
+		}
 
-    @Override
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
+		//Platform.runLater(() -> rt.stop());
+	}
 
-    @Override
-    public void onReopen() {
+	@Override
+	public void onReopen() {
 
-    }
+	}
 
-    public void searchDbFilesFolder() {
-        final String version = ResourceBundle.getBundle("lang.gui").getString("version");
-        final File workingDirectory = new File(Settings.get("database.parent","./"));
-        File[] dbDirs = workingDirectory.listFiles((current, name) -> new File(current, name).isDirectory() && name.startsWith("dbfiles") && new File(current, name + "/" + version + ".version").exists());
+	public void searchDbFilesFolder() {
+		final String version = ResourceBundle.getBundle("lang.gui").getString("version");
+		final File workingDirectory = new File(Settings.get("database.parent", "./"));
+		File[] dbDirs = workingDirectory.listFiles((current, name) -> new File(current, name).isDirectory() && name.startsWith("dbfiles") /*&& new File(current, name + "/" + version + ".version").exists()*/);
 
-        databaseListView.getItems().clear();
+		databaseListView.getItems().clear();
 
-        if (dbDirs != null && dbDirs.length == 0)
-            databaseListView.getItems().add(null);
-        else
-            databaseListView.getItems().addAll(dbDirs);
+		if (dbDirs != null && dbDirs.length == 0)
+			databaseListView.getItems().add(null);
+		else
+			for (File f : dbDirs) databaseListView.getItems().add(new DatabaseFolder(f));
 
-        databaseListView.getSelectionModel().clearAndSelect(0);
-    }
+		databaseListView.getSelectionModel().clearAndSelect(0);
+	}
 
-    public void selectDbParentDirectory(ActionEvent actionEvent) {
-        final DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File(Settings.get("database.parent", "./")));
+	public void selectDbParentDirectory(ActionEvent actionEvent) {
+		final DirectoryChooser directoryChooser = new DirectoryChooser();
+		directoryChooser.setInitialDirectory(new File(Settings.get("database.parent", "./")));
 
-        final File selectedDirectory = directoryChooser.showDialog(new Stage());
+		final File selectedDirectory = directoryChooser.showDialog(new Stage());
 
-        if (selectedDirectory != null && selectedDirectory.exists()) {
-            Settings.set("database.parent", selectedDirectory.getAbsolutePath());
-            searchDbFilesFolder();
-        }
-    }
+		if (selectedDirectory != null && selectedDirectory.exists()) {
+			Settings.set("database.parent", selectedDirectory.getAbsolutePath());
+			searchDbFilesFolder();
+		}
+	}
 
-    public void initDatabase(final ActionEvent actionEvent) {
-        Stage secondStage = new Stage();
-        secondStage.initOwner(stage);
-        InitView.populateStage(secondStage);
-        InitView.getController().setLoginController(this);
-        secondStage.show();
-    }
+	public void initDatabase(final ActionEvent actionEvent) {
+		Stage secondStage = new Stage();
+		secondStage.initOwner(stage);
+		InitView.populateStage(secondStage);
+		InitView.getController().setLoginController(this);
+		secondStage.show();
+	}
 
-    public void tryLogin(final ActionEvent actionEvent) {
-        updateProgress.setVisible(true);
+	public void tryLogin(final ActionEvent actionEvent) {
+		setUpdateProgress("Anmeldung läuft ...", -1);
+		updateProgress.setVisible(true);
 
-        final File lockFile = new File(Settings.get("database.path","./dbfiles/") + CoreDatabase.LOCK_FILE);
+		final boolean loginSuccess = UserDatabase.validateLogin(new User(usernameField.getText(), passwordField.getText()), false);
 
-        if(lockFile.exists()) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Datenbankzugriff");
-            alert.setHeaderText("Datenbank möglicherweise in Verwendung ...");
-            alert.setContentText("Mit \"Lesezugriff\" können Sie die Datenbank trotzdem öffnen, allerdings " +
-                    "gehen jegliche Änderungen beim Schließen der Anwendung verloren. Mit \"Erzwingen\" können " +
-                    "Sie den Schreibzugriff auf die Datenbank trotzdem versuchen.");
-            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-            alert.getButtonTypes().clear();
-            alert.getButtonTypes().add(new ButtonType("Erzwingen", ButtonBar.ButtonData.FINISH));
-            alert.getButtonTypes().add(new ButtonType("Lesezugriff", ButtonBar.ButtonData.APPLY));
-            alert.getButtonTypes().add(ButtonType.CANCEL);
+		if(loginSuccess) {
+			final File lockFile = new File(Settings.get("database.path", "./dbfiles/") + CoreDatabase.LOCK_FILE);
+			Optional<ButtonType> result = Optional.empty();
 
-            Optional<ButtonType> result = alert.showAndWait();
+			if (lockFile.exists()) {
+				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+				alert.setTitle("Datenbankzugriff");
+				alert.setHeaderText("Datenbank möglicherweise in Verwendung ...");
+				alert.setContentText("Mit \"Lesezugriff\" können Sie die Datenbank trotzdem öffnen, allerdings " +
+						  "gehen jegliche Änderungen beim Schließen der Anwendung verloren. Mit \"Erzwingen\" können " +
+						  "Sie den Schreibzugriff auf die Datenbank trotzdem versuchen.");
+				alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+				alert.getButtonTypes().clear();
+				alert.getButtonTypes().add(new ButtonType("Erzwingen", ButtonBar.ButtonData.FINISH));
+				alert.getButtonTypes().add(new ButtonType("Lesezugriff", ButtonBar.ButtonData.APPLY));
+				alert.getButtonTypes().add(ButtonType.CANCEL);
 
-            if(result.isPresent() && result.get() != ButtonType.CANCEL) {
-                logger.warn(result.get());
-                logger.warn(result.toString());
+				result = alert.showAndWait();
+			}
 
-                if(result.get().equals(new ButtonType("Erzwingen", ButtonBar.ButtonData.FINISH))) {
+			if (!lockFile.exists() || (result.isPresent() && result.get() != ButtonType.CANCEL)) {
+				if (result.isPresent() && result.get().equals(new ButtonType("Erzwingen", ButtonBar.ButtonData.FINISH))) {
+					lockFile.delete();
                     logger.info("IN HERE DELETE THE LOCK FILE");
-                    lockFile.delete();
-                }
+				}
 
-                new Thread(() -> {
-                    setUpdateProgress("Anmeldung läuft ...", -1);
+				new Thread(() -> {
+					setUpdateProgress("Anmeldung läuft ...", -1);
+					UserDatabase.validateLogin(new User(usernameField.getText(), passwordField.getText()), true);
+					Platform.runLater(() -> MainView.populateStage(stage));
+				}).start();
+			}
 
-                    boolean loginSuccess = UserDatabase.validateLogin(usernameField.getText(), passwordField.getText());
+			if (result.isPresent() && result.get() == ButtonType.CANCEL) {
+				setUpdateProgress(null, -1);
+			}
+		} else {
+			setUpdateProgress(null, -1);
+			setErrorMsg(ResourceBundle.getBundle("lang.gui").getString("login_failed"));
+		}
+	}
 
-                    if (loginSuccess) {
-                        Platform.runLater(() -> MainView.populateStage(stage));
-                    } else {
-                        setUpdateProgress(null, -1);
-                        setErrorMsg(ResourceBundle.getBundle("lang.gui").getString("login_failed"));
-                    }
-                }).start();
-            }
+	public void setErrorMsg(final String errorMsg) {
+		Platform.runLater(() -> {
+			if (errorMsg == null) {
+				errorLabel.setVisible(false);
+				errorLabel.setManaged(false);
+				errorLabel.setStyle("-fx-text-fill: #B80024; -fx-font-weight: bold");
+			} else {
+				errorLabel.setVisible(true);
+				errorLabel.setManaged(true);
+				errorLabel.setStyle("-fx-text-fill: #B80024; -fx-font-weight: bold");
+				errorLabel.setText(errorMsg);
+			}
+		});
+	}
 
-            if(result.isPresent() && result.get() == ButtonType.CANCEL) {
-                updateProgress.setVisible(false);
-            }
-        }
-    }
+	public void openReleasePage(final ActionEvent actionEvent) {
+		if (releasePageLink != null) {
+			new Thread(() -> {
+				Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+				if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+					try {
+						desktop.browse(new URI(releasePageLink));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		}
+	}
 
-    public void setErrorMsg(final String errorMsg) {
-        Platform.runLater(() -> {
-            if (errorMsg == null) {
-                errorLabel.setVisible(false);
-                errorLabel.setManaged(false);
-                errorLabel.setStyle("-fx-text-fill: #B80024; -fx-font-weight: bold");
-            } else {
-                errorLabel.setVisible(true);
-                errorLabel.setManaged(true);
-                errorLabel.setStyle("-fx-text-fill: #B80024; -fx-font-weight: bold");
-                errorLabel.setText(errorMsg);
-            }
-        });
-    }
+	public void startUpdate(final ActionEvent actionEvent) {
+		if (checkUpdatePreconditions()) {
+			new Thread(() -> {
+				final DatabaseFolder selectedDb = databaseListView.getSelectionModel().getSelectedItem();
+				Settings.set("database.path", selectedDb.getAbsolutePath());
 
-    public void openReleasePage(final ActionEvent actionEvent) {
-        if (releasePageLink != null) {
-            new Thread(() -> {
-                Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-                if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-                    try {
-                        desktop.browse(new URI(releasePageLink));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-        }
-    }
+				updateProgress.setVisible(true);
+				setUpdateProgress("Anmeldung läuft ...", -1);
 
-    public void startUpdate(final ActionEvent actionEvent) {
-        if (checkUpdatePreconditions()) {
-            final File selectedDb = databaseListView.getSelectionModel().getSelectedItem();
-            Settings.set("database.path", selectedDb.getAbsolutePath());
-            updateProgress.setVisible(true);
-            new UpdateHelper(this, releaseJsonString).startUpdate();
-        }
-    }
+				final User user = new User(usernameField.getText(), passwordField.getText());
+				final boolean loginSuccess = UserDatabase.validateLogin(user, false);
+				final UpdateHelper updateHelper = new UpdateHelper(this, releaseJsonString, user);
 
-    public void removeDbBackup(final ActionEvent actionEvent) {
-        if (checkRemovePreconditions()) {
-            final File selectedDb = databaseListView.getSelectionModel().getSelectedItem();
+				if (loginSuccess) {
+					if(selectedDb.isOutdated())
+						updateHelper.startDbMigration();
+					else
+						updateHelper.startFullUpdate();
+				} else {
+					setUpdateProgress(null, -1);
+					setErrorMsg(ResourceBundle.getBundle("lang.gui").getString("login_failed"));
+				}
+			}).start();
+		}
+	}
 
-            if (selectedDb != null) {
-                try {
-                    FileUtils.deleteDirectory(selectedDb);
-                    searchDbFilesFolder();
-                } catch (IOException e) {
-                    logger.error(e);
-                }
-            }
-        }
-    }
+	public void removeDbBackup(final ActionEvent actionEvent) {
+		if (checkRemovePreconditions()) {
+			final File selectedDb = databaseListView.getSelectionModel().getSelectedItem();
 
-    public Stage getStage() {
-        return stage;
-    }
+			if (selectedDb != null) {
+				try {
+					FileUtils.deleteDirectory(selectedDb);
+					searchDbFilesFolder();
+				} catch (IOException e) {
+					logger.error(e);
+				}
+			}
+		}
+	}
 
-    public void setUpdateProgress(final String msg, final double progress) {
-        Platform.runLater(() -> {
-            if (msg != null) {
-                updateProgress.setText(msg);
-                updateProgress.setProgress(progress);
-            } else {
-                updateProgress.setVisible(false);
-            }
-        });
-    }
+	public Stage getStage() {
+		return stage;
+	}
+
+	@Override
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
+
+	public void setUpdateProgress(final String msg, final double progress) {
+		Platform.runLater(() -> {
+			if (msg != null) {
+				updateProgress.setText(msg);
+				updateProgress.setProgress(progress);
+			} else {
+				updateProgress.setVisible(false);
+				updateProgress.setProgress(-1);
+			}
+		});
+	}
 }

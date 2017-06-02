@@ -51,7 +51,7 @@ public class UserDatabase {
         // Retrieve the database folder from settings or the user specific path
         final String path = Settings.get("database.path", "./dbfiles/");
         final Map<String, String> properties = new HashMap<>();
-        final File userDbOrig = new File(path + DB_FILE_NAME);
+        final File userDbOrig = new File(path + File.separatorChar + DB_FILE_NAME);
 
         try {
             // If no exclusive access is needed, then we can copy the database to the systems preferred temporary directory
@@ -189,24 +189,25 @@ public class UserDatabase {
     /**
      * This method is used to valid a username and password combination against the database
      *
-     * @param username The name of the user that needs to be validated
-     * @param password The password of the user
+     * @param user The user that needs to be validated
      * @return
      */
-    public static boolean validateLogin(String username, String password) {
+    public static boolean validateLogin(User user, boolean autoInitDb) {
         try {
             final EntityManager em = getFactory(false).createEntityManager();
-            final List<User> userList = em.createNamedQuery("User.findByUsername", User.class).setParameter("username", username).getResultList();
+            final List<User> userList = em.createNamedQuery("User.findByUsername", User.class).setParameter("username", user.getUsername()).getResultList();
             final Iterator<User> iter = userList.iterator();
             boolean passwordCorrect = false;
 
             if(iter.hasNext()) {
-                final User user = iter.next();
-                passwordCorrect = BCrypt.checkpw(password, user.getPasswordHash());
+                final User userFromDb = iter.next();
+                passwordCorrect = BCrypt.checkpw(user.getPassword(), userFromDb.getPasswordHash());
 
                 if (passwordCorrect) {
-                    user.setPassword(password);
-                    CoreDatabase.initFactory(user);
+                    userFromDb.setPassword(user.getPassword());
+                    user.setUnencryptedDatabaseKey(userFromDb.getUnencryptedDatabaseKey());
+
+                    if(autoInitDb) CoreDatabase.initFactory(user);
                     // TODO disable this here before release!
                     logger.info("Decrypted database aes key is '" + DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + "'");
                 }
@@ -215,7 +216,7 @@ public class UserDatabase {
             return passwordCorrect;
         } catch (Exception e) {
             logger.error(e);
-            ExceptionDialog.show(e);
+            ExceptionDialog.show(e, true);
         }
 
         return false;
@@ -227,7 +228,7 @@ public class UserDatabase {
      * @param properties The properties map, will be cleared before initialization!
      * @param path       The path to the database file
      */
-    private static void initDatabaseProperties(Map<String, String> properties, String path) {
+    public static void initDatabaseProperties(Map<String, String> properties, String path) {
         properties.clear();
 
         String url = "jdbc:h2:" + path + "users";
@@ -243,6 +244,10 @@ public class UserDatabase {
         Map<String, String> properties = new HashMap<>();
         initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"));
         runLiquibaseUpdate(properties.get("hibernate.connection.url"));
-        createUser(user);
+        if(user != null) createUser(user);
+    }
+
+    public static void update() throws SQLException, LiquibaseException {
+        init(null);
     }
 }
