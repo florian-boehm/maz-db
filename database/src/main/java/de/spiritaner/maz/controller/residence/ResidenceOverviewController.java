@@ -5,6 +5,7 @@ import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.model.meta.ResidenceType;
+import de.spiritaner.maz.view.renderer.BooleanTableCell;
 import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -36,7 +37,7 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 	@FXML
 	private TableColumn<Residence, String> additionColumn;
 	@FXML
-	private TableColumn<Residence, Long> idColumn;
+	private TableColumn<Residence, Boolean> forPostColumn;
 
 	private Person person;
 
@@ -86,9 +87,10 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 		stateColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().stateProperty());
 		countryColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().countryProperty());
 		additionColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().additionProperty());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+		forPostColumn.setCellValueFactory(cellData -> cellData.getValue().forPostProperty());
 
 		residenceTypeColumn.setCellFactory(column -> new MetaClassTableCell<>());
+		forPostColumn.setCellFactory(column -> new BooleanTableCell<>());
 	}
 
 	@Override

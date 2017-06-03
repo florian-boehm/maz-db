@@ -1,10 +1,12 @@
 package de.spiritaner.maz.controller;
 
+import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.view.dialog.ExceptionDialog;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.util.database.CoreDatabase;
+import impl.org.controlsfx.table.ColumnFilter;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,9 +26,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public abstract class OverviewController<T extends Identifiable> implements Controller, Initializable {
 
@@ -38,6 +38,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	@FXML private Button editButton;
 	@FXML private Button createButton;
 	@FXML private ToolBar toolbar;
+	@FXML private TableColumn<T, Long> idColumn;
 
 	private TableFilter<T> tableFilter;
 	private boolean useFilter;
@@ -130,7 +131,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 			result.ifPresent(managedObject -> postEdit(previousObject, managedObject));
 
-			if(!result.isPresent())	load();
+			if (!result.isPresent()) load();
 		} catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			logger.error(e);
 			ExceptionDialog.show(e);
@@ -194,7 +195,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 				postLoad(result);
 
-				logger.debug("OverviewController "+this.getClass()+" is clearing now!");
+				logger.debug("OverviewController " + this.getClass() + " is clearing now!");
 
 				if (useFilter) {
 					tableFilter.getBackingList().clear();
@@ -224,7 +225,8 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 	protected abstract Collection<T> preLoad(EntityManager em);
 
-	protected void postLoad(Collection<T> loadedObjs) { }
+	protected void postLoad(Collection<T> loadedObjs) {
+	}
 
 	protected abstract String getLoadingText();
 
@@ -250,6 +252,9 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		preInit();
 
+		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
+		idColumn.setVisible(showId());
+
 		getTable().getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
 			removeButton.setDisable(isRemoveButtonDisabled(oldVal, newVal));
 			editButton.setDisable(isEditButtonDisabled(oldVal, newVal));
@@ -260,7 +265,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 			row.setOnMouseClicked(event -> {
 				if (event.getClickCount() == 2 && (!row.isEmpty()) && editOnDoubleclick) {
-					if(!isEditButtonDisabled(null, row.getItem())) editObj(row.getItem());
+					if (!isEditButtonDisabled(null, row.getItem())) editObj(row.getItem());
 				}
 			});
 
@@ -304,14 +309,14 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 	public void removeItem(T item) {
 		if (useFilter) {
-			if(tableFilter.getBackingList().contains(item)) tableFilter.getBackingList().remove(item);
+			if (tableFilter.getBackingList().contains(item)) tableFilter.getBackingList().remove(item);
 		} else {
-			if(table.getItems().contains(item)) table.getItems().remove(item);
+			if (table.getItems().contains(item)) table.getItems().remove(item);
 		}
 	}
 
 	public void addItem(T item) {
-		logger.debug("Adding item " + item.getClass() + " to "+this.getClass());
+		logger.debug("Adding item " + item.getClass() + " to " + this.getClass());
 
 		if (useFilter) {
 			tableFilter.getBackingList().add(item);
@@ -328,11 +333,46 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		this.useFilter = useFilter;
 	}
 
+	protected boolean showId() {
+		return false;
+	}
+
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface Annotation {
 		String fxmlFile() default "";
 
 		String objDesc() default "";
+	}
+
+	public void filterById(final HashSet<Long> idList, final boolean removeMatches) {
+		if(idList != null && useFilter) {
+			tableFilter.getFilteredList().setPredicate(t -> {
+				if(removeMatches) {
+					return !idList.contains(t.getId());
+				} else {
+					return idList.contains(t.getId());
+				}
+			});
+
+			/* Better but not working solution:
+
+			Platform.runLater(() -> {
+				tableFilter.resetFilter();
+				tableFilter.getColumnFilters().clear();
+				final ColumnFilter<T, Long> idFilter = new ColumnFilter<>(tableFilter, idColumn);
+				tableFilter.getColumnFilters().add(idFilter);
+
+				if (removeMatches) {
+					idFilter.selectAllValues();
+					idList.forEach(idFilter::unselectValue);
+				} else {
+					idFilter.unSelectAllValues();
+					idList.forEach(idFilter::selectValue);
+				}
+
+				idFilter.applyFilter();
+			});*/
+		}
 	}
 }

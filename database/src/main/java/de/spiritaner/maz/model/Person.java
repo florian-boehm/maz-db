@@ -28,6 +28,9 @@ import java.util.List;
 @Indexed
 @NamedQueries({
 		  @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
+		  @NamedQuery(name = "Person.findAllIds", query = "SELECT p.id FROM Person p"),
+		  @NamedQuery(name = "Person.findWithoutNewsletterApproval", query = "SELECT p.id FROM Person p JOIN p.approvals a JOIN a.approvalType at WHERE at.id=3 AND a.approved=FALSE"),
+		  @NamedQuery(name = "Person.findWithRoleType", query = "SELECT p.id FROM Person p JOIN p.roles r JOIN r.roleType rt WHERE rt.id=:roleTypeId"),
 })
 public class Person extends PartialVolatileEntity implements Identifiable {
 
@@ -414,15 +417,20 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 		query.setParameter("person", this);
 		query.setParameter("today", LocalDate.now());
 
-		// TODO take care of the abortion date too!
 		for (YearAbroad yearAbroad : query.getResultList()) {
-			Residence tmpRes = new Residence();
-			tmpRes.setId(-1L);
-			tmpRes.setPerson(this);
-			tmpRes.setAddress(yearAbroad.getSite().getAddress());
-			tmpRes.setResidenceType(em.find(ResidenceType.class, 3L));
-			this.setPreferredResidence(tmpRes);
-			if (!residences.contains(tmpRes)) residences.add(tmpRes);
+			if(yearAbroad.getAbortionDate() == null ||
+					  LocalDate.now().isBefore(yearAbroad.getAbortionDate()) ||
+					  LocalDate.now().isEqual(yearAbroad.getAbortionDate())) {
+				Residence tmpRes = new Residence();
+				tmpRes.setId(-1L);
+				tmpRes.setPerson(this);
+				tmpRes.setAddress(yearAbroad.getSite().getAddress());
+				tmpRes.setResidenceType(em.find(ResidenceType.class, 3L));
+				tmpRes.setForPost(true);
+				this.setPreferredResidence(tmpRes);
+				// TODO take care of multiple residences with same id -1
+				if (!residences.contains(tmpRes)) residences.add(tmpRes);
+			}
 		}
 	}
 

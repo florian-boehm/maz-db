@@ -37,8 +37,6 @@ public class YearAbroadOverviewController extends OverviewController<YearAbroad>
 	private TableColumn<YearAbroad, Boolean> wwPromotedColumn;
 	@FXML
 	private TableColumn<YearAbroad, EPNumber> epNumberColumn;
-	@FXML
-	private TableColumn<YearAbroad, Long> idColumn;
 
 	private Site site;
 	private Person person;
@@ -79,7 +77,6 @@ public class YearAbroadOverviewController extends OverviewController<YearAbroad>
 		arrivalDateColumn.setCellValueFactory(cellData -> cellData.getValue().arrivalDateProperty());
 		abortionDateColumn.setCellValueFactory(cellData -> cellData.getValue().abortionDateProperty());
 		wwPromotedColumn.setCellValueFactory(cellData -> cellData.getValue().wwPromotedProperty());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 		jobDescriptionColumn.setCellValueFactory(cellData -> cellData.getValue().jobDescriptionProperty());
 		epNumberColumn.setCellValueFactory(cellData -> cellData.getValue().epNumberProperty());
 

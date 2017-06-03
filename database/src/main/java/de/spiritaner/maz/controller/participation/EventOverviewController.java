@@ -22,7 +22,6 @@ public class EventOverviewController extends OverviewController<Event> {
 	@FXML private TableColumn<Event, String> nameColumn;
 	@FXML private TableColumn<Event, LocalDate> fromDateColumn;
 	@FXML private TableColumn<Event, LocalDate> toDateColumn;
-	@FXML private TableColumn<Event, Long> idColumn;
 
 	public EventOverviewController() {
 		super(Event.class, true);
@@ -50,7 +49,6 @@ public class EventOverviewController extends OverviewController<Event> {
 		locationColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
 		fromDateColumn.setCellValueFactory(cellData -> cellData.getValue().fromDateProperty());
 		toDateColumn.setCellValueFactory(cellData -> cellData.getValue().toDateProperty());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 
 		eventTypeColumn.setCellFactory(column -> new MetaClassTableCell<>());
 		fromDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());

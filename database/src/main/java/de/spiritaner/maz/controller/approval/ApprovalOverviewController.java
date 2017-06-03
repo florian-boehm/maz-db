@@ -22,8 +22,6 @@ public class ApprovalOverviewController extends OverviewController<Approval> {
 	private TableColumn<Approval, ApprovalType> approvalTypeColumn;
 	@FXML
 	private TableColumn<Approval, Boolean> approvedColumn;
-	@FXML
-	private TableColumn<Approval, Long> idColumn;
 
 	private Person person;
 
@@ -65,7 +63,6 @@ public class ApprovalOverviewController extends OverviewController<Approval> {
 	protected void postInit() {
 		approvalTypeColumn.setCellValueFactory(cellData -> cellData.getValue().approvalTypeProperty());
 		approvedColumn.setCellValueFactory(cellData -> cellData.getValue().approvedProperty());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 
 		approvalTypeColumn.setCellFactory(column -> new MetaClassTableCell<>());
 		approvedColumn.setCellFactory(column -> new BooleanTableCell<>());

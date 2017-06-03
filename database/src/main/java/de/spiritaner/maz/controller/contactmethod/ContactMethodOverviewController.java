@@ -26,8 +26,6 @@ public class ContactMethodOverviewController extends OverviewController<ContactM
 	private TableColumn<ContactMethod, ContactMethodType> contactMethodTypeColumn;
 	@FXML
 	private TableColumn<ContactMethod, String> valueColumn;
-	@FXML
-	private TableColumn<ContactMethod, Long> idColumn;
 
 	private Person person;
 
@@ -71,7 +69,6 @@ public class ContactMethodOverviewController extends OverviewController<ContactM
 		valueColumn.setCellValueFactory(cellData -> cellData.getValue().valueProperty());
 		preferredColumn.setCellValueFactory(cellData -> cellData.getValue().preferredProperty());
 		remarkColumn.setCellValueFactory(cellData -> cellData.getValue().remarkProperty());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 
 		contactMethodTypeColumn.setCellFactory(column -> new MetaClassTableCell<>());
 		preferredColumn.setCellFactory(column -> new BooleanTableCell<>());

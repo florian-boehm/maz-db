@@ -242,8 +242,9 @@
 											<center>
 												<GridPane hgap="10.0" vgap="10.0" BorderPane.alignment="CENTER">
 													<columnConstraints>
-														<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-														<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+														<ColumnConstraints hgrow="NEVER" />
+                                          <ColumnConstraints hgrow="NEVER" />
+														<ColumnConstraints hgrow="SOMETIMES" />
 													</columnConstraints>
 													<rowConstraints>
 														<RowConstraints vgrow="NEVER" />
@@ -252,7 +253,7 @@
 														<RowConstraints vgrow="NEVER" />
 														<RowConstraints vgrow="NEVER" />
 														<RowConstraints vgrow="NEVER" />
-														<RowConstraints vgrow="NEVER" />
+                                          <RowConstraints />
 													</rowConstraints>
 													<BorderPane.margin>
 														<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -263,8 +264,8 @@
 																<Font name="System Bold" size="14.0" />
 															</font>
 														</Text>
-														<HBox style="-fx-border-color: #c8c8c8; -fx-border-width: 1;" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
-															<fx:include fx:id="personOverview" source="../person/person_overview.fxml" />
+														<HBox style="-fx-border-color: #c8c8c8; -fx-border-width: 1;" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+															<fx:include fx:id="personOverview" source="../person/person_overview.fxml" HBox.hgrow="ALWAYS" />
 														</HBox>
 														<Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
 														<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Filter" GridPane.rowIndex="3">
@@ -272,9 +273,17 @@
 																<Font name="System Bold" size="14.0" />
 															</font>
 														</Text>
-														<CheckBox mnemonicParsing="false" text="Nur Personen mit Rundbrief-Zustimmung anzeigen" GridPane.rowIndex="4" />
-														<CheckBox mnemonicParsing="false" text="Nur Personen mit folgenden Funktionen anzeigen:" GridPane.rowIndex="5" />
-														<ListView prefHeight="100.0" GridPane.rowIndex="6" />
+                                          <CheckBox fx:id="askOnMultiPostAddressesToggle" mnemonicParsing="false" text="Auswahldialog bei mehreren mögl. Postadressen anzeigen (Vorsicht!)" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+														<CheckBox fx:id="personsWithNewsletterApprovalToggle" mnemonicParsing="false" text="Nur Personen mit Rundbrief-Zustimmung anzeigen" GridPane.rowIndex="4" />
+														<CheckBox fx:id="personsWithRoleTypesToggle" mnemonicParsing="false" text="Nur Personen mit mindestens einer der folgenden Funktionen anzeigen:" GridPane.rowIndex="5" />
+														<ListView fx:id="personRoleTypes" prefHeight="100.0" GridPane.rowIndex="6" />
+                                          <CheckBox fx:id="mergeRelationshipAddressesToggle" mnemonicParsing="false" text="Familien, Partnerschaften zusammenfassen" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Besonderheiten" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <Separator orientation="VERTICAL" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="2147483647" />
 													</children>
 												</GridPane>
 											</center>

@@ -20,8 +20,6 @@ public class EPNumberOverviewController extends OverviewController<EPNumber> {
 	private TableColumn<EPNumber, Integer> numberColumn;
 	@FXML
 	private TableColumn<EPNumber, String> descriptionColumn;
-	@FXML
-	private TableColumn<EPNumber, Long> idColumn;
 
 	private Site site;
 
@@ -60,7 +58,6 @@ public class EPNumberOverviewController extends OverviewController<EPNumber> {
 
 	@Override
 	protected void postInit() {
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 		descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
 		numberColumn.setCellValueFactory(cellData -> cellData.getValue().numberProperty().asObject());
 	}

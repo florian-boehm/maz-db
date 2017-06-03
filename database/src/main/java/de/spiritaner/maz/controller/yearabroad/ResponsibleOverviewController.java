@@ -28,8 +28,6 @@ public class ResponsibleOverviewController extends OverviewController<Responsibl
 	private TableColumn<Responsible, String> siteColumn;
 	@FXML
 	private TableColumn<Responsible, PersonGroup> personGroupColumn;
-	@FXML
-	private TableColumn<Responsible, Long> idColumn;
 
 	private Site site;
 	private Person person;
@@ -69,7 +67,6 @@ public class ResponsibleOverviewController extends OverviewController<Responsibl
 		personColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPerson().getFullName()));
 		siteColumn.setCellValueFactory(cellData -> cellData.getValue().getSite().nameProperty());
 		personGroupColumn.setCellValueFactory(cellData -> cellData.getValue().personGroupProperty());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 
 		personGroupColumn.setCellFactory(column -> new MetaClassTableCell<>());
 	}

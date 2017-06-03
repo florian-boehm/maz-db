@@ -39,7 +39,7 @@
 		</properties>
 	</persistence-unit>
 
-	<persistence-unit name="dataDb" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="coreDb" transaction-type="RESOURCE_LOCAL">
 		<class>de.spiritaner.maz.model.Address</class>
 		<class>de.spiritaner.maz.model.Approval</class>
 		<class>de.spiritaner.maz.model.meta.ApprovalType</class>

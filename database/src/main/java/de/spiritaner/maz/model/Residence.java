@@ -16,7 +16,8 @@ import javax.persistence.*;
 @Identifiable.Annotation(editorDialogClass = ResidenceEditorDialogController.class, identifiableName = "Wohnort")
 @NamedQueries({
 		  @NamedQuery(name = "Residence.findAll", query = "SELECT r FROM Residence r"),
-		  @NamedQuery(name = "Residence.findAllForPerson", query = "SELECT r FROM Residence r WHERE r.person=:person")
+		  @NamedQuery(name = "Residence.findAllForPerson", query = "SELECT r FROM Residence r WHERE r.person=:person"),
+		  @NamedQuery(name = "Residence.findPostAddressForPerson", query = "SELECT r FROM Residence r WHERE r.person=:person AND r.forPost=TRUE")
 })
 public class Residence implements Identifiable {
 
@@ -24,12 +25,14 @@ public class Residence implements Identifiable {
 	private ObjectProperty<Person> person;
 	private ObjectProperty<Address> address;
 	private ObjectProperty<ResidenceType> residenceType;
+	private BooleanProperty forPost;
 
 	public Residence() {
 		id = new SimpleLongProperty();
 		person = new SimpleObjectProperty<>();
 		address = new SimpleObjectProperty<>();
 		residenceType = new SimpleObjectProperty<>();
+		forPost = new SimpleBooleanProperty(Boolean.FALSE);
 	}
 
 	@Id
@@ -102,5 +105,18 @@ public class Residence implements Identifiable {
 	@Transient
 	public boolean equals(Object obj) {
 		return (obj instanceof Residence) && (((Residence) obj).getId().equals(this.getId()));
+	}
+
+	@Column(nullable = false)
+	public boolean isForPost() {
+		return forPost.get();
+	}
+
+	public BooleanProperty forPostProperty() {
+		return forPost;
+	}
+
+	public void setForPost(boolean forPost) {
+		this.forPost.set(forPost);
 	}
 }

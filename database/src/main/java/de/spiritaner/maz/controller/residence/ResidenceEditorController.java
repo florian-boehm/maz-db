@@ -21,12 +21,14 @@ import java.util.ResourceBundle;
 
 public class ResidenceEditorController implements Initializable {
 
-	@FXML private
-	Button addNewResidenceTypeButton;
+	@FXML
+	private Button addNewResidenceTypeButton;
 	@FXML
 	private ToggleSwitch preferredResidence;
 	@FXML
 	private ComboBox<ResidenceType> residenceTypeComboBox;
+	@FXML
+	private ToggleSwitch postAddressToggleSwitch;
 
 	private ComboBoxValidator<ResidenceType> residenceTypeValidator;
 
@@ -43,17 +45,20 @@ public class ResidenceEditorController implements Initializable {
 	public void setAll(Residence residence) {
 		preferredResidence.setSelected(residence.getPreferredAddress());
 		residenceTypeComboBox.setValue(residence.getResidenceType());
+		postAddressToggleSwitch.setSelected(residence.isForPost());
 	}
 
 	public Residence getAll(Residence residence) {
 		if (residence == null) residence = new Residence();
 		residence.setResidenceType(residenceTypeComboBox.getValue());
+		residence.setForPost(postAddressToggleSwitch.isSelected());
 		return residence;
 	}
 
 	public void setReadonly(boolean readonly) {
 		preferredResidence.setDisable(readonly);
 		residenceTypeComboBox.setDisable(readonly);
+		postAddressToggleSwitch.setDisable(readonly);
 	}
 
 	public void loadResidenceTypes() {

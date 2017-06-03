@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import org.controlsfx.control.MaskerPane?>
 
-<AnchorPane fx:id="tablePane" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.person.PersonOverviewController">
+<AnchorPane fx:id="tablePane" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.person.PersonOverviewController">
 	<children>
 		<BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<bottom>

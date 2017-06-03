@@ -19,8 +19,6 @@ public class RoleOverviewController extends OverviewController<Role> {
 
 	@FXML
 	private TableColumn<Role, RoleType> roleTypeColumn;
-	@FXML
-	private TableColumn<Role, Long> idColumn;
 
 	private Person person;
 
@@ -55,7 +53,6 @@ public class RoleOverviewController extends OverviewController<Role> {
 	@Override
 	protected void postInit() {
 		roleTypeColumn.setCellValueFactory(cellData -> cellData.getValue().roleTypeProperty());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 
 		roleTypeColumn.setCellFactory(column -> new MetaClassTableCell<>());
 	}

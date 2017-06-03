@@ -28,147 +28,153 @@ import java.util.Map;
  * @version 2017.05.28
  */
 public class CoreDatabase {
-    private static final Logger logger = Logger.getLogger(CoreDatabase.class);
-    public static final String LOCK_FILE = "db.lock";
-    private static final String DB_FILE_NAME = "core.mv.db";
-    private static EntityManagerFactory factory = null;
+	public static final String LOCK_FILE = "db.lock";
+	private static final Logger logger = Logger.getLogger(CoreDatabase.class);
+	private static final String DB_FILE_NAME = "core.mv.db";
+	private static EntityManagerFactory factory = null;
 
-    private CoreDatabase() {
+	private CoreDatabase() {
 
-    }
+	}
 
-    synchronized static void initFactory(final User user) throws Exception {
-        final String path = Settings.get("database.path", "./dbfiles/");
-        final Map<String, String> properties = new HashMap<>();
-        final File dataDbOrig = new File(path + DB_FILE_NAME);
-        final File lockFile = new File(path + LOCK_FILE);
-        final boolean exclusiveAccess = !lockFile.exists();
+	synchronized static void initFactory(final User user) throws Exception {
+		final String path = Settings.get("database.path", "./dbfiles/");
+		final Map<String, String> properties = new HashMap<>();
+		final File coreDbOrig = new File(path + DB_FILE_NAME);
+		final File lockFile = new File(path + LOCK_FILE);
+		final boolean exclusiveAccess = !lockFile.exists();
 
-        try {
-            if (!exclusiveAccess && factory == null) {
-                try {
-                    final File dataDbInTmp = File.createTempFile("maz-db-", "-" + DB_FILE_NAME, new File("./"));
-                    dataDbInTmp.deleteOnExit();
-                    FileUtils.copyFile(dataDbOrig, dataDbInTmp);
+		try {
+			if (!exclusiveAccess && factory == null) {
+				try {
+					final File coreDbInTmp = File.createTempFile("maz-db-", "-" + DB_FILE_NAME, new File("./"));
+					coreDbInTmp.deleteOnExit();
+					FileUtils.copyFile(coreDbOrig, coreDbInTmp);
 
-                    initDatabaseProperties(properties, dataDbInTmp.getPath().replace(DB_FILE_NAME, ""), user);
-                    factory = Persistence.createEntityManagerFactory("dataDb", properties);
+					initDatabaseProperties(properties, coreDbInTmp.getPath().replace(DB_FILE_NAME, ""), user);
+					factory = Persistence.createEntityManagerFactory("coreDb", properties);
 
-                    runAssetGeneration(properties.get("hibernate.connection.url"), user);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw new Exception("Failed to create temporary file for inclusive access!");
-                }
-            } else if (exclusiveAccess && factory == null) {
-                initDatabaseProperties(properties, path, user);
-                factory = Persistence.createEntityManagerFactory("dataDb", properties);
+					runAssetGeneration(properties.get("hibernate.connection.url"), user);
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new Exception("Failed to create temporary file for inclusive access!");
+				}
+			} else if (exclusiveAccess && factory == null) {
+				initDatabaseProperties(properties, path, user);
+				factory = Persistence.createEntityManagerFactory("coreDb", properties);
 
-                runAssetGeneration(properties.get("hibernate.connection.url"), user);
-            }
-        } catch (Exception e) {
-            // Search for the cause of the exception
-            Throwable t = e.getCause();
+				runAssetGeneration(properties.get("hibernate.connection.url"), user);
+			}
+		} catch (Exception e) {
+			// Search for the cause of the exception
+			Throwable t = e.getCause();
 
-            boolean schemaManagementException = false;
-            boolean illegalStateException = false;
+			boolean schemaManagementException = false;
+			boolean illegalStateException = false;
 
-            if (t != null) {
-                do {
-                    if (t instanceof SchemaManagementException) schemaManagementException = true;
-                    if (t instanceof IllegalStateException) illegalStateException = true;
-                } while ((t = t.getCause()) != null);
-            }
+			if (t != null) {
+				do {
+					if (t instanceof SchemaManagementException) schemaManagementException = true;
+					if (t instanceof IllegalStateException) illegalStateException = true;
+				} while ((t = t.getCause()) != null);
+			}
 
-            if (schemaManagementException) {
-                throw new DatabaseException("Database schema is invalid", e);
-            } else if (illegalStateException) {
-                throw new DatabaseException("Data database is already in use!", e);
-            } else {
-                throw e;
-            }
-        }
+			if (schemaManagementException) {
+				try {
+					// TODO Verify Feature: Auto apply liquibase update if database schema is invalid
+					runLiquibaseUpdate(properties.get("hibernate.connection.url"), user);
+					factory = Persistence.createEntityManagerFactory("coreDb", properties);
+				} catch (Exception inner) {
+					throw new DatabaseException("Database schema is invalid", inner);
+				}
+			} else if (illegalStateException) {
+				throw new DatabaseException("Data database is already in use!", e);
+			} else {
+				throw e;
+			}
+		}
 
-        if (exclusiveAccess && factory != null) {
-            lockFile.createNewFile();
-            lockFile.deleteOnExit();
-        }
-    }
+		if (exclusiveAccess && factory != null) {
+			lockFile.createNewFile();
+			lockFile.deleteOnExit();
+		}
+	}
 
-    /**
-     * (Re)create the assets in the core database
-     *
-     * @param url  The connection URL to the database
-     * @param user The user that is needed for authentication and encryption
-     */
-    private static void runAssetGeneration(String url, User user) {
-        try {
-            logger.info("Try to create assets");
-            Connection conn = DriverManager.getConnection(url, user.getUsername(), DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
-            JdbcConnection jdbcConn = new JdbcConnection(conn);
-            Liquibase liquibase = new Liquibase("./liquibase/assets/changelog.xml", new ClassLoaderResourceAccessor(), jdbcConn);
-            liquibase.update("");
-            logger.warn("Assets have been successfully created!");
-        } catch (LiquibaseException | SQLException e) {
-            logger.error(e);
-        }
-    }
+	/**
+	 * (Re)create the assets in the core database
+	 *
+	 * @param url  The connection URL to the database
+	 * @param user The user that is needed for authentication and encryption
+	 */
+	private static void runAssetGeneration(String url, User user) {
+		try {
+			logger.info("Try to create assets");
+			Connection conn = DriverManager.getConnection(url, user.getUsername(), DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
+			JdbcConnection jdbcConn = new JdbcConnection(conn);
+			Liquibase liquibase = new Liquibase("./liquibase/assets/changelog.xml", new ClassLoaderResourceAccessor(), jdbcConn);
+			liquibase.update("");
+			logger.warn("Assets have been successfully created!");
+		} catch (LiquibaseException | SQLException e) {
+			logger.error(e);
+		}
+	}
 
-    /**
-     * This method tries to run the liquibase update on the specified connection URL
-     *
-     * @param url  The connection URL to the database
-     * @param user The user that is needed for authentication and encryption
-     * @throws SQLException       Thrown in case of a problem with the underlying sql statements
-     * @throws LiquibaseException Thrown in case of a problem with liquibase itself
-     */
-    private static void runLiquibaseUpdate(String url, User user) throws SQLException, LiquibaseException {
-        Connection conn = DriverManager.getConnection(url, user.getUsername(), DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
-        JdbcConnection jdbcConn = new JdbcConnection(conn);
-        Liquibase liquibase = new Liquibase("liquibase/core/changelog.xml", new ClassLoaderResourceAccessor(), jdbcConn);
-        liquibase.update("");
+	/**
+	 * This method tries to run the liquibase update on the specified connection URL
+	 *
+	 * @param url  The connection URL to the database
+	 * @param user The user that is needed for authentication and encryption
+	 * @throws SQLException       Thrown in case of a problem with the underlying sql statements
+	 * @throws LiquibaseException Thrown in case of a problem with liquibase itself
+	 */
+	private static void runLiquibaseUpdate(String url, User user) throws SQLException, LiquibaseException {
+		Connection conn = DriverManager.getConnection(url, user.getUsername(), DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
+		JdbcConnection jdbcConn = new JdbcConnection(conn);
+		Liquibase liquibase = new Liquibase("liquibase/core/changelog.xml", new ClassLoaderResourceAccessor(), jdbcConn);
+		liquibase.update("");
 
-        logger.info("Database schema has been applied to core database!");
-    }
+		logger.info("Database schema has been applied to core database!");
+	}
 
-    /**
-     * This method returns the EntityManagerFactory
-     *
-     * @return The EntityManagerFactory, may be null if it was not initialized correctly
-     */
-    public static EntityManagerFactory getFactory() {
-        return factory;
-    }
+	/**
+	 * This method returns the EntityManagerFactory
+	 *
+	 * @return The EntityManagerFactory, may be null if it was not initialized correctly
+	 */
+	public static EntityManagerFactory getFactory() {
+		return factory;
+	}
 
-    /**
-     * A wrapper method for setting the database parameters
-     *
-     * @param properties The properties map, will be cleared before initialization!
-     * @param path       The path to the database file
-     * @param user       The user that is needed for authentication and encryption
-     */
-    public static void initDatabaseProperties(Map<String, String> properties, String path, User user) {
-        properties.clear();
+	/**
+	 * A wrapper method for setting the database parameters
+	 *
+	 * @param properties The properties map, will be cleared before initialization!
+	 * @param path       The path to the database file
+	 * @param user       The user that is needed for authentication and encryption
+	 */
+	public static void initDatabaseProperties(Map<String, String> properties, String path, User user) {
+		properties.clear();
 
-        String url = "jdbc:h2:" + path + "core;CIPHER=AES";
-        url += ";LOCK_TIMEOUT=" + Settings.get("database.core.lock_timeout", "5");
-        url += ";DEFAULT_LOCK_TIMEOUT=" + Settings.get("database.core.default_lock_timeout", "5");
-        url += ";TRACE_LEVEL_FILE=" + Settings.get("database.core.trace_level_file", "0");
-        url += ";TRACE_LEVEL_SYSTEM_OUT=" + Settings.get("database.core.trace_level_system_out", "1");
+		String url = "jdbc:h2:" + path + "core;CIPHER=AES";
+		url += ";LOCK_TIMEOUT=" + Settings.get("database.core.lock_timeout", "5");
+		url += ";DEFAULT_LOCK_TIMEOUT=" + Settings.get("database.core.default_lock_timeout", "5");
+		url += ";TRACE_LEVEL_FILE=" + Settings.get("database.core.trace_level_file", "0");
+		url += ";TRACE_LEVEL_SYSTEM_OUT=" + Settings.get("database.core.trace_level_system_out", "1");
 
-        properties.put("hibernate.connection.url", url);
-        properties.put("hibernate.connection.username", user.getUsername());
-        properties.put("hibernate.connection.password", DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
-        properties.put("javax.persistence.jdbc.username", user.getUsername());
-        properties.put("javax.persistence.jdbc.password", DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
-    }
+		properties.put("hibernate.connection.url", url);
+		properties.put("hibernate.connection.username", user.getUsername());
+		properties.put("hibernate.connection.password", DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
+		properties.put("javax.persistence.jdbc.username", user.getUsername());
+		properties.put("javax.persistence.jdbc.password", DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
+	}
 
-    public static void init(User user) throws SQLException, LiquibaseException {
-        Map<String, String> properties = new HashMap<>();
-        initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"), user);
-        runLiquibaseUpdate(properties.get("hibernate.connection.url"), user);
-    }
+	public static void init(User user) throws SQLException, LiquibaseException {
+		Map<String, String> properties = new HashMap<>();
+		initDatabaseProperties(properties, Settings.get("database.path", "./dbfiles/"), user);
+		runLiquibaseUpdate(properties.get("hibernate.connection.url"), user);
+	}
 
-    public static void update(User user) throws SQLException, LiquibaseException {
-        init(user);
-    }
+	public static void update(User user) throws SQLException, LiquibaseException {
+		init(user);
+	}
 }

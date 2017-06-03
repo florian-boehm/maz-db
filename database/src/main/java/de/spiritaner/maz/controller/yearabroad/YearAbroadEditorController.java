@@ -59,6 +59,7 @@ public class YearAbroadEditorController implements Initializable {
 		wwMonthsField.setDisable(true);
 
 		weltwaertsPromotedToggleSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
+			wwMonthsField.setText((newValue) ? "12" : "0");
 			wwMonthsField.setDisable(!newValue);
 		});
 

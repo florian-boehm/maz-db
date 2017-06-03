@@ -17,8 +17,6 @@ public class SiteOverviewController extends OverviewController<Site> {
 	private TableColumn<Site, String> nameColumn;
 	@FXML
 	private TableColumn<Site, String> organizationColumn;
-	@FXML
-	private TableColumn<Site, Long> idColumn;
 
 	public SiteOverviewController() {
 		super(Site.class, true);
@@ -43,6 +41,5 @@ public class SiteOverviewController extends OverviewController<Site> {
 	protected void postInit() {
 		nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		organizationColumn.setCellValueFactory(cellData -> cellData.getValue().organizationProperty());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 	}
 }

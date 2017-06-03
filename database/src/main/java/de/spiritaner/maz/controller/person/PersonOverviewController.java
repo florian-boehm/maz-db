@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 @OverviewController.Annotation(fxmlFile = "/fxml/person/person_overview.fxml", objDesc = "Person")
@@ -38,8 +39,6 @@ public class PersonOverviewController extends OverviewController<Person> {
 	private TableColumn<Person, String> birthNameColumn;
 	@FXML
 	private TableColumn<Person, String> birthplaceColumn;
-	@FXML
-	private TableColumn<Person, Long> idColumn;
 	@FXML
 	private TableColumn<Person, LocalDate> birthdayColumn;
 	@FXML
@@ -75,7 +74,6 @@ public class PersonOverviewController extends OverviewController<Person> {
 		birthdayColumn.setCellValueFactory(cellData -> cellData.getValue().birthdayProperty());
 		ageColumn.setCellValueFactory(cellData -> cellData.getValue().birthdayProperty());
 		birthplaceColumn.setCellValueFactory(cellData -> cellData.getValue().birthplaceProperty());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 		honorificColumn.setCellValueFactory(cellData -> cellData.getValue().honorificProperty());
 		salutationColumn.setCellValueFactory(cellData -> cellData.getValue().salutationProperty());
 		religionColumn.setCellValueFactory(cellData -> cellData.getValue().religionProperty());

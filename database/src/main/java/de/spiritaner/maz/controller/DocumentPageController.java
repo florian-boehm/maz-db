@@ -2,8 +2,11 @@ package de.spiritaner.maz.controller;
 
 import de.spiritaner.maz.controller.participation.EventOverviewController;
 import de.spiritaner.maz.controller.person.PersonOverviewController;
+import de.spiritaner.maz.model.meta.RoleType;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.document.Envelope;
 import de.spiritaner.maz.util.document.ParticipantList;
+import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.view.renderer.TemplateFileListCell;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,8 +20,12 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.MaskerPane;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.io.File;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DocumentPageController implements Controller {
@@ -66,6 +73,11 @@ public class DocumentPageController implements Controller {
 	@FXML private PersonOverviewController personOverviewController;
 	@FXML private Button personBackButton;
 	@FXML private Button personNextButton;
+	@FXML private CheckBox personsWithNewsletterApprovalToggle;
+	@FXML private CheckBox personsWithRoleTypesToggle;
+	@FXML private ListView<RoleType> personRoleTypes;
+	@FXML private CheckBox askOnMultiPostAddressesToggle;
+	@FXML private CheckBox mergeRelationshipAddressesToggle;
 
 	private enum Page {
 		DOCUMENT, EVENT, PERSON, OUTPUT,
@@ -139,6 +151,38 @@ public class DocumentPageController implements Controller {
 		outFilePathTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			outFinishButton.setDisable(newValue.trim().isEmpty());
 		});
+
+		EntityManager em = CoreDatabase.getFactory().createEntityManager();
+		List<RoleType> roleTypes = em.createNamedQuery("RoleType.findAll",RoleType.class).getResultList();
+		personRoleTypes.getItems().clear();
+		personRoleTypes.getItems().addAll(roleTypes);
+		personRoleTypes.setCellFactory(cell -> new MetaClassListCell<>());
+		personRoleTypes.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+		personsWithNewsletterApprovalToggle.selectedProperty().addListener((observable, oldValue, newValue) -> filterPersons());
+		personsWithRoleTypesToggle.selectedProperty().addListener((observable, oldValue, newValue) -> filterPersons());
+		personRoleTypes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> filterPersons());
+	}
+
+	private void filterPersons() {
+		final EntityManager em = CoreDatabase.getFactory().createEntityManager();
+		final HashSet<Long> idsToKeep = new HashSet<>();
+
+		if(personsWithRoleTypesToggle.isSelected()) {
+			for (RoleType roleType : personRoleTypes.getSelectionModel().getSelectedItems()) {
+				TypedQuery<Long> query = em.createNamedQuery("Person.findWithRoleType", Long.class);
+				query.setParameter("roleTypeId",roleType.getId());
+				idsToKeep.addAll(query.getResultList());
+			}
+		} else {
+			idsToKeep.addAll(em.createNamedQuery("Person.findAllIds",Long.class).getResultList());
+		}
+
+		if(personsWithNewsletterApprovalToggle.isSelected()) {
+			idsToKeep.removeAll(em.createNamedQuery("Person.findWithoutNewsletterApproval", Long.class).getResultList());
+		}
+
+		personOverviewController.filterById(idsToKeep,false);
 	}
 
 	public void docNext(ActionEvent actionEvent) {
@@ -172,7 +216,10 @@ public class DocumentPageController implements Controller {
 		if(participantListRadioButton.isSelected()) {
 			ParticipantList.createForEvent(eventOverviewController.getTable().getSelectionModel().getSelectedItem(), template, outFile, this);
 		} else if(envelopeRadioButton.isSelected()) {
-			Envelope.create(personOverviewController.getTable().getSelectionModel().getSelectedItems(), template, outFile, this);
+			final Envelope.Options opts = new Envelope.Options();
+			opts.setAskOnMultiplePostAddresses(askOnMultiPostAddressesToggle.isSelected());
+			opts.setMergeRelationshipAddresses(mergeRelationshipAddressesToggle.isSelected());
+			Envelope.create(personOverviewController.getTable().getSelectionModel().getSelectedItems(), template, outFile, this, opts);
 		}
 
 		setProgress(false,"",-1);

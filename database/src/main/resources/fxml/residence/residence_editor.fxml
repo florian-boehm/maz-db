@@ -30,12 +30,10 @@
             </right>
         </BorderPane>
         <ToggleSwitch fx:id="preferredResidence" text="Bevorzugt:" GridPane.columnSpan="2" GridPane.rowIndex="1">
-         <padding>
-            <Insets top="3.0" />
-         </padding>
          <GridPane.margin>
             <Insets />
          </GridPane.margin></ToggleSwitch>
+      <ToggleSwitch fx:id="postAddressToggleSwitch" text="Postadresse:" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
     </children>
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0" />
@@ -43,6 +41,7 @@
     </columnConstraints>
    <rowConstraints>
       <RowConstraints />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints />
+      <RowConstraints />
    </rowConstraints>
 </GridPane>

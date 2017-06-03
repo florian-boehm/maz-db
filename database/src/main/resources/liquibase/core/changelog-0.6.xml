@@ -52,4 +52,16 @@
     <changeSet author="florian (generated)" id="1496005184631-12">
         <dropColumn columnName="WELTWAERTSPROMOTED" tableName="YEARABROAD_AUD"/>
     </changeSet>
+    <changeSet author="florian (generated)" id="1496005184631-13">
+        <addColumn tableName="RESIDENCE">
+            <column name="FORPOST" type="BOOLEAN(1)" defaultValue="FALSE">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="florian (generated)" id="1496005184631-14">
+        <addColumn tableName="RESIDENCE_AUD">
+            <column name="FORPOST" type="BOOLEAN(1)" defaultValue="FALSE"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

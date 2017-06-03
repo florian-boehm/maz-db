@@ -22,8 +22,6 @@ public class RelationshipOverviewController extends OverviewController<Relations
 	private TableColumn<Relationship, String> fromPersonColumn;
 	@FXML
 	private TableColumn<Relationship, String> toPersonColumn;
-	@FXML
-	private TableColumn<Relationship, Long> idColumn;
 
 	private Person person;
 
@@ -66,7 +64,6 @@ public class RelationshipOverviewController extends OverviewController<Relations
 	protected void postInit() {
 		relationshipTypeColumn.setCellValueFactory(cellData -> cellData.getValue().getRelationshipType().descriptionProperty());
 		toPersonColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getToPersonFullName()));
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 	}
 
 	public void setPerson(Person person) {

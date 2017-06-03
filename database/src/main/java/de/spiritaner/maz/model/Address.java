@@ -140,4 +140,10 @@ public class Address implements Identifiable {
 
 		return (results.size() == 1) ? em.merge(results.get(0)) : address;
 	}
+
+	@Transient
+	@Override
+	public String toString() {
+		return street.get() + " " + houseNumber.get() + ", " + postCode.get() + " "  + city.get();
+	}
 }

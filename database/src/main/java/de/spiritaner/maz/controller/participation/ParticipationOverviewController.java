@@ -24,7 +24,6 @@ public class ParticipationOverviewController extends OverviewController<Particip
 	@FXML private TableColumn<Participation, Person> personColumn;
 	@FXML private TableColumn<Participation, ParticipationType> participantTypeColumn;
 	@FXML private TableColumn<Participation, Boolean> participatedColumn;
-	@FXML private TableColumn<Participation, Long> idColumn;
 
 	// This controller can be person or participation centric
 	private Person person;
@@ -104,7 +103,6 @@ public class ParticipationOverviewController extends OverviewController<Particip
 		personColumn.setCellValueFactory(cellData -> cellData.getValue().personProperty());
 		participantTypeColumn.setCellValueFactory(cellData -> cellData.getValue().participationTypeProperty());
 		participatedColumn.setCellValueFactory(cellData -> cellData.getValue().hasParticipatedProperty());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 
 		participantTypeColumn.setCellFactory(column -> new MetaClassTableCell<>());
 		participatedColumn.setCellFactory(column -> new BooleanTableCell<>());

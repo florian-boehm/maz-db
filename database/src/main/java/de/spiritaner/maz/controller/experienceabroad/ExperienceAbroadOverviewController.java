@@ -21,7 +21,6 @@ public class ExperienceAbroadOverviewController extends OverviewController<Exper
 	@FXML private TableColumn<ExperienceAbroad, String> locationColumn;
 	@FXML private TableColumn<ExperienceAbroad, LocalDate> fromDateColumn;
 	@FXML private TableColumn<ExperienceAbroad, LocalDate> toDateColumn;
-	@FXML private TableColumn<ExperienceAbroad, Long> idColumn;
 
 	private Person person;
 
@@ -65,7 +64,6 @@ public class ExperienceAbroadOverviewController extends OverviewController<Exper
 		locationColumn.setCellValueFactory(cellData -> cellData.getValue().locationProperty());
 		fromDateColumn.setCellValueFactory(cellData -> cellData.getValue().fromDateProperty());
 		toDateColumn.setCellValueFactory(cellData -> cellData.getValue().toDateProperty());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 
 		fromDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
 		toDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());

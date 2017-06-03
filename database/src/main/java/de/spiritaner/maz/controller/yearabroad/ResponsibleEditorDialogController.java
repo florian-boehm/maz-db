@@ -21,6 +21,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import java.util.List;
 import java.util.Optional;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/responsible_editor_dialog.fxml", objDesc = "Verantwortliche(n)")
@@ -86,7 +87,8 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 
 					// Automatically add the role 'Ansprechperson Einsatzstelle'
 					//RoleType siteResponsibleRoleType = em.createNamedQuery("RoleType.findByDesc", RoleType.class).setParameter("description","Ansprechperson Einsatzstelle").getSingleResult();
-					RoleType siteResponsibleRoleType = em.find(RoleType.class, 9L);
+					Hibernate.initialize(managedResponsible.getPerson().getRoles());
+					final RoleType siteResponsibleRoleType = em.find(RoleType.class, 9L);
 
 					if(siteResponsibleRoleType != null) {
 						Hibernate.initialize(managedResponsible.getPerson().getRoles());
@@ -95,7 +97,7 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 							boolean roleAlreadyExists = false;
 
 							for (Role role : managedResponsible.getPerson().getRoles()) {
-								if (role.getRoleType().getId() == 1L) {
+								if (role.getRoleType().getId() == 9L) {
 									roleAlreadyExists = true;
 								}
 							}
