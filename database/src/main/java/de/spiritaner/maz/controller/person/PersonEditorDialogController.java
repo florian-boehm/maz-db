@@ -6,6 +6,7 @@ import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.envers.RevisionEntity;
 import de.spiritaner.maz.util.envers.RevisionEntityListCell;
+import de.spiritaner.maz.view.dialog.OverviewDialog;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,81 +27,83 @@ import java.util.ResourceBundle;
 @EditorDialog.Annotation(fxmlFile = "/fxml/person/person_editor_dialog.fxml", objDesc = "Person")
 public class PersonEditorDialogController extends EditorController<Person> {
 
-	final static Logger logger = Logger.getLogger(PersonEditorDialogController.class);
+    final static Logger logger = Logger.getLogger(PersonEditorDialogController.class);
 
-	@FXML
-	private Text titleText;
-	@FXML
-	private GridPane personEditor;
-	@FXML
-	private PersonEditorController personEditorController;
-	@FXML
-	private Button savePersonButton;
-	@FXML
-	private ComboBox<RevisionEntity<Person>> revisionList;
+    @FXML
+    private Button showHistoryButton;
+    @FXML
+    private Text titleText;
+    @FXML
+    private GridPane personEditor;
+    @FXML
+    private PersonEditorController personEditorController;
+    @FXML
+    private Button savePersonButton;
+    @FXML
+    private ComboBox<RevisionEntity<Person>> revisionList;
 
-	public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources) {
 
-	}
+    }
 
-	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> getStage().close());
-	}
+    public void closeDialog(ActionEvent actionEvent) {
+        Platform.runLater(() -> getStage().close());
+    }
 
-	@Override
-	public void onReopen() {
+    @Override
+    public void onReopen() {
 
-	}
+    }
 
-	public void savePerson(ActionEvent actionEvent) {
-		Platform.runLater(() -> {
-			// Check if the first name, family name and birthday are valid
-			boolean validation = personEditorController.isValid();
+    public void savePerson(ActionEvent actionEvent) {
+        Platform.runLater(() -> {
+            // Check if the first name, family name and birthday are valid
+            boolean validation = personEditorController.isValid();
 
-			if (validation) {
-				EntityManager em = CoreDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
+            if (validation) {
+                EntityManager em = CoreDatabase.getFactory().createEntityManager();
+                em.getTransaction().begin();
 
-				personEditorController.getAll(getIdentifiable());
+                personEditorController.getAll(getIdentifiable());
 
-				// This has to be checked here because if the person is currently at the year abroad the
-				// preferred address id would be lower than zero and this would lead to an error on merge/persist!
-				if(getIdentifiable().getPreferredResidence() != null && getIdentifiable().getPreferredResidence().getId() < 0) {
-					getIdentifiable().setPreferredResidence(null);
-				}
+                // This has to be checked here because if the person is currently at the year abroad the
+                // preferred address id would be lower than zero and this would lead to an error on merge/persist!
+                if (getIdentifiable().getPreferredResidence() != null && getIdentifiable().getPreferredResidence().getId() < 0) {
+                    getIdentifiable().setPreferredResidence(null);
+                }
 
-				try {
-					Person managedPerson = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
-					em.getTransaction().commit();
-					setResult(managedPerson);
-					requestClose();
-				} catch (PersistenceException e) {
-					em.getTransaction().rollback();
-					logger.warn(e);
-				} finally {
-					em.close();
-				}
-			}
-		});
-	}
+                try {
+                    Person managedPerson = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
+                    em.getTransaction().commit();
+                    setResult(managedPerson);
+                    requestClose();
+                } catch (PersistenceException e) {
+                    em.getTransaction().rollback();
+                    logger.warn(e);
+                } finally {
+                    em.close();
+                }
+            }
+        });
+    }
 
-	@Override
-	public void setIdentifiable(Person person) {
-		super.setIdentifiable(person);
+    @Override
+    public void setIdentifiable(Person person) {
+        super.setIdentifiable(person);
 
-		if (person != null) {
-			personEditorController.setAll(person);
+        if (person != null) {
+            personEditorController.setAll(person);
 
-			if (person.getId() != 0L) {
-				titleText.setText("Person bearbeiten");
-				savePersonButton.setText("Speichern");
-			} else {
-				titleText.setText("Person anlegen");
-				savePersonButton.setText("Anlegen");
-			}
+            if (person.getId() != 0L) {
+                titleText.setText("Person bearbeiten");
+                savePersonButton.setText("Speichern");
+            } else {
+                titleText.setText("Person anlegen");
+                savePersonButton.setText("Anlegen");
+            }
 
-			final AuditReader reader = AuditReaderFactory.get(CoreDatabase.getFactory().createEntityManager());
-			final List<Number> revisions = reader.getRevisions(Person.class, person.getId());
+			/*final AuditReader reader = AuditReaderFactory.get(CoreDatabase.getFactory().createEntityManager());
+            final List<Number> revisions = reader.getRevisions(Person.class, person.getId());
 
 			if(revisions.size() > 0) {
 				revisionList.setVisible(true);
@@ -135,7 +138,12 @@ public class PersonEditorDialogController extends EditorController<Person> {
 				revisionList.getItems().add(new RevisionEntity<Person>());
 				revisionList.getSelectionModel().clearSelection();
 				revisionList.getSelectionModel().selectLast();
-			}
-		}
-	}
+			}*/
+        }
+    }
+
+    public void showHistory(ActionEvent actionEvent) {
+        final OverviewDialog<PersonOverviewController, Person> overviewDialog = new OverviewDialog<>(PersonOverviewController.class);
+        overviewDialog.showHistory(getIdentifiable(), Person.class, getStage());
+    }
 }

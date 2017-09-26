@@ -1,12 +1,10 @@
 package de.spiritaner.maz.controller;
 
-import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.view.dialog.ExceptionDialog;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.util.database.CoreDatabase;
-import impl.org.controlsfx.table.ColumnFilter;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -250,6 +248,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		System.out.println("init overview controller now");
 		preInit();
 
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
@@ -336,6 +335,10 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	protected boolean showId() {
 		return false;
 	}
+
+    public void setItemList(Collection<T> itemList) {
+
+    }
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)

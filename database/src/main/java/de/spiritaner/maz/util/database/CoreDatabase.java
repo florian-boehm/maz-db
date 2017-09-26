@@ -47,7 +47,7 @@ public class CoreDatabase {
 		try {
 			if (!exclusiveAccess && factory == null) {
 				try {
-					final File coreDbInTmp = File.createTempFile("maz-db-", "-" + DB_FILE_NAME, new File("./"));
+					final File coreDbInTmp = File.createTempFile("maz-db-", "-" + DB_FILE_NAME/*, new File("./")*/);
 					coreDbInTmp.deleteOnExit();
 					FileUtils.copyFile(coreDbOrig, coreDbInTmp);
 

@@ -58,7 +58,7 @@ public class UserDatabase {
             if (!exclusiveAccess) {
                 if (inclusiveFactory == null) {
                     try {
-                        final File userDbInTmp = File.createTempFile("maz-db-", "-" + DB_FILE_NAME, new File("./"));
+                        final File userDbInTmp = File.createTempFile("maz-db-", "-" + DB_FILE_NAME/*, new File("./")*/);
                         userDbInTmp.deleteOnExit();
                         FileUtils.copyFile(userDbOrig, userDbInTmp);
 
