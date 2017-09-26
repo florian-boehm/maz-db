@@ -21,6 +21,7 @@ import org.hibernate.envers.AuditReaderFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -39,8 +40,6 @@ public class PersonEditorDialogController extends EditorController<Person> {
     private PersonEditorController personEditorController;
     @FXML
     private Button savePersonButton;
-    @FXML
-    private ComboBox<RevisionEntity<Person>> revisionList;
 
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -101,49 +100,33 @@ public class PersonEditorDialogController extends EditorController<Person> {
                 titleText.setText("Person anlegen");
                 savePersonButton.setText("Anlegen");
             }
-
-			/*final AuditReader reader = AuditReaderFactory.get(CoreDatabase.getFactory().createEntityManager());
-            final List<Number> revisions = reader.getRevisions(Person.class, person.getId());
-
-			if(revisions.size() > 0) {
-				revisionList.setVisible(true);
-				revisionList.setCellFactory(param -> new RevisionEntityListCell<Person>());
-				revisionList.setButtonCell(new RevisionEntityListCell<Person>());
-				revisionList.valueProperty().addListener((observable, oldValue, newValue) -> {
-					if(newValue.getEntity() == null) {
-						personEditorController.setAll(person);
-						personEditorController.setReadonly(false);
-						savePersonButton.setDisable(false);
-					} else {
-						personEditorController.setAll(newValue.getEntity());
-						personEditorController.setReadonly(true);
-						savePersonButton.setDisable(true);
-					}
-				});
-			} else {
-				revisionList.setVisible(false);
-			}
-
-			for(Number revision : revisions) {
-				RevisionEntity<Person> tmpRevisionEntity = new RevisionEntity<>();
-				tmpRevisionEntity.setEntity(reader.find(Person.class, person.getId(), revision));
-				tmpRevisionEntity.setRevision(revision);
-				tmpRevisionEntity.setRevisionDate(reader.getRevisionDate(revision));
-				tmpRevisionEntity.initialize();
-
-				revisionList.getItems().add(tmpRevisionEntity);
-			}
-
-			if(revisions.size() > 0) {
-				revisionList.getItems().add(new RevisionEntity<Person>());
-				revisionList.getSelectionModel().clearSelection();
-				revisionList.getSelectionModel().selectLast();
-			}*/
         }
     }
 
     public void showHistory(ActionEvent actionEvent) {
         final OverviewDialog<PersonOverviewController, Person> overviewDialog = new OverviewDialog<>(PersonOverviewController.class);
-        overviewDialog.showHistory(getIdentifiable(), Person.class, getStage());
+        final AuditReader reader = AuditReaderFactory.get(CoreDatabase.getFactory().createEntityManager());
+        final List<Number> revisions = reader.getRevisions(Person.class, getIdentifiable().getId());
+        final List<RevisionEntity<Person>> revisionList = new ArrayList<>();
+        final List<Person> revItems = new ArrayList<>();
+
+        //revisions.forEach(revNum -> {//revisions.forEach(revNum -> {
+        //    Person revItem = reader.find(Person.class, getIdentifiable().getId(), revNum);
+        //    revItem.idProperty().set(revNum.longValue());
+        //    revItems.add(revItem);
+        //});
+
+        for(Number revision : revisions) {
+            RevisionEntity<Person> tmpRevisionEntity = new RevisionEntity<>();
+            tmpRevisionEntity.setEntity(reader.find(Person.class, getIdentifiable().getId(), revision));
+            tmpRevisionEntity.setRevision(revision);
+            tmpRevisionEntity.setRevisionDate(reader.getRevisionDate(revision));
+            tmpRevisionEntity.initialize();
+
+            revisionList.add(tmpRevisionEntity);
+            revItems.add(tmpRevisionEntity.getEntity());
+        }
+
+        overviewDialog.showHistory(getIdentifiable(), Person.class, revItems, getStage());
     }
 }

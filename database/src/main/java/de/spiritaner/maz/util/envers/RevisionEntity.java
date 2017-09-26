@@ -4,6 +4,8 @@ import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
+import de.spiritaner.maz.model.meta.Religion;
+import de.spiritaner.maz.model.meta.Salutation;
 import de.spiritaner.maz.util.database.CoreDatabase;
 
 import javax.persistence.EntityManager;
@@ -52,6 +54,8 @@ public class RevisionEntity<T extends Identifiable> {
 
 			if(person.getGender() != null) person.setGender(em.find(Gender.class, person.getGender().getId()));
 			if(person.getDiocese() != null) person.setDiocese(em.find(Diocese.class, person.getDiocese().getId()));
+			if(person.getSalutation() != null) person.setSalutation(em.find(Salutation.class, person.getSalutation().getId()));
+			if(person.getReligion() != null) person.setReligion(em.find(Religion.class, person.getReligion().getId()));
 		}
 	}
 

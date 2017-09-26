@@ -4,6 +4,7 @@ import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.database.CoreDatabase;
+import de.spiritaner.maz.util.envers.RevisionEntity;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -13,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
-import org.hibernate.envers.RevisionEntity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,27 +96,8 @@ public class OverviewDialog<T extends OverviewController, K extends Identifiable
         return Optional.empty();
     }
 
-    public void showHistory(final K item, final Class<K> itemCls, final Stage stage) {
-        final AuditReader reader = AuditReaderFactory.get(CoreDatabase.getFactory().createEntityManager());
-        final List<Number> revisions = reader.getRevisions(itemCls, item.getId());
-        final List<K> revItems = new ArrayList<>();
-
-        revisions.forEach(revNum -> {
-            K revItem = reader.find(itemCls, item.getId(), revNum);
-            revItem.idProperty().set(revNum.longValue());
-            System.out.println(revNum + "," + revItem.toString() + "," + revItem.getId());
-            revItems.add(revItem);
-        });
-
-        /*for(Number revision : revisions) {
-            K revObj = reader.find(itemCls, item.getId(), revision);
-
-            setRevision(revision);
-            setRevisionDate(reader.getRevisionDate(revision));
-            tmpRevisionEntity.initialize();
-        }*/
-
-        if(revisions.size() > 0) {
+    public void showHistory(final Person item, final Class<Person> itemCls, List<Person> revisionList, final Stage stage) {
+        if(revisionList.size() > 0) {
             OverviewController.Annotation controllerAnnotation = cls.getAnnotation(OverviewController.Annotation.class);
             Identifiable.Annotation identifiableAnnotation = itemCls.getAnnotation(Identifiable.Annotation.class);
             Dialog<K> dialog = new Dialog<>();
@@ -133,26 +114,32 @@ public class OverviewDialog<T extends OverviewController, K extends Identifiable
             if (!controllerAnnotation.fxmlFile().isEmpty()) {
                 try {
                     final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource(controllerAnnotation.fxmlFile()));
+
+                    loader.setControllerFactory(param -> {
+                        try {
+                            T controller = (T) param.newInstance();
+                            controller.setItemList(revisionList);
+                            controller.setEditOnDoubleclick(false);
+                            controller.setStage(stage);
+                            return controller;
+                        } catch (InstantiationException | IllegalAccessException e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    });
+
                     final Parent root = loader.load();
                     final T controller = loader.getController();
+                    controller.setToolbarVisible(false);
+
                     root.getStylesheets().add(OverviewDialog.class.getClass().getResource("/css/overview_dialog.css").toExternalForm());
 
-                    controller.setStage(stage);
                     dialog.getDialogPane().setContent(root);
-
-                    controller.setEditOnDoubleclick(false);
-                    controller.setToolbarVisible(false);
-                    controller.setItemList(revItems);
-
                     dialog.showAndWait();
                 } catch (IOException e) {
                     ExceptionDialog.show(e);
                 }
             }
-
-            /*revisionList.getItems().add(new RevisionEntity<Person>());
-            revisionList.getSelectionModel().clearSelection();
-            revisionList.getSelectionModel().selectLast();*/
         }
     }
 }

@@ -1,11 +1,12 @@
 package de.spiritaner.maz.controller;
 
+import de.spiritaner.maz.model.Identifiable;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.view.dialog.ExceptionDialog;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
-import de.spiritaner.maz.model.Identifiable;
-import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,7 +25,10 @@ import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 public abstract class OverviewController<T extends Identifiable> implements Controller, Initializable {
 
@@ -43,11 +47,13 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	private Stage stage;
 	private Class<T> cls;
 	private boolean editOnDoubleclick;
+	private Collection<T> itemList;
 
 	public OverviewController(Class<T> cls, boolean useFilter) {
 		this.cls = cls;
 		this.useFilter = useFilter;
 		this.editOnDoubleclick = true;
+		this.itemList = null;
 	}
 
 	public TableView<T> getTable() {
@@ -176,41 +182,51 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	}
 
 	public void load() {
-		Platform.runLater(() -> {
-			try {
-				masker.setProgressVisible(true);
-				masker.setText(getLoadingText());
-				masker.setVisible(true);
-
-				//T previousSelected = table.getSelectionModel().getSelectedItem();
-				//table.getSelectionModel().clearSelection();
-				int rowNr = preSelect();
-
-				EntityManager em = CoreDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
-				Collection<T> result = preLoad(em);
-				em.getTransaction().commit();
-
-				postLoad(result);
-
-				logger.debug("OverviewController " + this.getClass() + " is clearing now!");
-
-				if (useFilter) {
-					tableFilter.getBackingList().clear();
-					if (result != null) tableFilter.getBackingList().addAll(result);
-				} else {
-					table.getItems().clear();
-					if (result != null) table.getItems().addAll(result);
-				}
-
-				postSelect(rowNr);
-
-				//table.getSelectionModel().select(previousSelected);
-				masker.setVisible(false);
-			} catch (RollbackException e) {
-				logger.error(e);
+		if(itemList != null)	{
+			if (useFilter) {
+				tableFilter.getBackingList().clear();
+				tableFilter.getBackingList().addAll(itemList);
+			} else {
+				table.getItems().clear();
+				table.getItems().addAll(itemList);
 			}
-		});
+		} else {
+			Platform.runLater(() -> {
+				try {
+					masker.setProgressVisible(true);
+					masker.setText(getLoadingText());
+					masker.setVisible(true);
+
+					//T previousSelected = table.getSelectionModel().getSelectedItem();
+					//table.getSelectionModel().clearSelection();
+					int rowNr = preSelect();
+
+					EntityManager em = CoreDatabase.getFactory().createEntityManager();
+					em.getTransaction().begin();
+					Collection<T> result = preLoad(em);
+					em.getTransaction().commit();
+
+					postLoad(result);
+
+					logger.debug("OverviewController " + this.getClass() + " is clearing now!");
+
+					if (useFilter) {
+						tableFilter.getBackingList().clear();
+						if (result != null) tableFilter.getBackingList().addAll(result);
+					} else {
+						table.getItems().clear();
+						if (result != null) table.getItems().addAll(result);
+					}
+
+					postSelect(rowNr);
+
+					//table.getSelectionModel().select(previousSelected);
+					masker.setVisible(false);
+				} catch (RollbackException e) {
+					logger.error(e);
+				}
+			});
+		}
 	}
 
 	protected int preSelect() {
@@ -248,7 +264,6 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		System.out.println("init overview controller now");
 		preInit();
 
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
@@ -336,9 +351,9 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		return false;
 	}
 
-    public void setItemList(Collection<T> itemList) {
-
-    }
+	public void setItemList(Collection<T> itemList) {
+		this.itemList = itemList;
+	}
 
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
@@ -357,25 +372,6 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 					return idList.contains(t.getId());
 				}
 			});
-
-			/* Better but not working solution:
-
-			Platform.runLater(() -> {
-				tableFilter.resetFilter();
-				tableFilter.getColumnFilters().clear();
-				final ColumnFilter<T, Long> idFilter = new ColumnFilter<>(tableFilter, idColumn);
-				tableFilter.getColumnFilters().add(idFilter);
-
-				if (removeMatches) {
-					idFilter.selectAllValues();
-					idList.forEach(idFilter::unselectValue);
-				} else {
-					idFilter.unSelectAllValues();
-					idList.forEach(idFilter::selectValue);
-				}
-
-				idFilter.applyFilter();
-			});*/
 		}
 	}
 }

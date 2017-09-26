@@ -242,6 +242,7 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "genderId")
+	//@NotFound(action = NotFoundAction.IGNORE)
 	public Gender getGender() {
 		return gender.get();
 	}
