@@ -158,7 +158,7 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 
 	public void searchPerson(ActionEvent actionEvent) {
 		OverviewDialog<PersonOverviewController, Person> dialog = new OverviewDialog<>(PersonOverviewController.class);
-		Optional<Person> result = dialog.showAndWait(getStage());
+		Optional<Person> result = dialog.showAndSelect(getStage());
 
 		result.ifPresent((Person person) -> {
 			getIdentifiable().setPerson(person);
@@ -168,7 +168,7 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 
 	public void searchSite(ActionEvent actionEvent) {
 		OverviewDialog<SiteOverviewController, Site> dialog = new OverviewDialog<>(SiteOverviewController.class);
-		Optional<Site> result = dialog.showAndWait(getStage());
+		Optional<Site> result = dialog.showAndSelect(getStage());
 
 		result.ifPresent((Site site) -> {
 			getIdentifiable().setSite(site);

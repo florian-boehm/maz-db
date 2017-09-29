@@ -32,6 +32,7 @@ public class CoreDatabase {
 	private static final Logger logger = Logger.getLogger(CoreDatabase.class);
 	private static final String DB_FILE_NAME = "core.mv.db";
 	private static EntityManagerFactory factory = null;
+	private static User currentUser = null;
 
 	private CoreDatabase() {
 
@@ -43,6 +44,8 @@ public class CoreDatabase {
 		final File coreDbOrig = new File(path + DB_FILE_NAME);
 		final File lockFile = new File(path + LOCK_FILE);
 		final boolean exclusiveAccess = !lockFile.exists();
+
+		currentUser = user;
 
 		try {
 			if (!exclusiveAccess && factory == null) {
@@ -176,5 +179,9 @@ public class CoreDatabase {
 
 	public static void update(User user) throws SQLException, LiquibaseException {
 		init(user);
+	}
+
+	public static User getCurrentUser() {
+		return currentUser;
 	}
 }

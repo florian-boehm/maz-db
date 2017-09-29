@@ -128,7 +128,7 @@ public class ParticipationEditorDialogController extends EditorController<Partic
 
 	public void searchEvent(ActionEvent actionEvent) {
 		OverviewDialog<EventOverviewController, Event> dialog = new OverviewDialog<>(EventOverviewController.class);
-		Optional<Event> result = dialog.showAndWait(getStage());
+		Optional<Event> result = dialog.showAndSelect(getStage());
 
 		result.ifPresent((Event event) -> {
 			getIdentifiable().setEvent(event);
@@ -138,7 +138,7 @@ public class ParticipationEditorDialogController extends EditorController<Partic
 
 	public void searchPerson(ActionEvent actionEvent) {
 		OverviewDialog<PersonOverviewController, Person> dialog = new OverviewDialog<>(PersonOverviewController.class);
-		Optional<Person> result = dialog.showAndWait(getStage());
+		Optional<Person> result = dialog.showAndSelect(getStage());
 
 		result.ifPresent((Person person) -> {
 			getIdentifiable().setPerson(person);

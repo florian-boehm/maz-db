@@ -21,7 +21,6 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
-import java.util.List;
 import java.util.Optional;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/responsible_editor_dialog.fxml", objDesc = "Verantwortliche(n)")
@@ -127,7 +126,7 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 
 	public void searchPerson(ActionEvent actionEvent) {
 		OverviewDialog<PersonOverviewController, Person> dialog = new OverviewDialog<>(PersonOverviewController.class);
-		Optional<Person> result = dialog.showAndWait(getStage());
+		Optional<Person> result = dialog.showAndSelect(getStage());
 
 		result.ifPresent((Person person) -> {
 			getIdentifiable().setPerson(person);

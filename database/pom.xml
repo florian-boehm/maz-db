@@ -216,12 +216,26 @@
 							<changeLogFile>src/main/resources/liquibase/core/changelog.xml</changeLogFile>
 							<driver>org.h2.Driver</driver>
 							<url>jdbc:h2:./target/dbfiles/core_ref</url>
-							<!--username>admin</username>
-							<password>E4BCC47A694E87A900D9ABA3702C2351 test1234</password-->
 							<referenceDriver>org.h2.Driver</referenceDriver>
 							<referenceUrl>jdbc:h2:./target/dbfiles/core;CIPHER=AES</referenceUrl>
 							<referenceUsername>admin</referenceUsername>
 							<referencePassword>2F6CEC6AACB9A2663186534A16B51FC2 test1234</referencePassword>
+						</configuration>
+					</execution>
+					<execution>
+						<id>diff-users-db</id>
+						<!--phase>process-resources</phase-->
+						<goals>
+							<goal>diff</goal>
+						</goals>
+						<configuration>
+							<diffChangeLogFile>src/main/resources/liquibase/users/changelog-${project.version}.xml
+							</diffChangeLogFile>
+							<changeLogFile>src/main/resources/liquibase/users/changelog.xml</changeLogFile>
+							<driver>org.h2.Driver</driver>
+							<url>jdbc:h2:./target/dbfiles/core_ref</url>
+							<referenceDriver>org.h2.Driver</referenceDriver>
+							<referenceUrl>jdbc:h2:./target/dbfiles/users</referenceUrl>
 						</configuration>
 					</execution>
 				</executions>

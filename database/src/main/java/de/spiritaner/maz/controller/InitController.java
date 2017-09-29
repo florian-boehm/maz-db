@@ -72,6 +72,7 @@ public class InitController implements Initializable {
                         maskerPane.setText("Lege Benutzerdatenbank an ...");
                         maskerPane.setVisible(true);
                     });
+
                     User user = new User();
                     user.setPassword(passwordField.getText());
                     user.setUsername(usernameField.getText());
@@ -99,6 +100,8 @@ public class InitController implements Initializable {
                             loginController.searchDbFilesFolder();
                             stage.close();
                         });
+                    } else {
+                        throw new Exception("Admin user was not created during initialization!");
                     }
                 } catch (Exception e) {
                     Platform.runLater(() -> {

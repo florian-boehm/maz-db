@@ -36,7 +36,7 @@
                     </tooltip>
                 </Label>
 
-                <TextField fx:id="usernameField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <TextField fx:id="usernameField" editable="false" text="admin" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                 <Label text="Passwort:" GridPane.rowIndex="4" />
 

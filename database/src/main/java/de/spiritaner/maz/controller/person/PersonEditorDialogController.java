@@ -5,13 +5,11 @@ import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.envers.RevisionEntity;
-import de.spiritaner.maz.util.envers.RevisionEntityListCell;
 import de.spiritaner.maz.view.dialog.OverviewDialog;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import org.apache.log4j.Logger;
@@ -109,12 +107,6 @@ public class PersonEditorDialogController extends EditorController<Person> {
         final List<Number> revisions = reader.getRevisions(Person.class, getIdentifiable().getId());
         final List<RevisionEntity<Person>> revisionList = new ArrayList<>();
         final List<Person> revItems = new ArrayList<>();
-
-        //revisions.forEach(revNum -> {//revisions.forEach(revNum -> {
-        //    Person revItem = reader.find(Person.class, getIdentifiable().getId(), revNum);
-        //    revItem.idProperty().set(revNum.longValue());
-        //    revItems.add(revItem);
-        //});
 
         for(Number revision : revisions) {
             RevisionEntity<Person> tmpRevisionEntity = new RevisionEntity<>();

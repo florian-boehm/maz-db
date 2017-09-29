@@ -17,6 +17,7 @@
 						<MenuItem mnemonicParsing="false" text="Hilfe"/>
 						<!--MenuItem mnemonicParsing="false" text="Updates" /-->
 						<MenuItem mnemonicParsing="false" onAction="#showLicense" text="Über"/>
+						<MenuItem mnemonicParsing="false" onAction="#showUserDialog" text="Benutzer" />
 						<MenuItem mnemonicParsing="false" onAction="#closeApplication" text="Schließen"/>
 					</items>
 				</Menu>

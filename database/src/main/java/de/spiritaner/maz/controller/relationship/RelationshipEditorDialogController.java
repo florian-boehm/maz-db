@@ -160,7 +160,7 @@ public class RelationshipEditorDialogController extends EditorController<Relatio
 
 	public void searchPerson(ActionEvent actionEvent) {
 		OverviewDialog<PersonOverviewController, Person> dialog = new OverviewDialog<>(PersonOverviewController.class);
-		Optional<Person> result = dialog.showAndWait(getStage());
+		Optional<Person> result = dialog.showAndSelect(getStage());
 
 		result.ifPresent((final Person selectedPerson) -> {
 			if(selectedPerson.equals(getIdentifiable().getFromPerson())) {

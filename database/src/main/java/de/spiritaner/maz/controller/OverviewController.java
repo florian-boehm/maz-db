@@ -6,7 +6,6 @@ import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.view.dialog.ExceptionDialog;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -262,6 +261,8 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		return newVal == null;
 	}
 
+	protected boolean isCreateButtonDisabled(T oldVal, T newVal) { return false; }
+
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		preInit();
@@ -272,6 +273,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 		getTable().getSelectionModel().selectedItemProperty().addListener((observableValue, oldVal, newVal) -> {
 			removeButton.setDisable(isRemoveButtonDisabled(oldVal, newVal));
 			editButton.setDisable(isEditButtonDisabled(oldVal, newVal));
+			createButton.setDisable(isCreateButtonDisabled(oldVal, newVal));
 		});
 
 		getTable().setRowFactory(tv -> {

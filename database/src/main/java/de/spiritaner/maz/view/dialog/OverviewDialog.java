@@ -3,8 +3,6 @@ package de.spiritaner.maz.view.dialog;
 import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.model.Person;
-import de.spiritaner.maz.util.database.CoreDatabase;
-import de.spiritaner.maz.util.envers.RevisionEntity;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -12,11 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -30,7 +25,7 @@ public class OverviewDialog<T extends OverviewController, K extends Identifiable
     }
 
     @SuppressWarnings("unchecked")
-    public Optional<K> showAndWait(Stage stage) {
+    public Optional<K> showAndSelect(Stage stage) {
         OverviewController.Annotation controllerAnnotation = cls.getAnnotation(OverviewController.Annotation.class);
         Dialog<K> dialog = new Dialog<>();
 
@@ -140,6 +135,33 @@ public class OverviewDialog<T extends OverviewController, K extends Identifiable
                     ExceptionDialog.show(e);
                 }
             }
+        }
+    }
+
+    public void showUsers(Stage stage) {
+        final Dialog<K> dialog = new Dialog<>();
+        final OverviewController.Annotation controllerAnnotation = cls.getAnnotation(OverviewController.Annotation.class);
+        final ResourceBundle rb = ResourceBundle.getBundle("lang.gui");
+
+        try {
+            final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource(controllerAnnotation.fxmlFile()));
+            final Parent root = loader.load();
+            final T controller = loader.getController();
+
+            controller.setToolbarVisible(true);
+            controller.setEditOnDoubleclick(false);
+            controller.setStage(stage);
+
+            root.getStylesheets().add(OverviewDialog.class.getClass().getResource("/css/overview_dialog.css").toExternalForm());
+
+            dialog.setTitle("Benutzerübersicht");
+            dialog.setHeaderText("Folgende Benutzer können sich an der Datenbank anmelden ...");
+            dialog.getDialogPane().setPadding(new Insets(0, 0, 0, 0));
+            dialog.getDialogPane().setContent(root);
+
+            dialog.showAndWait();
+        } catch (IOException e) {
+            ExceptionDialog.show(e);
         }
     }
 }

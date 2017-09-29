@@ -3,6 +3,7 @@ package de.spiritaner.maz.util.database;
 import de.spiritaner.maz.view.dialog.ExceptionDialog;
 import de.spiritaner.maz.model.User;
 import de.spiritaner.maz.util.Settings;
+import javafx.collections.ObservableList;
 import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
@@ -23,10 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class is a service class for accessing the user database through an entity manager
@@ -249,5 +247,15 @@ public class UserDatabase {
 
     public static void update() throws SQLException, LiquibaseException {
         init(null);
+    }
+
+    public static Collection<User> findAll() {
+        try {
+            final EntityManager em = getFactory(false).createEntityManager();
+            return em.createNamedQuery("User.findAll", User.class).getResultList();
+        } catch (Exception e) {
+            logger.error(e);
+            return null;
+        }
     }
 }

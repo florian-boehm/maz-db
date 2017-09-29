@@ -1,5 +1,9 @@
 package de.spiritaner.maz.model;
 
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import org.apache.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -12,48 +16,33 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-/**
- * Created by Florian on 8/10/2016.
- */
 @Entity
 @NamedQueries({
 	@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
 	@NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
 })
-public class User {
+public class User implements Identifiable {
 
 	private static final Logger logger = Logger.getLogger(User.class);
 	private static final Integer BCRYPT_ROUNDS = 12;
 
-	@Id
-	@GeneratedValue
-	private Long id;
-
-	@Column(nullable = false, unique = true)
-	private String username;
-
-	@Transient
+	private LongProperty id;
+	private StringProperty username;
 	private String password;
-
-	@Column(nullable = false)
 	private String passwordHash;
-
-	@Transient
 	private byte[] unencryptedDatabaseKey;
-
-	@Column(nullable = false)
 	private byte[] encryptedDatabaseKey;
-
-	@Column(nullable = false)
 	private String databaseKeySalt;
 
 	public User() {
-
+		id = new SimpleLongProperty();
+		username = new SimpleStringProperty();
 	}
 
 	public User(String username, String password) {
-		this.username = username;
-		this.password = password;
+		this();
+		setUsername(username);
+		setPassword(password);
 	}
 
 	@PrePersist @PreUpdate
@@ -88,22 +77,35 @@ public class User {
 		}
 	}
 
+	@Id
+	@GeneratedValue
 	public Long getId() {
+		return id.get();
+	}
+
+	@Override
+	public LongProperty idProperty() {
 		return id;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id.set(id);
 	}
 
+	@Column(nullable = false, unique = true)
 	public String getUsername() {
-		return username;
+		return username.get();
 	}
 
 	public void setUsername(String username) {
-		this.username = username;
+		this.username.set(username);
 	}
 
+	public StringProperty usernameProperty() {
+		return username;
+	}
+
+	@Transient
 	public String getPassword() {
 		return password;
 	}
@@ -112,6 +114,7 @@ public class User {
 		this.password = password;
 	}
 
+	@Column(nullable = false)
 	public String getPasswordHash() {
 		return passwordHash;
 	}
@@ -120,6 +123,7 @@ public class User {
 		this.passwordHash = passwordHash;
 	}
 
+	@Transient
 	public byte[] getUnencryptedDatabaseKey() {
 		if(password != null && !password.trim().isEmpty() && databaseKeySalt != null) {
 			try {
@@ -140,12 +144,22 @@ public class User {
 		this.unencryptedDatabaseKey = unencryptedDatabaseKey;
 	}
 
+	@Column(nullable = false)
 	public byte[] getEncryptedDatabaseKey() {
 		return encryptedDatabaseKey;
 	}
 
 	public void setEncryptedDatabaseKey(byte[] encryptedDatabaseKey) {
 		this.encryptedDatabaseKey = encryptedDatabaseKey;
+	}
+
+	@Column(nullable = false)
+	public String getDatabaseKeySalt() {
+		return databaseKeySalt;
+	}
+
+	public void setDatabaseKeySalt(String databaseKeySalt) {
+		this.databaseKeySalt = databaseKeySalt;
 	}
 
 	private SecretKeySpec generateUserSpecificAESKey(String salt) throws UnsupportedEncodingException, NoSuchAlgorithmException {

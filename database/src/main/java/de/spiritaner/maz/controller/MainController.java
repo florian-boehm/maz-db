@@ -1,5 +1,6 @@
 package de.spiritaner.maz.controller;
 
+import de.spiritaner.maz.model.User;
 import de.spiritaner.maz.view.dialog.ExceptionDialog;
 import de.spiritaner.maz.view.dialog.OverviewDialog;
 import de.spiritaner.maz.view.component.ImageTab;
@@ -81,9 +82,9 @@ public class MainController implements Initializable, Controller {
 		alert.setHeaderText("Informationen zur MaZ-Datebank");
 		alert.setContentText("Copyright (C) 2017 Florian Schwab\n" +
 				  "\n" +
-				  "This program is free software: you can redistribute it and/or modify\n" +
-				  "it under the terms of the GNU General Public License as published by\n" +
-				  "the Free Software Foundation, either version 3 of the License, or\n" +
+				  "This program is free software: you can redistribute it and/or \nmodify" +
+				  "it under the terms of the GNU General Public License\nas published by" +
+				  "the Free Software Foundation, either version 3 of\n the License, or" +
 				  "(at your option) any later version.\n" +
 				  "\n" +
 				  "This program is distributed in the hope that it will be useful,\n" +
@@ -95,5 +96,10 @@ public class MainController implements Initializable, Controller {
 				  "along with this program. If not, see <http://www.gnu.org/licenses/>.");
 
 		alert.showAndWait();
+	}
+
+	public void showUserDialog(ActionEvent actionEvent) {
+		final OverviewDialog<UserOverviewController, User> overviewDialog = new OverviewDialog<>(UserOverviewController.class);
+		overviewDialog.showUsers(stage);
 	}
 }
