@@ -364,4 +364,28 @@ public class UpdateHelper {
 			}
 		}
 	}
+
+	public static void restartApplicationInstant() {
+		final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+		final File currentJar;
+		try {
+			currentJar = new File(UpdateHelper.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+
+			if(!currentJar.getName().endsWith(".jar"))
+				return;
+
+			final ArrayList<String> command = new ArrayList<String>();
+			command.add(javaBin);
+			command.add("-jar");
+			command.add(currentJar.getPath());
+
+			final ProcessBuilder builder = new ProcessBuilder(command);
+			builder.start();
+			System.exit(0);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

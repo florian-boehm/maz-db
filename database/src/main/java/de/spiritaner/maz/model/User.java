@@ -1,5 +1,6 @@
 package de.spiritaner.maz.model;
 
+import de.spiritaner.maz.controller.user.UserEditorDialogController;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -7,7 +8,7 @@ import javafx.beans.property.StringProperty;
 import org.apache.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 
-import javax.crypto.*;
+import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.persistence.*;
 import javax.xml.bind.DatatypeConverter;
@@ -17,6 +18,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 @Entity
+@Identifiable.Annotation(editorDialogClass = UserEditorDialogController.class, identifiableName = "Benutzer")
 @NamedQueries({
 	@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
 	@NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
@@ -33,10 +35,16 @@ public class User implements Identifiable {
 	private byte[] unencryptedDatabaseKey;
 	private byte[] encryptedDatabaseKey;
 	private String databaseKeySalt;
+	private String obsoleteUsername;
 
 	public User() {
 		id = new SimpleLongProperty();
 		username = new SimpleStringProperty();
+
+		// It is important to save the users old name when renaming the user in the H2 user table
+		username.addListener((observable, oldValue, newValue) -> {
+			obsoleteUsername = oldValue;
+		});
 	}
 
 	public User(String username, String password) {
@@ -47,6 +55,8 @@ public class User implements Identifiable {
 
 	@PrePersist @PreUpdate
 	public void hashPassword() throws Exception {
+		System.out.println("CALLED hashPassword()");
+
 		// If the unencrypted user password is set and it is not empty ...
 		if(password != null && !password.trim().isEmpty()) {
 			// ... hash it with BCrypt so it is correctly salted
@@ -172,5 +182,10 @@ public class User implements Identifiable {
 		logger.info("User specific aes key is '"+DatatypeConverter.printHexBinary(key)+"'");
 
 		return new SecretKeySpec(key, "AES");
+	}
+
+	@Transient
+	public String getObsoleteUsername() {
+		return obsoleteUsername;
 	}
 }
