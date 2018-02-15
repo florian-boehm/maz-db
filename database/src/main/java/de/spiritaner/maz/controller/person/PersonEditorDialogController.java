@@ -1,10 +1,10 @@
 package de.spiritaner.maz.controller.person;
 
 import de.spiritaner.maz.controller.EditorController;
-import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.envers.RevisionEntity;
+import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.view.dialog.OverviewDialog;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,10 +18,8 @@ import org.hibernate.envers.AuditReaderFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/person/person_editor_dialog.fxml", objDesc = "Person")
 public class PersonEditorDialogController extends EditorController<Person> {
@@ -38,10 +36,6 @@ public class PersonEditorDialogController extends EditorController<Person> {
     private PersonEditorController personEditorController;
     @FXML
     private Button savePersonButton;
-
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
 
     public void closeDialog(ActionEvent actionEvent) {
         Platform.runLater(() -> getStage().close());

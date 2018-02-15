@@ -4,15 +4,12 @@ import de.spiritaner.maz.controller.person.PersonEditorDialogController;
 import de.spiritaner.maz.model.meta.*;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.beans.property.*;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
-import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

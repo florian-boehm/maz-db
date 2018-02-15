@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -82,7 +83,11 @@ public class OverviewDialog<T extends OverviewController, K extends Identifiable
                     return null;
                 });
 
-                return dialog.showAndWait();
+				// Set the icon of the overview dialog
+				Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
+				dialogStage.getIcons().add(new Image(OverviewDialog.class.getClass().getResource("/img/select_32.png").toString()));
+
+				return dialog.showAndWait();
             } catch (IOException e) {
                 ExceptionDialog.show(e);
             }
@@ -128,8 +133,12 @@ public class OverviewDialog<T extends OverviewController, K extends Identifiable
                     controller.setToolbarVisible(false);
 
                     root.getStylesheets().add(OverviewDialog.class.getClass().getResource("/css/overview_dialog.css").toExternalForm());
+					dialog.getDialogPane().setContent(root);
 
-                    dialog.getDialogPane().setContent(root);
+					// Set the icon of the overview dialog
+					Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
+					dialogStage.getIcons().add(new Image(OverviewDialog.class.getClass().getResource("/img/history_32.png").toString()));
+
                     dialog.showAndWait();
                 } catch (IOException e) {
                     ExceptionDialog.show(e);
@@ -158,6 +167,15 @@ public class OverviewDialog<T extends OverviewController, K extends Identifiable
             dialog.setHeaderText("Folgende Benutzer können sich an der Datenbank anmelden ...");
             dialog.getDialogPane().setPadding(new Insets(0, 0, 0, 0));
             dialog.getDialogPane().setContent(root);
+
+            dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+            Node closeButton = dialog.getDialogPane().lookupButton(ButtonType.CLOSE);
+            closeButton.managedProperty().bind(closeButton.visibleProperty());
+            closeButton.setVisible(false);
+
+			// Set the icon of the overview dialog
+			Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
+			stage.getIcons().add(new Image(OverviewDialog.class.getClass().getResource("/img/manager_32.png").toString()));
 
             dialog.showAndWait();
         } catch (IOException e) {

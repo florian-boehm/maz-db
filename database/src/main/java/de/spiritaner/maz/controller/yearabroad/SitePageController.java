@@ -1,7 +1,6 @@
 package de.spiritaner.maz.controller.yearabroad;
 
 import de.spiritaner.maz.controller.Controller;
-import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.Site;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

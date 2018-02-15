@@ -1,10 +1,10 @@
 package de.spiritaner.maz.controller.contactmethod;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.ContactMethodType;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.view.renderer.BooleanTableCell;
 import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.collections.FXCollections;

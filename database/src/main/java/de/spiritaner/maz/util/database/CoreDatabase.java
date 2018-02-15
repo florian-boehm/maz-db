@@ -114,9 +114,9 @@ public class CoreDatabase {
 			logger.info("Try to create assets");
 			Connection conn = DriverManager.getConnection(url, user.getUsername(), DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + " " + user.getPassword());
 			JdbcConnection jdbcConn = new JdbcConnection(conn);
-			Liquibase liquibase = new Liquibase("./liquibase/assets/changelog.xml", new ClassLoaderResourceAccessor(), jdbcConn);
+			Liquibase liquibase = new Liquibase("liquibase/assets/changelog.xml", new ClassLoaderResourceAccessor(), jdbcConn);
 			liquibase.update("");
-			logger.warn("Assets have been successfully created!");
+			logger.info("Assets have been successfully created!");
 		} catch (LiquibaseException | SQLException e) {
 			logger.error(e);
 		}

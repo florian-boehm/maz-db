@@ -1,6 +1,5 @@
 package de.spiritaner.maz.util.database;
 
-import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.User;
 import de.spiritaner.maz.util.Settings;
 import de.spiritaner.maz.util.UpdateHelper;
@@ -19,7 +18,6 @@ import javax.crypto.KeyGenerator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;

@@ -4,14 +4,16 @@ import de.spiritaner.maz.controller.meta.ContactMethodTypeOverviewController;
 import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.model.meta.ContactMethodType;
 import de.spiritaner.maz.util.database.CoreDatabase;
-import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
+import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
 

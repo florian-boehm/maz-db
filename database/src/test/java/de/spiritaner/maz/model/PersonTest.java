@@ -3,7 +3,9 @@ package de.spiritaner.maz.model;
 import de.spiritaner.maz.model.meta.Gender;
 import org.testng.Assert;
 import org.testng.ITestContext;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import javax.persistence.*;
 import java.time.LocalDate;

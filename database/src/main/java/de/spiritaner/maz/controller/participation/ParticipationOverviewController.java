@@ -1,11 +1,11 @@
 package de.spiritaner.maz.controller.participation;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.ParticipationType;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.view.renderer.BooleanTableCell;
 import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.collections.FXCollections;

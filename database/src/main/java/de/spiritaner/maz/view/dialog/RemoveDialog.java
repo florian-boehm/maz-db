@@ -179,6 +179,10 @@ public class RemoveDialog {
 		return generate(experienceAbroad, stage, "bei '" + experienceAbroad.getCommunity() + "' von Person '" + experienceAbroad.getPerson().getFullName() + "'");
 	}
 
+	public static Alert create(User user, Stage stage) {
+		return generate(user, stage, "");
+	}
+
 	private static Alert generate(Identifiable identifiable, Stage stage, String details) {
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		Identifiable.Annotation annotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);

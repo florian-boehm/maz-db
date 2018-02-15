@@ -1,11 +1,11 @@
 package de.spiritaner.maz.controller.yearabroad;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.YearAbroad;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.view.renderer.DateAsStringListCell;
 import de.spiritaner.maz.view.renderer.EPNumberCell;
 import javafx.beans.property.SimpleStringProperty;

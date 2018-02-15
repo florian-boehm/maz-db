@@ -1,16 +1,18 @@
 package de.spiritaner.maz.controller;
 
+import de.spiritaner.maz.controller.user.UserOverviewController;
 import de.spiritaner.maz.model.User;
+import de.spiritaner.maz.view.component.ImageTab;
 import de.spiritaner.maz.view.dialog.ExceptionDialog;
 import de.spiritaner.maz.view.dialog.OverviewDialog;
-import de.spiritaner.maz.view.component.ImageTab;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;

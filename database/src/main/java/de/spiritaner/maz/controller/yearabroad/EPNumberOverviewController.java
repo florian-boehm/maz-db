@@ -1,9 +1,9 @@
 package de.spiritaner.maz.controller.yearabroad;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.Site;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;

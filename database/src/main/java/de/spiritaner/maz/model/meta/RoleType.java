@@ -5,6 +5,7 @@ import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.List;
+
 import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 /**

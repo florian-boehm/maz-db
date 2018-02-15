@@ -5,7 +5,6 @@ import org.hibernate.envers.Audited;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import java.util.List;
 
 import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 

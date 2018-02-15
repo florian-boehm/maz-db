@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TabPane?>
+<?import de.spiritaner.maz.view.component.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import org.controlsfx.control.StatusBar?>
-<?import de.spiritaner.maz.view.component.ImageTab?>
 <BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.MainController">
 	<top>

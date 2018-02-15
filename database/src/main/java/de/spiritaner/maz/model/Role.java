@@ -1,6 +1,5 @@
 package de.spiritaner.maz.model;
 
-import de.spiritaner.maz.controller.participation.ParticipationEditorDialogController;
 import de.spiritaner.maz.controller.role.RoleEditorDialogController;
 import de.spiritaner.maz.model.meta.RoleType;
 import javafx.beans.property.LongProperty;

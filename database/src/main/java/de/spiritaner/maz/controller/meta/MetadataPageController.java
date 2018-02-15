@@ -1,7 +1,6 @@
 package de.spiritaner.maz.controller.meta;
 
 import de.spiritaner.maz.controller.Controller;
-import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
 import java.net.URL;

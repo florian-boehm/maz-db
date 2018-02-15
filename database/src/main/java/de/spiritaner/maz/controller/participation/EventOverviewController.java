@@ -1,9 +1,9 @@
 package de.spiritaner.maz.controller.participation;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.meta.EventType;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.view.renderer.DateAsStringListCell;
 import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.fxml.FXML;

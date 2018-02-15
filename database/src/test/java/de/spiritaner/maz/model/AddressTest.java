@@ -1,11 +1,8 @@
 package de.spiritaner.maz.model;
 
-import org.hibernate.PropertyValueException;
 import org.testng.Assert;
 import org.testng.ITestContext;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import javax.persistence.*;

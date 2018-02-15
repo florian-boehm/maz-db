@@ -1,7 +1,6 @@
 package de.spiritaner.maz.controller;
 
 import de.spiritaner.maz.model.Identifiable;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;

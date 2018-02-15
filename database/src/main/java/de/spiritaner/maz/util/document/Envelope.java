@@ -4,7 +4,6 @@ import de.spiritaner.maz.controller.DocumentPageController;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Residence;
-import de.spiritaner.maz.util.FamilyHelper;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceDialog;
 import org.apache.log4j.Logger;

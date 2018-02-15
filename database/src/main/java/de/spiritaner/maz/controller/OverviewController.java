@@ -1,6 +1,7 @@
 package de.spiritaner.maz.controller;
 
 import de.spiritaner.maz.model.Identifiable;
+import de.spiritaner.maz.model.User;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.view.dialog.ExceptionDialog;
@@ -154,16 +155,21 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 			if (result.get() == ButtonType.OK) {
 				try {
-					EntityManager em = CoreDatabase.getFactory().createEntityManager();
-					em.getTransaction().begin();
-					final T obsoleteEntity = em.find(cls, selectedObj.getId());
-					preRemove(obsoleteEntity, em);
-					em.remove(obsoleteEntity);
-					em.getTransaction().commit();
+					if(selectedObj instanceof User) {
+						preRemove(selectedObj, null);
+						removeItem(selectedObj);
+					} else {
+						EntityManager em = CoreDatabase.getFactory().createEntityManager();
+						em.getTransaction().begin();
+						final T obsoleteEntity = em.find(cls, selectedObj.getId());
+						preRemove(obsoleteEntity, em);
+						em.remove(obsoleteEntity);
+						em.getTransaction().commit();
 
-					removeItem(obsoleteEntity);
+						removeItem(obsoleteEntity);
 
-					postRemove(obsoleteEntity);
+						postRemove(obsoleteEntity);
+					}
 				} catch (RollbackException e) {
 					logger.warn(e);
 					handleException(e, selectedObj);
@@ -307,7 +313,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 
 	public void setToolbarVisible(boolean visibility) {
 		toolbar.setVisible(visibility);
-		toolbar.setManaged(false);
+		toolbar.setManaged(visibility);
 	}
 
 	public void setEditOnDoubleclick(boolean editOnDoubleclick) {

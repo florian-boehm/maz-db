@@ -5,15 +5,11 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 /**

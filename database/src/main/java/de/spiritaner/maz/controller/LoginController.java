@@ -15,8 +15,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -188,7 +188,7 @@ public class LoginController implements Controller {
 
 		try {
 			final String currentVersion = ResourceBundle.getBundle("lang.gui").getString("version");
-			final URL url = new URL("https://api.github.com/repos/fschwab/maz-db/releases/latest");
+			final URL url = new URL("https://api.github.com/repos/florian-boehm/maz-db/releases/latest");
 			final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.addRequestProperty("http.agent", "database-updater-app");

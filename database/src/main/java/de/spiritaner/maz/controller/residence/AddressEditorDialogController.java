@@ -1,9 +1,9 @@
 package de.spiritaner.maz.controller.residence;
 
 import de.spiritaner.maz.controller.EditorController;
-import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.util.database.CoreDatabase;
+import de.spiritaner.maz.view.dialog.EditorDialog;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

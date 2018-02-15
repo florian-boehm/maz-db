@@ -1,6 +1,5 @@
 package de.spiritaner.maz.model;
 
-import de.spiritaner.maz.controller.residence.AddressEditorDialogController;
 import de.spiritaner.maz.controller.yearabroad.SiteEditorDialogController;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -9,9 +8,7 @@ import javafx.beans.property.StringProperty;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Florian Schwab

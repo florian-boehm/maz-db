@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.user.UserEditorController">
+    <children>
+        <Label maxHeight="1.7976931348623157E308" text="Benutzername:" GridPane.hgrow="ALWAYS" />
+        <TextField fx:id="usernameField" GridPane.columnIndex="1" />
+        <Label text="Passwort:" GridPane.rowIndex="1" />
+        <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label text="Passwort-Wiederholung:" GridPane.rowIndex="2" />
+      <PasswordField fx:id="passwordCheckField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    </children>
+    <columnConstraints>
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="130.0" minWidth="130.0" />
+        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+    </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+</GridPane>

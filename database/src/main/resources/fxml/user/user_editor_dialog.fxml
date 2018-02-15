@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<AnchorPane minWidth="-Infinity" prefWidth="330.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.user.UserEditorDialogController">    <children>
+        <GridPane alignment="center" hgap="10.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+
+                <Text fx:id="titleText" style="-fx-font-weight: bold;" text="Benutzer bearbeiten/anlegen" GridPane.columnSpan="2147483647" GridPane.rowIndex="0">
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Text>
+                <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+
+                <fx:include fx:id="userEditor" source="user_editor.fxml" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+
+                <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+                <GridPane alignment="center" hgap="10.0" vgap="10.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="130.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label fx:id="adminPasswordLabel" text="Administrator-Passwort:" />
+                        <PasswordField fx:id="adminPasswordField" GridPane.columnIndex="1" />
+                    </children>
+                </GridPane>
+
+                <Label fx:id="errorLabel" managed="false" text="Fehlermeldung" textFill="RED" visible="false" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+
+                <ButtonBar GridPane.columnSpan="2" GridPane.rowIndex="6">
+                    <buttons>
+                        <Button fx:id="saveUserButton" defaultButton="true" mnemonicParsing="false" onAction="#saveUser" text="Anlegen" />
+                        <Button cancelButton="true" mnemonicParsing="false" onAction="#closeDialog" text="Abbrechen" />
+                    </buttons>
+                    <GridPane.margin>
+                        <Insets top="10.0" />
+                    </GridPane.margin>
+                </ButtonBar>
+            </children>
+            <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints />
+                <RowConstraints valignment="BOTTOM" />
+                <RowConstraints />
+                <RowConstraints />
+            <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+</AnchorPane>

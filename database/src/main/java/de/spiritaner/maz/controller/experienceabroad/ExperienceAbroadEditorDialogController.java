@@ -2,9 +2,9 @@ package de.spiritaner.maz.controller.experienceabroad;
 
 import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
-import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.model.ExperienceAbroad;
 import de.spiritaner.maz.util.database.CoreDatabase;
+import de.spiritaner.maz.view.dialog.EditorDialog;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,6 +1,5 @@
 package de.spiritaner.maz.util.database;
 
-import de.spiritaner.maz.util.Settings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;

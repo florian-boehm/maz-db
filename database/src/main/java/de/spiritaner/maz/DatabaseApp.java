@@ -1,6 +1,5 @@
 package de.spiritaner.maz;
 
-import de.spiritaner.maz.util.database.UserDatabase;
 import de.spiritaner.maz.view.dialog.LoginDialog;
 import javafx.application.Application;
 import javafx.stage.Stage;

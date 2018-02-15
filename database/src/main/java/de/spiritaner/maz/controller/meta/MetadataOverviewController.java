@@ -1,12 +1,12 @@
 package de.spiritaner.maz.controller.meta;
 
+import de.spiritaner.maz.model.Identifiable;
+import de.spiritaner.maz.model.meta.MetaClass;
+import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.view.dialog.ExceptionDialog;
 import de.spiritaner.maz.view.dialog.MetadataEditorDialog;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
-import de.spiritaner.maz.model.Identifiable;
-import de.spiritaner.maz.model.meta.MetaClass;
-import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

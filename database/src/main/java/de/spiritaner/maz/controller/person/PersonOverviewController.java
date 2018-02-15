@@ -1,11 +1,11 @@
 package de.spiritaner.maz.controller.person;
 
 import de.spiritaner.maz.controller.OverviewController;
-import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.meta.*;
 import de.spiritaner.maz.util.database.CoreDatabase;
+import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.view.renderer.DateAsStringListCell;
 import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.collections.FXCollections;
@@ -23,7 +23,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 @OverviewController.Annotation(fxmlFile = "/fxml/person/person_overview.fxml", objDesc = "Person")

@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.MaskerPane?>
-
 <AnchorPane fx:id="tablePane" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.person.PersonOverviewController">
 	<children>
 		<BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -23,7 +15,7 @@
 						<Separator orientation="VERTICAL" />
 						<Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#remove" text="Entfernen" />
 						<Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#edit" text="Bearbeiten" />
-						<Button mnemonicParsing="false" onAction="#create" text="Neu" />
+						<Button fx:id="createButton" mnemonicParsing="false" onAction="#create" text="Neu" />
 						<!--Separator orientation="VERTICAL" />
 						<MenuButton mnemonicParsing="false" text="Auswahl">
 							<items>

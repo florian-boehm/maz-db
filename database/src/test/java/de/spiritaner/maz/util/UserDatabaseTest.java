@@ -3,10 +3,15 @@ package de.spiritaner.maz.util;
 import de.spiritaner.maz.util.database.UserDatabase;
 import org.testng.ITestContext;
 import org.testng.TestRunner;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 import java.io.File;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * @author Florian Schwab

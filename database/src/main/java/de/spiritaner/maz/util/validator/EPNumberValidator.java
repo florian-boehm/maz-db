@@ -1,7 +1,6 @@
 package de.spiritaner.maz.util.validator;
 
 import de.spiritaner.maz.model.EPNumber;
-import de.spiritaner.maz.model.meta.MetaClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
