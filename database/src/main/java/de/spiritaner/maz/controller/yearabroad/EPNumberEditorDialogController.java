@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.yearabroad;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.dialog.EditorDialog;
@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/epnumber_editor_dialog.fxml", objDesc = "EP-Nummer")
-public class EPNumberEditorDialogController extends EditorController<EPNumber> {
+public class EPNumberEditorDialogController extends EditorDialogController<EPNumber> {
 
 	final static Logger logger = Logger.getLogger(EPNumberEditorDialogController.class);
 

@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.approval;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.model.Approval;
 import de.spiritaner.maz.util.database.CoreDatabase;
@@ -20,7 +20,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/approval/approval_editor_dialog.fxml", objDesc = "Einwilligung")
-public class ApprovalEditorDialogController extends EditorController<Approval> {
+public class ApprovalEditorDialogController extends EditorDialogController<Approval> {
 
 	final static Logger logger = Logger.getLogger(ApprovalEditorDialogController.class);
 
@@ -50,8 +50,8 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 		if (approval != null) {
 			// Check if a person is already set in this residence
 			if (approval.getPerson() != null) {
-				personEditorController.setAll(approval.getPerson());
-				personEditorController.setReadonly(true);
+				personEditorController.person.set(approval.getPerson());
+				personEditorController.readOnly.set(true);
 
 				approval.getPerson().getApprovals().forEach(singleApproval -> {
 					switch (singleApproval.getApprovalType().getId().intValue()) {
@@ -107,8 +107,6 @@ public class ApprovalEditorDialogController extends EditorController<Approval> {
 			if (personValid && approvalValid) {
 				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
-
-				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
 
 				for(Approval approval : getIdentifiable().getPerson().getApprovals()) {
 					Approval managedApproval = (!em.contains(approval)) ? em.merge(approval) : approval;

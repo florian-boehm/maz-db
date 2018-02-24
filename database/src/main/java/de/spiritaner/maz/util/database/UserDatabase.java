@@ -153,11 +153,11 @@ public class UserDatabase {
 			em = getFactory(true).createEntityManager();
 			em.getTransaction().begin();
 
-			// Use the key generator to get the database key.
+			// Use the editable generator to get the database editable.
 			KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
 			keyGenerator.init(128);
 
-			// Add the database key to the user object. The user object will take care of its encryption on persist.
+			// Add the database editable to the user object. The user object will take care of its encryption on persist.
 			final byte[] unencryptedDbKey = keyGenerator.generateKey().getEncoded();
 			final String password = user.getPassword();
 			user.setUnencryptedDatabaseKey(unencryptedDbKey);
@@ -172,7 +172,7 @@ public class UserDatabase {
 			em.persist(user);
 			em.getTransaction().commit();
 
-			// Reset the unencrypted database key so that it can be used in core database initialization
+			// Reset the unencrypted database editable so that it can be used in core database initialization
 			user.setUnencryptedDatabaseKey(unencryptedDbKey);
 			user.setPassword(password);
 		} catch (DatabaseException e) {
@@ -207,12 +207,12 @@ public class UserDatabase {
 			userEM = getFactory(true).createEntityManager();
 			userEM.getTransaction().begin();
 
-			// Use the key generator to get the database key.
+			// Use the editable generator to get the database editable.
 			final User adminFromDb = userEM.createNamedQuery("User.findByUsername", User.class).setParameter("username", admin.getUsername()).getSingleResult();
 			final boolean passwordCorrect = BCrypt.checkpw(admin.getPassword(), adminFromDb.getPasswordHash());
 
 			if (passwordCorrect) {
-				// To retrieve the unencrypted database key from the admin user the plain text password has to be set
+				// To retrieve the unencrypted database editable from the admin user the plain text password has to be set
 				// manually since it is not stored in the database of course (transient field)!
 				adminFromDb.setPassword(admin.getPassword());
 				user.setUnencryptedDatabaseKey(adminFromDb.getUnencryptedDatabaseKey());
@@ -273,12 +273,12 @@ public class UserDatabase {
 
 			User managedUser = userEM.find(User.class, user.getId());
 
-			// Use the key generator to get the database key.
+			// Use the editable generator to get the database editable.
 			final User adminFromDb = userEM.createNamedQuery("User.findByUsername", User.class).setParameter("username", admin.getUsername()).getSingleResult();
 			final boolean passwordCorrect = BCrypt.checkpw(admin.getPassword(), adminFromDb.getPasswordHash());
 
 			if (passwordCorrect) {
-				// To retrieve the unencrypted database key from the admin user the plain text password has to be set
+				// To retrieve the unencrypted database editable from the admin user the plain text password has to be set
 				// manually since it is not stored in the database of course (transient field)!
 				adminFromDb.setPassword(admin.getPassword());
 				managedUser.setUnencryptedDatabaseKey(adminFromDb.getUnencryptedDatabaseKey());
@@ -375,7 +375,7 @@ public class UserDatabase {
 
 					if (autoInitDb) CoreDatabase.initFactory(user);
 					// TODO disable this here before release!
-					logger.info("Decrypted database aes key is '" + DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + "'");
+					logger.info("Decrypted database aes editable is '" + DatatypeConverter.printHexBinary(user.getUnencryptedDatabaseKey()) + "'");
 				}
 			}
 

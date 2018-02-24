@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.yearabroad;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.controller.person.PersonOverviewController;
 import de.spiritaner.maz.model.EPNumber;
@@ -28,7 +28,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/yearabroad_editor_dialog.fxml", objDesc = "Auslandsjahr")
-public class YearAbroadEditorDialogController extends EditorController<YearAbroad> {
+public class YearAbroadEditorDialogController extends EditorDialogController<YearAbroad> {
 
 	final static Logger logger = Logger.getLogger(YearAbroadEditorDialogController.class);
 
@@ -99,7 +99,7 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 		super.setIdentifiable(yearAbroad);
 
 		siteEditorController.setReadonly(true);
-		personEditorController.setReadonly(true);
+		personEditorController.readOnly.set(true);
 
 		if (yearAbroad != null) {
 			if (yearAbroad.getSite() != null) {
@@ -110,7 +110,7 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 			}
 
 			if (yearAbroad.getPerson() != null) {
-				personEditorController.setAll(yearAbroad.getPerson());
+				personEditorController.person.set(yearAbroad.getPerson());
 				searchPersonButton.setDisable(true);
 			}
 
@@ -136,7 +136,6 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
 				getIdentifiable().setSite(siteEditorController.getAll(getIdentifiable().getSite()));
 				yearAbroadEditorController.getAll(getIdentifiable());
 
@@ -162,7 +161,7 @@ public class YearAbroadEditorDialogController extends EditorController<YearAbroa
 
 		result.ifPresent((Person person) -> {
 			getIdentifiable().setPerson(person);
-			personEditorController.setAll(person);
+			personEditorController.person.set(person);
 		});
 	}
 

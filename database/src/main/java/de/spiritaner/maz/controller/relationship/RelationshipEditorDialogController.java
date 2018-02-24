@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.relationship;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.controller.person.PersonOverviewController;
 import de.spiritaner.maz.model.Person;
@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/relationship/relationship_editor_dialog.fxml", objDesc = "Beziehung")
-public class RelationshipEditorDialogController extends EditorController<Relationship> {
+public class RelationshipEditorDialogController extends EditorDialogController<Relationship> {
 
 	final static Logger logger = Logger.getLogger(RelationshipEditorDialogController.class);
 
@@ -54,19 +54,19 @@ public class RelationshipEditorDialogController extends EditorController<Relatio
 		if (relationship != null) {
 			// Check if a person is already set in this residence
 			if (relationship.getFromPerson() != null) {
-				fromPersonEditorController.setAll(relationship.getFromPerson());
-				fromPersonEditorController.setReadonly(true);
+				fromPersonEditorController.person.set(relationship.getFromPerson());
+				fromPersonEditorController.readOnly.set(true);
 			}
 
 			relationshipEditorController.setAll(relationship);
-			toPersonEditorController.setReadonly(true);
+			toPersonEditorController.readOnly.set(true);
 
 			if (relationship.getId() != 0L) {
 				titleText.setText("Beziehung bearbeiten");
 				saveRelationshipButton.setText("Speichern");
 
 				if(relationship.getToPerson() != null) {
-					toPersonEditorController.setAll(relationship.getToPerson());
+					toPersonEditorController.person.set(relationship.getToPerson());
 					relationshipEditorController.getPersonFromDatabaseToggleSwitch().setSelected(true);
 					relationshipEditorController.setPersonFromDatabase(true);
 				} else {
@@ -97,7 +97,7 @@ public class RelationshipEditorDialogController extends EditorController<Relatio
 		relationshipEditorController.getPersonFromDatabaseToggleSwitch().selectedProperty().addListener((observable, oldValue, newValue) -> {
 			searchPersonButton.setDisable(!newValue);
 
-			if(!newValue) toPersonEditorController.setAll(new Person());
+			if(!newValue) toPersonEditorController.person.set(new Person());
 		});
 	}
 
@@ -111,13 +111,12 @@ public class RelationshipEditorDialogController extends EditorController<Relatio
 				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				if(relationshipEditorController.getPersonFromDatabaseToggleSwitch().isSelected()) {
+				/*if(relationshipEditorController.getPersonFromDatabaseToggleSwitch().isSelected()) {
 					getIdentifiable().setToPerson(toPersonEditorController.getAll(getIdentifiable().getToPerson()));
 				} else {
 					getIdentifiable().setToPerson(null);
-				}
+				}*/
 
-				getIdentifiable().setFromPerson(fromPersonEditorController.getAll(getIdentifiable().getFromPerson()));
 				relationshipEditorController.getAll(getIdentifiable());
 
 				try {
@@ -172,7 +171,7 @@ public class RelationshipEditorDialogController extends EditorController<Relatio
 				alert.showAndWait();
 			} else {
 				getIdentifiable().setToPerson(selectedPerson);
-				toPersonEditorController.setAll(selectedPerson);
+				toPersonEditorController.person.set(selectedPerson);
 			}
 		});
 	}

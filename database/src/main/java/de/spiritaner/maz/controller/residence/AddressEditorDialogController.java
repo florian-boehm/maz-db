@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.residence;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.dialog.EditorDialog;
@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/residence/address_editor_dialog.fxml", objDesc = "Adresse")
-public class AddressEditorDialogController extends EditorController<Address> {
+public class AddressEditorDialogController extends EditorDialogController<Address> {
 
     final static Logger logger = Logger.getLogger(AddressEditorDialogController.class);
 

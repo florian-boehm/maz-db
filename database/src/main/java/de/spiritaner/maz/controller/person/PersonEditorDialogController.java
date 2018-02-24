@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.person;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.envers.RevisionEntity;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/person/person_editor_dialog.fxml", objDesc = "Person")
-public class PersonEditorDialogController extends EditorController<Person> {
+public class PersonEditorDialogController extends EditorDialogController<Person> {
 
     final static Logger logger = Logger.getLogger(PersonEditorDialogController.class);
 
@@ -41,21 +41,14 @@ public class PersonEditorDialogController extends EditorController<Person> {
         Platform.runLater(() -> getStage().close());
     }
 
-    @Override
-    public void onReopen() {
-
-    }
-
     public void savePerson(ActionEvent actionEvent) {
         Platform.runLater(() -> {
-            // Check if the first name, family name and birthday are valid
+            // Check if the first editable, family editable and birthday are valid
             boolean validation = personEditorController.isValid();
 
             if (validation) {
                 EntityManager em = CoreDatabase.getFactory().createEntityManager();
                 em.getTransaction().begin();
-
-                personEditorController.getAll(getIdentifiable());
 
                 // This has to be checked here because if the person is currently at the year abroad the
                 // preferred address id would be lower than zero and this would lead to an error on merge/persist!
@@ -83,7 +76,7 @@ public class PersonEditorDialogController extends EditorController<Person> {
         super.setIdentifiable(person);
 
         if (person != null) {
-            personEditorController.setAll(person);
+            personEditorController.person.set(person);
 
             if (person.getId() != 0L) {
                 titleText.setText("Person bearbeiten");

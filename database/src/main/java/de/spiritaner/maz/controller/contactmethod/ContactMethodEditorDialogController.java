@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.contactmethod;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.model.ContactMethod;
 import de.spiritaner.maz.util.database.CoreDatabase;
@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/contactmethod/contactmethod_editor_dialog.fxml", objDesc = "Kontaktweg")
-public class ContactMethodEditorDialogController extends EditorController<ContactMethod> {
+public class ContactMethodEditorDialogController extends EditorDialogController<ContactMethod> {
 
 	final static Logger logger = Logger.getLogger(ContactMethodEditorDialogController.class);
 
@@ -43,8 +43,8 @@ public class ContactMethodEditorDialogController extends EditorController<Contac
 		if (contactMethod != null) {
 			// Check if a person is already set in this residence
 			if (contactMethod.getPerson() != null) {
-				personEditorController.setAll(contactMethod.getPerson());
-				personEditorController.setReadonly(true);
+				personEditorController.person.set(contactMethod.getPerson());
+				personEditorController.readOnly.set(true);
 			}
 
 			contactMethodEditorController.setAll(contactMethod);
@@ -76,7 +76,6 @@ public class ContactMethodEditorDialogController extends EditorController<Contac
 				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
 				contactMethodEditorController.getAll(getIdentifiable());
 
 				try {

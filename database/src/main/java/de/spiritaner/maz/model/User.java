@@ -41,7 +41,7 @@ public class User implements Identifiable {
 		id = new SimpleLongProperty();
 		username = new SimpleStringProperty();
 
-		// It is important to save the users old name when renaming the user in the H2 user table
+		// It is important to save the users old editable when renaming the user in the H2 user table
 		username.addListener((observable, oldValue, newValue) -> {
 			obsoleteUsername = oldValue;
 		});
@@ -63,19 +63,19 @@ public class User implements Identifiable {
 			passwordHash = BCrypt.hashpw(password, BCrypt.gensalt(12));
 			logger.info("We got '"+passwordHash+"' out of '"+password+"'");
 
-			// Also if the unencrypted database key is set (happens on database or user creation) ...
+			// Also if the unencrypted database editable is set (happens on database or user creation) ...
 			if (unencryptedDatabaseKey.length > 0) {
-				logger.info("Unencrypted database aes key is '"+DatatypeConverter.printHexBinary(unencryptedDatabaseKey)+"'");
+				logger.info("Unencrypted database aes editable is '"+DatatypeConverter.printHexBinary(unencryptedDatabaseKey)+"'");
 
 				try {
-					// ... salt the user specific database key every time
+					// ... salt the user specific database editable every time
 					String tmpSalt = BCrypt.gensalt(12);
-					// ... generate an AES cipher instance with the user specific aes key (128bit)
+					// ... generate an AES cipher instance with the user specific aes editable (128bit)
 					Cipher cipher = Cipher.getInstance("AES");
 					cipher.init(Cipher.ENCRYPT_MODE, generateUserSpecificAESKey(tmpSalt));
 
 					encryptedDatabaseKey = cipher.doFinal(unencryptedDatabaseKey);
-					logger.info("Encrypted database aes key '"+DatatypeConverter.printHexBinary(encryptedDatabaseKey)+"'");
+					logger.info("Encrypted database aes editable '"+DatatypeConverter.printHexBinary(encryptedDatabaseKey)+"'");
 					unencryptedDatabaseKey = null;
 					databaseKeySalt = tmpSalt;
 				} catch(Exception e) {
@@ -179,7 +179,7 @@ public class User implements Identifiable {
 		key = Arrays.copyOf(key, 16);
 
 		// TODO disable this here before release!
-		logger.info("User specific aes key is '"+DatatypeConverter.printHexBinary(key)+"'");
+		logger.info("User specific aes editable is '"+DatatypeConverter.printHexBinary(key)+"'");
 
 		return new SecretKeySpec(key, "AES");
 	}

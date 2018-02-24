@@ -1,7 +1,7 @@
 package de.spiritaner.maz.controller.user;
 
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.model.User;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.database.UserDatabase;
@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import java.util.Optional;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/user/user_editor_dialog.fxml", objDesc = "Benutzer")
-public class UserEditorDialogController extends EditorController<User> {
+public class UserEditorDialogController extends EditorDialogController<User> {
 
 	final static Logger logger = Logger.getLogger(UserEditorDialogController.class);
 

@@ -27,7 +27,7 @@ public class Envelope {
 				int i = 1;
 
 				MailMergeData data = new MailMergeData();
-				String[] headers = {"title", "name", "additional", "street", "city", "country"};
+				String[] headers = {"title", "editable", "additional", "street", "city", "country"};
 				data.getHeaders().addAll(Arrays.asList(headers));
 
 				//if(options.isMergeRelationshipAddresses()) FamilyHelper.merge(persons);

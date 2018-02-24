@@ -2,6 +2,7 @@ package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.controller.person.PersonEditorDialogController;
 import de.spiritaner.maz.model.meta.*;
+import de.spiritaner.maz.view.binding.BindableProperty;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.beans.property.*;
 import org.hibernate.annotations.Cascade;
@@ -31,62 +32,36 @@ import java.util.List;
 })
 public class Person extends PartialVolatileEntity implements Identifiable {
 
-	private LongProperty id;
+	public LongProperty id = new SimpleLongProperty();
 
-	private ObjectProperty<Salutation> salutation;
-	private StringProperty honorific;
+	public StringProperty honorific = new SimpleStringProperty();
+	public StringProperty firstName = new SimpleStringProperty();
+	public StringProperty familyName = new SimpleStringProperty();
+	public StringProperty birthName = new SimpleStringProperty();
 
-	private StringProperty firstName;
-	private StringProperty familyName;
-	private StringProperty birthName;
+	public ObjectProperty<LocalDate> birthday = new SimpleObjectProperty<>();
+	public StringProperty birthplace = new SimpleStringProperty();
 
-	private ObjectProperty<LocalDate> birthday;
-	private StringProperty birthplace;
+	public ObjectProperty<Salutation> salutation = new SimpleObjectProperty<>();
+	public ObjectProperty<Gender> gender = new SimpleObjectProperty<>();
+	public ObjectProperty<Diocese> diocese = new SimpleObjectProperty<>();
+	public ObjectProperty<Residence> preferredResidence = new SimpleObjectProperty<>();
+	public ObjectProperty<Religion> religion = new SimpleObjectProperty<>();
 
-	private ObjectProperty<Gender> gender;
-	private ObjectProperty<Diocese> diocese;
-	private ObjectProperty<Residence> preferredResidence;
-	private ObjectProperty<Religion> religion;
-
-	private List<Residence> residences;
-	private List<Role> roles;
-	private List<Approval> approvals;
-	private List<ContactMethod> contactMethods;
-	private List<Participation> participations;
-	private List<Relationship> relationships;
-	private List<Responsible> responsibles;
-	private List<YearAbroad> yearsAbroad;
-	private List<ExperienceAbroad> experiencesAbroad;
-
-	public Person() {
-		id = new SimpleLongProperty();
-		firstName = new SimpleStringProperty();
-		familyName = new SimpleStringProperty();
-		honorific = new SimpleStringProperty();
-		birthday = new SimpleObjectProperty<>();
-		birthplace = new SimpleStringProperty();
-		birthName = new SimpleStringProperty();
-		salutation = new SimpleObjectProperty<>();
-		gender = new SimpleObjectProperty<>();
-		diocese = new SimpleObjectProperty<>();
-		preferredResidence = new SimpleObjectProperty<>();
-		religion = new SimpleObjectProperty<>();
-
-		residences = new ArrayList<>();
-		roles = new ArrayList<>();
-		approvals = new ArrayList<>();
-		contactMethods = new ArrayList<>();
-		participations = new ArrayList<>();
-		relationships = new ArrayList<>();
-		responsibles = new ArrayList<>();
-		yearsAbroad = new ArrayList<>();
-		experiencesAbroad = new ArrayList<>();
-	}
+	private List<Residence> residences = new ArrayList<>();
+	private List<Role> roles = new ArrayList<>();
+	private List<Approval> approvals = new ArrayList<>();
+	private List<ContactMethod> contactMethods = new ArrayList<>();
+	private List<Participation> participations = new ArrayList<>();
+	private List<Relationship> relationships = new ArrayList<>();
+	private List<Responsible> responsibles = new ArrayList<>();
+	private List<YearAbroad> yearsAbroad = new ArrayList<>();
+	private List<ExperienceAbroad> experiencesAbroad = new ArrayList<>();
 
 	/**
-	 * Every person has a composite key to track changes made to the dataset.
+	 * Every person has a composite editable to track changes made to the dataset.
 	 *
-	 * @return The composite key of a person
+	 * @return The composite editable of a person
 	 */
 	@Id
 	@GeneratedValue
@@ -118,6 +93,7 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 		this.salutation.set(salutation);
 	}
 
+	@BindableProperty
 	public ObjectProperty<Salutation> salutationProperty() {
 		return salutation;
 	}
@@ -135,12 +111,13 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 		this.honorific.set(honorific);
 	}
 
+	@BindableProperty
 	public StringProperty honorificProperty() {
 		return honorific;
 	}
 
 	/**
-	 * @return The persons first name.
+	 * @return The persons first editable.
 	 */
 	@Column(nullable = false)
 	@Field
@@ -152,15 +129,16 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 		this.firstName.set(firstName);
 	}
 
+	@BindableProperty
 	public StringProperty firstNameProperty() {
 		return firstName;
 	}
 
 	/**
-	 * The persons family name. When this person marries its family name may be overridden.
-	 * The original family name will then become the birth name.
+	 * The persons family editable. When this person marries its family editable may be overridden.
+	 * The original family editable will then become the birth editable.
 	 *
-	 * @return The persons family name
+	 * @return The persons family editable
 	 */
 	@Column(nullable = false)
 	@Field
@@ -172,14 +150,15 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 		this.familyName.set(familyName);
 	}
 
+	@BindableProperty
 	public StringProperty familyNameProperty() {
 		return familyName;
 	}
 
 	/**
-	 * The persons birth name. It is empty until the person marries another person.
+	 * The persons birth editable. It is empty until the person marries another person.
 	 *
-	 * @return The persons birth name, may be empty
+	 * @return The persons birth editable, may be empty
 	 */
 	@Field
 	public String getBirthName() {
@@ -190,6 +169,7 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 		this.birthName.set(birthName);
 	}
 
+	@BindableProperty
 	public StringProperty birthNameProperty() {
 		return birthName;
 	}
@@ -211,6 +191,7 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 		this.birthday.set(birthday);
 	}
 
+	@BindableProperty
 	public ObjectProperty<LocalDate> birthdayProperty() {
 		return birthday;
 	}
@@ -227,6 +208,7 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 		this.birthplace.set(birthplace);
 	}
 
+	@BindableProperty
 	public StringProperty birthplaceProperty() {
 		return birthplace;
 	}
@@ -248,6 +230,7 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 		this.gender.set(gender);
 	}
 
+	@BindableProperty
 	public ObjectProperty<Gender> genderProperty() {
 		return gender;
 	}
@@ -279,6 +262,7 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 		this.diocese.set(diocese);
 	}
 
+	@BindableProperty
 	public ObjectProperty<Diocese> dioceseProperty() {
 		return diocese;
 	}
@@ -403,6 +387,7 @@ public class Person extends PartialVolatileEntity implements Identifiable {
 		this.religion.set(religion);
 	}
 
+	@BindableProperty
 	public ObjectProperty<Religion> religionProperty() {
 		return religion;
 	}

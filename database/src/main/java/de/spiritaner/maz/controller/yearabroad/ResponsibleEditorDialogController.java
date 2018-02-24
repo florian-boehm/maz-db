@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.yearabroad;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.controller.person.PersonOverviewController;
 import de.spiritaner.maz.model.Person;
@@ -24,7 +24,7 @@ import javax.persistence.PersistenceException;
 import java.util.Optional;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/responsible_editor_dialog.fxml", objDesc = "Verantwortliche(n)")
-public class ResponsibleEditorDialogController extends EditorController<Responsible> {
+public class ResponsibleEditorDialogController extends EditorDialogController<Responsible> {
 
 	final static Logger logger = Logger.getLogger(ResponsibleEditorDialogController.class);
 
@@ -51,8 +51,8 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 			}
 
 			if(responsible.getPerson() != null) {
-				personEditorController.setAll(responsible.getPerson());
-				personEditorController.setReadonly(true);
+				personEditorController.person.set(responsible.getPerson());
+				personEditorController.readOnly.set(true);
 			}
 
 			responsibleEditorController.setAll(responsible);
@@ -76,7 +76,6 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
 				responsibleEditorController.getAll(getIdentifiable());
 
 				try {
@@ -130,8 +129,8 @@ public class ResponsibleEditorDialogController extends EditorController<Responsi
 
 		result.ifPresent((Person person) -> {
 			getIdentifiable().setPerson(person);
-			personEditorController.setAll(person);
-			personEditorController.setReadonly(true);
+			personEditorController.person.set(person);
+			personEditorController.readOnly.set(true);
 		});
 	}
 }

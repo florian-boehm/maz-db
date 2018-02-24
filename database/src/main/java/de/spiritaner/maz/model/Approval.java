@@ -34,10 +34,10 @@ public class Approval implements Identifiable {
 
 	@Id
 	@GeneratedValue
-	public Long getId() {
+	public final Long getId() {
 		return id.get();
 	}
-	public void setId(Long id) {
+	public final void setId(Long id) {
 		this.id.set(id);
 	}
 	public LongProperty idProperty() { return id; }

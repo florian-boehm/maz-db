@@ -45,7 +45,7 @@ public class Site implements Identifiable  {
 	public LongProperty idProperty() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id.set(id);
 	}
 

@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.experienceabroad;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.model.ExperienceAbroad;
 import de.spiritaner.maz.util.database.CoreDatabase;
@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/experienceabroad/experienceabroad_editor_dialog.fxml", objDesc = "Mitlebezeit")
-public class ExperienceAbroadEditorDialogController extends EditorController<ExperienceAbroad> {
+public class ExperienceAbroadEditorDialogController extends EditorDialogController<ExperienceAbroad> {
 
 	final static Logger logger = Logger.getLogger(ExperienceAbroadEditorDialogController.class);
 
@@ -43,8 +43,8 @@ public class ExperienceAbroadEditorDialogController extends EditorController<Exp
 		if (experienceAbroad != null) {
 			// Check if a person is already set in this residence
 			if (experienceAbroad.getPerson() != null) {
-				personEditorController.setAll(experienceAbroad.getPerson());
-				personEditorController.setReadonly(true);
+				personEditorController.person.set(experienceAbroad.getPerson());
+				personEditorController.readOnly.set(true);
 			}
 
 			experienceAbroadEditorController.setAll(experienceAbroad);
@@ -76,7 +76,6 @@ public class ExperienceAbroadEditorDialogController extends EditorController<Exp
 				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
 				experienceAbroadEditorController.getAll(getIdentifiable());
 
 				try {

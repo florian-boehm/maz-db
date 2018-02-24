@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.residence;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.Residence;
@@ -18,7 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/residence/residence_editor_dialog.fxml", objDesc = "Wohnort")
-public class ResidenceEditorDialogController extends EditorController<Residence> {
+public class ResidenceEditorDialogController extends EditorDialogController<Residence> {
 
 	final static Logger logger = Logger.getLogger(ResidenceEditorDialogController.class);
 
@@ -46,8 +46,8 @@ public class ResidenceEditorDialogController extends EditorController<Residence>
 		if (residence != null) {
 			// Check if a person is already set in this residence
 			if (residence.getPerson() != null) {
-				personEditorController.setAll(residence.getPerson());
-				personEditorController.setReadonly(true);
+				personEditorController.person.set(residence.getPerson());
+				personEditorController.readOnly.set(true);
 			}
 
 			if (residence.getAddress() != null) {
@@ -76,7 +76,6 @@ public class ResidenceEditorDialogController extends EditorController<Residence>
 				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
 				getIdentifiable().setAddress(Address.findSame(em, addressEditorController.getAll(getIdentifiable().getAddress())));
 				residenceEditorController.getAll(getIdentifiable());
 

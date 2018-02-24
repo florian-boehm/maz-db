@@ -3,26 +3,28 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import de.spiritaner.maz.view.component.BindableTextField?>
+<?import de.spiritaner.maz.view.component.BindableDatePicker?>
+<?import de.spiritaner.maz.view.component.BindableComboBox?>
 <GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.person.PersonEditorController">
     <children>
 
         <Label maxHeight="1.7976931348623157E308" text="Vorname:" GridPane.hgrow="ALWAYS" />
-
-        <TextField fx:id="firstnameField" GridPane.columnIndex="1" />
+        <BindableTextField fx:id="firstNameField" GridPane.columnIndex="1" val="person.firstName"/>
 
         <Label text="Nachname:" GridPane.rowIndex="1" />
+        <BindableTextField fx:id="familyNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" val="person.familyName" />
 
-        <TextField fx:id="familynameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <Label text="Geburtsname:" GridPane.rowIndex="2" />
-        <TextField fx:id="birthnameField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <BindableTextField fx:id="birthNameField" GridPane.columnIndex="1" GridPane.rowIndex="2" val="person.birthName" />
       <Label text="Anrede:" GridPane.rowIndex="3" />
       <BorderPane layoutX="120.0" layoutY="239.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <center>
-            <ComboBox fx:id="salutationComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+            <BindableComboBox val="person.salutation" fx:id="salutationComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets />
                </BorderPane.margin>
-            </ComboBox>
+            </BindableComboBox>
          </center>
          <right>
             <Button fx:id="addNewSalutationButton" mnemonicParsing="false" onAction="#addNewSalutation" text="+" BorderPane.alignment="CENTER">
@@ -33,26 +35,26 @@
          </right>
       </BorderPane>
       <Label text="Titel:" GridPane.rowIndex="4" />
-      <TextField fx:id="honorificField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <BindableTextField fx:id="honorificField" GridPane.columnIndex="1" GridPane.rowIndex="4" val="person.honorific" />
         <Label text="Geburtstag:" GridPane.rowIndex="5" />
-        <DatePicker fx:id="birthdayDatePicker" maxWidth="1.7976931348623157E308" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="NEVER">
+        <BindableDatePicker val="person.birthday" fx:id="birthdayDatePicker" maxWidth="1.7976931348623157E308" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="NEVER">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
-      </DatePicker>
+      </BindableDatePicker>
         <Label text="Geburtsort:" GridPane.rowIndex="6" />
-        <TextField fx:id="birthplaceField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        <BindableTextField fx:id="birthplaceField" GridPane.columnIndex="1" GridPane.rowIndex="6" val="person.birthplace"/>
         <Label text="Geschlecht:" GridPane.rowIndex="7" />
       <BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.vgrow="NEVER">
          <center>
-                <ComboBox fx:id="genderComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                <BindableComboBox val="person.gender" fx:id="genderComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets />
                </BorderPane.margin>
-                </ComboBox>
+                </BindableComboBox>
          </center>
          <right>
             <Button fx:id="addNewGenderButton" mnemonicParsing="false" onAction="#addNewGender" text="+" BorderPane.alignment="CENTER">
@@ -65,11 +67,11 @@
       <Label text="Religion/Konfession:" GridPane.rowIndex="8" />
       <BorderPane layoutX="130.0" layoutY="255.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
          <center>
-            <ComboBox fx:id="religionComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+            <BindableComboBox val="person.religion" fx:id="religionComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets />
                </BorderPane.margin>
-            </ComboBox>
+            </BindableComboBox>
          </center>
          <right>
             <Button fx:id="addNewReligionButton" mnemonicParsing="false" onAction="#addNewReligion" text="+" BorderPane.alignment="CENTER">
@@ -82,14 +84,14 @@
       <Label text="Diözese:" GridPane.rowIndex="9" />
       <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="9">
          <center>
-            <ComboBox fx:id="dioceseComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+            <BindableComboBox val="person.diocese" fx:id="dioceseComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets />
                </BorderPane.margin>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
-            </ComboBox>
+            </BindableComboBox>
          </center>
          <right>
             <Button fx:id="addNewDioceseButton" mnemonicParsing="false" onAction="#addNewDiocese" text="+" BorderPane.alignment="CENTER">

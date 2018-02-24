@@ -24,15 +24,15 @@
 	<center>
 		<TabPane id="side-tabs" fx:id="sideTabs" side="LEFT">
 			<ImageTab closable="false" img="@../img/people_32.png" name="Personen" url="@person/person_page.fxml"/>
-			<!--ImageTab closable="false" img="@../img/map_32.png" name="Adressen"/-->
+			<!--ImageTab closable="false" img="@../img/map_32.png" editable="Adressen"/-->
 			<ImageTab closable="false" img="@../img/event_32.png" name="Veranstaltungen"
 			          url="@participation/event_page.fxml"/>
 			<ImageTab closable="false" img="@../img/docs_32.png" name="Dokumente" url="@document/document_page.fxml"/>
-			<!--ImageTab closable="false" img="@../img/manager_32.png" name="Verwaltung"/>
-			<ImageTab closable="false" img="@../img/analysis_32.png" name="Analyse"/-->
+			<!--ImageTab closable="false" img="@../img/manager_32.png" editable="Verwaltung"/>
+			<ImageTab closable="false" img="@../img/analysis_32.png" editable="Analyse"/-->
 			<ImageTab closable="false" img="@../img/earth_32.png" name="Einsatzstellen" url="@yearabroad/site_page.fxml"/>
 			<ImageTab closable="false" img="@../img/tags_32.png" name="Metadaten" url="@meta/metadata_overview.fxml"/>
-			<!--ImageTab closable="false" img="@../img/warning_32.png" name="Warnungen"/-->
+			<!--ImageTab closable="false" img="@../img/warning_32.png" editable="Warnungen"/-->
 		</TabPane>
 	</center>
 	<bottom>

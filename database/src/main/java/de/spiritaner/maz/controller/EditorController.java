@@ -1,73 +1,89 @@
 package de.spiritaner.maz.controller;
 
-import de.spiritaner.maz.model.Identifiable;
-import javafx.event.ActionEvent;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import de.spiritaner.maz.view.binding.Bindable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import org.apache.log4j.Logger;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URL;
-import java.util.Optional;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
-public abstract class EditorController<T extends Identifiable> implements Controller {
+abstract public class EditorController implements Initializable {
 
-	private Stage stage;
-	private T identifiable;
-	private Optional result = Optional.empty();
+	final static Logger logger = Logger.getLogger(EditorController.class);
 
-	public Stage getStage() {
-		return stage;
-	}
+	public BooleanProperty readOnly = new SimpleBooleanProperty(false);
 
 	@Override
-	public void setStage(Stage stage) {
-		this.stage = stage;
+	public void initialize(URL location, ResourceBundle resources) {
+
 	}
 
-	public T getIdentifiable() {
-		return identifiable;
+	public void rebindAll() {
+		Arrays.stream(this.getClass().getDeclaredFields()).filter(field -> {
+			try {
+				return field.get(this) instanceof Bindable;
+			} catch (IllegalAccessException e) {
+				return false;
+			}
+		}).forEach(field -> {
+			try {
+				Bindable bindable = (Bindable) field.get(this);
+				Property property = getPropertyRecursive(this, bindable.getVal());
+
+				if(property != null) bindable.bind(property);
+			} catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | NoSuchFieldException e) {
+				logger.error(e);
+			}
+		});
+
+		Arrays.stream(this.getClass().getDeclaredFields()).filter(field -> {
+			try {
+				return field.get(this) instanceof Node;
+			} catch (IllegalAccessException e) {
+				return false;
+			}
+		}).forEach(field -> {
+			try {
+				Node n = (Node) field.get(this);
+				n.disableProperty().bind(readOnly);
+			} catch (IllegalAccessException e) {
+				logger.error(e);
+			}
+		});
 	}
 
-	public void setIdentifiable(T obj) {
-		this.identifiable = obj;
-	}
+	private Property getPropertyRecursive(Object target, String keys) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		String propertyName = keys.split("\\.")[0];
+		Field targetField = target.getClass().getDeclaredField(propertyName);
+		Method targetMethod = null;
+		Object property = null;
 
-	public String getIdentifiableName() {
-		Identifiable.Annotation annotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);
-		return annotation.identifiableName();
-	}
+		if(target != this && (targetField.getModifiers() & Modifier.PRIVATE) >= 1) {
+			targetMethod = target.getClass().getDeclaredMethod(propertyName+"Property");
+			property = targetMethod.invoke(target);
+		} else
+			property = targetField.get(target);
 
-	public void closeDialog(ActionEvent actionEvent) {
-		// Platform.runLater(() -> getStage().close());
-		requestClose();
-	}
-
-	@Override
-	public void onReopen() {
-	}
-
-	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
-	}
-
-	public Optional getResult() {
-		return result;
-	}
-
-	public void setResult(T obj) {
-		this.result = Optional.of(obj);
-	}
-
-	public void setResult(Optional result) {
-		this.result = result;
-	}
-
-	public void requestClose() {
-		stage.fireEvent(
-				  new WindowEvent(
-							 stage,
-							 WindowEvent.WINDOW_CLOSE_REQUEST
-				  )
-		);
+		if(keys.split("\\.").length == 1) {
+			if(property instanceof Property)
+				return (Property) property;
+			else
+				return null;
+		} else {
+			if(property instanceof Property) {
+				return getPropertyRecursive(((Property) property).getValue(), keys.substring(keys.indexOf(".")+1));
+			} else {
+				return getPropertyRecursive(property, keys.substring(keys.indexOf(".") + 1));
+			}
+		}
 	}
 }

@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.participation;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.controller.person.PersonOverviewController;
 import de.spiritaner.maz.model.Event;
@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/participation/participation_editor_dialog.fxml", objDesc = "Teilnahme")
-public class ParticipationEditorDialogController extends EditorController<Participation> {
+public class ParticipationEditorDialogController extends EditorDialogController<Participation> {
 
 	final static Logger logger = Logger.getLogger(ParticipationEditorDialogController.class);
 
@@ -60,12 +60,12 @@ public class ParticipationEditorDialogController extends EditorController<Partic
 			}
 
 			if (participation.getPerson() != null) {
-				personEditorController.setAll(participation.getPerson());
+				personEditorController.person.set(participation.getPerson());
 				searchPersonButton.setDisable(true);
 			}
 
 			eventEditorController.setReadonly(true);
-			personEditorController.setReadonly(true);
+			personEditorController.readOnly.set(true);
 			participationEditorController.setAll(participation);
 
 			if (participation.getId() != 0L) {
@@ -98,7 +98,6 @@ public class ParticipationEditorDialogController extends EditorController<Partic
 				em.getTransaction().begin();
 
 				getIdentifiable().setEvent(eventEditorController.getAll(getIdentifiable().getEvent()));
-				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
 				participationEditorController.getAll(getIdentifiable());
 
 				try {
@@ -142,7 +141,7 @@ public class ParticipationEditorDialogController extends EditorController<Partic
 
 		result.ifPresent((Person person) -> {
 			getIdentifiable().setPerson(person);
-			personEditorController.setAll(person);
+			personEditorController.person.set(person);
 		});
 	}
 }

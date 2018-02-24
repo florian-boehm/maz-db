@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.yearabroad;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.controller.residence.AddressEditorController;
 import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.EPNumber;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/site_editor_dialog.fxml", objDesc = "Einsatzstelle")
-public class SiteEditorDialogController extends EditorController<Site> {
+public class SiteEditorDialogController extends EditorDialogController<Site> {
 
 	final static Logger logger = Logger.getLogger(SiteEditorDialogController.class);
 

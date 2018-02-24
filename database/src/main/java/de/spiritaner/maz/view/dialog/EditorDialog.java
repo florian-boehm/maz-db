@@ -1,6 +1,6 @@
 package de.spiritaner.maz.view.dialog;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.model.Identifiable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 import java.util.Optional;
 
 @SuppressWarnings("unchecked")
-public class EditorDialog<T extends EditorController> {
+public class EditorDialog<T extends EditorDialogController> {
 
 	private final Stage stage;
 	private final T controller;

@@ -1,6 +1,6 @@
 package de.spiritaner.maz.controller.role;
 
-import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
 import de.spiritaner.maz.model.Role;
 import de.spiritaner.maz.util.database.CoreDatabase;
@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/role/role_editor_dialog.fxml", objDesc = "Funktion")
-public class RoleEditorDialogController extends EditorController<Role> {
+public class RoleEditorDialogController extends EditorDialogController<Role> {
 
 	final static Logger logger = Logger.getLogger(RoleEditorDialogController.class);
 
@@ -43,8 +43,8 @@ public class RoleEditorDialogController extends EditorController<Role> {
 		if (role != null) {
 			// Check if a person is already set in this role
 			if (role.getPerson() != null) {
-				personEditorController.setAll(role.getPerson());
-				personEditorController.setReadonly(true);
+				personEditorController.person.set(role.getPerson());
+				personEditorController.readOnly.set(true);
 			}
 
 			roleEditorController.setAll(role);
@@ -76,7 +76,6 @@ public class RoleEditorDialogController extends EditorController<Role> {
 				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
-				getIdentifiable().setPerson(personEditorController.getAll(getIdentifiable().getPerson()));
 				roleEditorController.getAll(getIdentifiable());
 
 				try {

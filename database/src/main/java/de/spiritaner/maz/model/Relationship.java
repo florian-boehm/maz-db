@@ -77,7 +77,7 @@ public class Relationship implements Identifiable {
 	}
 
 	/**
-	 * If the person does not exist as explicit Person entity his/her first name can be inserted here manually
+	 * If the person does not exist as explicit Person entity his/her first editable can be inserted here manually
 	 *
 	 * @return
 	 */
@@ -94,7 +94,7 @@ public class Relationship implements Identifiable {
 	}
 
 	/**
-	 * If the person does not exist as explicit Person entity his/her family name can be inserted here manually
+	 * If the person does not exist as explicit Person entity his/her family editable can be inserted here manually
 	 *
 	 * @return
 	 */
