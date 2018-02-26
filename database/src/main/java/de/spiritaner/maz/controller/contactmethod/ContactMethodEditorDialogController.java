@@ -23,77 +23,31 @@ public class ContactMethodEditorDialogController extends EditorDialogController<
 
 	final static Logger logger = Logger.getLogger(ContactMethodEditorDialogController.class);
 
-	@FXML
-	private Button saveContactMethodButton;
-	@FXML
-	private Text titleText;
-	@FXML
-	private GridPane personEditor;
-	@FXML
-	private PersonEditorController personEditorController;
-	@FXML
-	private GridPane contactMethodEditor;
-	@FXML
-	private ContactMethodEditorController contactMethodEditorController;
+	public GridPane personEditor;
+	public PersonEditorController personEditorController;
+	public GridPane contactMethodEditor;
+	public ContactMethodEditorController contactMethodEditorController;
 
 	@Override
-	public void setIdentifiable(ContactMethod contactMethod) {
-		super.setIdentifiable(contactMethod);
-
-		if (contactMethod != null) {
-			// Check if a person is already set in this residence
-			if (contactMethod.getPerson() != null) {
-				personEditorController.person.set(contactMethod.getPerson());
-				personEditorController.readOnly.set(true);
-			}
-
-			contactMethodEditorController.setAll(contactMethod);
-
-			if (contactMethod.getId() != 0L) {
-				titleText.setText(getIdentifiableName() + " bearbeiten");
-				saveContactMethodButton.setText("Speichern");
-			} else {
-				titleText.setText(getIdentifiableName() + " anlegen");
-				saveContactMethodButton.setText("Anlegen");
-			}
-		}
-	}
-
-	@Override
-	public void onReopen() {
-	}
-
-	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
-	}
-
-	public void saveContactMethod(ActionEvent actionEvent) {
-		Platform.runLater(() -> {
-			boolean personValid = personEditorController.isValid();
-			boolean contactMethodValid = contactMethodEditorController.isValid();
-
-			if (personValid && contactMethodValid) {
-				EntityManager em = CoreDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
-
-				contactMethodEditorController.getAll(getIdentifiable());
-
-				try {
-					ContactMethod managedContactMethod = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
-					em.getTransaction().commit();
-					setResult(managedContactMethod);
-					requestClose();
-				} catch (PersistenceException e) {
-					em.getTransaction().rollback();
-					logger.warn(e);
-				} finally {
-					em.close();
+	protected void init() {
+		identifiable.addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				// Check if a person is already set in this residence
+				if (newValue.getPerson() != null) {
+					personEditorController.person.set(newValue.getPerson());
+					personEditorController.readOnly.set(true);
 				}
+
+				contactMethodEditorController.setAll(newValue);
 			}
 		});
 	}
 
-	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> getStage().close());
+	@Override
+	protected boolean allValid() {
+		boolean personValid = personEditorController.isValid();
+		boolean contactMethodValid = contactMethodEditorController.isValid();
+
+		return personValid && contactMethodValid;
 	}
 }

@@ -26,66 +26,28 @@ public class PersonEditorDialogController extends EditorDialogController<Person>
 
     final static Logger logger = Logger.getLogger(PersonEditorDialogController.class);
 
-    @FXML
-    private Button showHistoryButton;
-    @FXML
-    private Text titleText;
-    @FXML
-    private GridPane personEditor;
-    @FXML
-    private PersonEditorController personEditorController;
-    @FXML
-    private Button savePersonButton;
+    public Button showHistoryButton;
+    public Text titleText;
+    public GridPane personEditor;
+    public PersonEditorController personEditorController;
 
-    public void closeDialog(ActionEvent actionEvent) {
-        Platform.runLater(() -> getStage().close());
-    }
-
-    public void savePerson(ActionEvent actionEvent) {
-        Platform.runLater(() -> {
-            // Check if the first editable, family editable and birthday are valid
-            boolean validation = personEditorController.isValid();
-
-            if (validation) {
-                EntityManager em = CoreDatabase.getFactory().createEntityManager();
-                em.getTransaction().begin();
-
-                // This has to be checked here because if the person is currently at the year abroad the
-                // preferred address id would be lower than zero and this would lead to an error on merge/persist!
-                if (getIdentifiable().getPreferredResidence() != null && getIdentifiable().getPreferredResidence().getId() < 0) {
-                    getIdentifiable().setPreferredResidence(null);
-                }
-
-                try {
-                    Person managedPerson = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
-                    em.getTransaction().commit();
-                    setResult(managedPerson);
-                    requestClose();
-                } catch (PersistenceException e) {
-                    em.getTransaction().rollback();
-                    logger.warn(e);
-                } finally {
-                    em.close();
-                }
-            }
-        });
+    @Override
+    protected void preSave(final EntityManager em) {
+        // This has to be checked here because if the person is currently at the year abroad the
+        // pref erred address id would be lower than zero and this would lead to an error on merge/persist!
+        if (getIdentifiable().getPreferredResidence() != null && getIdentifiable().getPreferredResidence().getId() < 0) {
+            getIdentifiable().setPreferredResidence(null);
+        }
     }
 
     @Override
-    public void setIdentifiable(Person person) {
-        super.setIdentifiable(person);
+    protected boolean allValid() {
+        return personEditorController.isValid();
+    }
 
-        if (person != null) {
-            personEditorController.person.set(person);
-
-            if (person.getId() != 0L) {
-                titleText.setText("Person bearbeiten");
-                savePersonButton.setText("Speichern");
-            } else {
-                titleText.setText("Person anlegen");
-                savePersonButton.setText("Anlegen");
-            }
-        }
+    @Override
+    protected void init() {
+        identifiable.bindBidirectional(personEditorController.person);
     }
 
     public void showHistory(ActionEvent actionEvent) {

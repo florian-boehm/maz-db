@@ -28,26 +28,14 @@ public class ParticipationEditorDialogController extends EditorDialogController<
 
 	final static Logger logger = Logger.getLogger(ParticipationEditorDialogController.class);
 
-	@FXML
-	private Button saveParticipantButton;
-	@FXML
-	private Text titleText;
-	@FXML
-	private GridPane eventEditor;
-	@FXML
-	private EventEditorController eventEditorController;
-	@FXML
-	private GridPane personEditor;
-	@FXML
-	private PersonEditorController personEditorController;
-	@FXML
-	private GridPane participationEditor;
-	@FXML
-	private ParticipationEditorController participationEditorController;
-	@FXML
-	private Button searchEventButton;
-	@FXML
-	private Button searchPersonButton;
+	public GridPane eventEditor;
+	public EventEditorController eventEditorController;
+	public GridPane personEditor;
+	public PersonEditorController personEditorController;
+	public GridPane participationEditor;
+	public ParticipationEditorController participationEditorController;
+	public Button searchEventButton;
+	public Button searchPersonButton;
 
 	@Override
 	public void setIdentifiable(Participation participation) {
@@ -67,24 +55,7 @@ public class ParticipationEditorDialogController extends EditorDialogController<
 			eventEditorController.setReadonly(true);
 			personEditorController.readOnly.set(true);
 			participationEditorController.setAll(participation);
-
-			if (participation.getId() != 0L) {
-				titleText.setText(getIdentifiableName() + " bearbeiten");
-				saveParticipantButton.setText("Speichern");
-			} else {
-				titleText.setText(getIdentifiableName() + " anlegen");
-				saveParticipantButton.setText("Anlegen");
-			}
 		}
-	}
-
-	@Override
-	public void onReopen() {
-	}
-
-	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
-
 	}
 
 	public void saveParticipant(ActionEvent actionEvent) {
@@ -119,10 +90,6 @@ public class ParticipationEditorDialogController extends EditorDialogController<
 				}
 			}
 		});
-	}
-
-	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> getStage().close());
 	}
 
 	public void searchEvent(ActionEvent actionEvent) {

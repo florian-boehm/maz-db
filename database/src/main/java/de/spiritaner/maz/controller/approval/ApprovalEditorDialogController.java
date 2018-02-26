@@ -24,87 +24,67 @@ public class ApprovalEditorDialogController extends EditorDialogController<Appro
 
 	final static Logger logger = Logger.getLogger(ApprovalEditorDialogController.class);
 
-	@FXML
-	private Button saveApprovalButton;
-	@FXML
-	private Text titleText;
-	@FXML
-	private GridPane personEditor;
-	@FXML
-	private PersonEditorController personEditorController;
-	@FXML
-	private GridPane approvalEditor;
-	@FXML
-	private ApprovalEditorController approvalEditorController;
-	@FXML
-	private ToggleSwitch photoApprovalToggleSwitch;
-	@FXML
-	private ToggleSwitch privacyPolicyToggleSwitch;
-	@FXML
-	private ToggleSwitch newsletterToggleSwitch;
+	public GridPane personEditor;
+	public PersonEditorController personEditorController;
+	public GridPane approvalEditor;
+	public ApprovalEditorController approvalEditorController;
+	public ToggleSwitch photoApprovalToggleSwitch;
+	public ToggleSwitch privacyPolicyToggleSwitch;
+	public ToggleSwitch newsletterToggleSwitch;
 
 	@Override
-	public void setIdentifiable(Approval approval) {
-		super.setIdentifiable(approval);
-
-		if (approval != null) {
-			// Check if a person is already set in this residence
-			if (approval.getPerson() != null) {
-				personEditorController.person.set(approval.getPerson());
-				personEditorController.readOnly.set(true);
-
-				approval.getPerson().getApprovals().forEach(singleApproval -> {
-					switch (singleApproval.getApprovalType().getId().intValue()) {
-						case 1:
-							privacyPolicyToggleSwitch.setSelected(singleApproval.isApproved());
-							break;
-						case 2:
-							photoApprovalToggleSwitch.setSelected(singleApproval.isApproved());
-							break;
-						case 3:
-							newsletterToggleSwitch.setSelected(singleApproval.isApproved());
-							break;
-					}
-				});
-			}
-
-			// not needed: photoApprovalToggleSwitch.setDisable(!privacyPolicyToggleSwitch.isSelected());
-			newsletterToggleSwitch.setDisable(!privacyPolicyToggleSwitch.isSelected());
-
-			if (approval.getApprovalType() == null || approval.getApprovalType().getId() > 100) {
-				approvalEditorController.setAll(approval);
-			} else {
-				approvalEditorController.setReadonly(true);
-			}
-
-			if (approval.getId() != 0L) {
-				titleText.setText(getIdentifiableName() + " bearbeiten");
-				saveApprovalButton.setText("Speichern");
-			} else {
-				titleText.setText(getIdentifiableName() + " anlegen");
-				saveApprovalButton.setText("Anlegen");
-			}
-		}
-	}
-
-	@Override
-	public void onReopen() {
-	}
-
-	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
+	protected void init() {
 		privacyPolicyToggleSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
 			//photoApprovalToggleSwitch.setDisable(!newValue);
 			newsletterToggleSwitch.setDisable(!newValue);
 		});
+
+		identifiable.addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				// Check if a person is already set in this residence
+				if (newValue.getPerson() != null) {
+					personEditorController.person.set(newValue.getPerson());
+					personEditorController.readOnly.set(true);
+
+					newValue.getPerson().getApprovals().forEach(singleApproval -> {
+						switch (singleApproval.getApprovalType().getId().intValue()) {
+							case 1:
+								privacyPolicyToggleSwitch.setSelected(singleApproval.isApproved());
+								break;
+							case 2:
+								photoApprovalToggleSwitch.setSelected(singleApproval.isApproved());
+								break;
+							case 3:
+								newsletterToggleSwitch.setSelected(singleApproval.isApproved());
+								break;
+						}
+					});
+				}
+
+				// not needed: photoApprovalToggleSwitch.setDisable(!privacyPolicyToggleSwitch.isSelected());
+				newsletterToggleSwitch.setDisable(!privacyPolicyToggleSwitch.isSelected());
+
+				if (approval.getApprovalType() == null || newValue.getApprovalType().getId() > 100) {
+					approvalEditorController.setAll(newValue);
+				} else {
+					approvalEditorController.setReadonly(true);
+				}
+			}
+		});
 	}
 
-	public void saveApproval(ActionEvent actionEvent) {
-		Platform.runLater(() -> {
-			boolean personValid = personEditorController.isValid();
-			boolean approvalValid = (approvalEditorController.isReadOnly()) || approvalEditorController.isValid();
+	@Override
+	protected boolean allValid() {
+		boolean personValid = personEditorController.isValid();
+		boolean approvalValid = (approvalEditorController.isReadOnly()) || approvalEditorController.isValid();
 
-			if (personValid && approvalValid) {
+		return personValid && approvalValid;
+	}
+
+	@Override
+	public void save(ActionEvent actionEvent) {
+		Platform.runLater(() -> {
+			if (allValid()) {
 				EntityManager em = CoreDatabase.getFactory().createEntityManager();
 				em.getTransaction().begin();
 
@@ -147,9 +127,5 @@ public class ApprovalEditorDialogController extends EditorDialogController<Appro
 				}
 			}
 		});
-	}
-
-	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> getStage().close());
 	}
 }

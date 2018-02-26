@@ -1,6 +1,5 @@
 package de.spiritaner.maz.view.component;
 
-import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.meta.MetaClass;
 import de.spiritaner.maz.view.binding.Bindable;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
@@ -47,6 +46,5 @@ public class BindableComboBox<T extends MetaClass> extends ComboBox<T> implement
 		super.getItems().addAll(FXCollections.observableArrayList(coll));
 		if(empty != null) super.getItems().add(empty);
 		super.setValue(selectedBefore);
-
 	}
 }

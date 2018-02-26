@@ -20,25 +20,14 @@ import javax.persistence.*;
 })
 public class ContactMethod implements Identifiable {
 
-	private LongProperty id;
-	private StringProperty value;
+	public LongProperty id = new SimpleLongProperty();
+	public StringProperty value = new SimpleStringProperty();
 
-	private ObjectProperty<Person> person;
-	private ObjectProperty<ContactMethodType> contactMethodType;
-	private StringProperty remark;
+	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
+	public ObjectProperty<ContactMethodType> contactMethodType = new SimpleObjectProperty<>();
+	public StringProperty remark = new SimpleStringProperty();
 
-	private BooleanProperty preferred;
-
-	public ContactMethod() {
-		id = new SimpleLongProperty();
-		value = new SimpleStringProperty();
-		remark = new SimpleStringProperty();
-		preferred = new SimpleBooleanProperty();
-		preferred.set(false);
-
-		person = new SimpleObjectProperty<>();
-		contactMethodType = new SimpleObjectProperty<>();
-	}
+	public BooleanProperty preferred = new SimpleBooleanProperty(false);
 
 	@Id
 	@GeneratedValue

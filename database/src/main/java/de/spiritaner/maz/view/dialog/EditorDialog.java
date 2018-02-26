@@ -39,7 +39,7 @@ public class EditorDialog<T extends EditorDialogController> {
 
 		// Initialize the controller
 		controller.setStage(stage);
-		controller.setIdentifiable(identifiable);
+		controller.identifiable.set(identifiable);
 
 		// TODO Seems to work correctly on windows, but not on linux
 		stage.setOnShown(event -> {

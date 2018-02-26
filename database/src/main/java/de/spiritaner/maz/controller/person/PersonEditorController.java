@@ -10,6 +10,8 @@ import de.spiritaner.maz.model.meta.Diocese;
 import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.meta.Religion;
 import de.spiritaner.maz.model.meta.Salutation;
+import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.view.binding.BindProperty;
 import de.spiritaner.maz.view.binding.BindableProperty;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.validator.TextValidator;
@@ -28,6 +30,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -38,10 +41,11 @@ import java.util.ResourceBundle;
 /**
  * Created by Florian on 8/13/2016.
  */
-public class PersonEditorController extends EditorController implements Initializable {
+public class PersonEditorController extends EditorController {
 
 	final static Logger logger = Logger.getLogger(PersonEditorController.class);
 
+	@BindableProperty
 	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
 
 	public BindableTextField firstNameField;
@@ -64,10 +68,11 @@ public class PersonEditorController extends EditorController implements Initiali
 	//private DateValidator birthdayDateValidator;
 	//private ComboBoxValidator genderComboBoxValidator;
 
+	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		super.initialize(location, resources);
+		AutoBinder ab = new AutoBinder(this);
 
-		person.addListener((observable, oldValue, newValue) -> rebindAll());
+		person.addListener((observable, oldValue, newValue) -> ab.rebindAll());
 
 		firstNameValidator = TextValidator.create(firstNameField).fieldName("Vorname").notEmpty(true).validateOnChange();
 		familyNameValidator = TextValidator.create(familyNameField).fieldName("Nachname").notEmpty(true).validateOnChange();

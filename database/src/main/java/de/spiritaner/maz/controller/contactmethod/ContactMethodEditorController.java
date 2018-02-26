@@ -6,6 +6,8 @@ import de.spiritaner.maz.model.meta.ContactMethodType;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
+import de.spiritaner.maz.view.component.BindableComboBox;
+import de.spiritaner.maz.view.component.BindableTextField;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -26,16 +28,11 @@ public class ContactMethodEditorController implements Initializable {
 
 	final static Logger logger = Logger.getLogger(ContactMethodEditorController.class);
 
-	@FXML
-	private ToggleSwitch preferredToggleSwitch;
-	@FXML
-	private TextField remarkField;
-	@FXML
-	private TextField valueField;
-	@FXML
-	private ComboBox<ContactMethodType> contactMethodTypeComboBox;
-	@FXML
-	private Button addNewContactMethodTypeButton;
+	public ToggleSwitch preferredToggleSwitch;
+	public BindableTextField remarkField;
+	public BindableTextField valueField;
+	public BindableComboBox<ContactMethodType> contactMethodTypeComboBox;
+	public Button addNewContactMethodTypeButton;
 
 	private TextValidator valueFieldValidator;
 	private ComboBoxValidator<ContactMethodType> contactMethodTypeValidator;
