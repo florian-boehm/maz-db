@@ -5,6 +5,8 @@ import de.spiritaner.maz.model.ExperienceAbroad;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.view.renderer.DateAsStringListCell;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -17,12 +19,12 @@ import java.util.Collection;
 
 public class ExperienceAbroadOverviewController extends OverviewController<ExperienceAbroad> {
 
-	@FXML private TableColumn<ExperienceAbroad, String> communityColumn;
-	@FXML private TableColumn<ExperienceAbroad, String> locationColumn;
-	@FXML private TableColumn<ExperienceAbroad, LocalDate> fromDateColumn;
-	@FXML private TableColumn<ExperienceAbroad, LocalDate> toDateColumn;
+	public TableColumn<ExperienceAbroad, String> communityColumn;
+	public TableColumn<ExperienceAbroad, String> locationColumn;
+	public TableColumn<ExperienceAbroad, LocalDate> fromDateColumn;
+	public TableColumn<ExperienceAbroad, LocalDate> toDateColumn;
 
-	private Person person;
+	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
 
 	public ExperienceAbroadOverviewController() {
 		super(ExperienceAbroad.class, true);
@@ -30,30 +32,32 @@ public class ExperienceAbroadOverviewController extends OverviewController<Exper
 
 	@Override
 	protected void preCreate(ExperienceAbroad newExperienceAbroad) {
-		newExperienceAbroad.setPerson(person);
+		newExperienceAbroad.setPerson(person.get());
 	}
 
 	@Override
 	protected void postRemove(ExperienceAbroad obsoleteEntity) {
-		person.getExperiencesAbroad().remove(obsoleteEntity);
+		person.get().getExperiencesAbroad().remove(obsoleteEntity);
 	}
 
 	@Override
 	protected Collection<ExperienceAbroad> preLoad(EntityManager em) {
 		if(person != null) {
-			Hibernate.initialize(person.getExperiencesAbroad());
-			return FXCollections.observableArrayList(person.getExperiencesAbroad());
+			Hibernate.initialize(person.get().getExperiencesAbroad());
+			return FXCollections.observableArrayList(person.get().getExperiencesAbroad());
 		} else {
 			return FXCollections.emptyObservableList();
 		}
 	}
 
 	@Override
+	// TODO Extract strings
 	protected String getLoadingText() {
 		return "Lade Mitlebezeiten ...";
 	}
 
 	@Override
+	// TODO Extract strings
 	protected void handleException(RollbackException e, ExperienceAbroad selectedObj) {
 		RemoveDialog.showFailureAndWait("Mitlebezeit","Mitlebezeit",e);
 	}
@@ -67,9 +71,5 @@ public class ExperienceAbroadOverviewController extends OverviewController<Exper
 
 		fromDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
 		toDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
-	}
-
-	public void setPerson(Person person) {
-		this.person = person;
 	}
 }

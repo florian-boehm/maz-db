@@ -9,6 +9,7 @@ public class ResidenceTypeOverviewController extends MetadataOverviewController<
     }
 
     @Override
+    // TODO Extract strings
     public String getMetaName() {
         return "Wohnungsart";
     }

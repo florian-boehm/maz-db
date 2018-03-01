@@ -27,60 +27,38 @@ public class PersonPageController implements Initializable, Controller {
 
 	private static final Logger logger = Logger.getLogger(PersonPageController.class);
 
-	@FXML
-	private TabPane detailTabPane;
+	public TabPane detailTabPane;
 
-	@FXML
-	private AnchorPane personOverview;
-	@FXML
-	private PersonOverviewController personOverviewController;
-	@FXML
-	private AnchorPane detailPane;
+	public AnchorPane personOverview;
+	public PersonOverviewController personOverviewController;
+	public AnchorPane detailPane;
 
-	@FXML
-	private MaskerPane detailsMasker;
-	@FXML
-	private SplitPane personSplitPane;
+	public MaskerPane detailsMasker;
+	public SplitPane personSplitPane;
 
-	@FXML
-	private AnchorPane personResidences;
-	@FXML
-	private ResidenceOverviewController personResidencesController;
+	public AnchorPane personResidences;
+	public ResidenceOverviewController personResidencesController;
 
-	@FXML
-	private AnchorPane personContactMethods;
-	@FXML
-	private ContactMethodOverviewController personContactMethodsController;
+	public AnchorPane personContactMethods;
+	public ContactMethodOverviewController personContactMethodsController;
 
-	@FXML
-	private AnchorPane personParticipations;
-	@FXML
-	private ParticipationOverviewController personParticipationsController;
+	public AnchorPane personParticipations;
+	public ParticipationOverviewController personParticipationsController;
 
-	@FXML
-	private AnchorPane personApprovals;
-	@FXML
-	private ApprovalOverviewController personApprovalsController;
+	public AnchorPane personApprovals;
+	public ApprovalOverviewController personApprovalsController;
 
-	@FXML
-	private AnchorPane personRoles;
-	@FXML
-	private RoleOverviewController personRolesController;
+	public AnchorPane personRoles;
+	public RoleOverviewController personRolesController;
 
-	@FXML
-	private AnchorPane personRelationships;
-	@FXML
-	private RelationshipOverviewController personRelationshipsController;
+	public AnchorPane personRelationships;
+	public RelationshipOverviewController personRelationshipsController;
 
-	@FXML
-	private AnchorPane personYearsAbroad;
-	@FXML
-	private YearAbroadOverviewController personYearsAbroadController;
+	public AnchorPane personYearsAbroad;
+	public YearAbroadOverviewController personYearsAbroadController;
 
-	@FXML
-	private AnchorPane personExperiencesAbroad;
-	@FXML
-	private ExperienceAbroadOverviewController personExperiencesAbroadController;
+	public AnchorPane personExperiencesAbroad;
+	public ExperienceAbroadOverviewController personExperiencesAbroadController;
 
 	private Stage stage;
 
@@ -127,14 +105,14 @@ public class PersonPageController implements Initializable, Controller {
 
 	private void loadPersonDetails(Person person) {
 		Platform.runLater(() -> {
-			personResidencesController.setPerson(person);
-			personContactMethodsController.setPerson(person);
-			personApprovalsController.setPerson(person);
+			personResidencesController.person.set(person);
+			personContactMethodsController.person.set(person);
+			personApprovalsController.person.set(person);
 			personParticipationsController.setPerson(person);
-			personRolesController.setPerson(person);
-			personRelationshipsController.setPerson(person);
+			personRolesController.person.set(person);
+			personRelationshipsController.person.set(person);
 			personYearsAbroadController.setPerson(person);
-			personExperiencesAbroadController.setPerson(person);
+			personExperiencesAbroadController.person.set(person);
 
 			detailsMasker.setVisible(false);
 

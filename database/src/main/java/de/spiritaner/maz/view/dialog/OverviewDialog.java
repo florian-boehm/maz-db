@@ -102,10 +102,15 @@ public class OverviewDialog<T extends OverviewController, K extends Identifiable
             Identifiable.Annotation identifiableAnnotation = itemCls.getAnnotation(Identifiable.Annotation.class);
             Dialog<K> dialog = new Dialog<>();
 
-            final ResourceBundle rb = ResourceBundle.getBundle("lang.gui");
-            dialog.setTitle(rb.getString("change_history"));
-            dialog.setHeaderText(identifiableAnnotation.identifiableName() + " " + item.toString() +
-                    " " + rb.getString("changed_like"));
+            final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+            dialog.setTitle(guiText.getString("change_history"));
+
+            String identifiableName = identifiableAnnotation.identifiableName();
+
+            if(identifiableName.startsWith("$"))
+                identifiableName = guiText.getString(identifiableName);
+
+            dialog.setHeaderText(identifiableName + " " + item.toString() + " " + guiText.getString("changed_like"));
             dialog.getDialogPane().setPadding(new Insets(0, 0, 0, 0));
 
             // Set the button types.
@@ -150,7 +155,7 @@ public class OverviewDialog<T extends OverviewController, K extends Identifiable
     public void showUsers(Stage stage) {
         final Dialog<K> dialog = new Dialog<>();
         final OverviewController.Annotation controllerAnnotation = cls.getAnnotation(OverviewController.Annotation.class);
-        final ResourceBundle rb = ResourceBundle.getBundle("lang.gui");
+        final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
 
         try {
             final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource(controllerAnnotation.fxmlFile()));
@@ -163,8 +168,8 @@ public class OverviewDialog<T extends OverviewController, K extends Identifiable
 
             root.getStylesheets().add(OverviewDialog.class.getClass().getResource("/css/overview_dialog.css").toExternalForm());
 
-            dialog.setTitle("Benutzerübersicht");
-            dialog.setHeaderText("Folgende Benutzer können sich an der Datenbank anmelden ...");
+            dialog.setTitle(guiText.getString("user_overview"));
+            dialog.setHeaderText(guiText.getString("user_overview_header"));
             dialog.getDialogPane().setPadding(new Insets(0, 0, 0, 0));
             dialog.getDialogPane().setContent(root);
 

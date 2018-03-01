@@ -30,34 +30,20 @@ public class PersonOverviewController extends OverviewController<Person> {
 
 	private static final Logger logger = Logger.getLogger(PersonOverviewController.class);
 
-	@FXML
-	private TableColumn<Person, String> firstNameColumn;
-	@FXML
-	private TableColumn<Person, String> familyNameColumn;
-	@FXML
-	private TableColumn<Person, String> birthNameColumn;
-	@FXML
-	private TableColumn<Person, String> birthplaceColumn;
-	@FXML
-	private TableColumn<Person, LocalDate> birthdayColumn;
-	@FXML
-	private TableColumn<Person, LocalDate> ageColumn;
-	@FXML
-	private TableColumn<Person, Gender> genderColumn;
-	@FXML
-	private TableColumn<Person, Diocese> dioceseColumn;
-	@FXML
-	private TableColumn<Person, Religion> religionColumn;
-	@FXML
-	private TableColumn<Person, String> honorificColumn;
-	@FXML
-	private TableColumn<Person, Salutation> salutationColumn;
-	@FXML
-	private ToggleSwitch personDetailsToggle;
-	@FXML
-	private Button personSearchButton;
-	@FXML
-	private TextField personSearchText;
+	public TableColumn<Person, String> firstNameColumn;
+	public TableColumn<Person, String> familyNameColumn;
+	public TableColumn<Person, String> birthNameColumn;
+	public TableColumn<Person, String> birthplaceColumn;
+	public TableColumn<Person, LocalDate> birthdayColumn;
+	public TableColumn<Person, LocalDate> ageColumn;
+	public TableColumn<Person, Gender> genderColumn;
+	public TableColumn<Person, Diocese> dioceseColumn;
+	public TableColumn<Person, Religion> religionColumn;
+	public TableColumn<Person, String> honorificColumn;
+	public TableColumn<Person, Salutation> salutationColumn;
+	public ToggleSwitch personDetailsToggle;
+	public Button personSearchButton;
+	public TextField personSearchText;
 
 	public PersonOverviewController() {
 		super(Person.class, true);

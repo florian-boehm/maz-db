@@ -9,6 +9,7 @@ public class RelationshipTypeOverviewController extends MetadataOverviewControll
     }
 
     @Override
+    // TODO Extract strings
     public String getMetaName() {
         return "Beziehungsart";
     }

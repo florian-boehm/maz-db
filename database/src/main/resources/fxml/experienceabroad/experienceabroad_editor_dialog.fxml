@@ -4,44 +4,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import de.spiritaner.maz.view.component.Headline?>
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="de.spiritaner.maz.controller.experienceabroad.ExperienceAbroadEditorDialogController">
+			fx:controller="de.spiritaner.maz.controller.experienceabroad.ExperienceAbroadEditorDialogController">
 	<children>
 		<AnchorPane minHeight="0.0" minWidth="0.0">
 			<children>
 				<GridPane hgap="10.0" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0" AnchorPane.bottomAnchor="10.0"
 				          AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-					<Text fx:id="titleText" style="-fx-font-weight: bold;" text="Mitlebezeit bearbeiten/anlegen"
-					      GridPane.columnSpan="2147483647" GridPane.rowIndex="0">
-						<GridPane.margin>
-							<Insets/>
-						</GridPane.margin>
-						<font>
-							<Font size="14.0"/>
-						</font>
-					</Text>
+					<Headline fx:id="titleText" text="Mitlebezeit bearbeiten/anlegen"
+							  GridPane.columnSpan="2147483647" GridPane.rowIndex="0" />
 					<Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1"/>
 
-					<Text style="-fx-font-weight: bold;" text="Person" GridPane.columnIndex="0" GridPane.rowIndex="2">
-						<GridPane.margin>
-							<Insets/>
-						</GridPane.margin>
-						<font>
-							<Font size="14.0"/>
-						</font>
-					</Text>
+					<Headline text="Person" GridPane.columnIndex="0" GridPane.rowIndex="2" />
 
 					<!--Separator orientation="VERTICAL" prefHeight="270.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.vgrow="ALWAYS" /-->
 
-					<Text style="-fx-font-weight: bold;" text="Mitlebezeit" GridPane.columnIndex="0"
-					      GridPane.halignment="LEFT" GridPane.rowIndex="5">
-						<GridPane.margin>
-							<Insets/>
-						</GridPane.margin>
-						<font>
-							<Font size="14.0"/>
-						</font>
-					</Text>
+					<Headline text="Mitlebezeit" GridPane.columnIndex="0"
+					      GridPane.halignment="LEFT" GridPane.rowIndex="5" />
 
 					<fx:include fx:id="personEditor" source="../person/person_editor.fxml" GridPane.columnIndex="0"
 					            GridPane.rowIndex="3"/>
@@ -53,9 +33,9 @@
 
 					<ButtonBar prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="7">
 						<buttons>
-							<Button fx:id="saveExperienceAbroadButton" defaultButton="true" mnemonicParsing="false"
-							        onAction="#saveExperienceAbroad" text="Anlegen"/>
-							<Button cancelButton="true" mnemonicParsing="false" onAction="#closeDialog" text="Abbrechen"/>
+							<Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false"
+							        onAction="#save" text="Anlegen"/>
+							<Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#requestClose" text="Abbrechen"/>
 						</buttons>
 						<GridPane.margin>
 							<Insets top="10.0"/>

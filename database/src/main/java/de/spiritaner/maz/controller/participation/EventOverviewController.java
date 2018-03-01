@@ -14,14 +14,14 @@ import javax.persistence.RollbackException;
 import java.time.LocalDate;
 import java.util.Collection;
 
-@OverviewController.Annotation(fxmlFile = "/fxml/participation/event_overview.fxml", objDesc = "Veranstaltung")
+@OverviewController.Annotation(fxmlFile = "/fxml/participation/event_overview.fxml", objDesc = "$event")
 public class EventOverviewController extends OverviewController<Event> {
 
-	@FXML private TableColumn<Event, String> locationColumn;
-	@FXML private TableColumn<Event, EventType> eventTypeColumn;
-	@FXML private TableColumn<Event, String> nameColumn;
-	@FXML private TableColumn<Event, LocalDate> fromDateColumn;
-	@FXML private TableColumn<Event, LocalDate> toDateColumn;
+	public TableColumn<Event, String> locationColumn;
+	public TableColumn<Event, EventType> eventTypeColumn;
+	public TableColumn<Event, String> nameColumn;
+	public TableColumn<Event, LocalDate> fromDateColumn;
+	public TableColumn<Event, LocalDate> toDateColumn;
 
 	public EventOverviewController() {
 		super(Event.class, true);
@@ -29,12 +29,13 @@ public class EventOverviewController extends OverviewController<Event> {
 
 	@Override
 	protected void handleException(RollbackException e, Event event) {
-		RemoveDialog.showFailureAndWait("Event","Event",e);
+		String objName = guiText.getString("event");
+		RemoveDialog.showFailureAndWait(objName, objName, e);
 	}
 
 	@Override
 	protected String getLoadingText() {
-		return "Lade Veranstaltungen ...";
+		return guiText.getString("loading") + " " + guiText.getString("events") + " ...";
 	}
 
 	@Override

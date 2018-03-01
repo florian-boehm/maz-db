@@ -7,45 +7,48 @@
 <?import de.spiritaner.maz.view.component.BindableTextField?>
 <?import de.spiritaner.maz.view.component.BindableComboBox?>
 <GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111"
-		  xmlns:fx="http://javafx.com/fxml/1"
-		  fx:controller="de.spiritaner.maz.controller.contactmethod.ContactMethodEditorController">
-	<children>
-		<Label text="Art:"/>
-		<BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER">
-			<center>
-				<BindableComboBox val="concatMethod.contactMethodType" fx:id="contactMethodTypeComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
-					<BorderPane.margin>
-						<Insets/>
-					</BorderPane.margin>
-				</BindableComboBox>
-			</center>
-			<right>
-				<Button fx:id="addNewContactMethodTypeButton" mnemonicParsing="false" onAction="#addNewContactMethodType"
-				        text="+" BorderPane.alignment="CENTER">
-					<BorderPane.margin>
-						<Insets/>
-					</BorderPane.margin>
-				</Button>
-			</right>
-		</BorderPane>
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.spiritaner.maz.controller.contactmethod.ContactMethodEditorController">
+    <children>
+        <Label text="Art:"/>
+        <BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER">
+            <center>
+                <BindableComboBox val="contactMethod.contactMethodType" fx:id="contactMethodTypeComboBox"
+                                  maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets/>
+                    </BorderPane.margin>
+                </BindableComboBox>
+            </center>
+            <right>
+                <Button fx:id="addNewContactMethodTypeButton" mnemonicParsing="false"
+                        onAction="#addNewContactMethodType"
+                        text="+" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets/>
+                    </BorderPane.margin>
+                </Button>
+            </right>
+        </BorderPane>
 
-		<Label maxHeight="1.7976931348623157E308" text="Wert:" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"/>
+        <Label maxHeight="1.7976931348623157E308" text="Wert:" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"/>
 
-		<BindableTextField val="contactMethod.value" fx:id="valueField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-		<Label text="Bemerkung:" GridPane.rowIndex="2"/>
-		<BindableTextField val="concatMethod.remark" fx:id="remarkField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-		<ToggleSwitch fx:id="preferredToggleSwitch" text="Bevorzugt:" GridPane.columnSpan="2147483647"
-		              GridPane.rowIndex="3"/>
-	</children>
-	<columnConstraints>
-		<ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="130.0" minWidth="130.0"/>
-		<ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
-	</columnConstraints>
-	<rowConstraints>
-		<RowConstraints/>
-		<RowConstraints/>
-		<RowConstraints/>
-		<RowConstraints/>
-	</rowConstraints>
+        <BindableTextField val="contactMethod.value" fx:id="valueField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label text="Bemerkung:" GridPane.rowIndex="2"/>
+        <BindableTextField val="contactMethod.remark" fx:id="remarkField" GridPane.columnIndex="1"
+                           GridPane.rowIndex="2"/>
+        <ToggleSwitch fx:id="preferredToggleSwitch" text="Bevorzugt:" GridPane.columnSpan="2147483647"
+                      GridPane.rowIndex="3"/>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="130.0" minWidth="130.0"/>
+        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+    </rowConstraints>
 
 </GridPane>

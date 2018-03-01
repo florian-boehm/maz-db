@@ -2,34 +2,25 @@ package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.controller.relationship.RelationshipEditorDialogController;
 import de.spiritaner.maz.model.meta.RelationshipType;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
 @Entity
 @Audited
-@Identifiable.Annotation(editorDialogClass = RelationshipEditorDialogController.class, identifiableName = "Beziehung")
+@Identifiable.Annotation(editorDialogClass = RelationshipEditorDialogController.class, identifiableName = "$relationship")
 @NamedQueries({
 		  @NamedQuery(name = "Relationship.findAll", query = "SELECT r FROM Relationship r"),
 })
 public class Relationship implements Identifiable {
 
-	private LongProperty id;
-	private RelationshipType relationshipType;
-	private Person fromPerson;
-	private Person toPerson;
-	private StringProperty toPersonFirstName;
-	private StringProperty toPersonFamilyName;
-
-	public Relationship() {
-		id = new SimpleLongProperty();
-		toPersonFirstName = new SimpleStringProperty();
-		toPersonFamilyName = new SimpleStringProperty();
-	}
+	public LongProperty id = new SimpleLongProperty();
+	public ObjectProperty<RelationshipType> relationshipType = new SimpleObjectProperty<>();
+	public ObjectProperty<Person> fromPerson;
+	public ObjectProperty<Person> toPerson;
+	public StringProperty toPersonFirstName = new SimpleStringProperty();
+	public StringProperty toPersonFamilyName = new SimpleStringProperty();
 
 	@Id
 	@GeneratedValue
@@ -37,11 +28,9 @@ public class Relationship implements Identifiable {
 	public Long getId() {
 		return id.get();
 	}
-
 	public void setId(long id) {
 		this.id.set(id);
 	}
-
 	public LongProperty idProperty() {
 		return id;
 	}
@@ -49,31 +38,36 @@ public class Relationship implements Identifiable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "relationshipTypeId", nullable = false)
 	public RelationshipType getRelationshipType() {
-		return relationshipType;
+		return relationshipType.get();
 	}
-
 	public void setRelationshipType(RelationshipType relationshipType) {
-		this.relationshipType = relationshipType;
+		this.relationshipType.set(relationshipType);
 	}
+	public ObjectProperty<RelationshipType> relationshipTypeProperty() { return relationshipType; }
+
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "fromPersonId", nullable = false)
 	public Person getFromPerson() {
-		return fromPerson;
+		return fromPerson.get();
 	}
-
 	public void setFromPerson(Person person) {
-		this.fromPerson = person;
+		this.fromPerson.set(person);
+	}
+	public ObjectProperty<Person> fromPersonProperty() {
+		return fromPerson;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "toPersonId", nullable = true)
 	public Person getToPerson() {
-		return toPerson;
+		return toPerson.get();
 	}
-
 	public void setToPerson(Person person) {
-		this.toPerson = person;
+		this.toPerson.set(person);
+	}
+	public ObjectProperty<Person> toPersonProperty() {
+		return toPerson;
 	}
 
 	/**
@@ -84,13 +78,11 @@ public class Relationship implements Identifiable {
 	public String getToPersonFirstName() {
 		return toPersonFirstName.get();
 	}
-
-	public StringProperty toPersonFirstNameProperty() {
-		return toPersonFirstName;
-	}
-
 	public void setToPersonFirstName(String toPersonFirstName) {
 		this.toPersonFirstName.set(toPersonFirstName);
+	}
+	public StringProperty toPersonFirstNameProperty() {
+		return toPersonFirstName;
 	}
 
 	/**
@@ -101,13 +93,11 @@ public class Relationship implements Identifiable {
 	public String getToPersonFamilyName() {
 		return toPersonFamilyName.get();
 	}
-
-	public StringProperty toPersonFamilyNameProperty() {
-		return toPersonFamilyName;
-	}
-
 	public void setToPersonFamilyName(String toPersonFamilyName) {
 		this.toPersonFamilyName.set(toPersonFamilyName);
+	}
+	public StringProperty toPersonFamilyNameProperty() {
+		return toPersonFamilyName;
 	}
 
 	@Transient
@@ -118,6 +108,6 @@ public class Relationship implements Identifiable {
 
 	@Transient
 	public String getToPersonFullName() {
-		return (toPerson != null) ? toPerson.getFullName() : toPersonFirstName.get() + " " + toPersonFamilyName.get();
+		return (toPerson != null) ? toPerson.get().getFullName() : toPersonFirstName.get() + " " + toPersonFamilyName.get();
 	}
 }

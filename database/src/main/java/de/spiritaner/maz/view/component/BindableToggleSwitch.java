@@ -1,21 +1,14 @@
 package de.spiritaner.maz.view.component;
 
 import de.spiritaner.maz.view.binding.Bindable;
-import de.spiritaner.maz.view.renderer.DatePickerFormatter;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.control.DatePicker;
+import org.controlsfx.control.ToggleSwitch;
 
-import java.time.LocalDate;
-
-public class BindableDatePicker extends DatePicker implements Bindable<LocalDate> {
+public class BindableToggleSwitch extends ToggleSwitch implements Bindable<Boolean> {
 
 	public StringProperty val = new SimpleStringProperty();
-
-	public BindableDatePicker() {
-		super.setConverter(new DatePickerFormatter());
-	}
 
 	@Override
 	public String getVal() {
@@ -27,13 +20,12 @@ public class BindableDatePicker extends DatePicker implements Bindable<LocalDate
 		return val;
 	}
 
-	@Override
 	public void setVal(String val) {
 		this.val.set(val);
 	}
 
 	@Override
-	public void bind(Property<LocalDate> p) {
-		super.valueProperty().bindBidirectional(p);
+	public void bind(Property<Boolean> p) {
+		super.selectedProperty().bindBidirectional(p);
 	}
 }

@@ -12,6 +12,7 @@ public class RoleTypeOverviewController extends MetadataOverviewController<RoleT
     }
 
     @Override
+    // TODO Extract strings
     public String getMetaName() {
         return "Funktion";
     }

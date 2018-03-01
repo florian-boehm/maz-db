@@ -13,7 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Audited
-@Identifiable.Annotation(identifiableName = "Kontaktweg", editorDialogClass = ContactMethodEditorDialogController.class)
+@Identifiable.Annotation(identifiableName = "$contact_method", editorDialogClass = ContactMethodEditorDialogController.class)
 @NamedQueries({
 		  @NamedQuery(name = "ContactMethod.findAll", query = "SELECT cm FROM ContactMethod cm"),
 		  @NamedQuery(name = "ContactMethod.findAllForPerson", query = "SELECT cm FROM ContactMethod cm WHERE cm.person=:person")
@@ -34,11 +34,9 @@ public class ContactMethod implements Identifiable {
 	public Long getId() {
 		return id.get();
 	}
-
 	public void setId(long id) {
 		this.id.set(id);
 	}
-
 	public LongProperty idProperty() {
 		return id;
 	}
@@ -47,11 +45,9 @@ public class ContactMethod implements Identifiable {
 	public String getValue() {
 		return value.get();
 	}
-
 	public void setValue(String value) {
 		this.value.set(value);
 	}
-
 	public StringProperty valueProperty() {
 		return value;
 	}
@@ -64,11 +60,9 @@ public class ContactMethod implements Identifiable {
 	public Person getPerson() {
 		return person.get();
 	}
-
 	public void setPerson(Person person) {
 		this.person.set(person);
 	}
-
 	public ObjectProperty<Person> personProperty() {
 		return person;
 	}
@@ -81,11 +75,9 @@ public class ContactMethod implements Identifiable {
 	public ContactMethodType getContactMethodType() {
 		return contactMethodType.get();
 	}
-
 	public void setContactMethodType(ContactMethodType contactMethodType) {
 		this.contactMethodType.set(contactMethodType);
 	}
-
 	public ObjectProperty<ContactMethodType> contactMethodTypeProperty() {
 		return contactMethodType;
 	}
@@ -93,11 +85,9 @@ public class ContactMethod implements Identifiable {
 	public boolean isPreferred() {
 		return preferred.get();
 	}
-
 	public void setPreferred(boolean preferred) {
 		this.preferred.set(preferred);
 	}
-
 	public BooleanProperty preferredProperty() {
 		return preferred;
 	}
@@ -105,11 +95,9 @@ public class ContactMethod implements Identifiable {
 	public String getRemark() {
 		return remark.get();
 	}
-
 	public StringProperty remarkProperty() {
 		return remark;
 	}
-
 	public void setRemark(String remark) {
 		this.remark.set(remark);
 	}

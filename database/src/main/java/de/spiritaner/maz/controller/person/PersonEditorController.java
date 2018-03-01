@@ -114,6 +114,7 @@ public class PersonEditorController extends EditorController {
 		religionComboBox.populate(result, Religion.createEmpty());
 	}
 
+	@Override
 	public boolean isValid() {
 		boolean firstnameValid = firstNameValidator.validate();
 		boolean familynameValid = familyNameValidator.validate();

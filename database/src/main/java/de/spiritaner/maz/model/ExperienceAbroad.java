@@ -17,23 +17,13 @@ import java.time.LocalDate;
 @Identifiable.Annotation(editorDialogClass = ExperienceAbroadEditorDialogController.class, identifiableName = "Mitlebezeit")
 public class ExperienceAbroad implements Identifiable {
 
-	private LongProperty id;
-	private ObjectProperty<Person> person;
-	private StringProperty community;
-	private StringProperty details;
-	private StringProperty location;
-	private ObjectProperty<LocalDate> fromDate;
-	private ObjectProperty<LocalDate> toDate;
-
-	public ExperienceAbroad() {
-		id = new SimpleLongProperty();
-		person = new SimpleObjectProperty<>();
-		community = new SimpleStringProperty();
-		details = new SimpleStringProperty();
-		location = new SimpleStringProperty();
-		fromDate = new SimpleObjectProperty<>();
-		toDate = new SimpleObjectProperty<>();
-	}
+	public LongProperty id = new SimpleLongProperty();
+	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
+	public StringProperty community = new SimpleStringProperty();
+	public StringProperty details = new SimpleStringProperty();
+	public StringProperty location = new SimpleStringProperty();
+	public ObjectProperty<LocalDate> fromDate = new SimpleObjectProperty<>();
+	public ObjectProperty<LocalDate> toDate = new SimpleObjectProperty<>();
 
 	@Id
 	@GeneratedValue

@@ -9,6 +9,7 @@ public class PersonGroupOverviewController extends MetadataOverviewController<Pe
     }
 
     @Override
+    // TODO Extract strings
     public String getMetaName() {
         return "Personengruppe";
     }

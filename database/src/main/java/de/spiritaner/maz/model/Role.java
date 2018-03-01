@@ -11,23 +11,17 @@ import org.hibernate.envers.Audited;
 import javax.persistence.*;
 
 /**
- * @author Florian Schwab
- * @version 0.0.1
+ * @author Florian Böhm
+ * @date 2018.02.28
  */
 @Entity
 @Audited
-@Identifiable.Annotation(editorDialogClass = RoleEditorDialogController.class, identifiableName = "Funktion")
+@Identifiable.Annotation(editorDialogClass = RoleEditorDialogController.class, identifiableName = "$role")
 public class Role implements Identifiable {
 
-	private LongProperty id;
-	private ObjectProperty<Person> person;
-	private ObjectProperty<RoleType> roleType;
-
-	public Role() {
-		id = new SimpleLongProperty();
-		person = new SimpleObjectProperty<>();
-		roleType = new SimpleObjectProperty<>();
-	}
+	public LongProperty id = new SimpleLongProperty();
+	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
+	public ObjectProperty<RoleType> roleType = new SimpleObjectProperty<>();
 
 	@Id
 	@GeneratedValue
@@ -50,7 +44,6 @@ public class Role implements Identifiable {
 	public void setPerson(Person person) {
 		this.person.set(person);
 	}
-
 	public ObjectProperty<Person> personProperty() {
 		return person;
 	}
@@ -66,7 +59,6 @@ public class Role implements Identifiable {
 	public void setRoleType(RoleType roleType) {
 		this.roleType.set(roleType);
 	}
-
 	public ObjectProperty<RoleType> roleTypeProperty() {
 		return roleType;
 	}

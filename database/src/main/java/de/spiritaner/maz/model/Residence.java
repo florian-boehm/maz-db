@@ -13,7 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @Audited
-@Identifiable.Annotation(editorDialogClass = ResidenceEditorDialogController.class, identifiableName = "Wohnort")
+@Identifiable.Annotation(editorDialogClass = ResidenceEditorDialogController.class, identifiableName = "$residence")
 @NamedQueries({
 		  @NamedQuery(name = "Residence.findAll", query = "SELECT r FROM Residence r"),
 		  @NamedQuery(name = "Residence.findAllForPerson", query = "SELECT r FROM Residence r WHERE r.person=:person"),
@@ -21,30 +21,20 @@ import javax.persistence.*;
 })
 public class Residence implements Identifiable {
 
-	private LongProperty id;
-	private ObjectProperty<Person> person;
-	private ObjectProperty<Address> address;
-	private ObjectProperty<ResidenceType> residenceType;
-	private BooleanProperty forPost;
-
-	public Residence() {
-		id = new SimpleLongProperty();
-		person = new SimpleObjectProperty<>();
-		address = new SimpleObjectProperty<>();
-		residenceType = new SimpleObjectProperty<>();
-		forPost = new SimpleBooleanProperty(Boolean.FALSE);
-	}
+	public LongProperty id = new SimpleLongProperty();
+	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
+	public ObjectProperty<Address> address = new SimpleObjectProperty<>();
+	public ObjectProperty<ResidenceType> residenceType = new SimpleObjectProperty<>();
+	public BooleanProperty forPost = new SimpleBooleanProperty(Boolean.FALSE);
 
 	@Id
 	@GeneratedValue
 	public Long getId() {
 		return id.get();
 	}
-
 	public void setId(Long id) {
 		this.id.set(id);
 	}
-
 	public LongProperty idProperty() {
 		return id;
 	}
@@ -54,11 +44,9 @@ public class Residence implements Identifiable {
 	public Person getPerson() {
 		return person.get();
 	}
-
 	public void setPerson(Person person) {
 		this.person.set(person);
 	}
-
 	public ObjectProperty<Person> personProperty() {
 		return person;
 	}
@@ -68,11 +56,9 @@ public class Residence implements Identifiable {
 	public Address getAddress() {
 		return address.get();
 	}
-
 	public void setAddress(Address address) {
 		this.address.set(address);
 	}
-
 	public ObjectProperty<Address> addressProperty() {
 		return address;
 	}
@@ -82,13 +68,22 @@ public class Residence implements Identifiable {
 	public ResidenceType getResidenceType() {
 		return residenceType.get();
 	}
-
 	public void setResidenceType(ResidenceType residenceType) {
 		this.residenceType.set(residenceType);
 	}
-
 	public ObjectProperty<ResidenceType> residenceTypeProperty() {
 		return residenceType;
+	}
+
+	@Column(nullable = false)
+	public boolean isForPost() {
+		return forPost.get();
+	}
+	public BooleanProperty forPostProperty() {
+		return forPost;
+	}
+	public void setForPost(boolean forPost) {
+		this.forPost.set(forPost);
 	}
 
 	@Transient
@@ -105,18 +100,5 @@ public class Residence implements Identifiable {
 	@Transient
 	public boolean equals(Object obj) {
 		return (obj instanceof Residence) && (((Residence) obj).getId().equals(this.getId()));
-	}
-
-	@Column(nullable = false)
-	public boolean isForPost() {
-		return forPost.get();
-	}
-
-	public BooleanProperty forPostProperty() {
-		return forPost;
-	}
-
-	public void setForPost(boolean forPost) {
-		this.forPost.set(forPost);
 	}
 }

@@ -8,21 +8,21 @@ import org.hibernate.envers.Audited;
 import javax.persistence.*;
 
 /**
- * @author Florian Schwab
- * @version 0.0.1
+ * @author Florian Böhm
+ * @version 2018.02.28
  */
 @Entity
 @Audited
-@Identifiable.Annotation(editorDialogClass = ParticipationEditorDialogController.class, identifiableName = "Teilnahme")
+@Identifiable.Annotation(editorDialogClass = ParticipationEditorDialogController.class, identifiableName = "$participation")
 public class Participation implements Identifiable {
 
-	private LongProperty id;
+	public LongProperty id;
 
-	private ObjectProperty<Person> person;
-	private ObjectProperty<Event> event;
-	private ObjectProperty<ParticipationType> participationType;
+	public ObjectProperty<Person> person;
+	public ObjectProperty<Event> event;
+	public ObjectProperty<ParticipationType> participationType;
 
-	private BooleanProperty hasParticipated;
+	public BooleanProperty hasParticipated;
 
 	public Participation() {
 		id = new SimpleLongProperty();

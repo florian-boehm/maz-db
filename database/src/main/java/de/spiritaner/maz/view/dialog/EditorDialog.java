@@ -14,6 +14,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 @SuppressWarnings("unchecked")
 public class EditorDialog<T extends EditorDialogController> {
@@ -27,8 +28,20 @@ public class EditorDialog<T extends EditorDialogController> {
 		Parent root = loader.load();
 		controller = loader.getController();
 
+		ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+
+		if(identifiableName.startsWith("$"))
+			identifiableName = guiText.getString(identifiableName);
+
+		String title = identifiableName + " ";
+
+		if(identifiable == null || identifiable.getId() == 0L)
+			title += guiText.getString("create").toLowerCase();
+		else
+			title += guiText.getString("edit").toLowerCase();
+
 		stage = new Stage();
-		stage.setTitle((identifiable == null || identifiable.getId() == 0L) ? identifiableName + " anlegen" : identifiableName + " bearbeiten");
+		stage.setTitle(title);
 		stage.initOwner(parent);
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.setResizable(true);

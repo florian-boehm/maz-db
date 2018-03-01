@@ -27,7 +27,6 @@ public class PersonEditorDialogController extends EditorDialogController<Person>
     final static Logger logger = Logger.getLogger(PersonEditorDialogController.class);
 
     public Button showHistoryButton;
-    public Text titleText;
     public GridPane personEditor;
     public PersonEditorController personEditorController;
 
@@ -46,7 +45,7 @@ public class PersonEditorDialogController extends EditorDialogController<Person>
     }
 
     @Override
-    protected void init() {
+    protected void bind() {
         identifiable.bindBidirectional(personEditorController.person);
     }
 

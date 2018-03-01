@@ -13,24 +13,17 @@ import javax.persistence.*;
  */
 @Entity
 @Audited
-@Identifiable.Annotation(editorDialogClass = ApprovalEditorDialogController.class, identifiableName = "Einwilligung")
+@Identifiable.Annotation(editorDialogClass = ApprovalEditorDialogController.class, identifiableName = "$approval")
 @NamedQueries({
 		  @NamedQuery(name = "Approval.findStdApprovalsForPerson", query = "SELECT a FROM Approval a WHERE a.approvalType<=100 AND a.person=:person")
 })
 public class Approval implements Identifiable {
 
-	private LongProperty id;
+	public LongProperty id = new SimpleLongProperty();
 
-	private ObjectProperty<Person> person;
-	private ObjectProperty<ApprovalType> approvalType;
-	private BooleanProperty approved;
-
-	public Approval() {
-		approved = new SimpleBooleanProperty();
-		id = new SimpleLongProperty();
-		person = new SimpleObjectProperty<>();
-		approvalType = new SimpleObjectProperty<>();
-	}
+	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
+	public ObjectProperty<ApprovalType> approvalType = new SimpleObjectProperty<>();
+	public BooleanProperty approved = new SimpleBooleanProperty();
 
 	@Id
 	@GeneratedValue
@@ -50,7 +43,6 @@ public class Approval implements Identifiable {
 	public void setPerson(Person person) {
 		this.person.set(person);
 	}
-
 	public ObjectProperty<Person> personProperty() {
 		return person;
 	}
@@ -63,7 +55,6 @@ public class Approval implements Identifiable {
 	public void setApprovalType(ApprovalType approvalType) {
 		this.approvalType.set(approvalType);
 	}
-
 	public ObjectProperty<ApprovalType> approvalTypeProperty() {
 		return approvalType;
 	}

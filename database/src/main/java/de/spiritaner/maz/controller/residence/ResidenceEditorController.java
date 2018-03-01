@@ -1,11 +1,17 @@
 package de.spiritaner.maz.controller.residence;
 
+import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.meta.ResidenceTypeOverviewController;
 import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.model.meta.ResidenceType;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
+import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.view.component.BindableComboBox;
+import de.spiritaner.maz.view.component.BindableToggleSwitch;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,60 +25,32 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.ResourceBundle;
 
-public class ResidenceEditorController implements Initializable {
+public class ResidenceEditorController extends EditorController {
 
-	@FXML
-	private Button addNewResidenceTypeButton;
-	@FXML
-	private ToggleSwitch preferredResidence;
-	@FXML
-	private ComboBox<ResidenceType> residenceTypeComboBox;
-	@FXML
-	private ToggleSwitch postAddressToggleSwitch;
+	public ObjectProperty<Residence> residence = new SimpleObjectProperty<>();
+
+	public Button addNewResidenceTypeButton;
+	public BindableToggleSwitch preferredResidence;
+	public BindableComboBox<ResidenceType> residenceTypeComboBox;
+	public BindableToggleSwitch postAddressToggleSwitch;
 
 	private ComboBoxValidator<ResidenceType> residenceTypeValidator;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		residenceTypeValidator = new ComboBoxValidator<>(residenceTypeComboBox).fieldName("Wohnortart").isSelected(true).validateOnChange();
+		AutoBinder ab = new AutoBinder(this);
+		residence.addListener((observableValue, oldValue, newValue) -> ab.rebindAll());
 
-		residenceTypeComboBox.setButtonCell(new MetaClassListCell<>());
-		residenceTypeComboBox.setCellFactory(param -> new MetaClassListCell<>());
+		residenceTypeValidator = new ComboBoxValidator<>(residenceTypeComboBox).fieldName(guiText.getString("residence_type")).isSelected(true).validateOnChange();
 
 		loadResidenceTypes();
 	}
 
-	public void setAll(Residence residence) {
-		preferredResidence.setSelected(residence.getPreferredAddress());
-		residenceTypeComboBox.setValue(residence.getResidenceType());
-		postAddressToggleSwitch.setSelected(residence.isForPost());
-	}
-
-	public Residence getAll(Residence residence) {
-		if (residence == null) residence = new Residence();
-		residence.setResidenceType(residenceTypeComboBox.getValue());
-		residence.setForPost(postAddressToggleSwitch.isSelected());
-		return residence;
-	}
-
-	public void setReadonly(boolean readonly) {
-		preferredResidence.setDisable(readonly);
-		residenceTypeComboBox.setDisable(readonly);
-		postAddressToggleSwitch.setDisable(readonly);
-	}
-
-	public void loadResidenceTypes() {
+	private void loadResidenceTypes() {
 		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		Collection<ResidenceType> result = em.createNamedQuery("ResidenceType.findAll", ResidenceType.class).getResultList();
 
-		ResidenceType selectedBefore = residenceTypeComboBox.getValue();
-		residenceTypeComboBox.getItems().clear();
-		residenceTypeComboBox.getItems().addAll(FXCollections.observableArrayList(result));
-		residenceTypeComboBox.setValue(selectedBefore);
-	}
-
-	public boolean isValid() {
-		return residenceTypeValidator.validate();
+		residenceTypeComboBox.populate(result, null);
 	}
 
 	public void addNewResidenceType(ActionEvent actionEvent) {
@@ -81,7 +59,11 @@ public class ResidenceEditorController implements Initializable {
 		loadResidenceTypes();
 	}
 
-	public ToggleSwitch getPreferredResidence() {
+	public boolean isValid() {
+		return residenceTypeValidator.validate();
+	}
+
+	public BindableToggleSwitch getPreferredResidence() {
 		return preferredResidence;
 	}
 }

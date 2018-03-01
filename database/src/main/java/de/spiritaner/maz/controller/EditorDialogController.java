@@ -29,6 +29,8 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 	public Button cancelButton;
 	public Text titleText;
 
+	protected final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+
 	@Override
 	public void setStage(Stage stage) {
 		this.stage = stage;
@@ -43,23 +45,25 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 
 		if(obj != null) {
 			if (obj.getId() != 0L) {
-				titleText.setText(getIdentifiableName() + " bearbeiten");
-				saveButton.setText("Speichern");
+				titleText.setText(getIdentifiableName() + " " + guiText.getString("edit").toLowerCase());
+				saveButton.setText(guiText.getString("save"));
 			} else {
-				titleText.setText(getIdentifiableName() + " anlegen");
-				saveButton.setText("Anlegen");
+				titleText.setText(getIdentifiableName() + " " + guiText.getString("create").toLowerCase());
+				saveButton.setText(guiText.getString("create"));
 			}
 		}
 	}
 
 	public String getIdentifiableName() {
 		Identifiable.Annotation annotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);
-		return annotation.identifiableName();
+
+		if(annotation.identifiableName().startsWith("$"))
+			return ResourceBundle.getBundle("lang.gui").getString(annotation.identifiableName());
+		else
+			return annotation.identifiableName();
 	}
 
-	@Deprecated
 	public void closeDialog(ActionEvent actionEvent) {
-		// Platform.runLater(() -> getStage().close());
 		requestClose();
 	}
 
@@ -70,7 +74,11 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		init();
+		bind();
+
+		identifiable.addListener((observableValue, oldValue, newValue) -> {
+			if(newValue != null) bind(newValue);
+		});
 	}
 
 	public Optional<T> getResult() {
@@ -99,6 +107,9 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 
 				try {
 					T managed = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
+					
+					preSave(managed);
+					
 					em.getTransaction().commit();
 					setResult(managed);
 					requestClose();
@@ -112,6 +123,10 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 		});
 	}
 
+	protected void preSave(T managed) {
+
+	}
+
 	protected void preSave(final EntityManager em) {
 	}
 
@@ -119,8 +134,9 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 		return true;
 	}
 
-	protected void init() {
-	}
+	protected void bind() {}
+
+	protected void bind(T obj) {}
 
 	public Stage getStage() {
 		return stage;

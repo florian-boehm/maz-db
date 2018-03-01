@@ -20,10 +20,10 @@ import java.util.Collection;
 
 public class ParticipationOverviewController extends OverviewController<Participation> {
 
-	@FXML private TableColumn<Participation, Event> eventColumn;
-	@FXML private TableColumn<Participation, Person> personColumn;
-	@FXML private TableColumn<Participation, ParticipationType> participantTypeColumn;
-	@FXML private TableColumn<Participation, Boolean> participatedColumn;
+	public TableColumn<Participation, Event> eventColumn;
+	public TableColumn<Participation, Person> personColumn;
+	public TableColumn<Participation, ParticipationType> participantTypeColumn;
+	public TableColumn<Participation, Boolean> participatedColumn;
 
 	// This controller can be person or participation centric
 	private Person person;

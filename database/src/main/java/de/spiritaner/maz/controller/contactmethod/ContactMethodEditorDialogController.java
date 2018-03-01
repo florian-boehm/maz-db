@@ -18,7 +18,7 @@ import javax.persistence.PersistenceException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@EditorDialog.Annotation(fxmlFile = "/fxml/contactmethod/contactmethod_editor_dialog.fxml", objDesc = "Kontaktweg")
+@EditorDialog.Annotation(fxmlFile = "/fxml/contactmethod/contactmethod_editor_dialog.fxml", objDesc = "$contact_method")
 public class ContactMethodEditorDialogController extends EditorDialogController<ContactMethod> {
 
 	final static Logger logger = Logger.getLogger(ContactMethodEditorDialogController.class);
@@ -29,18 +29,9 @@ public class ContactMethodEditorDialogController extends EditorDialogController<
 	public ContactMethodEditorController contactMethodEditorController;
 
 	@Override
-	protected void init() {
-		identifiable.addListener((observable, oldValue, newValue) -> {
-			if (newValue != null) {
-				// Check if a person is already set in this residence
-				if (newValue.getPerson() != null) {
-					personEditorController.person.set(newValue.getPerson());
-					personEditorController.readOnly.set(true);
-				}
-
-				contactMethodEditorController.setAll(newValue);
-			}
-		});
+	protected void bind(ContactMethod contactMethod) {
+		contactMethodEditorController.contactMethod.bindBidirectional(identifiable);
+		personEditorController.person.bindBidirectional(contactMethod.person);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package de.spiritaner.maz.controller.participation;
 
+import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.meta.EventTypeOverviewController;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.meta.EventType;
@@ -7,8 +8,15 @@ import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
 import de.spiritaner.maz.util.validator.DateValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
+import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.view.component.BindableComboBox;
+import de.spiritaner.maz.view.component.BindableDatePicker;
+import de.spiritaner.maz.view.component.BindableTextArea;
+import de.spiritaner.maz.view.component.BindableTextField;
 import de.spiritaner.maz.view.renderer.DatePickerFormatter;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,24 +29,19 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.ResourceBundle;
 
-public class EventEditorController implements Initializable {
+public class EventEditorController extends EditorController {
 
 	final static Logger logger = Logger.getLogger(EventEditorController.class);
 
-	@FXML
-	private TextField nameField;
-	@FXML
-	private TextArea descriptionArea;
-	@FXML
-	private DatePicker fromDatePicker;
-	@FXML
-	private DatePicker toDatePicker;
-	@FXML
-	private ComboBox<EventType> eventTypeComboBox;
-	@FXML
-	private Button addNewEventTypeButton;
-	@FXML
-	private TextField locationField;
+	public ObjectProperty<Event> event = new SimpleObjectProperty<>();
+
+	public BindableTextField nameField;
+	public BindableTextArea descriptionArea;
+	public BindableDatePicker fromDatePicker;
+	public BindableDatePicker toDatePicker;
+	public BindableComboBox<EventType> eventTypeComboBox;
+	public BindableTextField locationField;
+	public Button addNewEventTypeButton;
 
 	private TextValidator nameValidator;
 	private ComboBoxValidator<EventType> eventTypeValidator;
@@ -46,59 +49,28 @@ public class EventEditorController implements Initializable {
 	private TextValidator locationValidator;
 
 	public void initialize(URL location, ResourceBundle resources) {
+		AutoBinder ab = new AutoBinder(this);
+		event.addListener((observableValue, oldValue, newValue) -> ab.rebindAll());
+
 		nameValidator = TextValidator.create(nameField).fieldName("Name").notEmpty(true).validateOnChange();
 		locationValidator = TextValidator.create(locationField).fieldName("Ort").notEmpty(true).validateOnChange();
 		eventTypeValidator = new ComboBoxValidator<>(eventTypeComboBox).fieldName("Veranstaltungsart").isSelected(true).validateOnChange();
 		toDateValidator = DateValidator.create(toDatePicker).fieldName("Bis-Datum").after(fromDatePicker).relationFieldName("Von-Datum").validateOnChange();
 
-		fromDatePicker.setConverter(new DatePickerFormatter());
-		toDatePicker.setConverter(new DatePickerFormatter());
-
-		eventTypeComboBox.setCellFactory(column -> new MetaClassListCell<>());
-		eventTypeComboBox.setButtonCell(new MetaClassListCell<>());
-
 		loadEventType();
 	}
 
-	public void setAll(Event event) {
-		nameField.setText(event.getName());
-		descriptionArea.setText(event.getDescription());
-		fromDatePicker.setValue(event.getFromDate());
-		toDatePicker.setValue(event.getToDate());
-		eventTypeComboBox.setValue(event.getEventType());
-		locationField.setText(event.getLocation());
-	}
-
-	public Event getAll(Event event) {
-		if (event == null) event = new Event();
-		event.setName(nameField.getText());
-		event.setDescription(descriptionArea.getText());
-		event.setFromDate(fromDatePicker.getValue());
-		event.setToDate(toDatePicker.getValue());
-		event.setEventType(eventTypeComboBox.getValue());
-		event.setLocation(locationField.getText());
-		return event;
-	}
-
-	public void setReadonly(boolean readonly) {
-		nameField.setDisable(readonly);
-		descriptionArea.setDisable(readonly);
-		fromDatePicker.setDisable(readonly);
-		toDatePicker.setDisable(readonly);
-		toDatePicker.setDisable(readonly);
-		eventTypeComboBox.setDisable(readonly);
-		addNewEventTypeButton.setDisable(readonly);
-		locationField.setDisable(readonly);
-	}
-
-	public void loadEventType() {
+	private void loadEventType() {
 		EntityManager em = CoreDatabase.getFactory().createEntityManager();
 		Collection<EventType> result = em.createNamedQuery("EventType.findAll", EventType.class).getResultList();
 
-		EventType selectedBefore = eventTypeComboBox.getValue();
-		eventTypeComboBox.getItems().clear();
-		eventTypeComboBox.getItems().addAll(FXCollections.observableArrayList(result));
-		eventTypeComboBox.setValue(selectedBefore);
+		eventTypeComboBox.populate(result, null);
+	}
+
+	public void addNewEventType(ActionEvent actionEvent) {
+		new EventTypeOverviewController().create(actionEvent);
+
+		loadEventType();
 	}
 
 	public boolean isValid() {
@@ -108,11 +80,5 @@ public class EventEditorController implements Initializable {
 		boolean locationValid = locationValidator.validate();
 
 		return nameValid && eventTypeValid && toDateValid && locationValid;
-	}
-
-	public void addNewEventType(ActionEvent actionEvent) {
-		new EventTypeOverviewController().create(actionEvent);
-
-		loadEventType();
 	}
 }

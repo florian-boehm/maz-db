@@ -7,6 +7,8 @@ import de.spiritaner.maz.model.meta.ResidenceType;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.view.renderer.BooleanTableCell;
 import de.spiritaner.maz.view.renderer.MetaClassTableCell;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -18,28 +20,18 @@ import java.util.Collection;
 
 public class ResidenceOverviewController extends OverviewController<Residence> {
 
-	@FXML
-	private TableColumn<Residence, ResidenceType> residenceTypeColumn;
-	@FXML
-	private TableColumn<Residence, String> preferredAddressColumn;
-	@FXML
-	private TableColumn<Residence, String> streetColumn;
-	@FXML
-	private TableColumn<Residence, String> houseNumberColumn;
-	@FXML
-	private TableColumn<Residence, String> postCodeColumn;
-	@FXML
-	private TableColumn<Residence, String> cityColumn;
-	@FXML
-	private TableColumn<Residence, String> stateColumn;
-	@FXML
-	private TableColumn<Residence, String> countryColumn;
-	@FXML
-	private TableColumn<Residence, String> additionColumn;
-	@FXML
-	private TableColumn<Residence, Boolean> forPostColumn;
+	public TableColumn<Residence, ResidenceType> residenceTypeColumn;
+	public TableColumn<Residence, String> preferredAddressColumn;
+	public TableColumn<Residence, String> streetColumn;
+	public TableColumn<Residence, String> houseNumberColumn;
+	public TableColumn<Residence, String> postCodeColumn;
+	public TableColumn<Residence, String> cityColumn;
+	public TableColumn<Residence, String> stateColumn;
+	public TableColumn<Residence, String> countryColumn;
+	public TableColumn<Residence, String> additionColumn;
+	public TableColumn<Residence, Boolean> forPostColumn;
 
-	private Person person;
+	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
 
 	public ResidenceOverviewController() {
 		super(Residence.class, true);
@@ -47,27 +39,28 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 
 	@Override
 	protected void preCreate(Residence object) {
-		object.setPerson(person);
+		object.setPerson(person.get());
 	}
 
 	@Override
 	protected Collection<Residence> preLoad(EntityManager em) {
 		if(person != null) {
-			Hibernate.initialize(person.getResidences());
-			person.initVolatiles();
-			return FXCollections.observableArrayList(person.getResidences());
+			Hibernate.initialize(person.get().getResidences());
+			person.get().initVolatiles();
+			return FXCollections.observableArrayList(person.get().getResidences());
 		}
 		return null;
 	}
 
 	@Override
 	protected String getLoadingText() {
-		return "Lade Wohnorte ...";
+		return guiText.getString("loading") + " " + guiText.getString("residences") + " ...";
 	}
 
 	@Override
 	protected void handleException(RollbackException e, Residence residence) {
-		RemoveDialog.showFailureAndWait("Wohnort","Wohnort", e);
+		String objName = guiText.getString("residence");
+		RemoveDialog.showFailureAndWait(objName, objName, e);
 	}
 
 	@Override
@@ -101,10 +94,5 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 	@Override
 	protected boolean isEditButtonDisabled(Residence oldVal, Residence newVal) {
 		return newVal == null || (newVal.getId() < 0);
-	}
-
-
-	public void setPerson(Person person) {
-		this.person = person;
 	}
 }

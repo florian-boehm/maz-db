@@ -48,6 +48,7 @@ public abstract class OverviewController<T extends Identifiable> implements Cont
 	private Class<T> cls;
 	private boolean editOnDoubleclick;
 	private Collection<T> itemList;
+	protected final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
 
 	public OverviewController(Class<T> cls, boolean useFilter) {
 		this.cls = cls;

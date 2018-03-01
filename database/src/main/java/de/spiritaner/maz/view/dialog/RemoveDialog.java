@@ -9,6 +9,7 @@ import javafx.stage.StageStyle;
 import org.hibernate.exception.ConstraintViolationException;
 
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class RemoveDialog {
 
@@ -186,10 +187,18 @@ public class RemoveDialog {
 	private static Alert generate(Identifiable identifiable, Stage stage, String details) {
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		Identifiable.Annotation annotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);
-		alert.setTitle(annotation.identifiableName() + " löschen");
+
+		ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+
+		String identifiableName = annotation.identifiableName();
+
+		if(identifiableName.startsWith("$"))
+			identifiableName = guiText.getString(identifiableName);
+
+		alert.setTitle(identifiableName + " " + guiText.getString("delete").toLowerCase());
 		alert.setHeaderText(null);
 		alert.initStyle(StageStyle.UTILITY);
-		alert.setContentText(annotation.identifiableName() + ((details.isEmpty()) ? "" : " " + details) + " wirklich löschen?");
+		alert.setContentText(annotation.identifiableName() + ((details.isEmpty()) ? "" : " " + details) + " " + guiText.getString("definitly_delete"));
 		alert.initOwner(stage);
 		return alert;
 	}

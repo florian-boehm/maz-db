@@ -31,10 +31,13 @@ public class AutoBinder {
 		}).forEach(field -> {
 			try {
 				Bindable bindable = (Bindable) field.get(controller);
-				Property property = getPropertyRecursive(controller, bindable.getVal());
 
-				if(property != null) bindable.bind(property);
-			} catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | NoSuchFieldException e) {
+				if(!bindable.getVal().isEmpty()) {
+					Property property = getPropertyRecursive(controller, bindable.getVal());
+
+					if (property != null) bindable.bind(property);
+				}
+			} catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 				logger.error(e);
 			}
 		});
@@ -55,13 +58,22 @@ public class AutoBinder {
 		});
 	}
 
-	private static Property getPropertyRecursive(Object target, String keys) throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+	private static Property getPropertyRecursive(Object target, String keys) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		String propertyName = keys.split("\\.")[0];
-		Field targetField = target.getClass().getDeclaredField(propertyName);
+		boolean fieldExists = false;
+		Field targetField = null;
+
+		try {
+			target.getClass().getDeclaredField(propertyName);
+			fieldExists = true;
+		} catch (NoSuchFieldException e) {
+			fieldExists = false;
+		}
+
 		Method targetMethod;
 		Object property;
 
-		if((targetField.getModifiers() & Modifier.PRIVATE) >= 1) {
+		if(!fieldExists || (targetField.getModifiers() & Modifier.PRIVATE) >= 1) {
 			targetMethod = target.getClass().getDeclaredMethod(propertyName+"Property");
 			property = targetMethod.invoke(target);
 		} else

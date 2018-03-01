@@ -17,92 +17,41 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
-@EditorDialog.Annotation(fxmlFile = "/fxml/residence/residence_editor_dialog.fxml", objDesc = "Wohnort")
+@EditorDialog.Annotation(fxmlFile = "/fxml/residence/residence_editor_dialog.fxml", objDesc = "$residence")
 public class ResidenceEditorDialogController extends EditorDialogController<Residence> {
 
 	final static Logger logger = Logger.getLogger(ResidenceEditorDialogController.class);
 
-	@FXML
-	private Button saveResidenceButton;
-	@FXML
-	private Text titleText;
-	@FXML
-	private GridPane personEditor;
-	@FXML
-	private PersonEditorController personEditorController;
-	@FXML
-	private GridPane addressEditor;
-	@FXML
-	private AddressEditorController addressEditorController;
-	@FXML
-	private GridPane residenceEditor;
-	@FXML
-	private ResidenceEditorController residenceEditorController;
+	public GridPane personEditor;
+	public PersonEditorController personEditorController;
+	public GridPane addressEditor;
+	public AddressEditorController addressEditorController;
+	public GridPane residenceEditor;
+	public ResidenceEditorController residenceEditorController;
 
 	@Override
-	public void setIdentifiable(Residence residence) {
-		super.setIdentifiable(residence);
-
-		if (residence != null) {
-			// Check if a person is already set in this residence
-			if (residence.getPerson() != null) {
-				personEditorController.person.set(residence.getPerson());
-				personEditorController.readOnly.set(true);
-			}
-
-			if (residence.getAddress() != null) {
-				addressEditorController.setAll(residence.getAddress());
-			}
-
-			residenceEditorController.setAll(residence);
-
-			if (residence.getId() != 0L) {
-				titleText.setText("Wohnort bearbeiten");
-				saveResidenceButton.setText("Speichern");
-			} else {
-				titleText.setText("Wohnort anlegen");
-				saveResidenceButton.setText("Anlegen");
-			}
-		}
+	public void bind(Residence residence) {
+		residenceEditorController.residence.bindBidirectional(identifiable);
+		personEditorController.person.bindBidirectional(residence.person);
+		personEditorController.readOnly.bind(residence.person.isNotNull());
+		addressEditorController.address.bindBidirectional(residence.address);
 	}
 
-	public void saveResidence(ActionEvent actionEvent) {
-		Platform.runLater(() -> {
-			boolean addressValid = addressEditorController.isValid();
-			boolean personValid = personEditorController.isValid();
-			boolean residenceValid = residenceEditorController.isValid();
+	@Override
+	protected boolean allValid() {
+		boolean addressValid = addressEditorController.isValid();
+		boolean personValid = personEditorController.isValid();
+		boolean residenceValid = residenceEditorController.isValid();
 
-			if (addressValid && personValid && residenceValid) {
-				EntityManager em = CoreDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
+		return addressValid && personValid && residenceValid;
+	}
 
-				getIdentifiable().setAddress(Address.findSame(em, addressEditorController.getAll(getIdentifiable().getAddress())));
-				residenceEditorController.getAll(getIdentifiable());
-
-				try {
-					Residence managedResidence = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
-
-					// Add backwards relationship too
-					// if (!managedResidence.getPerson().getResidences().contains(managedResidence)) managedResidence.getPerson().getResidences().add(managedResidence);
-					//if(getIdentifiable().getPerson().setResidences())
-
-					if (residenceEditorController.getPreferredResidence().isSelected()) {
-						managedResidence.getPerson().setPreferredResidence(managedResidence);
-					} else if(managedResidence.getPerson().getPreferredResidence() != null && managedResidence.getPerson().getPreferredResidence().equals(managedResidence)) {
-						managedResidence.getPerson().setPreferredResidence(null);
-					}
-
-					em.getTransaction().commit();
-
-					setResult(managedResidence);
-					requestClose();
-				} catch (PersistenceException e) {
-					em.getTransaction().rollback();
-					logger.warn(e);
-				} finally {
-					em.close();
-				}
-			}
-		});
+	@Override
+	protected void preSave(Residence managedResidence) {
+		if (residenceEditorController.getPreferredResidence().isSelected()) {
+			managedResidence.getPerson().setPreferredResidence(managedResidence);
+		} else if(managedResidence.getPerson().getPreferredResidence() != null && managedResidence.getPerson().getPreferredResidence().equals(managedResidence)) {
+			managedResidence.getPerson().setPreferredResidence(null);
+		}
 	}
 }

@@ -4,22 +4,24 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.ToggleSwitch?>
+<?import de.spiritaner.maz.view.component.BindableTextField?>
+<?import de.spiritaner.maz.view.component.BindableComboBox?>
 <GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.relationship.RelationshipEditorController">
 	<children>
 
 		<Label maxHeight="1.7976931348623157E308" text="Vorname:" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
 
-		<TextField fx:id="toPersonFirstNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+		<BindableTextField val="relationship.toPersonFirstName" fx:id="toPersonFirstNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 		<Label maxHeight="1.7976931348623157E308" text="Nachname:" GridPane.rowIndex="2" />
-		<TextField fx:id="toPersonFamilyNameField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+		<BindableTextField val="relationship.toPersonFamilyName" fx:id="toPersonFamilyNameField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 		<Label text="Beziehungsart:" GridPane.rowIndex="3" />
 		<BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
 			<center>
-				<ComboBox fx:id="relationshipTypeComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+				<BindableComboBox val="relationship.relationshipType" fx:id="relationshipTypeComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
 					<BorderPane.margin>
 						<Insets />
 					</BorderPane.margin>
-				</ComboBox>
+				</BindableComboBox>
 			</center>
 			<right>
 				<Button fx:id="addNewRelationshipTypeButton" mnemonicParsing="false" onAction="#addNewRelationshipType" text="+" BorderPane.alignment="CENTER">
@@ -45,11 +47,11 @@
 		</ToggleSwitch>
 		<BorderPane GridPane.columnIndex="1" GridPane.rowIndex="5">
 			<center>
-				<ComboBox fx:id="inverseRelationshipTypeComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+				<BindableComboBox fx:id="inverseRelationshipTypeComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
 					<BorderPane.margin>
 						<Insets />
 					</BorderPane.margin>
-				</ComboBox>
+				</BindableComboBox>
 			</center>
 			<right>
 				<Button fx:id="addNewInverseRelationshipTypeButton" mnemonicParsing="false" onAction="#addNewRelationshipType" text="+" BorderPane.alignment="CENTER">

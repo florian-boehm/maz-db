@@ -15,21 +15,14 @@ import java.util.ResourceBundle;
 
 public class EventPageController implements Initializable, Controller {
 
-	@FXML
-	private AnchorPane eventOverview;
-	@FXML
-	private EventOverviewController eventOverviewController;
-	@FXML
-	private AnchorPane detailPane;
-	@FXML
-	private TabPane detailTabPane;
-	@FXML
-	private MaskerPane detailsMasker;
+	public AnchorPane eventOverview;
+	public EventOverviewController eventOverviewController;
+	public AnchorPane detailPane;
+	public TabPane detailTabPane;
+	public MaskerPane detailsMasker;
 
-	@FXML
-	private AnchorPane eventParticipants;
-	@FXML
-	private ParticipationOverviewController eventParticipantsController;
+	public AnchorPane eventParticipants;
+	public ParticipationOverviewController eventParticipantsController;
 
 	private Stage stage;
 

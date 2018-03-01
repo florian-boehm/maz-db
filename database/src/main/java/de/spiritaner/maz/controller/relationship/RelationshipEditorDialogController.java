@@ -8,13 +8,10 @@ import de.spiritaner.maz.model.Relationship;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.view.dialog.OverviewDialog;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -23,71 +20,49 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-@EditorDialog.Annotation(fxmlFile = "/fxml/relationship/relationship_editor_dialog.fxml", objDesc = "Beziehung")
+@EditorDialog.Annotation(fxmlFile = "/fxml/relationship/relationship_editor_dialog.fxml", objDesc = "$relationship")
 public class RelationshipEditorDialogController extends EditorDialogController<Relationship> {
 
 	final static Logger logger = Logger.getLogger(RelationshipEditorDialogController.class);
 
-	@FXML
-	private Button saveRelationshipButton;
-	@FXML
-	private Text titleText;
-	@FXML
-	private GridPane fromPersonEditor;
-	@FXML
-	private PersonEditorController fromPersonEditorController;
-	@FXML
-	private GridPane toPersonEditor;
-	@FXML
-	private PersonEditorController toPersonEditorController;
-	@FXML
-	private GridPane relationshipEditor;
-	@FXML
-	private RelationshipEditorController relationshipEditorController;
-	@FXML
-	private Button searchPersonButton;
+	public GridPane fromPersonEditor;
+	public PersonEditorController fromPersonEditorController;
+	public GridPane toPersonEditor;
+	public PersonEditorController toPersonEditorController;
+	public GridPane relationshipEditor;
+	public RelationshipEditorController relationshipEditorController;
+	public Button searchPersonButton;
 
 	@Override
-	public void setIdentifiable(Relationship relationship) {
-		super.setIdentifiable(relationship);
+	protected void bind(Relationship relationship) {
+		// Check if a person is already set in this residence
+		fromPersonEditorController.person.bindBidirectional(relationship.fromPerson);
+		fromPersonEditorController.readOnly.bind(relationship.fromPerson.isNotNull());
 
-		if (relationship != null) {
-			// Check if a person is already set in this residence
-			if (relationship.getFromPerson() != null) {
-				fromPersonEditorController.person.set(relationship.getFromPerson());
-				fromPersonEditorController.readOnly.set(true);
-			}
+		relationshipEditorController.relationship.bindBidirectional(identifiable);
+		toPersonEditorController.readOnly.set(true);
+		toPersonEditorController.person.bindBidirectional(relationship.toPerson);
+		relationshipEditorController.personFromDatabaseToggleSwitch.selectedProperty().bind(relationship.toPerson.isNotNull());
+		relationshipEditorController.readOnly.bind(relationship.toPerson.isNotNull());
 
-			relationshipEditorController.setAll(relationship);
-			toPersonEditorController.readOnly.set(true);
-
-			if (relationship.getId() != 0L) {
-				titleText.setText("Beziehung bearbeiten");
-				saveRelationshipButton.setText("Speichern");
-
-				if(relationship.getToPerson() != null) {
-					toPersonEditorController.person.set(relationship.getToPerson());
-					relationshipEditorController.getPersonFromDatabaseToggleSwitch().setSelected(true);
-					relationshipEditorController.setPersonFromDatabase(true);
-				} else {
-					relationshipEditorController.getPersonFromDatabaseToggleSwitch().setSelected(false);
-					relationshipEditorController.setPersonFromDatabase(false);
-				}
-
-				relationshipEditorController.getPersonFromDatabaseToggleSwitch().setDisable(true);
-				relationshipEditorController.getInverseRelationshipToggleSwitch().setDisable(true);
-				searchPersonButton.setDisable(true);
-			} else {
-				titleText.setText("Beziehung anlegen");
-				saveRelationshipButton.setText("Anlegen");
+		// TODO Check if it is correctly implemented
+		/*if (relationship.getId() != 0L) {
+			if(relationship.getToPerson() != null) {
+				relationshipEditorController.getPersonFromDatabaseToggleSwitch().setSelected(true);
 
 				relationshipEditorController.setPersonFromDatabase(true);
+			} else {
+				relationshipEditorController.personFromDatabaseToggleSwitch.selectedProperty();
+				//getPersonFromDatabaseToggleSwitch().setSelected(false);
+				relationshipEditorController.setPersonFromDatabase(false);
 			}
-		}
-	}
 
-	@Override
-	public void onReopen() {
+			relationshipEditorController.getPersonFromDatabaseToggleSwitch().setDisable(true);
+			relationshipEditorController.getInverseRelationshipToggleSwitch().setDisable(true);
+			searchPersonButton.setDisable(true);
+		} else {
+			relationshipEditorController.setPersonFromDatabase(true);
+		}*/
 	}
 
 	@Override
@@ -101,29 +76,20 @@ public class RelationshipEditorDialogController extends EditorDialogController<R
 		});
 	}
 
-	public void saveRelationship(ActionEvent actionEvent) {
-		Platform.runLater(() -> {
-			boolean toPersonValid = !relationshipEditorController.getPersonFromDatabaseToggleSwitch().isSelected() || toPersonEditorController.isValid();
-			boolean fromPersonValid = fromPersonEditorController.isValid();
-			boolean relationshipValid = relationshipEditorController.isValid();
+	@Override
+	protected boolean allValid() {
+		boolean toPersonValid = !relationshipEditorController.getPersonFromDatabaseToggleSwitch().isSelected() || toPersonEditorController.isValid();
+		boolean fromPersonValid = fromPersonEditorController.isValid();
+		boolean relationshipValid = relationshipEditorController.isValid();
 
-			if (toPersonValid && fromPersonValid && relationshipValid) {
-				EntityManager em = CoreDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
+		return toPersonValid && fromPersonValid && relationshipValid;
+	}
 
-				/*if(relationshipEditorController.getPersonFromDatabaseToggleSwitch().isSelected()) {
-					getIdentifiable().setToPerson(toPersonEditorController.getAll(getIdentifiable().getToPerson()));
-				} else {
-					getIdentifiable().setToPerson(null);
-				}*/
-
-				relationshipEditorController.getAll(getIdentifiable());
-
-				try {
-					Relationship managedRelationship = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
-					Relationship managedInverseRelationship = null;
-
-					if(relationshipEditorController.getInverseRelationshipToggleSwitch().isSelected()) {
+	@Override
+	protected void preSave(EntityManager em) {
+		// TODO Implement correctly!
+		/*
+		if(relationshipEditorController.getInverseRelationshipToggleSwitch().isSelected()) {
 						Relationship inverseRelationship = new Relationship();
 						inverseRelationship.setToPerson(getIdentifiable().getFromPerson());
 						inverseRelationship.setFromPerson(getIdentifiable().getToPerson());
@@ -131,30 +97,16 @@ public class RelationshipEditorDialogController extends EditorDialogController<R
 						managedInverseRelationship = (!em.contains(inverseRelationship)) ? em.merge(inverseRelationship) : inverseRelationship;
 					}
 
-					em.getTransaction().commit();
+		em.getTransaction().commit();
 
-					if(managedRelationship != null) {
-						if(!getIdentifiable().getFromPerson().getRelationships().contains(managedRelationship)) getIdentifiable().getFromPerson().getRelationships().add(managedRelationship);
-					}
+		if(managedRelationship != null) {
+			if(!getIdentifiable().getFromPerson().getRelationships().contains(managedRelationship)) getIdentifiable().getFromPerson().getRelationships().add(managedRelationship);
+		}
 
-					if(managedInverseRelationship != null) {
-						if(!getIdentifiable().getToPerson().getRelationships().contains(managedInverseRelationship)) getIdentifiable().getToPerson().getRelationships().add(managedInverseRelationship);
-					}
-
-					setResult(managedRelationship);
-					requestClose();
-				} catch (PersistenceException e) {
-					em.getTransaction().rollback();
-					logger.warn(e);
-				} finally {
-					em.close();
-				}
-			}
-		});
-	}
-
-	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> getStage().close());
+		if(managedInverseRelationship != null) {
+			if(!getIdentifiable().getToPerson().getRelationships().contains(managedInverseRelationship)) getIdentifiable().getToPerson().getRelationships().add(managedInverseRelationship);
+		}
+		 */
 	}
 
 	public void searchPerson(ActionEvent actionEvent) {
@@ -164,9 +116,9 @@ public class RelationshipEditorDialogController extends EditorDialogController<R
 		result.ifPresent((final Person selectedPerson) -> {
 			if(selectedPerson.equals(getIdentifiable().getFromPerson())) {
 				Alert alert = new Alert(Alert.AlertType.ERROR);
-				alert.setTitle("Fehler");
+				alert.setTitle(guiText.getString("error"));
 				alert.setHeaderText(null);
-				alert.setContentText("Eine Beziehung zwischen ein und derselben Person ist nicht möglich!");
+				alert.setContentText(guiText.getString("relationship_error_same_person"));
 
 				alert.showAndWait();
 			} else {

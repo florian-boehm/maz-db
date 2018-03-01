@@ -7,6 +7,8 @@ import de.spiritaner.maz.model.meta.ApprovalType;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.view.renderer.BooleanTableCell;
 import de.spiritaner.maz.view.renderer.MetaClassTableCell;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -18,12 +20,10 @@ import java.util.Collection;
 
 public class ApprovalOverviewController extends OverviewController<Approval> {
 
-	@FXML
-	private TableColumn<Approval, ApprovalType> approvalTypeColumn;
-	@FXML
-	private TableColumn<Approval, Boolean> approvedColumn;
+	public TableColumn<Approval, ApprovalType> approvalTypeColumn;
+	public TableColumn<Approval, Boolean> approvedColumn;
 
-	private Person person;
+	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
 
 	public ApprovalOverviewController() {
 		super(Approval.class, Boolean.TRUE);
@@ -31,19 +31,19 @@ public class ApprovalOverviewController extends OverviewController<Approval> {
 
 	@Override
 	protected void preCreate(Approval newApproval) {
-		newApproval.setPerson(person);
+		newApproval.setPerson(person.get());
 	}
 
 	@Override
 	protected void postRemove(Approval obsoleteEntity) {
-		person.getApprovals().remove(obsoleteEntity);
+		person.get().getApprovals().remove(obsoleteEntity);
 	}
 
 	@Override
 	protected Collection<Approval> preLoad(EntityManager em) {
 		if(person != null) {
-			Hibernate.initialize(person.getApprovals());
-			return FXCollections.observableArrayList(person.getApprovals());
+			Hibernate.initialize(person.get().getApprovals());
+			return FXCollections.observableArrayList(person.get().getApprovals());
 		} else {
 			return FXCollections.emptyObservableList();
 		}
@@ -51,12 +51,13 @@ public class ApprovalOverviewController extends OverviewController<Approval> {
 
 	@Override
 	protected String getLoadingText() {
-		return "Lade Einwilligungen ...";
+		return guiText.getString("loading") + " " + guiText.getString("approvals") + " ...";
 	}
 
 	@Override
 	protected void handleException(RollbackException e, Approval approval) {
-		RemoveDialog.showFailureAndWait("Einwilligung","Einwilligung von '"+approval.getPerson().getFullName()+"' zu '"+approval.getApprovalType().getDescription()+"'", e);
+		// TODO Extract strings
+		RemoveDialog.showFailureAndWait(guiText.getString("approval"),"Einwilligung von '"+approval.getPerson().getFullName()+"' zu '"+approval.getApprovalType().getDescription()+"'", e);
 	}
 
 	@Override
@@ -71,9 +72,5 @@ public class ApprovalOverviewController extends OverviewController<Approval> {
 	@Override
 	protected boolean isRemoveButtonDisabled(Approval oldVal, Approval newVal) {
 		return newVal == null || (newVal.getApprovalType() != null && newVal.getApprovalType().getId() <= 3);
-	}
-
-	public void setPerson(Person person) {
-		this.person = person;
 	}
 }

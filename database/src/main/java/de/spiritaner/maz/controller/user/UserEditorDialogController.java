@@ -18,31 +18,18 @@ import org.apache.log4j.Logger;
 
 import java.util.Optional;
 
-@EditorDialog.Annotation(fxmlFile = "/fxml/user/user_editor_dialog.fxml", objDesc = "Benutzer")
+@EditorDialog.Annotation(fxmlFile = "/fxml/user/user_editor_dialog.fxml", objDesc = "$user")
 public class UserEditorDialogController extends EditorDialogController<User> {
 
 	final static Logger logger = Logger.getLogger(UserEditorDialogController.class);
 
-	@FXML
-	private PasswordField adminPasswordField;
-
-	@FXML
-	private Text titleText;
-
-	@FXML
-	private Button saveUserButton;
-
-	@FXML
-	private GridPane userEditor;
-
-	@FXML
-	private UserEditorController userEditorController;
-
-	@FXML
-	private Label errorLabel;
-
-	@FXML
-	private Label adminPasswordLabel;
+	public PasswordField adminPasswordField;
+	public Text titleText;
+	public Button saveUserButton;
+	public GridPane userEditor;
+	public UserEditorController userEditorController;
+	public Label errorLabel;
+	public Label adminPasswordLabel;
 
 	public void saveUser(ActionEvent actionEvent) {
 		Platform.runLater(() -> {
@@ -77,10 +64,6 @@ public class UserEditorDialogController extends EditorDialogController<User> {
 				}
 			}
 		});
-	}
-
-	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> getStage().close());
 	}
 
 	@Override

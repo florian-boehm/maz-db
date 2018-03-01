@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-@EditorDialog.Annotation(fxmlFile = "/fxml/participation/participation_editor_dialog.fxml", objDesc = "Teilnahme")
+@EditorDialog.Annotation(fxmlFile = "/fxml/participation/participation_editor_dialog.fxml", objDesc = "$participation")
 public class ParticipationEditorDialogController extends EditorDialogController<Participation> {
 
 	final static Logger logger = Logger.getLogger(ParticipationEditorDialogController.class);
@@ -38,77 +38,38 @@ public class ParticipationEditorDialogController extends EditorDialogController<
 	public Button searchPersonButton;
 
 	@Override
-	public void setIdentifiable(Participation participation) {
-		super.setIdentifiable(participation);
+	protected void bind(Participation participation) {
+		eventEditorController.event.bindBidirectional(participation.event);
+		eventEditorController.readOnly.bind(participation.event.isNotNull());
+		searchEventButton.disableProperty().bind(participation.event.isNotNull());
 
-		if (participation != null) {
-			if (participation.getEvent() != null) {
-				eventEditorController.setAll(participation.getEvent());
-				searchEventButton.setDisable(true);
-			}
+		personEditorController.person.bindBidirectional(participation.person);
+		personEditorController.readOnly.bind(participation.person.isNotNull());
+		searchPersonButton.disableProperty().bind(participation.person.isNotNull());
 
-			if (participation.getPerson() != null) {
-				personEditorController.person.set(participation.getPerson());
-				searchPersonButton.setDisable(true);
-			}
-
-			eventEditorController.setReadonly(true);
-			personEditorController.readOnly.set(true);
-			participationEditorController.setAll(participation);
-		}
+		participationEditorController.participation.bindBidirectional(identifiable);
 	}
 
-	public void saveParticipant(ActionEvent actionEvent) {
-		Platform.runLater(() -> {
-			boolean personValid = personEditorController.isValid();
-			boolean eventValid = eventEditorController.isValid();
-			boolean participationValid = participationEditorController.isValid();
+	@Override
+	protected boolean allValid() {
+		boolean personValid = personEditorController.isValid();
+		boolean eventValid = eventEditorController.isValid();
+		boolean participationValid = participationEditorController.isValid();
 
-			if (personValid && eventValid && participationValid) {
-				EntityManager em = CoreDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
-
-				getIdentifiable().setEvent(eventEditorController.getAll(getIdentifiable().getEvent()));
-				participationEditorController.getAll(getIdentifiable());
-
-				try {
-					Participation managedParticipation = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
-					em.getTransaction().commit();
-
-					//if(managedParticipation != null) {
-					//	if(!getIdentifiable().getPerson().getParticipations().contains(managedParticipation)) getIdentifiable().getPerson().getParticipations().add(managedParticipation);
-					//	if(!getIdentifiable().getEvent().getParticipations().contains(managedParticipation)) getIdentifiable().getEvent().getParticipations().add(managedParticipation);
-					//}
-
-					setResult(managedParticipation);
-					requestClose();
-				} catch (PersistenceException e) {
-					em.getTransaction().rollback();
-					logger.warn(e);
-				} finally {
-					em.close();
-				}
-			}
-		});
+		return personValid && eventValid && participationValid;
 	}
 
-	public void searchEvent(ActionEvent actionEvent) {
+	public void searchEvent(final ActionEvent actionEvent) {
 		OverviewDialog<EventOverviewController, Event> dialog = new OverviewDialog<>(EventOverviewController.class);
 		Optional<Event> result = dialog.showAndSelect(getStage());
 
-		result.ifPresent((Event event) -> {
-			getIdentifiable().setEvent(event);
-			eventEditorController.setAll(event);
-		});
+		result.ifPresent((Event event) -> identifiable.get().event.set(event));
 	}
 
-	public void searchPerson(ActionEvent actionEvent) {
+	public void searchPerson(final ActionEvent actionEvent) {
 		OverviewDialog<PersonOverviewController, Person> dialog = new OverviewDialog<>(PersonOverviewController.class);
 		Optional<Person> result = dialog.showAndSelect(getStage());
 
-		result.ifPresent((Person person) -> {
-			getIdentifiable().setPerson(person);
-			personEditorController.person.set(person);
-		});
+		result.ifPresent((Person person) -> identifiable.get().person.set(person));
 	}
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 @Entity
 @Audited
-@Identifiable.Annotation(editorDialogClass = AddressEditorDialogController.class, identifiableName = "Adresse")
+@Identifiable.Annotation(editorDialogClass = AddressEditorDialogController.class, identifiableName = "$address")
 @NamedQueries({
 		  @NamedQuery(name="Address.findSame", query="SELECT a FROM Address a WHERE a.street=:street AND " +
 					 "a.houseNumber=:houseNumber AND a.postCode=:postCode AND a.city=:city AND a.state=:state AND " +
@@ -25,25 +25,14 @@ import java.util.ArrayList;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"street", "houseNumber", "postCode", "city", "state", "country", "addition"}))
 public class Address implements Identifiable {
 
-	private LongProperty id;
-	private StringProperty street;
-	private StringProperty houseNumber;
-	private StringProperty postCode;
-	private StringProperty city;
-	private StringProperty state;
-	private StringProperty country;
-	private StringProperty addition;
-
-	public Address() {
-		id = new SimpleLongProperty();
-		street = new SimpleStringProperty();
-		houseNumber = new SimpleStringProperty();
-		postCode = new SimpleStringProperty();
-		city = new SimpleStringProperty();
-		state = new SimpleStringProperty();
-		country = new SimpleStringProperty();
-		addition = new SimpleStringProperty();
-	}
+	public LongProperty id = new SimpleLongProperty();
+	public StringProperty street = new SimpleStringProperty();
+	public StringProperty houseNumber = new SimpleStringProperty();
+	public StringProperty postCode = new SimpleStringProperty();
+	public StringProperty city = new SimpleStringProperty();
+	public StringProperty state = new SimpleStringProperty();
+	public StringProperty country = new SimpleStringProperty();
+	public StringProperty addition = new SimpleStringProperty();
 
 	@Id
 	@GeneratedValue

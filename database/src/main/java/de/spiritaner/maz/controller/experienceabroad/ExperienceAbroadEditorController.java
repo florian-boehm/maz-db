@@ -1,9 +1,18 @@
 package de.spiritaner.maz.controller.experienceabroad;
 
+import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.model.ExperienceAbroad;
 import de.spiritaner.maz.util.validator.DateValidator;
 import de.spiritaner.maz.util.validator.TextValidator;
+import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.view.binding.BindProperty;
+import de.spiritaner.maz.view.binding.BindableProperty;
+import de.spiritaner.maz.view.component.BindableDatePicker;
+import de.spiritaner.maz.view.component.BindableTextArea;
+import de.spiritaner.maz.view.component.BindableTextField;
 import de.spiritaner.maz.view.renderer.DatePickerFormatter;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
@@ -14,58 +23,38 @@ import org.apache.log4j.Logger;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ExperienceAbroadEditorController implements Initializable {
+public class ExperienceAbroadEditorController extends EditorController {
 
 	final static Logger logger = Logger.getLogger(ExperienceAbroadEditorController.class);
 
-	@FXML private TextField communityField;
-	@FXML private TextArea detailsTextArea;
-	@FXML private TextField locationField;
-	@FXML private DatePicker fromDatePicker;
-	@FXML private DatePicker toDatePicker;
+	@BindableProperty
+	public ObjectProperty<ExperienceAbroad> experienceAbroad = new SimpleObjectProperty<>();
 
-	TextValidator communityFieldValidator;
-	TextValidator locationFieldValidator;
-	DateValidator fromDateValidator;
-	DateValidator toDateValidator;
+	public BindableTextField communityField;
+	public BindableTextField locationField;
+	public BindableTextArea detailsTextArea;
+	public BindableDatePicker fromDatePicker;
+	public BindableDatePicker toDatePicker;
+
+	private TextValidator communityFieldValidator;
+	private TextValidator locationFieldValidator;
+	private DateValidator fromDateValidator;
+	private DateValidator toDateValidator;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		AutoBinder ab = new AutoBinder(this);
+
+		experienceAbroad.addListener((observable, oldValue, newValue) -> ab.rebindAll());
+
+		// TODO Extract strings
 		communityFieldValidator = TextValidator.create(communityField).fieldName("(Ordens-) Gemeinschaft").notEmpty(true).validateOnChange();
 		locationFieldValidator = TextValidator.create(locationField).fieldName("Ort").notEmpty(true).validateOnChange();
 		fromDateValidator = DateValidator.create(fromDatePicker).fieldName("Von-Datum").notEmpty(true).validateOnChange();
 		toDateValidator = DateValidator.create(toDatePicker).fieldName("Bis-Datum").notEmpty(true).after(fromDatePicker).relationFieldName("Von-Datum").validateOnChange();
-
-		toDatePicker.setConverter(new DatePickerFormatter());
-		fromDatePicker.setConverter(new DatePickerFormatter());
 	}
 
-	public void setAll(ExperienceAbroad experienceAbroad) {
-		communityField.setText(experienceAbroad.getCommunity());
-		detailsTextArea.setText(experienceAbroad.getDetails());
-		locationField.setText(experienceAbroad.getLocation());
-		fromDatePicker.setValue(experienceAbroad.getFromDate());
-		toDatePicker.setValue(experienceAbroad.getToDate());
-	}
-
-	public ExperienceAbroad getAll(ExperienceAbroad experienceAbroad) {
-		if (experienceAbroad == null) experienceAbroad = new ExperienceAbroad();
-		experienceAbroad.setCommunity(communityField.getText());
-		experienceAbroad.setDetails(detailsTextArea.getText());
-		experienceAbroad.setLocation(locationField.getText());
-		experienceAbroad.setFromDate(fromDatePicker.getValue());
-		experienceAbroad.setToDate(toDatePicker.getValue());
-		return experienceAbroad;
-	}
-
-	public void setReadonly(boolean readonly) {
-		communityField.setDisable(readonly);
-		detailsTextArea.setDisable(readonly);
-		locationField.setDisable(readonly);
-		fromDatePicker.setDisable(readonly);
-		toDatePicker.setDisable(readonly);
-	}
-
+	@Override
 	public boolean isValid() {
 		boolean communityValid = communityFieldValidator.validate();
 		boolean toDateValid = toDateValidator.validate();

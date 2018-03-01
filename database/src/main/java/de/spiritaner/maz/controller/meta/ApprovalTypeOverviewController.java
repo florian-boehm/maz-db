@@ -12,6 +12,7 @@ public class ApprovalTypeOverviewController extends MetadataOverviewController<A
     }
 
     @Override
+    // TODO Extract strings
     public String getMetaName() {
         return "Einwilligung";
     }

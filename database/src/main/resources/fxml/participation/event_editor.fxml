@@ -3,57 +3,65 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.participation.EventEditorController">
+<?import de.spiritaner.maz.view.component.BindableTextField?>
+<?import de.spiritaner.maz.view.component.BindableDatePicker?>
+<?import de.spiritaner.maz.view.component.BindableComboBox?>
+<?import de.spiritaner.maz.view.component.BindableTextArea?>
+<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.spiritaner.maz.controller.participation.EventEditorController">
     <children>
 
-        <Label maxHeight="1.7976931348623157E308" text="Name:" GridPane.hgrow="ALWAYS" />
+        <Label maxHeight="1.7976931348623157E308" text="Name:" GridPane.hgrow="ALWAYS"/>
 
-        <TextField fx:id="nameField" GridPane.columnIndex="1" />
-      <Label text="Ort:" GridPane.rowIndex="1" />
-      <TextField fx:id="locationField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Label text="Von:" GridPane.rowIndex="2" />
-      <DatePicker fx:id="fromDatePicker" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="NEVER" />
-        <Label text="Bis:" GridPane.rowIndex="3" />
-        <DatePicker fx:id="toDatePicker" maxWidth="1.7976931348623157E308" showWeekNumbers="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </DatePicker>
-        <Label text="Veranstaltungsart:" GridPane.rowIndex="4" />
-      <BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="NEVER">
-         <center>
-                <ComboBox fx:id="eventTypeComboBox" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-                </ComboBox>
-         </center>
-         <right>
-            <Button fx:id="addNewEventTypeButton" mnemonicParsing="false" onAction="#addNewEventType" text="+" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-            </Button>
-         </right>
-      </BorderPane>
+        <BindableTextField val="event.name" fx:id="nameField" GridPane.columnIndex="1"/>
+        <Label text="Ort:" GridPane.rowIndex="1"/>
+        <BindableTextField val="event.location" fx:id="locationField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label text="Von:" GridPane.rowIndex="2"/>
+        <BindableDatePicker val="event.fromDate" fx:id="fromDatePicker" maxWidth="1.7976931348623157E308"
+                            GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
+                            GridPane.vgrow="NEVER"/>
+        <Label text="Bis:" GridPane.rowIndex="3"/>
+        <BindableDatePicker val="event.toDate" fx:id="toDatePicker" maxWidth="1.7976931348623157E308"
+                            showWeekNumbers="true"
+                            GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3"
+                            GridPane.vgrow="NEVER"/>
+        <Label text="Veranstaltungsart:" GridPane.rowIndex="4"/>
+        <BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="NEVER">
+            <center>
+                <BindableComboBox val="event.eventType" fx:id="eventTypeComboBox" maxWidth="1.7976931348623157E308"
+                                  BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets/>
+                    </BorderPane.margin>
+                </BindableComboBox>
+            </center>
+            <right>
+                <Button fx:id="addNewEventTypeButton" mnemonicParsing="false" onAction="#addNewEventType" text="+"
+                        BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets/>
+                    </BorderPane.margin>
+                </Button>
+            </right>
+        </BorderPane>
 
-        <Label text="Beschreibung:" GridPane.rowIndex="5" />
-      <TextArea fx:id="descriptionArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <Label text="Beschreibung:" GridPane.rowIndex="5"/>
+        <BindableTextArea val="event.description" fx:id="descriptionArea" prefHeight="200.0" prefWidth="200.0"
+                          GridPane.columnIndex="1"
+                          GridPane.rowIndex="5"/>
     </children>
     <columnConstraints>
-        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0" />
-        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0"/>
+        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
     </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints valignment="TOP" />
-   </rowConstraints>
+    <rowConstraints>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints valignment="TOP"/>
+    </rowConstraints>
 
 </GridPane>

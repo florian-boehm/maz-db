@@ -19,7 +19,7 @@ import javax.persistence.PersistenceException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@EditorDialog.Annotation(fxmlFile = "/fxml/approval/approval_editor_dialog.fxml", objDesc = "Einwilligung")
+@EditorDialog.Annotation(fxmlFile = "/fxml/approval/approval_editor_dialog.fxml", objDesc = "$approval")
 public class ApprovalEditorDialogController extends EditorDialogController<Approval> {
 
 	final static Logger logger = Logger.getLogger(ApprovalEditorDialogController.class);
@@ -33,7 +33,7 @@ public class ApprovalEditorDialogController extends EditorDialogController<Appro
 	public ToggleSwitch newsletterToggleSwitch;
 
 	@Override
-	protected void init() {
+	protected void bind(Approval approval) {
 		privacyPolicyToggleSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
 			//photoApprovalToggleSwitch.setDisable(!newValue);
 			newsletterToggleSwitch.setDisable(!newValue);
@@ -64,10 +64,10 @@ public class ApprovalEditorDialogController extends EditorDialogController<Appro
 				// not needed: photoApprovalToggleSwitch.setDisable(!privacyPolicyToggleSwitch.isSelected());
 				newsletterToggleSwitch.setDisable(!privacyPolicyToggleSwitch.isSelected());
 
-				if (approval.getApprovalType() == null || newValue.getApprovalType().getId() > 100) {
-					approvalEditorController.setAll(newValue);
+				if (newValue.getApprovalType() == null || newValue.getApprovalType().getId() > 100) {
+					approvalEditorController.approval.set(newValue);
 				} else {
-					approvalEditorController.setReadonly(true);
+					approvalEditorController.readOnly.set(true);
 				}
 			}
 		});
@@ -76,38 +76,34 @@ public class ApprovalEditorDialogController extends EditorDialogController<Appro
 	@Override
 	protected boolean allValid() {
 		boolean personValid = personEditorController.isValid();
-		boolean approvalValid = (approvalEditorController.isReadOnly()) || approvalEditorController.isValid();
+		boolean approvalValid = (approvalEditorController.readOnly.get()) || approvalEditorController.isValid();
 
 		return personValid && approvalValid;
 	}
 
 	@Override
-	public void save(ActionEvent actionEvent) {
-		Platform.runLater(() -> {
-			if (allValid()) {
-				EntityManager em = CoreDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
+	protected void preSave(EntityManager em) {
+		for(Approval approval : identifiable.get().person.get().getApprovals()) {
+			Approval managedApproval = (!em.contains(approval)) ? em.merge(approval) : approval;
 
-				for(Approval approval : getIdentifiable().getPerson().getApprovals()) {
-					Approval managedApproval = (!em.contains(approval)) ? em.merge(approval) : approval;
+			switch (approval.getApprovalType().getId().intValue()) {
+				case 1:
+					managedApproval.setApproved(privacyPolicyToggleSwitch.isSelected());
+					approval.setApproved(privacyPolicyToggleSwitch.isSelected());
+					break;
+				case 2:
+					approval.setApproved(photoApprovalToggleSwitch.isSelected());
+					managedApproval.setApproved(photoApprovalToggleSwitch.isSelected());
+					break;
+				case 3:
+					approval.setApproved(privacyPolicyToggleSwitch.isSelected() && newsletterToggleSwitch.isSelected());
+					managedApproval.setApproved(privacyPolicyToggleSwitch.isSelected() && newsletterToggleSwitch.isSelected());
+					break;
+			}
+		}
 
-					switch (approval.getApprovalType().getId().intValue()) {
-						case 1:
-							managedApproval.setApproved(privacyPolicyToggleSwitch.isSelected());
-							approval.setApproved(privacyPolicyToggleSwitch.isSelected());
-							break;
-						case 2:
-							approval.setApproved(photoApprovalToggleSwitch.isSelected());
-							managedApproval.setApproved(photoApprovalToggleSwitch.isSelected());
-							break;
-						case 3:
-							approval.setApproved(privacyPolicyToggleSwitch.isSelected() && newsletterToggleSwitch.isSelected());
-							managedApproval.setApproved(privacyPolicyToggleSwitch.isSelected() && newsletterToggleSwitch.isSelected());
-							break;
-					}
-				}
-
-				if(!approvalEditorController.isReadOnly()) approvalEditorController.getAll(getIdentifiable());
+		// TODO Check if this is correctly implemented
+		/*if(!approvalEditorController.isReadOnly()) approvalEditorController.getAll(getIdentifiable());
 
 				try {
 					if(!approvalEditorController.isReadOnly()) {
@@ -126,6 +122,6 @@ public class ApprovalEditorDialogController extends EditorDialogController<Appro
 					em.close();
 				}
 			}
-		});
+		});*/
 	}
 }
