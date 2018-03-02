@@ -1,12 +1,18 @@
 package de.spiritaner.maz.controller.yearabroad;
 
+import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.controller.meta.PersonGroupOverviewController;
 import de.spiritaner.maz.model.Responsible;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.meta.PersonGroup;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.validator.ComboBoxValidator;
+import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.view.component.BindableComboBox;
+import de.spiritaner.maz.view.component.SimpleBindableComboBox;
 import de.spiritaner.maz.view.renderer.MetaClassListCell;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,61 +23,44 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.net.URL;
+import java.util.Collection;
 import java.util.ResourceBundle;
 
-public class ResponsibleEditorController implements Initializable {
+public class ResponsibleEditorController extends EditorController {
 
 	final static Logger logger = Logger.getLogger(ResponsibleEditorController.class);
 
-	@FXML
-	private ComboBox<String> jobDescriptionComboBox;
-	@FXML
-	private ComboBox<PersonGroup> personGroupComboBox;
-	@FXML
-	private ComboBox<String> homeCountryComboBox;
+	public ObjectProperty<Site> site = new SimpleObjectProperty<>();
+	public ObjectProperty<Responsible> responsible = new SimpleObjectProperty<>();
 
-	private Site site;
+	public SimpleBindableComboBox<String> jobDescriptionComboBox;
+	public BindableComboBox<PersonGroup> personGroupComboBox;
+	public SimpleBindableComboBox<String> homeCountryComboBox;
+
 	private ComboBoxValidator<PersonGroup> personGroupValidator;
 
 	public void initialize(URL location, ResourceBundle resources) {
+		AutoBinder ab = new AutoBinder(this);
+		site.addListener((observable, oldValue, newValue) -> {
+			ab.rebindAll();
+			loadHomeCountries();
+			loadPersonGroups();
+			loadJobDescriptions();
+		});
+		responsible.addListener((observable, oldValue, newValue) -> ab.rebindAll());
+
 		loadPersonGroups();
 		loadJobDescriptions();
 		loadHomeCountries();
 
 		personGroupValidator = new ComboBoxValidator<>(personGroupComboBox).fieldName("Personengruppe").isSelected(true).validateOnChange();
-		personGroupComboBox.setCellFactory((column) -> new MetaClassListCell<>());
-		personGroupComboBox.setButtonCell(new MetaClassListCell<>());
-	}
-
-	public void setAll(Responsible responsible) {
-		jobDescriptionComboBox.setValue(responsible.getJobDescription());
-		personGroupComboBox.setValue(responsible.getPersonGroup());
-		homeCountryComboBox.setValue(responsible.getHomeCountry());
-	}
-
-	public Responsible getAll(Responsible responsible) {
-		if (responsible == null) responsible = new Responsible();
-		responsible.setJobDescription(jobDescriptionComboBox.getValue());
-		responsible.setHomeCountry(homeCountryComboBox.getValue());
-		responsible.setPersonGroup(personGroupComboBox.getValue());
-		return responsible;
-	}
-
-	public void setReadonly(boolean readonly) {
-		jobDescriptionComboBox.setDisable(readonly);
-		personGroupComboBox.setDisable(readonly);
-		homeCountryComboBox.setDisable(readonly);
 	}
 
 	private void loadPersonGroups() {
 		EntityManager em = CoreDatabase.getFactory().createEntityManager();
+		Collection<PersonGroup> results = em.createNamedQuery("PersonGroup.findAll", PersonGroup.class).getResultList();
 
-		TypedQuery<PersonGroup> query = em.createNamedQuery("PersonGroup.findAll", PersonGroup.class);
-
-		PersonGroup selectedBefore = personGroupComboBox.getSelectionModel().getSelectedItem();
-		personGroupComboBox.getItems().clear();
-		personGroupComboBox.getItems().addAll(FXCollections.observableArrayList(query.getResultList()));
-		personGroupComboBox.getSelectionModel().select(selectedBefore);
+		personGroupComboBox.populate(results, null);
 	}
 
 	private void loadHomeCountries() {
@@ -106,14 +95,6 @@ public class ResponsibleEditorController implements Initializable {
 
 	public boolean isValid() {
 		return personGroupValidator.validate();
-	}
-
-	public void setSite(Site site) {
-		this.site = site;
-
-		loadPersonGroups();
-		loadHomeCountries();
-		loadJobDescriptions();
 	}
 
 	public void addNewPersonGroup(ActionEvent actionEvent) {

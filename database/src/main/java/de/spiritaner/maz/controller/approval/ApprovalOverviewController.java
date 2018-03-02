@@ -10,7 +10,6 @@ import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import org.hibernate.Hibernate;
 
@@ -41,7 +40,7 @@ public class ApprovalOverviewController extends OverviewController<Approval> {
 
 	@Override
 	protected Collection<Approval> preLoad(EntityManager em) {
-		if(person != null) {
+		if(person.get() != null) {
 			Hibernate.initialize(person.get().getApprovals());
 			return FXCollections.observableArrayList(person.get().getApprovals());
 		} else {

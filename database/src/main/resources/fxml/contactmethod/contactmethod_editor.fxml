@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import org.controlsfx.control.ToggleSwitch?>
-<?import de.spiritaner.maz.view.component.BindableTextField?>
 <?import de.spiritaner.maz.view.component.BindableComboBox?>
-<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111"
+<?import de.spiritaner.maz.view.component.BindableTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import org.controlsfx.control.ToggleSwitch?>
+
+<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.141"
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="de.spiritaner.maz.controller.contactmethod.ContactMethodEditorController">
     <children>
         <Label text="Art:"/>
         <BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER">
             <center>
-                <BindableComboBox val="contactMethod.contactMethodType" fx:id="contactMethodTypeComboBox"
-                                  maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                <BindableComboBox fx:id="contactMethodTypeComboBox" maxWidth="1.7976931348623157E308"
+                                  val="contactMethod.contactMethodType" BorderPane.alignment="CENTER">
                     <BorderPane.margin>
                         <Insets/>
                     </BorderPane.margin>
@@ -22,8 +27,7 @@
             </center>
             <right>
                 <Button fx:id="addNewContactMethodTypeButton" mnemonicParsing="false"
-                        onAction="#addNewContactMethodType"
-                        text="+" BorderPane.alignment="CENTER">
+                        onAction="#addNewContactMethodType" text="+" BorderPane.alignment="CENTER">
                     <BorderPane.margin>
                         <Insets/>
                     </BorderPane.margin>
@@ -33,12 +37,12 @@
 
         <Label maxHeight="1.7976931348623157E308" text="Wert:" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1"/>
 
-        <BindableTextField val="contactMethod.value" fx:id="valueField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <BindableTextField fx:id="valueField" val="contactMethod.value" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
         <Label text="Bemerkung:" GridPane.rowIndex="2"/>
-        <BindableTextField val="contactMethod.remark" fx:id="remarkField" GridPane.columnIndex="1"
+        <BindableTextField fx:id="remarkField" val="contactMethod.remark" GridPane.columnIndex="1"
                            GridPane.rowIndex="2"/>
-        <ToggleSwitch fx:id="preferredToggleSwitch" text="Bevorzugt:" GridPane.columnSpan="2147483647"
-                      GridPane.rowIndex="3"/>
+        <ToggleSwitch fx:id="preferredToggleSwitch" maxWidth="1.7976931348623157E308" text="Bevorzugt:"
+                      GridPane.columnSpan="2147483647" GridPane.rowIndex="3"/>
     </children>
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="130.0" minWidth="130.0"/>

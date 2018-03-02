@@ -8,6 +8,8 @@ import de.spiritaner.maz.model.YearAbroad;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.view.renderer.DateAsStringListCell;
 import de.spiritaner.maz.view.renderer.EPNumberCell;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableCell;
@@ -21,25 +23,17 @@ import java.util.Collection;
 
 public class YearAbroadOverviewController extends OverviewController<YearAbroad> {
 
-	@FXML
-	private TableColumn<YearAbroad, String> personColumn;
-	@FXML
-	private TableColumn<YearAbroad, String> siteColumn;
-	@FXML
-	private TableColumn<YearAbroad, String> jobDescriptionColumn;
-	@FXML
-	private TableColumn<YearAbroad, LocalDate> departureDateColumn;
-	@FXML
-	private TableColumn<YearAbroad, LocalDate> arrivalDateColumn;
-	@FXML
-	private TableColumn<YearAbroad, LocalDate> abortionDateColumn;
-	@FXML
-	private TableColumn<YearAbroad, Boolean> wwPromotedColumn;
-	@FXML
-	private TableColumn<YearAbroad, EPNumber> epNumberColumn;
+	public TableColumn<YearAbroad, String> personColumn;
+	public TableColumn<YearAbroad, String> siteColumn;
+	public TableColumn<YearAbroad, String> jobDescriptionColumn;
+	public TableColumn<YearAbroad, LocalDate> departureDateColumn;
+	public TableColumn<YearAbroad, LocalDate> arrivalDateColumn;
+	public TableColumn<YearAbroad, LocalDate> abortionDateColumn;
+	public TableColumn<YearAbroad, Boolean> wwPromotedColumn;
+	public TableColumn<YearAbroad, EPNumber> epNumberColumn;
 
-	private Site site;
-	private Person person;
+	public ObjectProperty<Site> site = new SimpleObjectProperty<>();
+	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
 
 	public YearAbroadOverviewController() {
 		super(YearAbroad.class, true);
@@ -47,12 +41,12 @@ public class YearAbroadOverviewController extends OverviewController<YearAbroad>
 
 	@Override
 	protected Collection<YearAbroad> preLoad(EntityManager em) {
-		if(site != null) {
-			Hibernate.initialize(site.getYearsAbroad());
-			return site.getYearsAbroad();
-		} else  if(person != null) {
-			Hibernate.initialize(person.getYearsAbroad());
-			return person.getYearsAbroad();
+		if(site.get() != null) {
+			Hibernate.initialize(site.get().getYearsAbroad());
+			return site.get().getYearsAbroad();
+		} else if(person.get() != null) {
+			Hibernate.initialize(person.get().getYearsAbroad());
+			return person.get().getYearsAbroad();
 		} else {
 			return null;
 		}
@@ -60,13 +54,14 @@ public class YearAbroadOverviewController extends OverviewController<YearAbroad>
 
 	@Override
 	protected String getLoadingText() {
-		return "Lade Auslandsjahre ...";
+		return guiText.getString("loading") + " " + guiText.getString("years_abroad") + " ...";
 	}
 
 	@Override
 	protected void handleException(RollbackException e, YearAbroad yearAbroad) {
 		// TODO choose better text here
-		RemoveDialog.showFailureAndWait("Auslandsjahr","Auslandsjahr", e);
+		String objName = guiText.getString("year_abroad");
+		RemoveDialog.showFailureAndWait(objName, objName, e);
 	}
 
 	@Override
@@ -104,23 +99,14 @@ public class YearAbroadOverviewController extends OverviewController<YearAbroad>
 		departureDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
 		arrivalDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
 		abortionDateColumn.setCellFactory(column -> DateAsStringListCell.localDateTableCell());
+
+		siteColumn.visibleProperty().bind(site.isNull());
+		personColumn.visibleProperty().bind(person.isNull());
 	}
 
 	@Override
 	protected void preCreate(YearAbroad yearAbroad) {
-		if(site != null) yearAbroad.setSite(site);
-		if(person != null) yearAbroad.setPerson(person);
-	}
-
-	public void setSite(Site site) {
-		this.site = site;
-
-		if(siteColumn != null) siteColumn.setVisible(false);
-	}
-
-	public void setPerson(Person person) {
-		this.person = person;
-
-		if(personColumn != null) personColumn.setVisible(false);
+		if(site != null) yearAbroad.setSite(site.get());
+		if(person != null) yearAbroad.setPerson(person.get());
 	}
 }

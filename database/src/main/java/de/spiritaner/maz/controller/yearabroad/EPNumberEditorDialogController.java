@@ -17,74 +17,23 @@ import javax.persistence.PersistenceException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/epnumber_editor_dialog.fxml", objDesc = "EP-Nummer")
+@EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/epnumber_editor_dialog.fxml", objDesc = "$ep_number")
 public class EPNumberEditorDialogController extends EditorDialogController<EPNumber> {
 
 	final static Logger logger = Logger.getLogger(EPNumberEditorDialogController.class);
 
-	@FXML
-	private GridPane epNumberEditor;
-	@FXML
-	private EPNumberEditorController epNumberEditorController;
-	@FXML
-	private Button saveEPNumberButton;
-	@FXML
-	private Text titleText;
+	public GridPane epNumberEditor;
+	public EPNumberEditorController epNumberEditorController;
 
-	public void saveEPNumber(ActionEvent actionEvent) {
-		Platform.runLater(() -> {
-			boolean epNumberValid = epNumberEditorController.isValid();
+	@Override
+	protected boolean allValid() {
+		boolean epNumberValid = epNumberEditorController.isValid();
 
-			if(epNumberValid) {
-				EntityManager em = CoreDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
-
-				epNumberEditorController.getAll(getIdentifiable());
-
-				try {
-					EPNumber managedEPNumber = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
-					em.getTransaction().commit();
-
-					setResult(managedEPNumber);
-					requestClose();
-				} catch (PersistenceException e) {
-					em.getTransaction().rollback();
-					logger.warn(e);
-				} finally {
-					em.close();
-				}
-			}
-		});
+		return epNumberValid;
 	}
 
 	@Override
-	public void onReopen() {
-
-	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-
-	}
-
-	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> getStage().close());
-	}
-
-	@Override
-	public void setIdentifiable(EPNumber epNumber) {
-		super.setIdentifiable(epNumber);
-
-		if(epNumber != null) {
-			epNumberEditorController.setAll(epNumber);
-
-			if (epNumber.getId() != 0L) {
-				titleText.setText("EP-Nummer bearbeiten");
-				saveEPNumberButton.setText("Speichern");
-			} else {
-				titleText.setText("EP-Nummer anlegen");
-				saveEPNumberButton.setText("Anlegen");
-			}
-		}
+	protected void bind(EPNumber epNumber) {
+		epNumberEditorController.epNumber.bindBidirectional(identifiable);
 	}
 }

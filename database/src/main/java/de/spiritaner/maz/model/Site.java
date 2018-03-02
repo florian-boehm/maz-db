@@ -1,10 +1,7 @@
 package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.controller.yearabroad.SiteEditorDialogController;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -16,26 +13,20 @@ import java.util.List;
  */
 @Entity
 @Audited
-@Identifiable.Annotation(editorDialogClass = SiteEditorDialogController.class, identifiableName = "Einsatzstelle")
+@Identifiable.Annotation(editorDialogClass = SiteEditorDialogController.class, identifiableName = "$site")
 @NamedQueries({
 		  @NamedQuery(name = "Site.findAll", query = "SELECT s FROM Site s"),
 })
 public class Site implements Identifiable  {
 
-	private LongProperty id;
-	private StringProperty name;
-	private StringProperty organization;
-	private Address address;
+	public LongProperty id = new SimpleLongProperty();
+	public StringProperty name = new SimpleStringProperty();
+	public StringProperty organization = new SimpleStringProperty();
+	public ObjectProperty<Address> address = new SimpleObjectProperty<>();
 
 	private List<EPNumber> epNumbers;
 	private List<Responsible> responsibles;
 	private List<YearAbroad> yearsAbroad;
-
-	public Site() {
-		id = new SimpleLongProperty();
-		name = new SimpleStringProperty();
-		organization = new SimpleStringProperty();
-	}
 
 	@Id
 	@GeneratedValue
@@ -60,8 +51,9 @@ public class Site implements Identifiable  {
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="addressId", nullable = false)
-	public Address getAddress() { return address; }
-	public void setAddress(Address address) { this.address = address; }
+	public Address getAddress() { return address.get(); }
+	public void setAddress(Address address) { this.address.set(address); }
+	public ObjectProperty<Address> addressProperty() { return address; }
 
 	/**
 	 * The organization is used together with the address for correspondence
@@ -83,7 +75,6 @@ public class Site implements Identifiable  {
 	public List<Responsible> getResponsibles() {
 		return responsibles;
 	}
-
 	public void setResponsibles(List<Responsible> responsibles) {
 		this.responsibles = responsibles;
 	}
@@ -92,7 +83,6 @@ public class Site implements Identifiable  {
 	public List<YearAbroad> getYearsAbroad() {
 		return yearsAbroad;
 	}
-
 	public void setYearsAbroad(List<YearAbroad> yearsAbroad) {
 		this.yearsAbroad = yearsAbroad;
 	}

@@ -8,24 +8,17 @@ import javax.persistence.*;
 
 @Entity
 @Audited
-@Identifiable.Annotation(editorDialogClass = EPNumberEditorDialogController.class, identifiableName = "EP-Nummer")
+@Identifiable.Annotation(editorDialogClass = EPNumberEditorDialogController.class, identifiableName = "$ep_number")
 @NamedQueries({
 		  @NamedQuery(name = "EPNumber.findAll", query = "SELECT epn FROM EPNumber epn"),
 		  @NamedQuery(name = "EPNumber.findAllWithoutSite", query = "SELECT epn FROM EPNumber epn WHERE epn.site IS NULL")
 })
 public class EPNumber implements Identifiable {
 
-	private LongProperty id;
-	private IntegerProperty number;
-	private StringProperty description;
-	private ObjectProperty<Site> site;
-
-	public EPNumber() {
-		id = new SimpleLongProperty();
-		number = new SimpleIntegerProperty();
-		description = new SimpleStringProperty();
-		site = new SimpleObjectProperty<>();
-	}
+	public LongProperty id = new SimpleLongProperty();
+	public IntegerProperty number = new SimpleIntegerProperty();
+	public StringProperty description = new SimpleStringProperty();
+	public ObjectProperty<Site> site = new SimpleObjectProperty<>();
 
 	@Override
 	@Id
@@ -33,11 +26,9 @@ public class EPNumber implements Identifiable {
 	public Long getId() {
 		return id.getValue();
 	}
-
 	public LongProperty idProperty() {
 		return id;
 	}
-
 	public void setId(long id) {
 		this.id.set(id);
 	}
@@ -46,11 +37,9 @@ public class EPNumber implements Identifiable {
 	public Integer getNumber() {
 		return number.getValue();
 	}
-
 	public IntegerProperty numberProperty() {
 		return number;
 	}
-
 	public void setNumber(int number) {
 		this.number.set(number);
 	}
@@ -59,11 +48,9 @@ public class EPNumber implements Identifiable {
 	public String getDescription() {
 		return description.get();
 	}
-
 	public StringProperty descriptionProperty() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description.set(description);
 	}
@@ -73,11 +60,9 @@ public class EPNumber implements Identifiable {
 	public Site getSite() {
 		return site.get();
 	}
-
 	public void setSite(Site site) {
 		this.site.set(site);
 	}
-
 	public ObjectProperty<Site> siteProperty() {
 		return site;
 	}

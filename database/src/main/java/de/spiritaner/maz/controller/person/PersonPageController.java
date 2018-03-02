@@ -11,7 +11,6 @@ import de.spiritaner.maz.controller.role.RoleOverviewController;
 import de.spiritaner.maz.controller.yearabroad.YearAbroadOverviewController;
 import de.spiritaner.maz.model.Person;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
@@ -111,7 +110,7 @@ public class PersonPageController implements Initializable, Controller {
 			personParticipationsController.setPerson(person);
 			personRolesController.person.set(person);
 			personRelationshipsController.person.set(person);
-			personYearsAbroadController.setPerson(person);
+			personYearsAbroadController.person.set(person);
 			personExperiencesAbroadController.person.set(person);
 
 			detailsMasker.setVisible(false);

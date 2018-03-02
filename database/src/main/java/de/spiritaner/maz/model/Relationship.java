@@ -17,8 +17,8 @@ public class Relationship implements Identifiable {
 
 	public LongProperty id = new SimpleLongProperty();
 	public ObjectProperty<RelationshipType> relationshipType = new SimpleObjectProperty<>();
-	public ObjectProperty<Person> fromPerson;
-	public ObjectProperty<Person> toPerson;
+	public ObjectProperty<Person> fromPerson = new SimpleObjectProperty<>();
+	public ObjectProperty<Person> toPerson = new SimpleObjectProperty<>();
 	public StringProperty toPersonFirstName = new SimpleStringProperty();
 	public StringProperty toPersonFamilyName = new SimpleStringProperty();
 

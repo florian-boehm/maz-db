@@ -10,10 +10,10 @@ import de.spiritaner.maz.view.renderer.DateAsStringListCell;
 import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -25,7 +25,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
-@OverviewController.Annotation(fxmlFile = "/fxml/person/person_overview.fxml", objDesc = "Person")
+@OverviewController.Annotation(fxmlFile = "/fxml/person/person_overview.fxml", objDesc = "$person")
 public class PersonOverviewController extends OverviewController<Person> {
 
 	private static final Logger logger = Logger.getLogger(PersonOverviewController.class);
@@ -44,6 +44,7 @@ public class PersonOverviewController extends OverviewController<Person> {
 	public ToggleSwitch personDetailsToggle;
 	public Button personSearchButton;
 	public TextField personSearchText;
+	public AnchorPane tablePane;
 
 	public PersonOverviewController() {
 		super(Person.class, true);
@@ -80,12 +81,13 @@ public class PersonOverviewController extends OverviewController<Person> {
 
 	@Override
 	protected String getLoadingText() {
-		return "Lade Personen ...";
+		return guiText.getString("loading") + " " + guiText.getString("persons") + " ...";
 	}
 
 	@Override
 	protected void handleException(RollbackException e, Person selectedPerson) {
-		RemoveDialog.showFailureAndWait("Person","Person ("+selectedPerson.getFullName()+")", e);
+		String objName = guiText.getString("person");
+		RemoveDialog.showFailureAndWait(objName,objName + " ("+selectedPerson.getFullName()+")", e);
 	}
 
 	@Override
@@ -109,10 +111,6 @@ public class PersonOverviewController extends OverviewController<Person> {
 		}
 
 		em.getTransaction().commit();
-	}
-
-	public ToggleSwitch getPersonDetailsToggle() {
-		return personDetailsToggle;
 	}
 
 	@Override

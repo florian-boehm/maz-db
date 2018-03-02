@@ -39,7 +39,8 @@ public class MainController implements Initializable, Controller {
 				try {
 					if (imgTab.getUrl() != null) {
 						if (imgTab.getContent() == null) {
-							final FXMLLoader loader = new FXMLLoader(new URL(imgTab.getUrl()));
+							final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+							final FXMLLoader loader = new FXMLLoader(new URL(imgTab.getUrl()), guiText);
 							final Parent root = loader.load();
 							final Controller controller = loader.getController();
 

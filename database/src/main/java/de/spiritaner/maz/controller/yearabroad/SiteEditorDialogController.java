@@ -22,49 +22,59 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-@EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/site_editor_dialog.fxml", objDesc = "Einsatzstelle")
+@EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/site_editor_dialog.fxml", objDesc = "$site")
 public class SiteEditorDialogController extends EditorDialogController<Site> {
 
 	final static Logger logger = Logger.getLogger(SiteEditorDialogController.class);
 
-	@FXML
-	private GridPane siteEditor;
-	@FXML
-	private SiteEditorController siteEditorController;
-	@FXML
-	private GridPane addressEditor;
-	@FXML
-	private AddressEditorController addressEditorController;
-	@FXML
-	private Button saveSiteButton;
-	@FXML
-	private AnchorPane epNumberOverview;
-	@FXML
-	private EPNumberOverviewController epNumberOverviewController;
-	@FXML
-	private Text titleText;
+	public GridPane siteEditor;
+	public SiteEditorController siteEditorController;
+	public GridPane addressEditor;
+	public AddressEditorController addressEditorController;
+	public AnchorPane epNumberOverview;
+	public EPNumberOverviewController epNumberOverviewController;
 
 	private ArrayList<EPNumber> removedEPNumbers = new ArrayList<>();
 
 	@Override
-	public void onReopen() {
+	protected boolean allValid() {
+		boolean siteValid = siteEditorController.isValid();
+		boolean addressValid = addressEditorController.isValid();
 
+		return siteValid && addressValid;
 	}
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+	protected void bind() {
 		epNumberOverviewController.setStage(getStage());
 	}
 
-	public void saveSite(ActionEvent actionEvent) {
-		Platform.runLater(() -> {
-			boolean siteValid = siteEditorController.isValid();
-			boolean addressValid = addressEditorController.isValid();
+	@Override
+	protected void preSave(EntityManager em) {
+		getIdentifiable().setAddress(Address.findSame(em, addressEditorController.address.get()));
+		getIdentifiable().setEpNumbers(epNumberOverviewController.getTable().getItems());
+	}
 
-			if (siteValid && addressValid) {
-				EntityManager em = CoreDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
+	@Override
+	protected void preSave(Site managedSite, EntityManager em) {
+		// Remove this site from removed ep numbers
+		for(EPNumber epNumber : removedEPNumbers) {
+			final EPNumber managedEPNumber = (!em.contains(epNumber)) ? em.find(EPNumber.class, epNumber.getId()) : epNumber;
+			managedEPNumber.setSite(null);
+		}
 
+		// Add site to all ep selected ep numbers afterwards
+		if(managedSite != null) {
+			for(EPNumber epNumber : epNumberOverviewController.getTable().getItems()) {
+				final EPNumber managedEPNumber = (!em.contains(epNumber)) ? em.find(EPNumber.class, epNumber.getId()) : epNumber;
+				managedEPNumber.setSite(managedSite);
+				//em.merge(managedEPNumber);
+			}
+		}
+	}
+
+	// TODO Remove after check if correctly implemented
+	/*public void saveSite(ActionEvent actionEvent) {
 				getIdentifiable().setAddress(Address.findSame(em, addressEditorController.getAll(getIdentifiable().getAddress())));
 				getIdentifiable().setEpNumbers(epNumberOverviewController.getTable().getItems());
 				siteEditorController.getAll(getIdentifiable());
@@ -99,33 +109,12 @@ public class SiteEditorDialogController extends EditorDialogController<Site> {
 				}
 			}
 		});
-	}
-
-	public void closeDialog(ActionEvent actionEvent) {
-		Platform.runLater(() -> getStage().close());
-	}
+	}*/
 
 	@Override
-	public void setIdentifiable(Site site) {
-		super.setIdentifiable(site);
-
-		if(site != null) {
-			siteEditorController.setAll(site);
-
-			if(site.getAddress() != null) {
-				addressEditorController.setAll(site.getAddress());
-			}
-
-			epNumberOverviewController.setSite(site);
-
-			if (site.getId() != 0L) {
-				titleText.setText("Einsatzstelle bearbeiten");
-				saveSiteButton.setText("Speichern");
-			} else {
-				titleText.setText("Einsatzstelle anlegen");
-				saveSiteButton.setText("Anlegen");
-			}
-		}
-
+	public void bind(Site site) {
+		addressEditorController.address.bindBidirectional(site.address);
+		siteEditorController.site.bindBidirectional(identifiable);
+		epNumberOverviewController.site.bindBidirectional(identifiable);
 	}
 }

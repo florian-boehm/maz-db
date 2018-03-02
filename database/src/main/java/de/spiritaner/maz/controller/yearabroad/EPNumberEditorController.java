@@ -1,7 +1,12 @@
 package de.spiritaner.maz.controller.yearabroad;
 
+import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.util.validator.TextValidator;
+import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.view.component.BindableTextField;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -9,39 +14,27 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EPNumberEditorController implements Initializable {
+public class EPNumberEditorController extends EditorController {
 
-	@FXML
-	private TextField epNumberField;
-	@FXML
-	private TextField descriptionField;
+	public ObjectProperty<EPNumber> epNumber = new SimpleObjectProperty<>();
+
+	public BindableTextField epNumberField;
+	public BindableTextField descriptionField;
 
 	private TextValidator epNumberValidator;
 	private TextValidator descriptionFieldValidator;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		AutoBinder ab = new AutoBinder(this);
+		epNumber.addListener((observable, oldValue, newValue) -> ab.rebindAll());
+
+		// TODO Extract strings
 		epNumberValidator = TextValidator.create(epNumberField).fieldName("EP-Nummer").notEmpty(true).validateOnChange();
 		descriptionFieldValidator = TextValidator.create(descriptionField).fieldName("Beschreibung").notEmpty(true).validateOnChange();
 	}
 
-	public void setAll(EPNumber epNumber) {
-		epNumberField.setText(String.valueOf(epNumber.getNumber()));
-		descriptionField.setText(epNumber.getDescription());
-	}
-
-	public EPNumber getAll(EPNumber epNumber) {
-		if(epNumber == null) epNumber = new EPNumber();
-		epNumber.setNumber(Integer.parseInt(epNumberField.getText()));
-		epNumber.setDescription(descriptionField.getText());
-		return epNumber;
-	}
-
-	public void setReadonly(boolean readonly) {
-		epNumberField.setDisable(readonly);
-		descriptionField.setDisable(readonly);
-	}
-
+	@Override
 	public boolean isValid() {
 		boolean epNumberValid = epNumberValidator.validate();
 		boolean descriptionValid = descriptionFieldValidator.validate();

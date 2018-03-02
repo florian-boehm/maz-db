@@ -2,8 +2,8 @@ package de.spiritaner.maz.model;
 
 import de.spiritaner.maz.controller.person.PersonEditorDialogController;
 import de.spiritaner.maz.model.meta.*;
-import de.spiritaner.maz.view.binding.BindableProperty;
 import de.spiritaner.maz.util.database.CoreDatabase;
+import de.spiritaner.maz.view.binding.BindableProperty;
 import javafx.beans.property.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Entity
 @Audited
-@Identifiable.Annotation(editorDialogClass = PersonEditorDialogController.class, identifiableName = "Person")
+@Identifiable.Annotation(editorDialogClass = PersonEditorDialogController.class, identifiableName = "$person")
 @Indexed
 @NamedQueries({
 		  @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),

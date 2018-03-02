@@ -8,7 +8,6 @@ import de.spiritaner.maz.view.renderer.DateAsStringListCell;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import org.hibernate.Hibernate;
 
@@ -42,7 +41,8 @@ public class ExperienceAbroadOverviewController extends OverviewController<Exper
 
 	@Override
 	protected Collection<ExperienceAbroad> preLoad(EntityManager em) {
-		if(person != null) {
+		// TODO Rethink this person.get() not equals null check
+		if(person.get() != null) {
 			Hibernate.initialize(person.get().getExperiencesAbroad());
 			return FXCollections.observableArrayList(person.get().getExperiencesAbroad());
 		} else {

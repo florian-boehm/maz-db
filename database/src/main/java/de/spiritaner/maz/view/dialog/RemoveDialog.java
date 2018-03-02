@@ -193,7 +193,7 @@ public class RemoveDialog {
 		String identifiableName = annotation.identifiableName();
 
 		if(identifiableName.startsWith("$"))
-			identifiableName = guiText.getString(identifiableName);
+			identifiableName = guiText.getString(identifiableName.replace("$", ""));
 
 		alert.setTitle(identifiableName + " " + guiText.getString("delete").toLowerCase());
 		alert.setHeaderText(null);

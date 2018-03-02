@@ -12,7 +12,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Audited
-@Identifiable.Annotation(editorDialogClass = YearAbroadEditorDialogController.class, identifiableName = "Auslandsjahr")
+@Identifiable.Annotation(editorDialogClass = YearAbroadEditorDialogController.class, identifiableName = "$year_abroad")
 @NamedQueries({
 		  @NamedQuery(name = "YearAbroad.findAllOfSiteWithinDate", query = "SELECT ya FROM YearAbroad ya WHERE ya.site=:site AND ((ya.departureDate BETWEEN :departureDate AND :arrivalDate) OR (ya.arrivalDate BETWEEN :departureDate AND :arrivalDate))"),
 		  @NamedQuery(name = "YearAbroad.findAllOfSiteInYear", query = "SELECT ya FROM YearAbroad ya WHERE ya.site=:site AND YEAR(ya.departureDate) = :year"),
@@ -20,38 +20,22 @@ import java.time.LocalDate;
 })
 public class YearAbroad implements Identifiable {
 
-	private LongProperty id;
-	private ObjectProperty<Person> person;
-	private ObjectProperty<Site> site;
+	public LongProperty id = new SimpleLongProperty();
+	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
+	public ObjectProperty<Site> site = new SimpleObjectProperty<>();
 
-	private ObjectProperty<LocalDate> departureDate;
-	private ObjectProperty<LocalDate> arrivalDate;
-	private ObjectProperty<LocalDate> abortionDate;
-	private ObjectProperty<LocalDate> missionDate;
+	public ObjectProperty<LocalDate> departureDate = new SimpleObjectProperty<>();
+	public ObjectProperty<LocalDate> arrivalDate = new SimpleObjectProperty<>();
+	public ObjectProperty<LocalDate> abortionDate = new SimpleObjectProperty<>();
+	public ObjectProperty<LocalDate> missionDate = new SimpleObjectProperty<>();
 
-	private StringProperty jobDescription;
-	private StringProperty details;
-	private StringProperty abortionReason;
+	public StringProperty jobDescription = new SimpleStringProperty();
+	public StringProperty details = new SimpleStringProperty();
+	public StringProperty abortionReason = new SimpleStringProperty();
 
-	private BooleanProperty wwPromoted;
-	private IntegerProperty wwMonths;
-	private ObjectProperty<EPNumber> epNumber;
-
-	public YearAbroad() {
-		id = new SimpleLongProperty();
-		departureDate = new SimpleObjectProperty<>();
-		arrivalDate = new SimpleObjectProperty<>();
-		jobDescription = new SimpleStringProperty();
-		details = new SimpleStringProperty();
-		wwPromoted = new SimpleBooleanProperty();
-		wwMonths = new SimpleIntegerProperty();
-		abortionDate = new SimpleObjectProperty<>();
-		abortionReason = new SimpleStringProperty();
-		missionDate = new SimpleObjectProperty<>();
-		person = new SimpleObjectProperty<>();
-		site = new SimpleObjectProperty<>();
-		epNumber = new SimpleObjectProperty<>();
-	}
+	public BooleanProperty wwPromoted = new SimpleBooleanProperty();
+	public IntegerProperty wwMonths = new SimpleIntegerProperty();
+	public ObjectProperty<EPNumber> epNumber = new SimpleObjectProperty<>();
 
 	@Id
 	@GeneratedValue
@@ -100,11 +84,9 @@ public class YearAbroad implements Identifiable {
 	public LocalDate getDepartureDate() {
 		return departureDate.get();
 	}
-
 	public ObjectProperty<LocalDate> departureDateProperty() {
 		return departureDate;
 	}
-
 	public void setDepartureDate(LocalDate departureDate) {
 		this.departureDate.set(departureDate);
 	}
@@ -113,11 +95,9 @@ public class YearAbroad implements Identifiable {
 	public LocalDate getArrivalDate() {
 		return arrivalDate.get();
 	}
-
 	public ObjectProperty<LocalDate> arrivalDateProperty() {
 		return arrivalDate;
 	}
-
 	public void setArrivalDate(LocalDate arrivalDate) {
 		this.arrivalDate.set(arrivalDate);
 	}
@@ -125,11 +105,9 @@ public class YearAbroad implements Identifiable {
 	public LocalDate getAbortionDate() {
 		return abortionDate.get();
 	}
-
 	public ObjectProperty<LocalDate> abortionDateProperty() {
 		return abortionDate;
 	}
-
 	public void setAbortionDate(LocalDate abortionDate) {
 		this.abortionDate.set(abortionDate);
 	}
@@ -137,11 +115,9 @@ public class YearAbroad implements Identifiable {
 	public String getJobDescription() {
 		return jobDescription.get();
 	}
-
 	public StringProperty jobDescriptionProperty() {
 		return jobDescription;
 	}
-
 	public void setJobDescription(String jobDescription) {
 		this.jobDescription.set(jobDescription);
 	}
@@ -149,11 +125,9 @@ public class YearAbroad implements Identifiable {
 	public String getDetails() {
 		return details.get();
 	}
-
 	public StringProperty detailsProperty() {
 		return details;
 	}
-
 	public void setDetails(String details) {
 		this.details.set(details);
 	}
@@ -161,11 +135,9 @@ public class YearAbroad implements Identifiable {
 	public String getAbortionReason() {
 		return abortionReason.get();
 	}
-
 	public StringProperty abortionReasonProperty() {
 		return abortionReason;
 	}
-
 	public void setAbortionReason(String abortionReason) {
 		this.abortionReason.set(abortionReason);
 	}
@@ -173,11 +145,9 @@ public class YearAbroad implements Identifiable {
 	public boolean getWwPromoted() {
 		return wwPromoted.get();
 	}
-
 	public BooleanProperty wwPromotedProperty() {
 		return wwPromoted;
 	}
-
 	public void setWwPromoted(boolean wwPromoted) {
 		this.wwPromoted.set(wwPromoted);
 	}
@@ -185,11 +155,9 @@ public class YearAbroad implements Identifiable {
 	public LocalDate getMissionDate() {
 		return missionDate.get();
 	}
-
 	public ObjectProperty<LocalDate> missionDateProperty() {
 		return missionDate;
 	}
-
 	public void setMissionDate(LocalDate missionDate) {
 		this.missionDate.set(missionDate);
 	}
@@ -199,17 +167,9 @@ public class YearAbroad implements Identifiable {
 	public EPNumber getEpNumber() {
 		return epNumber.get();
 	}
-
-	@Transient
-	@Override
-	public boolean equals(Object obj) {
-		return (obj instanceof YearAbroad) && ((YearAbroad) obj).getId().equals(this.getId());
-	}
-
 	public ObjectProperty<EPNumber> epNumberProperty() {
 		return epNumber;
 	}
-
 	public void setEpNumber(EPNumber epNumber) {
 		this.epNumber.set(epNumber);
 	}
@@ -217,12 +177,16 @@ public class YearAbroad implements Identifiable {
 	public int getWwMonths() {
 		return wwMonths.get();
 	}
-
 	public IntegerProperty wwMonthsProperty() {
 		return wwMonths;
 	}
-
 	public void setWwMonths(int wwMonths) {
 		this.wwMonths.set(wwMonths);
+	}
+
+	@Transient
+	@Override
+	public boolean equals(Object obj) {
+		return (obj instanceof YearAbroad) && ((YearAbroad) obj).getId().equals(this.getId());
 	}
 }

@@ -2,14 +2,9 @@ package de.spiritaner.maz.controller.residence;
 
 import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.model.Address;
-import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.dialog.EditorDialog;
-import javafx.event.ActionEvent;
 import javafx.scene.layout.GridPane;
 import org.apache.log4j.Logger;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/residence/address_editor_dialog.fxml", objDesc = "$address")
 public class AddressEditorDialogController extends EditorDialogController<Address> {

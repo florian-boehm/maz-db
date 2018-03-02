@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0" encoding="UTF-8"?><?import de.spiritaner.maz.view.component.BindableComboBox?>
+<?import de.spiritaner.maz.view.component.BindableToggleSwitch?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
-<?import de.spiritaner.maz.view.component.BindableComboBox?><?import de.spiritaner.maz.view.component.BindableToggleSwitch?>approvedToggleSwitch
         <?import de.spiritaner.maz.view.component.BindableToggleSwitch?>
 <GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111"
           xmlns:fx="http://javafx.com/fxml/1"

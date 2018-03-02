@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Audited
-@Identifiable.Annotation(editorDialogClass = ResponsibleEditorDialogController.class, identifiableName = "Verantwortliche(n)")
+@Identifiable.Annotation(editorDialogClass = ResponsibleEditorDialogController.class, identifiableName = "$responsible")
 @NamedQueries({
 		  @NamedQuery(name = "Responsible.findJobDescriptionsDistinct", query = "SELECT DISTINCT(r.jobDescription) FROM Responsible r"),
 		  @NamedQuery(name = "Responsible.findJobDescriptionsDistinctForSite", query = "SELECT DISTINCT(r.jobDescription) FROM Responsible r WHERE r.site=:site"),
@@ -18,21 +18,12 @@ import javax.persistence.*;
 })
 public class Responsible implements Identifiable {
 
-	private LongProperty id;
-	private ObjectProperty<Person> person;
-	private ObjectProperty<Site> site;
-	private StringProperty homeCountry;
-	private StringProperty jobDescription;
-	private ObjectProperty<PersonGroup> personGroup;
-
-	public Responsible() {
-		id = new SimpleLongProperty();
-		homeCountry = new SimpleStringProperty();
-		jobDescription = new SimpleStringProperty();
-		personGroup = new SimpleObjectProperty<>();
-		person = new SimpleObjectProperty<>();
-		site = new SimpleObjectProperty<>();
-	}
+	public LongProperty id = new SimpleLongProperty();
+	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
+	public ObjectProperty<Site> site = new SimpleObjectProperty<>();
+	public StringProperty homeCountry = new SimpleStringProperty();
+	public StringProperty jobDescription = new SimpleStringProperty();
+	public ObjectProperty<PersonGroup> personGroup = new SimpleObjectProperty<>();
 
 	@Override
 	@Id
@@ -40,11 +31,9 @@ public class Responsible implements Identifiable {
 	public Long getId() {
 		return id.get();
 	}
-
 	public LongProperty idProperty() {
 		return id;
 	}
-
 	public void setId(long id) {
 		this.id.set(id);
 	}
@@ -54,11 +43,9 @@ public class Responsible implements Identifiable {
 	public Person getPerson() {
 		return person.get();
 	}
-
 	public void setPerson(Person person) {
 		this.person.set(person);
 	}
-
 	public ObjectProperty<Person> personProperty() {
 		return person;
 	}
@@ -68,11 +55,9 @@ public class Responsible implements Identifiable {
 	public Site getSite() {
 		return site.get();
 	}
-
 	public void setSite(Site site) {
 		this.site.set(site);
 	}
-
 	public ObjectProperty<Site> siteProperty() {
 		return site;
 	}
@@ -82,11 +67,9 @@ public class Responsible implements Identifiable {
 	public PersonGroup getPersonGroup() {
 		return personGroup.get();
 	}
-
 	public void setPersonGroup(PersonGroup personGroup) {
 		this.personGroup.set(personGroup);
 	}
-
 	public ObjectProperty<PersonGroup> personGroupProperty() {
 		return personGroup;
 	}
@@ -94,11 +77,9 @@ public class Responsible implements Identifiable {
 	public String getHomeCountry() {
 		return homeCountry.get();
 	}
-
 	public StringProperty homeCountryProperty() {
 		return homeCountry;
 	}
-
 	public void setHomeCountry(String homeCountry) {
 		this.homeCountry.set(homeCountry);
 	}
@@ -106,11 +87,9 @@ public class Responsible implements Identifiable {
 	public String getJobDescription() {
 		return jobDescription.get();
 	}
-
 	public StringProperty jobDescriptionProperty() {
 		return jobDescription;
 	}
-
 	public void setJobDescription(String jobDescription) {
 		this.jobDescription.set(jobDescription);
 	}

@@ -10,7 +10,6 @@ import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import org.hibernate.Hibernate;
 
@@ -44,7 +43,7 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 
 	@Override
 	protected Collection<Residence> preLoad(EntityManager em) {
-		if(person != null) {
+		if(person.get() != null) {
 			Hibernate.initialize(person.get().getResidences());
 			person.get().initVolatiles();
 			return FXCollections.observableArrayList(person.get().getResidences());
@@ -72,7 +71,7 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 	@Override
 	protected void postInit() {
 		residenceTypeColumn.setCellValueFactory(cellData -> cellData.getValue().residenceTypeProperty());
-		preferredAddressColumn.setCellValueFactory(cellData -> cellData.getValue().preferredAddressProperty());
+		preferredAddressColumn.setCellValueFactory(cellData -> cellData.getValue().preferredAddressStringProperty());
 		streetColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().streetProperty());
 		houseNumberColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().houseNumberProperty());
 		postCodeColumn.setCellValueFactory(cellData -> cellData.getValue().getAddress().postCodeProperty());

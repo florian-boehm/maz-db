@@ -2,20 +2,12 @@ package de.spiritaner.maz.controller.residence;
 
 import de.spiritaner.maz.controller.EditorDialogController;
 import de.spiritaner.maz.controller.person.PersonEditorController;
-import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.Residence;
-import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.view.dialog.EditorDialog;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceException;
 
 @EditorDialog.Annotation(fxmlFile = "/fxml/residence/residence_editor_dialog.fxml", objDesc = "$residence")
 public class ResidenceEditorDialogController extends EditorDialogController<Residence> {
@@ -47,7 +39,7 @@ public class ResidenceEditorDialogController extends EditorDialogController<Resi
 	}
 
 	@Override
-	protected void preSave(Residence managedResidence) {
+	protected void preSave(Residence managedResidence, EntityManager em) {
 		if (residenceEditorController.getPreferredResidence().isSelected()) {
 			managedResidence.getPerson().setPreferredResidence(managedResidence);
 		} else if(managedResidence.getPerson().getPreferredResidence() != null && managedResidence.getPerson().getPreferredResidence().equals(managedResidence)) {

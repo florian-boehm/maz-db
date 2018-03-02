@@ -1,5 +1,6 @@
 package de.spiritaner.maz.controller;
 
+import de.spiritaner.maz.model.Responsible;
 import de.spiritaner.maz.model.User;
 import de.spiritaner.maz.util.Settings;
 import de.spiritaner.maz.util.UpdateHelper;
@@ -273,19 +274,21 @@ public class LoginController implements Controller {
 	}
 
 	public void tryLogin(final ActionEvent actionEvent) {
-		setUpdateProgress("Anmeldung läuft ...", -1);
+		ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+		setUpdateProgress(guiText.getString("login_ongoing"), -1);
 		Platform.runLater(() -> updateProgress.setVisible(true));
 
 		final boolean loginSuccess = UserDatabase.validateLogin(new User(usernameField.getText(), passwordField.getText()), false);
 
 		if(loginSuccess) {
 			final File lockFile = new File(Settings.get("database.path", "./dbfiles/") + CoreDatabase.LOCK_FILE);
-			final ButtonType readonly = new ButtonType("Lesezugriff", ButtonBar.ButtonData.FINISH);
-			final ButtonType force = new ButtonType("Erzwingen", ButtonBar.ButtonData.APPLY);
+			final ButtonType readonly = new ButtonType(guiText.getString("readonly_access"), ButtonBar.ButtonData.FINISH);
+			final ButtonType force = new ButtonType(guiText.getString("enforce"), ButtonBar.ButtonData.APPLY);
 			Optional<ButtonType> result = Optional.empty();
 
 			if (lockFile.exists()) {
 				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+				// TODO Extract strings
 				alert.setTitle("Datenbankzugriff");
 				alert.setHeaderText("Datenbank möglicherweise in Verwendung ...");
 				alert.setContentText("Mit \"Lesezugriff\" können Sie die Datenbank trotzdem öffnen, allerdings " +
@@ -307,7 +310,7 @@ public class LoginController implements Controller {
 				}
 
 				new Thread(() -> {
-					setUpdateProgress("Anmeldung läuft ...", -1);
+					setUpdateProgress(guiText.getString("login_ongoing"), -1);
 					UserDatabase.validateLogin(new User(usernameField.getText(), passwordField.getText()), true);
 					Platform.runLater(() -> MainView.populateStage(stage));
 				}).start();
@@ -318,7 +321,7 @@ public class LoginController implements Controller {
 			}
 		} else {
 			setUpdateProgress(null, -1);
-			setErrorMsg(ResourceBundle.getBundle("lang.gui").getString("login_failed"));
+			setErrorMsg(guiText.getString("login_failed"));
 		}
 	}
 
@@ -355,11 +358,12 @@ public class LoginController implements Controller {
 	public void startUpdate(final ActionEvent actionEvent) {
 		if (checkUpdatePreconditions()) {
 			new Thread(() -> {
+				final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
 				final DatabaseFolder selectedDb = databaseListView.getSelectionModel().getSelectedItem();
 				Settings.set("database.path", selectedDb.getAbsolutePath());
 
 				updateProgress.setVisible(true);
-				setUpdateProgress("Anmeldung läuft ...", -1);
+				setUpdateProgress(guiText.getString("login_ongoing"), -1);
 
 				final User user = new User(usernameField.getText(), passwordField.getText());
 				final boolean loginSuccess = UserDatabase.validateLogin(user, false);
@@ -372,7 +376,7 @@ public class LoginController implements Controller {
 						updateHelper.startFullUpdate();
 				} else {
 					setUpdateProgress(null, -1);
-					setErrorMsg(ResourceBundle.getBundle("lang.gui").getString("login_failed"));
+					setErrorMsg(guiText.getString("login_failed"));
 				}
 			}).start();
 		}

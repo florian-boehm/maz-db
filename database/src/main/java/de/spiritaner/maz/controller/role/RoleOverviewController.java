@@ -9,7 +9,6 @@ import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import org.hibernate.Hibernate;
 
@@ -32,7 +31,7 @@ public class RoleOverviewController extends OverviewController<Role> {
 
 	@Override
 	protected Collection<Role> preLoad(EntityManager em) {
-		if(person != null) {
+		if(person.get() != null) {
 			Hibernate.initialize(person.get().getRoles());
 			return FXCollections.observableArrayList(person.get().getRoles());
 		}

@@ -23,104 +23,62 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import java.util.Optional;
 
-@EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/responsible_editor_dialog.fxml", objDesc = "Verantwortliche(n)")
+@EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/responsible_editor_dialog.fxml", objDesc = "$responsible")
 public class ResponsibleEditorDialogController extends EditorDialogController<Responsible> {
 
 	final static Logger logger = Logger.getLogger(ResponsibleEditorDialogController.class);
 
-	@FXML
-	private Button saveResponsibleButton;
-	@FXML
-	private Text titleText;
-	@FXML
-	private GridPane personEditor;
-	@FXML
-	private PersonEditorController personEditorController;
-	@FXML
-	private GridPane responsibleEditor;
-	@FXML
-	private ResponsibleEditorController responsibleEditorController;
+	public GridPane personEditor;
+	public PersonEditorController personEditorController;
+	public GridPane responsibleEditor;
+	public ResponsibleEditorController responsibleEditorController;
+	public Button searchPersonButton;
 
 	@Override
-	public void setIdentifiable(Responsible responsible) {
-		super.setIdentifiable(responsible);
-
-		if (responsible != null) {
-			if(responsible.getSite() != null) {
-				responsibleEditorController.setSite(responsible.getSite());
-			}
-
-			if(responsible.getPerson() != null) {
-				personEditorController.person.set(responsible.getPerson());
-				personEditorController.readOnly.set(true);
-			}
-
-			responsibleEditorController.setAll(responsible);
-
-			if (responsible.getId() != 0L) {
-				titleText.setText("Verantwortliche(n) bearbeiten");
-				saveResponsibleButton.setText("Speichern");
-			} else {
-				titleText.setText("Verantwortliche(n) anlegen");
-				saveResponsibleButton.setText("Anlegen");
-			}
-		}
+	protected void bind(Responsible responsible) {
+		responsibleEditorController.site.bindBidirectional(identifiable.get().site);
+		personEditorController.person.bindBidirectional(identifiable.get().person);
+		personEditorController.readOnly.bind(identifiable.get().person.isNotNull());
+		responsibleEditorController.responsible.bindBidirectional(identifiable);
 	}
 
-	public void saveResponsible(ActionEvent actionEvent) {
-		Platform.runLater(() -> {
-			boolean personValid = personEditorController.isValid();
-			boolean responsibleValid = responsibleEditorController.isValid();
+	@Override
+	protected boolean allValid() {
+		boolean personValid = personEditorController.isValid();
+		boolean responsibleValid = responsibleEditorController.isValid();
 
-			if (personValid && responsibleValid) {
-				EntityManager em = CoreDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
+		return personValid && responsibleValid;
+	}
 
-				responsibleEditorController.getAll(getIdentifiable());
+	@Override
+	protected void preSave(Responsible managedResponsible, EntityManager em) {
+		if(!managedResponsible.getSite().getResponsibles().contains(managedResponsible)) managedResponsible.getSite().getResponsibles().add(managedResponsible);
 
-				try {
-					Responsible managedResponsible = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
+		// Automatically add the role 'Ansprechperson Einsatzstelle'
+		//RoleType siteResponsibleRoleType = em.createNamedQuery("RoleType.findByDesc", RoleType.class).setParameter("description","Ansprechperson Einsatzstelle").getSingleResult();
+		Hibernate.initialize(managedResponsible.getPerson().getRoles());
+		final RoleType siteResponsibleRoleType = em.find(RoleType.class, 9L);
 
-					if(!managedResponsible.getSite().getResponsibles().contains(managedResponsible)) managedResponsible.getSite().getResponsibles().add(managedResponsible);
+		if(siteResponsibleRoleType != null) {
+			Hibernate.initialize(managedResponsible.getPerson().getRoles());
 
-					// Automatically add the role 'Ansprechperson Einsatzstelle'
-					//RoleType siteResponsibleRoleType = em.createNamedQuery("RoleType.findByDesc", RoleType.class).setParameter("description","Ansprechperson Einsatzstelle").getSingleResult();
-					Hibernate.initialize(managedResponsible.getPerson().getRoles());
-					final RoleType siteResponsibleRoleType = em.find(RoleType.class, 9L);
+			if(managedResponsible.getPerson().getRoles() != null) {
+				boolean roleAlreadyExists = false;
 
-					if(siteResponsibleRoleType != null) {
-						Hibernate.initialize(managedResponsible.getPerson().getRoles());
-
-						if(managedResponsible.getPerson().getRoles() != null) {
-							boolean roleAlreadyExists = false;
-
-							for (Role role : managedResponsible.getPerson().getRoles()) {
-								if (role.getRoleType().getId() == 9L) {
-									roleAlreadyExists = true;
-								}
-							}
-
-							if (!roleAlreadyExists) {
-								Role role = new Role();
-								role.setPerson(managedResponsible.getPerson());
-								role.setRoleType(siteResponsibleRoleType);
-								em.merge(role);
-							}
-						}
+				for (Role role : managedResponsible.getPerson().getRoles()) {
+					if (role.getRoleType().getId() == 9L) {
+						roleAlreadyExists = true;
 					}
+				}
 
-					em.getTransaction().commit();
-					setResult(managedResponsible);
-					requestClose();
-				} catch (PersistenceException e) {
-					em.getTransaction().rollback();
-					e.printStackTrace();
-					logger.warn(e);
-				} finally {
-					em.close();
+				if (!roleAlreadyExists) {
+					Role role = new Role();
+					role.setPerson(managedResponsible.getPerson());
+					role.setRoleType(siteResponsibleRoleType);
+					em.merge(role);
 				}
 			}
-		});
+		}
 	}
 
 	public void searchPerson(ActionEvent actionEvent) {

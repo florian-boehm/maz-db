@@ -4,64 +4,75 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.MaskerPane?>
-<AnchorPane fx:id="tablePane" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.person.PersonOverviewController">
-	<children>
-		<BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-			<bottom>
-				<ToolBar fx:id="toolbar" nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="746.0" BorderPane.alignment="CENTER">
-					<items>
-						<Button fx:id="personSearchButton" mnemonicParsing="false" onAction="#searchForPersons" prefWidth="70.0" text="Suchen" />
-						<TextField fx:id="personSearchText" prefHeight="25.0" prefWidth="125.0" />
-						<Separator orientation="VERTICAL" />
-						<Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#remove" text="Entfernen" />
-						<Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#edit" text="Bearbeiten" />
-						<Button fx:id="createButton" mnemonicParsing="false" onAction="#create" text="Neu" />
-						<!--Separator orientation="VERTICAL" />
-						<MenuButton mnemonicParsing="false" text="Auswahl">
-							<items>
-								<MenuItem mnemonicParsing="false" text="Alle" />
-								<MenuItem mnemonicParsing="false" text="Keine" />
-								<MenuItem mnemonicParsing="false" text="Auf Suche basierend" />
-							</items>
-						</MenuButton-->
-						<!--Separator orientation="VERTICAL" />
-						<ToggleSwitch fx:id="personDetailsToggle" contentDisplay="RIGHT" graphicTextGap="0.0" selected="true" text="Detailansicht">
-							<padding>
-								<Insets top="3.0" />
-							</padding>
-						</ToggleSwitch-->
-					</items>
-				</ToolBar>
-			</bottom>
-			<center>
-				<ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-insets: 0;" BorderPane.alignment="CENTER">
-					<content>
-						<TableView fx:id="table" style="-fx-padding: 0; -fx-background-insets: 0px; -fx-background-color: #f4f4f4; -fx-border-width: 0 0 1 0; -fx-border-color: #c8c8c8;" tableMenuButtonVisible="true">
-							<columns>
-                        <TableColumn fx:id="honorificColumn" prefWidth="50.0" text="Titel" />
-								<TableColumn fx:id="firstNameColumn" prefWidth="107.0" text="Vorname" />
-								<TableColumn fx:id="familyNameColumn" prefWidth="117.0" text="Nachname" />
-								<TableColumn fx:id="birthNameColumn" prefWidth="117.0" text="Geburtsname" />
-								<TableColumn fx:id="genderColumn" prefWidth="126.0" text="Geschlecht" />
-								<TableColumn fx:id="birthdayColumn" prefWidth="126.0" text="Geburtstag" />
-								<TableColumn fx:id="ageColumn" text="Alter" />
-								<TableColumn fx:id="birthplaceColumn" prefWidth="116.0" text="Geburtsort" />
-								<TableColumn fx:id="dioceseColumn" prefWidth="126.0" text="Diözese" />
-                        <TableColumn fx:id="religionColumn" prefWidth="116.0" text="Religion/Konfession" />
-                        <TableColumn fx:id="salutationColumn" prefWidth="75.0" text="Anrede" />
-								<TableColumn fx:id="idColumn" prefWidth="75.0" text="ID" />
-							</columns>
-							<opaqueInsets>
-								<Insets />
-							</opaqueInsets>
-							<columnResizePolicy>
-								<TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY" />
-							</columnResizePolicy>
-						</TableView>
-					</content>
-				</ScrollPane>
-			</center>
-		</BorderPane>
-		<MaskerPane fx:id="masker" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-	</children>
+<AnchorPane fx:id="tablePane" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="de.spiritaner.maz.controller.person.PersonOverviewController">
+    <children>
+        <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                    AnchorPane.topAnchor="0.0">
+            <bottom>
+                <ToolBar fx:id="toolbar" nodeOrientation="RIGHT_TO_LEFT" prefHeight="30.0" prefWidth="746.0"
+                         BorderPane.alignment="CENTER">
+                    <items>
+                        <Button fx:id="personSearchButton" mnemonicParsing="false" onAction="#searchForPersons"
+                                prefWidth="70.0" text="%search"/>
+                        <TextField fx:id="personSearchText" prefHeight="25.0" prefWidth="125.0"/>
+                        <Separator orientation="VERTICAL"/>
+                        <Button fx:id="removeButton" disable="true" mnemonicParsing="false" onAction="#remove"
+                                text="%remove"/>
+                        <Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#edit"
+                                text="%edit"/>
+                        <Button fx:id="createButton" mnemonicParsing="false" onAction="#create" text="%new"/>
+                        <!--Separator orientation="VERTICAL" />
+                        <MenuButton mnemonicParsing="false" text="Auswahl">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Alle" />
+                                <MenuItem mnemonicParsing="false" text="Keine" />
+                                <MenuItem mnemonicParsing="false" text="Auf Suche basierend" />
+                            </items>
+                        </MenuButton-->
+                        <!--Separator orientation="VERTICAL" />
+                        <ToggleSwitch fx:id="personDetailsToggle" contentDisplay="RIGHT" graphicTextGap="0.0" selected="true" text="Detailansicht">
+                            <padding>
+                                <Insets top="3.0" />
+                            </padding>
+                        </ToggleSwitch-->
+                    </items>
+                </ToolBar>
+            </bottom>
+            <center>
+                <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-insets: 0;"
+                            BorderPane.alignment="CENTER">
+                    <content>
+                        <TableView fx:id="table"
+                                   style="-fx-padding: 0; -fx-background-insets: 0px; -fx-background-color: #f4f4f4; -fx-border-width: 0 0 1 0; -fx-border-color: #c8c8c8;"
+                                   tableMenuButtonVisible="true">
+                            <columns>
+                                <TableColumn fx:id="honorificColumn" prefWidth="50.0" text="%person_title"/>
+                                <TableColumn fx:id="firstNameColumn" prefWidth="107.0" text="%first_name"/>
+                                <TableColumn fx:id="familyNameColumn" prefWidth="117.0" text="%family_name"/>
+                                <TableColumn fx:id="birthNameColumn" prefWidth="117.0" text="%birth_name"/>
+                                <TableColumn fx:id="genderColumn" prefWidth="126.0" text="%sex"/>
+                                <TableColumn fx:id="birthdayColumn" prefWidth="126.0" text="%birthday"/>
+                                <TableColumn fx:id="ageColumn" text="%age"/>
+                                <TableColumn fx:id="birthplaceColumn" prefWidth="116.0" text="%birthplace"/>
+                                <TableColumn fx:id="dioceseColumn" prefWidth="126.0" text="%diocese"/>
+                                <TableColumn fx:id="religionColumn" prefWidth="116.0" text="%religion"/>
+                                <TableColumn fx:id="salutationColumn" prefWidth="75.0" text="%salutation"/>
+                                <TableColumn fx:id="idColumn" prefWidth="75.0" text="ID"/>
+                            </columns>
+                            <opaqueInsets>
+                                <Insets/>
+                            </opaqueInsets>
+                            <columnResizePolicy>
+                                <TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY"/>
+                            </columnResizePolicy>
+                        </TableView>
+                    </content>
+                </ScrollPane>
+            </center>
+        </BorderPane>
+        <MaskerPane fx:id="masker" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+    </children>
 </AnchorPane>

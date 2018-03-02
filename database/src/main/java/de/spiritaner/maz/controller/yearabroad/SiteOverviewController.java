@@ -10,13 +10,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 import java.util.Collection;
 
-@OverviewController.Annotation(fxmlFile = "/fxml/yearabroad/site_overview.fxml", objDesc = "Einsatzstelle")
+@OverviewController.Annotation(fxmlFile = "/fxml/yearabroad/site_overview.fxml", objDesc = "$site")
 public class SiteOverviewController extends OverviewController<Site> {
 
-	@FXML
-	private TableColumn<Site, String> nameColumn;
-	@FXML
-	private TableColumn<Site, String> organizationColumn;
+	public TableColumn<Site, String> nameColumn;
+	public TableColumn<Site, String> organizationColumn;
 
 	public SiteOverviewController() {
 		super(Site.class, true);
@@ -29,12 +27,13 @@ public class SiteOverviewController extends OverviewController<Site> {
 
 	@Override
 	protected String getLoadingText() {
-		return "Lade Einsatzstellen ...";
+		return guiText.getString("loading") + " " + guiText.getString("site") + " ...";
 	}
 
 	@Override
 	protected void handleException(RollbackException e, Site site) {
-		RemoveDialog.showFailureAndWait("Einsatzstelle","Einsatzstelle",e);
+		String objName = guiText.getString("site");
+		RemoveDialog.showFailureAndWait(objName, objName, e);
 	}
 
 	@Override

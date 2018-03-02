@@ -92,8 +92,13 @@ public class Residence implements Identifiable {
 	}
 
 	@Transient
-	public StringProperty preferredAddressProperty() {
+	public StringProperty preferredAddressStringProperty() {
 		return new SimpleStringProperty((getPreferredAddress()) ? "Ja" : "Nein");
+	}
+
+	@Transient
+	public BooleanProperty preferredAddressProperty() {
+		return new SimpleBooleanProperty(getPreferredAddress());
 	}
 
 	@Override

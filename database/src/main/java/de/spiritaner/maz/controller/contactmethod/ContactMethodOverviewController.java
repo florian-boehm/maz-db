@@ -10,7 +10,6 @@ import de.spiritaner.maz.view.renderer.MetaClassTableCell;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import org.hibernate.Hibernate;
 
@@ -43,7 +42,7 @@ public class ContactMethodOverviewController extends OverviewController<ContactM
 
 	@Override
 	protected Collection<ContactMethod> preLoad(EntityManager em) {
-		if(person != null) {
+		if(person.get() != null) {
 			Hibernate.initialize(person.get().getContactMethods());
 			return FXCollections.observableArrayList(person.get().getContactMethods());
 		} else {

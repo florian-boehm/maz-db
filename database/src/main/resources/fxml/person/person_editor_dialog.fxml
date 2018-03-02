@@ -5,7 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import de.spiritaner.maz.view.component.Headline?>
+<?import javafx.scene.text.Text?>
 <AnchorPane minWidth="-Infinity" prefWidth="330.0" xmlns="http://javafx.com/javafx/8.0.111"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="de.spiritaner.maz.controller.person.PersonEditorDialogController">
@@ -14,8 +14,7 @@
                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
 
-                <Headline fx:id="titleText" style="-fx-font-weight: bold;" text="Person bearbeiten/anlegen"
-                          GridPane.columnSpan="2147483647" GridPane.rowIndex="0"/>
+                <Text styleClass="headline" fx:id="titleText" text="Person bearbeiten/anlegen" GridPane.columnSpan="2147483647" GridPane.rowIndex="0"/>
                 <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1"/>
 
                 <fx:include fx:id="personEditor" source="person_editor.fxml" GridPane.columnIndex="0"

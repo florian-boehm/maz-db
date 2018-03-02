@@ -4,6 +4,8 @@ import de.spiritaner.maz.controller.OverviewController;
 import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -16,12 +18,10 @@ import java.util.List;
 
 public class EPNumberOverviewController extends OverviewController<EPNumber> {
 
-	@FXML
-	private TableColumn<EPNumber, Integer> numberColumn;
-	@FXML
-	private TableColumn<EPNumber, String> descriptionColumn;
+	public TableColumn<EPNumber, Integer> numberColumn;
+	public TableColumn<EPNumber, String> descriptionColumn;
 
-	private Site site;
+	public ObjectProperty<Site> site = new SimpleObjectProperty<>();
 
 	public EPNumberOverviewController() {
 		super(EPNumber.class, true);
@@ -29,13 +29,13 @@ public class EPNumberOverviewController extends OverviewController<EPNumber> {
 
 	@Override
 	protected Collection<EPNumber> preLoad(EntityManager em) {
-		if(site != null) {
-			Hibernate.initialize(site.getEpNumbers());
+		if(site.get() != null) {
+			Hibernate.initialize(site.get().getEpNumbers());
 
 			Collection<EPNumber> allEpNumbers = FXCollections.observableArrayList();
-			if(site.getEpNumbers() != null) allEpNumbers.addAll(site.getEpNumbers());
+			if(site.get().getEpNumbers() != null) allEpNumbers.addAll(site.get().getEpNumbers());
 
-			if(site.getId() <= 0L) {
+			if(site.get().getId() <= 0L) {
 				List<EPNumber> epNumbersWithoutSite = em.createNamedQuery("EPNumber.findAllWithoutSite", EPNumber.class).getResultList();
 				if (epNumbersWithoutSite.size() > 0) allEpNumbers.addAll(epNumbersWithoutSite);
 			}
@@ -53,16 +53,13 @@ public class EPNumberOverviewController extends OverviewController<EPNumber> {
 
 	@Override
 	protected void handleException(RollbackException e, EPNumber epNumber) {
-		RemoveDialog.showFailureAndWait("EP-Nummer","EP-Nummer",e);
+		String objName = guiText.getString("ep_number");
+		RemoveDialog.showFailureAndWait(objName, objName, e);
 	}
 
 	@Override
 	protected void postInit() {
 		descriptionColumn.setCellValueFactory(cellData -> cellData.getValue().descriptionProperty());
 		numberColumn.setCellValueFactory(cellData -> cellData.getValue().numberProperty().asObject());
-	}
-
-	public void setSite(Site site) {
-		this.site = site;
 	}
 }

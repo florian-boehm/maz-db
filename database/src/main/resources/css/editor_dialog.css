@@ -31,6 +31,11 @@
     -fx-background-color: transparent;
 }
 
+.headline {
+    -fx-font-weight: bold;
+    -fx-font-size: 10pt;
+}
+
 /*
 // TODO this style is not good. maybe implement it in another way
 .button:disabled {

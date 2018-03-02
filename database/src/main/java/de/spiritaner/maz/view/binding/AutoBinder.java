@@ -1,6 +1,5 @@
 package de.spiritaner.maz.view.binding;
 
-import de.spiritaner.maz.controller.Controller;
 import de.spiritaner.maz.controller.EditorController;
 import javafx.beans.property.Property;
 import javafx.scene.Node;
@@ -51,7 +50,7 @@ public class AutoBinder {
 		}).forEach(field -> {
 			try {
 				Node n = (Node) field.get(this);
-				n.disableProperty().bind(controller.readOnly);
+				n.disableProperty().bindBidirectional(controller.readOnly);
 			} catch (IllegalAccessException e) {
 				logger.error(e);
 			}
@@ -64,7 +63,7 @@ public class AutoBinder {
 		Field targetField = null;
 
 		try {
-			target.getClass().getDeclaredField(propertyName);
+			targetField = target.getClass().getDeclaredField(propertyName);
 			fieldExists = true;
 		} catch (NoSuchFieldException e) {
 			fieldExists = false;

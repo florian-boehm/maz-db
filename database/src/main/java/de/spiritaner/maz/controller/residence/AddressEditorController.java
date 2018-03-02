@@ -7,9 +7,6 @@ import de.spiritaner.maz.view.binding.AutoBinder;
 import de.spiritaner.maz.view.component.BindableTextField;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;

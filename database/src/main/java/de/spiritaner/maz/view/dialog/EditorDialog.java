@@ -24,17 +24,17 @@ public class EditorDialog<T extends EditorDialogController> {
 	private Optional result = Optional.empty();
 
 	private EditorDialog(Stage parent, String fxmlFile, Identifiable identifiable, String identifiableName) throws IOException {
-		FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource(fxmlFile));
+		ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+		FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource(fxmlFile), guiText);
 		Parent root = loader.load();
 		controller = loader.getController();
 
-		ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
-
 		if(identifiableName.startsWith("$"))
-			identifiableName = guiText.getString(identifiableName);
+			identifiableName = guiText.getString(identifiableName.replace("$", ""));
 
 		String title = identifiableName + " ";
 
+		// TODO Better text: Person anlegen = Create person (not Person create)
 		if(identifiable == null || identifiable.getId() == 0L)
 			title += guiText.getString("create").toLowerCase();
 		else

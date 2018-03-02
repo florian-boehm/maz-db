@@ -19,172 +19,177 @@ import java.util.ResourceBundle;
 
 public class OverviewDialog<T extends OverviewController, K extends Identifiable> {
 
-    private Class<T> cls;
+	private Class<T> cls;
 
-    public OverviewDialog(Class<T> cls) {
-        this.cls = cls;
-    }
+	public OverviewDialog(Class<T> cls) {
+		this.cls = cls;
+	}
 
-    @SuppressWarnings("unchecked")
-    public Optional<K> showAndSelect(Stage stage) {
-        OverviewController.Annotation controllerAnnotation = cls.getAnnotation(OverviewController.Annotation.class);
-        Dialog<K> dialog = new Dialog<>();
+	@SuppressWarnings("unchecked")
+	public Optional<K> showAndSelect(Stage stage) {
+		final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+		OverviewController.Annotation controllerAnnotation = cls.getAnnotation(OverviewController.Annotation.class);
+		Dialog<K> dialog = new Dialog<>();
 
-        dialog.setTitle("Auswahlübersicht");
-        dialog.setHeaderText("Bitte wählen Sie ein(e) " + controllerAnnotation.objDesc() + " aus ...");
-        dialog.getDialogPane().setPadding(new Insets(0, 0, 0, 0));
+		dialog.setTitle(guiText.getString("select_overview"));
 
-        // Set the icon (must be included in the project).
-        //dialog.setGraphic(new ImageView(this.getClass().getResource("login.png").toString()));
+		String objDesc = controllerAnnotation.objDesc();
 
-        // Set the button types.
-        ButtonType selectButtonType = new ButtonType("Auswählen", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(selectButtonType, ButtonType.CANCEL);
+		if (objDesc.startsWith("$"))
+			objDesc = guiText.getString(objDesc.replace("$", ""));
 
-        if (!controllerAnnotation.fxmlFile().isEmpty()) {
-            try {
-                final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource(controllerAnnotation.fxmlFile()));
-                final Parent root = loader.load();
-                final T controller = loader.getController();
-                root.getStylesheets().add(OverviewDialog.class.getClass().getResource("/css/overview_dialog.css").toExternalForm());
-                controller.setStage(stage);
-                dialog.getDialogPane().setContent(root);
+		dialog.setHeaderText(guiText.getString("select_header_pre") + " " + objDesc + " " + guiText.getString("select_header_post") + " ...");
+		dialog.getDialogPane().setPadding(new Insets(0, 0, 0, 0));
 
-                // Enable/Disable login button depending on whether a username was entered.
-                final Node selectButton = dialog.getDialogPane().lookupButton(selectButtonType);
-                selectButton.setDisable(true);
+		// Set the icon (must be included in the project).
+		//dialog.setGraphic(new ImageView(this.getClass().getResource("login.png").toString()));
 
-                // Enable selection on double clicking a row
-                controller.setEditOnDoubleclick(false);
-                controller.getTable().setRowFactory(tv -> {
-                    TableRow<T> row = new TableRow<>();
+		// Set the button types.
+		ButtonType selectButtonType = new ButtonType(guiText.getString("select"), ButtonBar.ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().addAll(selectButtonType, ButtonType.CANCEL);
 
-                    row.setOnMouseClicked(event -> {
-                        if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                            ((Button) selectButton).fire();
-                        }
-                    });
+		if (!controllerAnnotation.fxmlFile().isEmpty()) {
+			try {
+				final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource(controllerAnnotation.fxmlFile()), guiText);
+				final Parent root = loader.load();
+				final T controller = loader.getController();
+				root.getStylesheets().add(OverviewDialog.class.getClass().getResource("/css/overview_dialog.css").toExternalForm());
+				controller.setStage(stage);
+				dialog.getDialogPane().setContent(root);
 
-                    return row;
-                });
+				// Enable/Disable login button depending on whether a username was entered.
+				final Node selectButton = dialog.getDialogPane().lookupButton(selectButtonType);
+				selectButton.setDisable(true);
 
-                controller.setToolbarVisible(false);
+				// Enable selection on double clicking a row
+				controller.setEditOnDoubleclick(false);
+				controller.getTable().setRowFactory(tv -> {
+					TableRow<T> row = new TableRow<>();
 
-                // Do some validation (using the Java 8 lambda syntax).
-                controller.getTable().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                    selectButton.setDisable(newValue == null);
-                });
+					row.setOnMouseClicked(event -> {
+						if (event.getClickCount() == 2 && (!row.isEmpty())) {
+							((Button) selectButton).fire();
+						}
+					});
 
-                // Convert the result to a username-password-pair when the login button is clicked.
-                dialog.setResultConverter(dialogButton -> {
-                    if (dialogButton == selectButtonType) {
-                        return (K) controller.getTable().getSelectionModel().getSelectedItem();
-                    }
-                    return null;
-                });
+					return row;
+				});
+
+				controller.setToolbarVisible(false);
+
+				// Do some validation (using the Java 8 lambda syntax).
+				controller.getTable().getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectButton.setDisable(newValue == null));
+
+				// Convert the result to a username-password-pair when the login button is clicked.
+				dialog.setResultConverter(dialogButton -> {
+					if (dialogButton == selectButtonType) {
+						return (K) controller.getTable().getSelectionModel().getSelectedItem();
+					}
+					return null;
+				});
 
 				// Set the icon of the overview dialog
 				Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
 				dialogStage.getIcons().add(new Image(OverviewDialog.class.getClass().getResource("/img/select_32.png").toString()));
 
 				return dialog.showAndWait();
-            } catch (IOException e) {
-                ExceptionDialog.show(e);
-            }
-        }
+			} catch (IOException e) {
+				ExceptionDialog.show(e);
+			}
+		}
 
-        return Optional.empty();
-    }
+		return Optional.empty();
+	}
 
-    public void showHistory(final Person item, final Class<Person> itemCls, List<Person> revisionList, final Stage stage) {
-        if(revisionList.size() > 0) {
-            OverviewController.Annotation controllerAnnotation = cls.getAnnotation(OverviewController.Annotation.class);
-            Identifiable.Annotation identifiableAnnotation = itemCls.getAnnotation(Identifiable.Annotation.class);
-            Dialog<K> dialog = new Dialog<>();
+	public void showHistory(final Person item, final Class<Person> itemCls, List<Person> revisionList, final Stage stage) {
+		if (revisionList.size() > 0) {
+			OverviewController.Annotation controllerAnnotation = cls.getAnnotation(OverviewController.Annotation.class);
+			Identifiable.Annotation identifiableAnnotation = itemCls.getAnnotation(Identifiable.Annotation.class);
+			Dialog<K> dialog = new Dialog<>();
 
-            final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
-            dialog.setTitle(guiText.getString("change_history"));
+			final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+			dialog.setTitle(guiText.getString("change_history"));
 
-            String identifiableName = identifiableAnnotation.identifiableName();
+			String identifiableName = identifiableAnnotation.identifiableName();
 
-            if(identifiableName.startsWith("$"))
-                identifiableName = guiText.getString(identifiableName);
+			if (identifiableName.startsWith("$"))
+				identifiableName = guiText.getString(identifiableName.replace("$", ""));
 
-            dialog.setHeaderText(identifiableName + " " + item.toString() + " " + guiText.getString("changed_like"));
-            dialog.getDialogPane().setPadding(new Insets(0, 0, 0, 0));
+			dialog.setHeaderText(identifiableName + " " + item.toString() + " " + guiText.getString("changed_like"));
+			dialog.getDialogPane().setPadding(new Insets(0, 0, 0, 0));
 
-            // Set the button types.
-            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CLOSE);
+			// Set the button types.
+			dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CLOSE);
 
-            if (!controllerAnnotation.fxmlFile().isEmpty()) {
-                try {
-                    final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource(controllerAnnotation.fxmlFile()));
+			if (!controllerAnnotation.fxmlFile().isEmpty()) {
+				try {
+					final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource(controllerAnnotation.fxmlFile()), guiText);
 
-                    loader.setControllerFactory(param -> {
-                        try {
-                            T controller = (T) param.newInstance();
-                            controller.setItemList(revisionList);
-                            controller.setEditOnDoubleclick(false);
-                            controller.setStage(stage);
-                            return controller;
-                        } catch (InstantiationException | IllegalAccessException e) {
-                            e.printStackTrace();
-                            return null;
-                        }
-                    });
+					loader.setControllerFactory(param -> {
+						try {
+							T controller = (T) param.newInstance();
+							controller.setItemList(revisionList);
+							controller.setEditOnDoubleclick(false);
+							controller.setStage(stage);
+							return controller;
+						} catch (InstantiationException | IllegalAccessException e) {
+							e.printStackTrace();
+							return null;
+						}
+					});
 
-                    final Parent root = loader.load();
-                    final T controller = loader.getController();
-                    controller.setToolbarVisible(false);
+					final Parent root = loader.load();
+					final T controller = loader.getController();
+					controller.setToolbarVisible(false);
 
-                    root.getStylesheets().add(OverviewDialog.class.getClass().getResource("/css/overview_dialog.css").toExternalForm());
+					root.getStylesheets().add(OverviewDialog.class.getClass().getResource("/css/overview_dialog.css").toExternalForm());
 					dialog.getDialogPane().setContent(root);
 
 					// Set the icon of the overview dialog
 					Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
 					dialogStage.getIcons().add(new Image(OverviewDialog.class.getClass().getResource("/img/history_32.png").toString()));
 
-                    dialog.showAndWait();
-                } catch (IOException e) {
-                    ExceptionDialog.show(e);
-                }
-            }
-        }
-    }
+					dialog.showAndWait();
+				} catch (IOException e) {
+					ExceptionDialog.show(e);
+				}
+			}
+		}
+	}
 
-    public void showUsers(Stage stage) {
-        final Dialog<K> dialog = new Dialog<>();
-        final OverviewController.Annotation controllerAnnotation = cls.getAnnotation(OverviewController.Annotation.class);
-        final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+	public void showUsers(Stage stage) {
+		final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+		final Dialog<K> dialog = new Dialog<>();
+		final OverviewController.Annotation controllerAnnotation = cls.getAnnotation(OverviewController.Annotation.class);
 
-        try {
-            final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource(controllerAnnotation.fxmlFile()));
-            final Parent root = loader.load();
-            final T controller = loader.getController();
+		try {
+			final FXMLLoader loader = new FXMLLoader(Scene.class.getClass().getResource(controllerAnnotation.fxmlFile()), guiText);
+			final Parent root = loader.load();
+			final T controller = loader.getController();
 
-            controller.setToolbarVisible(true);
-            controller.setEditOnDoubleclick(false);
-            controller.setStage(stage);
+			controller.setToolbarVisible(true);
+			controller.setEditOnDoubleclick(false);
+			controller.setStage(stage);
 
-            root.getStylesheets().add(OverviewDialog.class.getClass().getResource("/css/overview_dialog.css").toExternalForm());
+			root.getStylesheets().add(OverviewDialog.class.getClass().getResource("/css/overview_dialog.css").toExternalForm());
 
-            dialog.setTitle(guiText.getString("user_overview"));
-            dialog.setHeaderText(guiText.getString("user_overview_header"));
-            dialog.getDialogPane().setPadding(new Insets(0, 0, 0, 0));
-            dialog.getDialogPane().setContent(root);
+			dialog.setTitle(guiText.getString("user_overview"));
+			dialog.setHeaderText(guiText.getString("user_overview_header"));
+			dialog.getDialogPane().setPadding(new Insets(0, 0, 0, 0));
+			dialog.getDialogPane().setContent(root);
 
-            dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
-            Node closeButton = dialog.getDialogPane().lookupButton(ButtonType.CLOSE);
-            closeButton.managedProperty().bind(closeButton.visibleProperty());
-            closeButton.setVisible(false);
+			dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+			Node closeButton = dialog.getDialogPane().lookupButton(ButtonType.CLOSE);
+			closeButton.managedProperty().bind(closeButton.visibleProperty());
+			closeButton.setVisible(false);
 
 			// Set the icon of the overview dialog
 			Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
 			stage.getIcons().add(new Image(OverviewDialog.class.getClass().getResource("/img/manager_32.png").toString()));
 
-            dialog.showAndWait();
-        } catch (IOException e) {
-            ExceptionDialog.show(e);
-        }
-    }
+			dialog.showAndWait();
+		} catch (IOException e) {
+			ExceptionDialog.show(e);
+		}
+	}
 }

@@ -3,7 +3,6 @@ package de.spiritaner.maz.controller.participation;
 import de.spiritaner.maz.controller.Controller;
 import de.spiritaner.maz.model.Event;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;

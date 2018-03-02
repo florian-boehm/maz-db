@@ -2,31 +2,40 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.yearabroad.ResponsibleEditorController">
-	<children>
+<?import de.spiritaner.maz.view.component.BindableComboBox?>
+<?import de.spiritaner.maz.view.component.SimpleBindableComboBox?>
+<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.spiritaner.maz.controller.yearabroad.ResponsibleEditorController">
+    <children>
 
-		<Label maxHeight="1.7976931348623157E308" text="Personengruppe:" GridPane.hgrow="ALWAYS" />
-      <BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
-         <center>
-            <ComboBox fx:id="personGroupComboBox" maxWidth="1.7976931348623157E308" />
-         </center>
-         <right>
-            <Button fx:id="addGroupNameButton" mnemonicParsing="false" onAction="#addNewPersonGroup" text="+" BorderPane.alignment="CENTER" />
-         </right>
-      </BorderPane>
-      <Label text="Herkunftsland:" GridPane.rowIndex="1" />
-      <ComboBox fx:id="homeCountryComboBox" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+        <Label maxHeight="1.7976931348623157E308" text="Personengruppe:" GridPane.hgrow="ALWAYS"/>
+        <BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+            <center>
+                <BindableComboBox val="responsible.personGroup" fx:id="personGroupComboBox"
+                                  maxWidth="1.7976931348623157E308"/>
+            </center>
+            <right>
+                <Button fx:id="addGroupNameButton" mnemonicParsing="false" onAction="#addNewPersonGroup" text="+"
+                        BorderPane.alignment="CENTER"/>
+            </right>
+        </BorderPane>
+        <Label text="Herkunftsland:" GridPane.rowIndex="1"/>
+        <SimpleBindableComboBox val="responsible.homeCountry" fx:id="homeCountryComboBox" editable="true"
+                                maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
+                                GridPane.rowIndex="1"/>
 
-		<Label text="Tätigkeitsfeld:" GridPane.rowIndex="2" />
-      <ComboBox fx:id="jobDescriptionComboBox" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-	</children>
-	<columnConstraints>
-		<ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0" />
-		<ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
-	</columnConstraints>
-	<rowConstraints>
-		<RowConstraints />
-      <RowConstraints />
-		<RowConstraints />
-	</rowConstraints>
+        <Label text="Tätigkeitsfeld:" GridPane.rowIndex="2"/>
+        <SimpleBindableComboBox val="responsible.jobDescription" fx:id="jobDescriptionComboBox" editable="true"
+                                maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0"/>
+        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+    </rowConstraints>
 </GridPane>

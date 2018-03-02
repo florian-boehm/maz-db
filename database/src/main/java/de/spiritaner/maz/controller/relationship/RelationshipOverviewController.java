@@ -8,7 +8,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import org.hibernate.Hibernate;
 
@@ -40,7 +39,7 @@ public class RelationshipOverviewController extends OverviewController<Relations
 
 	@Override
 	protected Collection<Relationship> preLoad(EntityManager em) {
-		if(person != null) {
+		if(person.get() != null) {
 			Hibernate.initialize(person.get().getRelationships());
 			return FXCollections.observableArrayList(person.get().getRelationships());
 		} else {

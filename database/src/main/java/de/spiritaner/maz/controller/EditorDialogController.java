@@ -4,6 +4,7 @@ import de.spiritaner.maz.model.Identifiable;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
@@ -22,7 +23,7 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 	private final static Logger logger = Logger.getLogger(EditorDialogController.class);
 
 	private Stage stage;
-	public ObjectProperty<T> identifiable;
+	public ObjectProperty<T> identifiable = new SimpleObjectProperty<>();
 	private Optional<T> result = Optional.empty();
 
 	public Button saveButton;
@@ -40,25 +41,16 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 		return identifiable.get();
 	}
 
+	@Deprecated
 	public void setIdentifiable(T obj) {
 		identifiable.set(obj);
-
-		if(obj != null) {
-			if (obj.getId() != 0L) {
-				titleText.setText(getIdentifiableName() + " " + guiText.getString("edit").toLowerCase());
-				saveButton.setText(guiText.getString("save"));
-			} else {
-				titleText.setText(getIdentifiableName() + " " + guiText.getString("create").toLowerCase());
-				saveButton.setText(guiText.getString("create"));
-			}
-		}
 	}
 
 	public String getIdentifiableName() {
-		Identifiable.Annotation annotation = identifiable.getClass().getAnnotation(Identifiable.Annotation.class);
+		Identifiable.Annotation annotation = identifiable.get().getClass().getAnnotation(Identifiable.Annotation.class);
 
 		if(annotation.identifiableName().startsWith("$"))
-			return ResourceBundle.getBundle("lang.gui").getString(annotation.identifiableName());
+			return ResourceBundle.getBundle("lang.gui").getString(annotation.identifiableName().replace("$", ""));
 		else
 			return annotation.identifiableName();
 	}
@@ -77,8 +69,21 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 		bind();
 
 		identifiable.addListener((observableValue, oldValue, newValue) -> {
-			if(newValue != null) bind(newValue);
+			if(newValue != null) {
+				bind(newValue);
+				setTexts(newValue);
+			}
 		});
+	}
+
+	private void setTexts(T newValue) {
+		if (newValue.getId() != 0L) {
+			titleText.setText(getIdentifiableName() + " " + guiText.getString("edit").toLowerCase());
+			saveButton.setText(guiText.getString("save"));
+		} else {
+			titleText.setText(getIdentifiableName() + " " + guiText.getString("create").toLowerCase());
+			saveButton.setText(guiText.getString("create"));
+		}
 	}
 
 	public Optional<T> getResult() {
@@ -108,7 +113,7 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 				try {
 					T managed = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
 					
-					preSave(managed);
+					preSave(managed, em);
 					
 					em.getTransaction().commit();
 					setResult(managed);
@@ -123,7 +128,7 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 		});
 	}
 
-	protected void preSave(T managed) {
+	protected void preSave(T managed, EntityManager em) {
 
 	}
 

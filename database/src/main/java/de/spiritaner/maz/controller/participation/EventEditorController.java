@@ -13,15 +13,10 @@ import de.spiritaner.maz.view.component.BindableComboBox;
 import de.spiritaner.maz.view.component.BindableDatePicker;
 import de.spiritaner.maz.view.component.BindableTextArea;
 import de.spiritaner.maz.view.component.BindableTextField;
-import de.spiritaner.maz.view.renderer.DatePickerFormatter;
-import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;

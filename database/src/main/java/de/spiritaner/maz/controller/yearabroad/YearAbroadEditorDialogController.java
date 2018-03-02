@@ -27,25 +27,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-@EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/yearabroad_editor_dialog.fxml", objDesc = "Auslandsjahr")
+@EditorDialog.Annotation(fxmlFile = "/fxml/yearabroad/yearabroad_editor_dialog.fxml", objDesc = "$year_abroad")
 public class YearAbroadEditorDialogController extends EditorDialogController<YearAbroad> {
 
 	final static Logger logger = Logger.getLogger(YearAbroadEditorDialogController.class);
 
-	@FXML private Text titleText;
-	@FXML private GridPane siteEditor;
-	@FXML private SiteEditorController siteEditorController;
-	@FXML private GridPane yearAbroadEditor;
-	@FXML private YearAbroadEditorController yearAbroadEditorController;
-	@FXML private GridPane personEditor;
-	@FXML private PersonEditorController personEditorController;
-	@FXML private Button saveYearAbroadButton;
-	@FXML private Button searchPersonButton;
-	@FXML private Button searchSiteButton;
+	public GridPane siteEditor;
+	public SiteEditorController siteEditorController;
+	public GridPane yearAbroadEditor;
+	public YearAbroadEditorController yearAbroadEditorController;
+	public GridPane personEditor;
+	public PersonEditorController personEditorController;
+	public Button searchPersonButton;
+	public Button searchSiteButton;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		yearAbroadEditorController.getDepartureDatePicker().valueProperty().addListener((observable, oldValue, newValue) -> searchEPNumber());
+		yearAbroadEditorController.departureDatePicker.valueProperty().addListener((observable, oldValue, newValue) -> searchEPNumber());
 
 		/*yearAbroadEditorController.getArrivalDatePicker().valueProperty().addListener((observable, oldValue, newValue) -> {
 			searchEPNumber();
@@ -53,18 +51,18 @@ public class YearAbroadEditorDialogController extends EditorDialogController<Yea
 	}
 
 	private void searchEPNumber() {
-		EPNumber previousEpNumber = yearAbroadEditorController.getEpNumberComboBox().getValue();
-		yearAbroadEditorController.getEpNumberComboBox().getItems().clear();
+		EPNumber previousEpNumber = yearAbroadEditorController.epNumberComboBox.getValue();
+		yearAbroadEditorController.epNumberComboBox.getItems().clear();
 
 		if(/*yearAbroadEditorController.getArrivalDatePicker().getValue() != null &&*/
-				  yearAbroadEditorController.getDepartureDatePicker().getValue() != null &&
+				  yearAbroadEditorController.departureDatePicker.getValue() != null &&
 				  getIdentifiable() != null && getIdentifiable().getSite() != null) {
 			EntityManager em = CoreDatabase.getFactory().createEntityManager();
 			em.getTransaction().begin();
 
 			TypedQuery<YearAbroad> query = em.createNamedQuery("YearAbroad.findAllOfSiteInYear", YearAbroad.class);
 			query.setParameter("site",getIdentifiable().getSite());
-			query.setParameter("year", yearAbroadEditorController.getDepartureDatePicker().getValue().getYear());
+			query.setParameter("year", yearAbroadEditorController.departureDatePicker.getValue().getYear());
 			/*query.setParameter("arrivalDate", yearAbroadEditorController.getArrivalDatePicker().getValue());*/
 
 			final List<EPNumber> availableEpNumbers = new ArrayList<>();
@@ -82,77 +80,41 @@ public class YearAbroadEditorDialogController extends EditorDialogController<Yea
 
 			//availableEpNumbers.forEach(epNumber -> logger.info("available: "+epNumber));
 
-			yearAbroadEditorController.getEpNumberComboBox().getItems().addAll(availableEpNumbers);
+			yearAbroadEditorController.epNumberComboBox.getItems().addAll(availableEpNumbers);
 			em.getTransaction().commit();
 		} else if(getIdentifiable() != null && getIdentifiable().getSite() != null) {
 			//getIdentifiable().getSite().getEpNumbers().forEach(epNumber -> logger.info("all: "+epNumber));
-			yearAbroadEditorController.getEpNumberComboBox().getItems().addAll(getIdentifiable().getSite().getEpNumbers());
+			yearAbroadEditorController.epNumberComboBox.getItems().addAll(getIdentifiable().getSite().getEpNumbers());
 		}
 
-		if(previousEpNumber != null && yearAbroadEditorController.getEpNumberComboBox().getItems().contains(previousEpNumber)) {
-			yearAbroadEditorController.getEpNumberComboBox().getSelectionModel().select(previousEpNumber);
+		if(previousEpNumber != null && yearAbroadEditorController.epNumberComboBox.getItems().contains(previousEpNumber)) {
+			yearAbroadEditorController.epNumberComboBox.getSelectionModel().select(previousEpNumber);
 		}
 	}
 
 	@Override
-	public void setIdentifiable(YearAbroad yearAbroad) {
-		super.setIdentifiable(yearAbroad);
+	protected void bind(YearAbroad yearAbroad) {
+		siteEditorController.site.bindBidirectional(yearAbroad.site);
+		siteEditorController.readOnly.set(true);
 
-		siteEditorController.setReadonly(true);
+		personEditorController.person.bindBidirectional(yearAbroad.person);
 		personEditorController.readOnly.set(true);
 
-		if (yearAbroad != null) {
-			if (yearAbroad.getSite() != null) {
-				siteEditorController.setAll(yearAbroad.getSite());
-				searchSiteButton.setDisable(true);
+		searchSiteButton.disableProperty().bind(yearAbroad.site.isNotNull());
+		searchPersonButton.disableProperty().bind(yearAbroad.person.isNotNull());
 
-				searchEPNumber();
-			}
+		if(yearAbroad.getSite() != null) searchEPNumber();
 
-			if (yearAbroad.getPerson() != null) {
-				personEditorController.person.set(yearAbroad.getPerson());
-				searchPersonButton.setDisable(true);
-			}
-
-			yearAbroadEditorController.setAll(yearAbroad);
-
-			if (yearAbroad.getId() != 0L) {
-				titleText.setText("Auslandsjahr bearbeiten");
-				saveYearAbroadButton.setText("Speichern");
-			} else {
-				titleText.setText("Auslandsjahr anlegen");
-				saveYearAbroadButton.setText("Anlegen");
-			}
-		}
+		yearAbroadEditorController.yearAbroad.bindBidirectional(identifiable);
 	}
 
-	public void saveYearAbroad(ActionEvent actionEvent) {
-		Platform.runLater(() -> {
-			boolean siteValid = siteEditorController.isValid();
-			boolean personValid = personEditorController.isValid();
-			boolean yearAbroadValid = yearAbroadEditorController.isValid();
+	@Override
+	protected boolean allValid() {
+		boolean siteValid = siteEditorController.isValid();
+		boolean personValid = personEditorController.isValid();
+		boolean yearAbroadValid = yearAbroadEditorController.isValid();
 
-			if(siteValid && personValid && yearAbroadValid) {
-				EntityManager em = CoreDatabase.getFactory().createEntityManager();
-				em.getTransaction().begin();
-
-				getIdentifiable().setSite(siteEditorController.getAll(getIdentifiable().getSite()));
-				yearAbroadEditorController.getAll(getIdentifiable());
-
-				try {
-					// TODO this is the best way to do it, so it should be copied over to other editor dialog controllers
-					YearAbroad managedYearAbroad = (!em.contains(getIdentifiable())) ? em.merge(getIdentifiable()) : getIdentifiable();
-					em.getTransaction().commit();
-					setResult(managedYearAbroad);
-					requestClose();
-				} catch (PersistenceException e) {
-					em.getTransaction().rollback();
-					logger.warn(e);
-				} finally {
-					em.close();
-				}
-			}
-		});
+		return siteValid && personValid && yearAbroadValid;
 	}
 
 	public void searchPerson(ActionEvent actionEvent) {
@@ -160,8 +122,7 @@ public class YearAbroadEditorDialogController extends EditorDialogController<Yea
 		Optional<Person> result = dialog.showAndSelect(getStage());
 
 		result.ifPresent((Person person) -> {
-			getIdentifiable().setPerson(person);
-			personEditorController.person.set(person);
+			identifiable.get().person.set(person);
 		});
 	}
 
@@ -170,8 +131,7 @@ public class YearAbroadEditorDialogController extends EditorDialogController<Yea
 		Optional<Site> result = dialog.showAndSelect(getStage());
 
 		result.ifPresent((Site site) -> {
-			getIdentifiable().setSite(site);
-			siteEditorController.setAll(site);
+			identifiable.get().site.set(site);
 			searchEPNumber();
 		});
 	}

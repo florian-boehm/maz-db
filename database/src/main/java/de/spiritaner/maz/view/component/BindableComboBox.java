@@ -41,10 +41,10 @@ public class BindableComboBox<T extends MetaClass> extends ComboBox<T> implement
 	}
 
 	public void populate(Collection<T> coll, T empty) {
-		T selectedBefore = this.getValue();
+		T selectedBefore = this.valueProperty().get();
 		super.getItems().clear();
 		super.getItems().addAll(FXCollections.observableArrayList(coll));
 		if(empty != null) super.getItems().add(empty);
-		super.setValue(selectedBefore);
+		super.valueProperty().set(selectedBefore);
 	}
 }

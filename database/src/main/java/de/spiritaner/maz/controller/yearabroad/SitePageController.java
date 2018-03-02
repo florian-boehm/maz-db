@@ -14,32 +14,21 @@ import java.util.ResourceBundle;
 
 public class SitePageController implements Controller {
 
-	@FXML
-	private AnchorPane siteResponsibles;
-	@FXML
-	private ResponsibleOverviewController siteResponsiblesController;
+	public AnchorPane siteResponsibles;
+	public ResponsibleOverviewController siteResponsiblesController;
 
-	@FXML
-	private AnchorPane siteYearsAbroad;
-	@FXML
-	private YearAbroadOverviewController siteYearsAbroadController;
+	public AnchorPane siteYearsAbroad;
+	public YearAbroadOverviewController siteYearsAbroadController;
 
-	@FXML
-	private AnchorPane siteEPNumbers;
-	@FXML
-	private EPNumberOverviewController siteEPNumbersController;
+	public AnchorPane siteEPNumbers;
+	public EPNumberOverviewController siteEPNumbersController;
 
-	@FXML
-	private AnchorPane siteOverview;
-	@FXML
-	private SiteOverviewController siteOverviewController;
+	public AnchorPane siteOverview;
+	public SiteOverviewController siteOverviewController;
 
-	@FXML
-	private AnchorPane detailPane;
-	@FXML
-	private TabPane detailTabPane;
-	@FXML
-	private MaskerPane detailsMasker;
+	public AnchorPane detailPane;
+	public TabPane detailTabPane;
+	public MaskerPane detailsMasker;
 
 	private Stage stage;
 
@@ -83,9 +72,9 @@ public class SitePageController implements Controller {
 
 	private void loadSiteDetails(Site site) {
 		Platform.runLater(() -> {
-			siteYearsAbroadController.setSite(site);
-			siteResponsiblesController.setSite(site);
-			siteEPNumbersController.setSite(site);
+			siteYearsAbroadController.site.set(site);
+			siteResponsiblesController.site.set(site);
+			siteEPNumbersController.site.set(site);
 			detailsMasker.setVisible(false);
 			reloadSpecificTab(detailTabPane.getSelectionModel().getSelectedItem().getId());
 		});

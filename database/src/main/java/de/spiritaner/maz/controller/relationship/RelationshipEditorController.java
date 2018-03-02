@@ -11,16 +11,10 @@ import de.spiritaner.maz.util.validator.TextValidator;
 import de.spiritaner.maz.view.binding.AutoBinder;
 import de.spiritaner.maz.view.component.BindableComboBox;
 import de.spiritaner.maz.view.component.BindableTextField;
-import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.ToggleSwitch;
 

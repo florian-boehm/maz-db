@@ -7,6 +7,8 @@ import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.meta.PersonGroup;
 import de.spiritaner.maz.view.dialog.RemoveDialog;
 import de.spiritaner.maz.view.renderer.MetaClassTableCell;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -18,19 +20,14 @@ import java.util.Collection;
 
 public class ResponsibleOverviewController extends OverviewController<Responsible> {
 
-	@FXML
-	private TableColumn<Responsible, String> jobDescriptionColumn;
-	@FXML
-	private TableColumn<Responsible, String> homeCountryColumn;
-	@FXML
-	private TableColumn<Responsible, String> personColumn;
-	@FXML
-	private TableColumn<Responsible, String> siteColumn;
-	@FXML
-	private TableColumn<Responsible, PersonGroup> personGroupColumn;
+	public TableColumn<Responsible, String> jobDescriptionColumn;
+	public TableColumn<Responsible, String> homeCountryColumn;
+	public TableColumn<Responsible, String> personColumn;
+	public TableColumn<Responsible, String> siteColumn;
+	public TableColumn<Responsible, PersonGroup> personGroupColumn;
 
-	private Site site;
-	private Person person;
+	public ObjectProperty<Site> site = new SimpleObjectProperty<>();
+	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
 
 	public ResponsibleOverviewController() {
 		super(Responsible.class, true);
@@ -38,12 +35,12 @@ public class ResponsibleOverviewController extends OverviewController<Responsibl
 
 	@Override
 	protected Collection<Responsible> preLoad(EntityManager em) {
-		if(site != null) {
-			Hibernate.initialize(site.getResponsibles());
-			return site.getResponsibles();
-		} else if(person != null) {
-			Hibernate.initialize(person.getResponsibles());
-			return person.getResponsibles();
+		if(site.get() != null) {
+			Hibernate.initialize(site.get().getResponsibles());
+			return site.get().getResponsibles();
+		} else if(person.get() != null) {
+			Hibernate.initialize(person.get().getResponsibles());
+			return person.get().getResponsibles();
 		} else {
 			return null;
 		}
@@ -51,13 +48,14 @@ public class ResponsibleOverviewController extends OverviewController<Responsibl
 
 	@Override
 	protected String getLoadingText() {
-		return "Lade Verantwortliche ...";
+		return guiText.getString("loading") + " " + guiText.getString("responsibles") + " ...";
 	}
 
 	@Override
 	protected void handleException(RollbackException e, Responsible responsible) {
-		// TODO choose better text here
-		RemoveDialog.showFailureAndWait("Verantwortliche(r)","Verantwortliche(r)", e);
+		// TODO choose better text her
+		String objName = guiText.getString("responsible");
+		RemoveDialog.showFailureAndWait(objName, objName, e);
 	}
 
 	@Override
@@ -69,22 +67,13 @@ public class ResponsibleOverviewController extends OverviewController<Responsibl
 		personGroupColumn.setCellValueFactory(cellData -> cellData.getValue().personGroupProperty());
 
 		personGroupColumn.setCellFactory(column -> new MetaClassTableCell<>());
-	}
 
-	public void setSite(Site site) {
-		this.site = site;
-
-		if(siteColumn != null) siteColumn.setVisible(false);
+		siteColumn.visibleProperty().bind(site.isNull());
+		personColumn.visibleProperty().bind(person.isNull());
 	}
 
 	@Override
 	protected void preCreate(Responsible responsible) {
-		responsible.setSite(site);
-	}
-
-	public void setPerson(Person person) {
-		this.person = person;
-
-		if(personColumn != null) personColumn.setVisible(false);
+		responsible.site.bindBidirectional(site);
 	}
 }

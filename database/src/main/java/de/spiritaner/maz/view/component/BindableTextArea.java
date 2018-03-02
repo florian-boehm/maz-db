@@ -1,7 +1,6 @@
 package de.spiritaner.maz.view.component;
 
 import de.spiritaner.maz.view.binding.Bindable;
-import de.spiritaner.maz.view.renderer.DatePickerFormatter;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
