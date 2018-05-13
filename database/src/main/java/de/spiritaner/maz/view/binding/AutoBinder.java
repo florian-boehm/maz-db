@@ -1,6 +1,8 @@
 package de.spiritaner.maz.view.binding;
 
 import de.spiritaner.maz.controller.EditorController;
+import de.spiritaner.maz.controller.residence.AddressEditorController;
+import de.spiritaner.maz.view.validation.AutoValidator;
 import javafx.beans.property.Property;
 import javafx.scene.Node;
 import org.apache.log4j.Logger;
@@ -9,18 +11,27 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class AutoBinder {
 
 	private final static Logger logger = Logger.getLogger(AutoBinder.class);
-	private final EditorController controller;
+	private final HashMap<Bindable, ArrayList<Property>> bindings;
+	private EditorController controller;
 
-	public AutoBinder(EditorController controller) {
+	public AutoBinder() {
+		bindings = new HashMap<>();
+	}
+
+	public void register(EditorController controller) {
 		this.controller = controller;
 	}
 
 	public void rebindAll() {
+		if(controller == null) return;
+
 		Arrays.stream(controller.getClass().getDeclaredFields()).filter(field -> {
 			try {
 				return field.get(controller) instanceof Bindable;
@@ -41,15 +52,15 @@ public class AutoBinder {
 			}
 		});
 
-		Arrays.stream(this.getClass().getDeclaredFields()).filter(field -> {
+		Arrays.stream(controller.getClass().getDeclaredFields()).filter(field -> {
 			try {
-				return field.get(this) instanceof Node;
+				return field.get(controller) instanceof Node;
 			} catch (IllegalAccessException e) {
 				return false;
 			}
 		}).forEach(field -> {
 			try {
-				Node n = (Node) field.get(this);
+				Node n = (Node) field.get(controller);
 				n.disableProperty().bindBidirectional(controller.readOnly);
 			} catch (IllegalAccessException e) {
 				logger.error(e);

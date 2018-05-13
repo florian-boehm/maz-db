@@ -56,6 +56,7 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 	}
 
 	public void closeDialog(ActionEvent actionEvent) {
+		System.out.println(identifiable);
 		requestClose();
 	}
 
@@ -129,7 +130,6 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 	}
 
 	protected void preSave(T managed, EntityManager em) {
-
 	}
 
 	protected void preSave(final EntityManager em) {

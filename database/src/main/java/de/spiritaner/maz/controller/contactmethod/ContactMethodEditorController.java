@@ -11,6 +11,7 @@ import de.spiritaner.maz.view.binding.AutoBinder;
 import de.spiritaner.maz.view.binding.BindableProperty;
 import de.spiritaner.maz.view.component.BindableComboBox;
 import de.spiritaner.maz.view.component.BindableTextField;
+import de.spiritaner.maz.view.component.BindableToggleSwitch;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
@@ -30,7 +31,7 @@ public class ContactMethodEditorController extends EditorController {
 	@BindableProperty
 	public ObjectProperty<ContactMethod> contactMethod = new SimpleObjectProperty<>();
 
-	public ToggleSwitch preferredToggleSwitch;
+	public BindableToggleSwitch preferredToggleSwitch;
 	public BindableTextField remarkField;
 	public BindableTextField valueField;
 	public BindableComboBox<ContactMethodType> contactMethodTypeComboBox;

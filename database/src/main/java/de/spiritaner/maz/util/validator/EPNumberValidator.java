@@ -1,6 +1,7 @@
 package de.spiritaner.maz.util.validator;
 
 import de.spiritaner.maz.model.EPNumber;
+import de.spiritaner.maz.view.validation.Validator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
@@ -8,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.PopOver;
 
-public class EPNumberValidator {
+public class EPNumberValidator implements Validator {
 
 	private PopOver popOver;
 	private VBox vbox;

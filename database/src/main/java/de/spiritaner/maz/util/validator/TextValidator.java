@@ -1,5 +1,6 @@
 package de.spiritaner.maz.util.validator;
 
+import de.spiritaner.maz.view.validation.Validator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -13,7 +14,7 @@ import java.util.Arrays;
 /**
  * Created by Florian on 8/11/2016.
  */
-public class TextValidator {
+public class TextValidator implements Validator {
 
 	private PopOver popOver;
 	//	private Label msgLabel;
@@ -163,7 +164,7 @@ public class TextValidator {
 		// Check if the value is null
 		if (originalField != null && !newText.equals(originalField.getText())) {
 			addMsg(fieldName + " stimmt nicht überein!");
-			result = false;
+			result = false;Bindable
 		}
 
 		// Hide or show the messages

@@ -1,5 +1,6 @@
 package de.spiritaner.maz.util.validator;
 
+import de.spiritaner.maz.view.validation.Validator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.DatePicker;
@@ -9,7 +10,7 @@ import org.controlsfx.control.PopOver;
 
 import java.time.LocalDate;
 
-public class DateValidator {
+public class DateValidator implements Validator {
 
 	private PopOver popOver;
 	private VBox vbox;

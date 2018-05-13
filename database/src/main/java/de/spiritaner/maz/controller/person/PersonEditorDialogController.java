@@ -29,7 +29,7 @@ public class PersonEditorDialogController extends EditorDialogController<Person>
     @Override
     protected void preSave(final EntityManager em) {
         // This has to be checked here because if the person is currently at the year abroad the
-        // pref erred address id would be lower than zero and this would lead to an error on merge/persist!
+        // preferred address id would be lower than zero and this would lead to an error on merge/persist!
         if (getIdentifiable().getPreferredResidence() != null && getIdentifiable().getPreferredResidence().getId() < 0) {
             getIdentifiable().setPreferredResidence(null);
         }

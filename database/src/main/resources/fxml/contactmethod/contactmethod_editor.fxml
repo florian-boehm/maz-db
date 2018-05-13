@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import org.controlsfx.control.ToggleSwitch?>
 
+<?import de.spiritaner.maz.view.component.BindableToggleSwitch?>
 <GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.141"
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="de.spiritaner.maz.controller.contactmethod.ContactMethodEditorController">
@@ -41,7 +42,7 @@
         <Label text="Bemerkung:" GridPane.rowIndex="2"/>
         <BindableTextField fx:id="remarkField" val="contactMethod.remark" GridPane.columnIndex="1"
                            GridPane.rowIndex="2"/>
-        <ToggleSwitch fx:id="preferredToggleSwitch" maxWidth="1.7976931348623157E308" text="Bevorzugt:"
+        <BindableToggleSwitch fx:id="preferredToggleSwitch" maxWidth="1.7976931348623157E308" text="Bevorzugt:"
                       GridPane.columnSpan="2147483647" GridPane.rowIndex="3"/>
     </children>
     <columnConstraints>

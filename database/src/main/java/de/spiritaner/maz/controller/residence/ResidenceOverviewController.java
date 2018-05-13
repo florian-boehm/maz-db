@@ -1,6 +1,7 @@
 package de.spiritaner.maz.controller.residence;
 
 import de.spiritaner.maz.controller.OverviewController;
+import de.spiritaner.maz.model.Address;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.model.meta.ResidenceType;
@@ -39,6 +40,7 @@ public class ResidenceOverviewController extends OverviewController<Residence> {
 	@Override
 	protected void preCreate(Residence object) {
 		object.setPerson(person.get());
+		object.setAddress(new Address());
 	}
 
 	@Override
