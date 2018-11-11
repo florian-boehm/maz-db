@@ -11,8 +11,8 @@ import de.spiritaner.maz.model.meta.Gender;
 import de.spiritaner.maz.model.meta.Religion;
 import de.spiritaner.maz.model.meta.Salutation;
 import de.spiritaner.maz.util.database.CoreDatabase;
-import de.spiritaner.maz.util.validator.TextValidator;
-import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.util.validator.NotEmpty;
+import de.spiritaner.maz.util.validator.PopOverVisitor;
 import de.spiritaner.maz.view.binding.BindableProperty;
 import de.spiritaner.maz.view.component.BindableComboBox;
 import de.spiritaner.maz.view.component.BindableDatePicker;
@@ -22,7 +22,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import java.net.URL;
@@ -33,8 +32,6 @@ import java.util.ResourceBundle;
  * Created by Florian on 8/13/2016.
  */
 public class PersonEditorController extends EditorController {
-
-	final static Logger logger = Logger.getLogger(PersonEditorController.class);
 
 	@BindableProperty
 	public ObjectProperty<Person> person = new SimpleObjectProperty<>();
@@ -54,22 +51,20 @@ public class PersonEditorController extends EditorController {
 	public BindableComboBox<Religion> religionComboBox;
 	public Button addNewReligionButton;
 
-	private TextValidator firstNameValidator;
-	private TextValidator familyNameValidator;
-	//private DateValidator birthdayDateValidator;
-	//private ComboBoxValidator genderComboBoxValidator;
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		AutoBinder ab = new AutoBinder(this);
+		// Bind all bindable fields to the bindable property
+		autoBinder.register(this);
+		person.addListener((observable, oldValue, newValue) -> autoBinder.rebindAll());
 
-		person.addListener((observable, oldValue, newValue) -> ab.rebindAll());
+		// Change the validator visitor to PopOver and add Validations as well as change listeners
+		autoValidator.visitor = new PopOverVisitor();
+		autoValidator.add(new NotEmpty(firstNameField, guiText.getString("first_name")));
+		autoValidator.add(new NotEmpty(familyNameField, guiText.getString("family_name")));
+		autoValidator.validateOnChange(firstNameField);
+		autoValidator.validateOnChange(familyNameField);
 
-		firstNameValidator = TextValidator.create(firstNameField).fieldName("Vorname").notEmpty(true).validateOnChange();
-		familyNameValidator = TextValidator.create(familyNameField).fieldName("Nachname").notEmpty(true).validateOnChange();
-		//birthdayDateValidator = DateValidator.create(birthdayDatePicker).fieldName("Geburtsdatum").notEmpty(true).past().validateOnChange();
-		//genderComboBoxValidator = new ComboBoxValidator<>(genderComboBox).fieldName("Geschlecht").isSelected(true).validateOnChange();
-
+		// Custom format of some fields
 		birthdayDatePicker.setConverter(new DatePickerFormatter());
 
 		loadGender();
@@ -103,19 +98,6 @@ public class PersonEditorController extends EditorController {
 		Collection<Religion> result = em.createNamedQuery("Religion.findAll", Religion.class).getResultList();
 
 		religionComboBox.populate(result, Religion.createEmpty());
-	}
-
-	@Override
-	public boolean isValid() {
-		boolean firstnameValid = firstNameValidator.validate();
-		boolean familynameValid = familyNameValidator.validate();
-		/*boolean birthdayValid = birthdayDateValidator.validate();*/
-		/*boolean genderValid = genderComboBoxValidator.validate();*/
-
-		return firstnameValid &&
-				  familynameValid /*&&
-				  birthdayValid &&
-				  genderValid*/;
 	}
 
 	public void addNewGender(ActionEvent actionEvent) {

@@ -9,8 +9,7 @@ public class ParticipationTypeOverviewController extends MetadataOverviewControl
     }
 
     @Override
-    // TODO Extract strings
     public String getMetaName() {
-        return "Teilnehmerart";
+        return guiText.getString("participant_type");
     }
 }

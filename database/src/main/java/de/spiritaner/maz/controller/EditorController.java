@@ -1,7 +1,7 @@
 package de.spiritaner.maz.controller;
 
 import de.spiritaner.maz.view.binding.AutoBinder;
-import de.spiritaner.maz.view.validation.AutoValidator;
+import de.spiritaner.maz.util.validator.AutoValidator;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.stage.Stage;
@@ -14,9 +14,7 @@ abstract public class EditorController implements Controller {
 	final static Logger logger = Logger.getLogger(EditorController.class);
 
 	protected final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
-
 	public BooleanProperty readOnly = new SimpleBooleanProperty(false);
-
 	public final AutoValidator autoValidator;
 	public final AutoBinder autoBinder;
 

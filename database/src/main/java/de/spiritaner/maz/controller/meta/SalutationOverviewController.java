@@ -12,8 +12,7 @@ public class SalutationOverviewController extends MetadataOverviewController<Sal
     }
 
     @Override
-    // TODO Extract strings
     public String getMetaName() {
-        return "Anrede";
+        return guiText.getString("salutation");
     }
 }

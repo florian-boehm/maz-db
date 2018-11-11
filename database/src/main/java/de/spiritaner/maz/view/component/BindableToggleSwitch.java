@@ -10,6 +10,14 @@ public class BindableToggleSwitch extends ToggleSwitch implements Bindable<Boole
 
 	public StringProperty val = new SimpleStringProperty();
 
+	public BindableToggleSwitch() {
+		super.textProperty().addListener((observable, oldValue, newValue) -> {
+			if(newValue != null && !newValue.endsWith(":")) {
+				textProperty().set(newValue+":");
+			}
+		});
+	}
+
 	@Override
 	public String getVal() {
 		return val.get();

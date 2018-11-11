@@ -5,19 +5,17 @@ import de.spiritaner.maz.controller.meta.EventTypeOverviewController;
 import de.spiritaner.maz.model.Event;
 import de.spiritaner.maz.model.meta.EventType;
 import de.spiritaner.maz.util.database.CoreDatabase;
-import de.spiritaner.maz.util.validator.ComboBoxValidator;
-import de.spiritaner.maz.util.validator.DateValidator;
-import de.spiritaner.maz.util.validator.TextValidator;
-import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.util.validator.*;
+import de.spiritaner.maz.view.binding.BindableProperty;
 import de.spiritaner.maz.view.component.BindableComboBox;
 import de.spiritaner.maz.view.component.BindableDatePicker;
 import de.spiritaner.maz.view.component.BindableTextArea;
 import de.spiritaner.maz.view.component.BindableTextField;
+import de.spiritaner.maz.view.renderer.DatePickerFormatter;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import java.net.URL;
@@ -26,8 +24,7 @@ import java.util.ResourceBundle;
 
 public class EventEditorController extends EditorController {
 
-	final static Logger logger = Logger.getLogger(EventEditorController.class);
-
+	@BindableProperty
 	public ObjectProperty<Event> event = new SimpleObjectProperty<>();
 
 	public BindableTextField nameField;
@@ -38,19 +35,27 @@ public class EventEditorController extends EditorController {
 	public BindableTextField locationField;
 	public Button addNewEventTypeButton;
 
-	private TextValidator nameValidator;
-	private ComboBoxValidator<EventType> eventTypeValidator;
-	private DateValidator toDateValidator;
-	private TextValidator locationValidator;
-
 	public void initialize(URL location, ResourceBundle resources) {
-		AutoBinder ab = new AutoBinder(this);
-		event.addListener((observableValue, oldValue, newValue) -> ab.rebindAll());
+		// Bind all bindable fields to the bindable property
+		autoBinder.register(this);
+		event.addListener((observableValue, oldValue, newValue) -> autoBinder.rebindAll());
 
-		nameValidator = TextValidator.create(nameField).fieldName("Name").notEmpty(true).validateOnChange();
-		locationValidator = TextValidator.create(locationField).fieldName("Ort").notEmpty(true).validateOnChange();
-		eventTypeValidator = new ComboBoxValidator<>(eventTypeComboBox).fieldName("Veranstaltungsart").isSelected(true).validateOnChange();
-		toDateValidator = DateValidator.create(toDatePicker).fieldName("Bis-Datum").after(fromDatePicker).relationFieldName("Von-Datum").validateOnChange();
+		// Change the validator visitor to PopOver and add Validations as well as change listeners
+		autoValidator.visitor = new PopOverVisitor();
+		autoValidator.add(new NotEmpty(nameField, guiText.getString("name")));
+		autoValidator.add(new NotEmpty(locationField, guiText.getString("location")));
+		autoValidator.add(new Selected(eventTypeComboBox, guiText.getString("event_type")));
+		autoValidator.add(new NotEmpty(fromDatePicker, guiText.getString("from_date")));
+		autoValidator.add(new NotEmpty(toDatePicker, guiText.getString("to_date")));
+		autoValidator.add(new After(toDatePicker, guiText.getString("to_date"), fromDatePicker, guiText.getString("from_date"), true));
+		autoValidator.validateOnChange(nameField);
+		autoValidator.validateOnChange(locationField);
+		autoValidator.validateOnChange(eventTypeComboBox);
+		autoValidator.validateOnChange(fromDatePicker);
+		autoValidator.validateOnChange(toDatePicker);
+
+		// Custom format of some fields
+		toDatePicker.setConverter(new DatePickerFormatter());
 
 		loadEventType();
 	}
@@ -66,14 +71,5 @@ public class EventEditorController extends EditorController {
 		new EventTypeOverviewController().create(actionEvent);
 
 		loadEventType();
-	}
-
-	public boolean isValid() {
-		boolean nameValid = nameValidator.validate();
-		boolean eventTypeValid = eventTypeValidator.validate();
-		boolean toDateValid = toDateValidator.validate();
-		boolean locationValid = locationValidator.validate();
-
-		return nameValid && eventTypeValid && toDateValid && locationValid;
 	}
 }

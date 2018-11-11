@@ -1,30 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.spiritaner.maz.view.component.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.121"
-          xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.spiritaner.maz.controller.residence.AddressEditorController">
+<?import de.spiritaner.maz.view.component.BindableTextField?>
+<?import de.spiritaner.maz.view.component.ColonLabel?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.residence.AddressEditorController">
     <children>
-        <Label text="Straße:" GridPane.hgrow="ALWAYS"/>
-        <BindableTextField val="address.street" fx:id="streetField" GridPane.columnIndex="1"/>
-        <Label text="Hausnummer:" GridPane.rowIndex="1"/>
-        <BindableTextField val="address.houseNumber" fx:id="houseNumberField" GridPane.columnIndex="1"
-                           GridPane.rowIndex="1"/>
-        <Label text="Postleitzahl:" GridPane.rowIndex="2"/>
-        <BindableTextField val="address.postCode" fx:id="postCodeField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-        <Label text="Stadt:" GridPane.rowIndex="3"/>
-        <BindableTextField val="address.city" fx:id="cityField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-        <Label text="Bundesland:" GridPane.rowIndex="4"/>
-        <BindableTextField val="address.state" fx:id="stateField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-        <Label text="Land:" GridPane.rowIndex="5"/>
-        <BindableTextField val="address.country" fx:id="countryField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-        <Label text="Adresszusatz:" GridPane.rowIndex="6"/>
-        <BindableTextField val="address.addition" fx:id="additionField" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+        <ColonLabel text="%street" GridPane.hgrow="ALWAYS" />
+        <BindableTextField fx:id="streetField" val="address.street" GridPane.columnIndex="1" />
+        <ColonLabel text="%house_number" GridPane.rowIndex="1" />
+        <BindableTextField fx:id="houseNumberField" val="address.houseNumber" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <ColonLabel text="%post_code" GridPane.rowIndex="2" />
+        <BindableTextField fx:id="postCodeField" val="address.postCode" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <ColonLabel text="%city" GridPane.rowIndex="3" />
+        <BindableTextField fx:id="cityField" val="address.city" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <ColonLabel text="%state" GridPane.rowIndex="4" />
+        <BindableTextField fx:id="stateField" val="address.state" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <ColonLabel text="%country" GridPane.rowIndex="5" />
+        <BindableTextField fx:id="countryField" val="address.country" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <ColonLabel text="%address_addition" GridPane.rowIndex="6" />
+        <BindableTextField fx:id="additionField" val="address.addition" GridPane.columnIndex="1" GridPane.rowIndex="6" />
     </children>
     <columnConstraints>
-        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0"/>
-        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="130.0" minWidth="130.0" />
+        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
     </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
 </GridPane>

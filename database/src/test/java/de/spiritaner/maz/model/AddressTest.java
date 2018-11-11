@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 0.0.1
  */
 @Test(sequential = true)

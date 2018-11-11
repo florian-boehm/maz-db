@@ -1,19 +1,12 @@
 package de.spiritaner.maz.util.validator;
 
-import de.spiritaner.maz.view.validation.Validator;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import org.controlsfx.control.PopOver;
 
 import java.time.LocalDate;
 
-public class DateValidator implements Validator {
+public class DateValidation extends Validation {
 
-	private PopOver popOver;
-	private VBox vbox;
 	private DatePicker datePicker;
 
 	private Boolean notEmpty;
@@ -24,33 +17,23 @@ public class DateValidator implements Validator {
 	private Boolean beforeRelation;
 	private Boolean sameRelation;
 
-	private String fieldName;
-
-	private DateValidator() {
-		vbox = new VBox();
-		vbox.setAlignment(Pos.CENTER_LEFT);
-		vbox.setPadding(new Insets(2));
-
-		popOver = new PopOver();
-		popOver.setAutoHide(false);
-		popOver.setDetachable(false);
-		popOver.setContentNode(vbox);
+	public DateValidation(Node node, String fieldName) {
+		super(node, fieldName);
 	}
 
-	public static DateValidator create(DatePicker node) {
-		DateValidator result = new DateValidator();
+	@Override
+	public String toString() {
+		return "";
+	}
+
+	public static DateValidation create(DatePicker node, String fieldName) {
+		DateValidation result = new DateValidation(node, fieldName);
+		result.fieldName = fieldName;
 		result.datePicker = node;
 		return result;
 	}
 
-	public void addMsg(String message) {
-		Label label = new Label(message);
-		label.setPadding(new Insets(2));
-		label.setStyle("-fx-text-fill: #B80024; -fx-font-weight: bold");
-		vbox.getChildren().add(label);
-	}
-
-	public DateValidator validateOnChange() {
+	public DateValidation validateOnChange() {
 		datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
 			validate(oldValue, newValue);
 		});
@@ -58,101 +41,101 @@ public class DateValidator implements Validator {
 		return this;
 	}
 
-	public DateValidator fieldName(String fieldName) {
+	public DateValidation fieldName(String fieldName) {
 		this.fieldName = fieldName;
 		return this;
 	}
 
-	public DateValidator notEmpty(Boolean notEmpty) {
+	public DateValidation notEmpty(Boolean notEmpty) {
 		this.notEmpty = notEmpty;
 		return this;
 	}
 
-	public DateValidator future() {
+	public DateValidation future() {
 		this.future = Boolean.TRUE;
 		return this;
 	}
 
-	public DateValidator past() {
+	public DateValidation past() {
 		this.future = Boolean.FALSE;
 		return this;
 	}
 
-	public DateValidator relationFieldName(String relationFieldName) {
+	public DateValidation relationFieldName(String relationFieldName) {
 		this.relationFieldName = relationFieldName;
 		return this;
 	}
 
-	public DateValidator before(DatePicker relationField, Boolean sameRelation) {
+	public DateValidation before(DatePicker relationField, Boolean sameRelation) {
 		this.sameRelation = sameRelation;
 		this.relationField = relationField;
 		this.beforeRelation = Boolean.TRUE;
 		return this;
 	}
 
-	public DateValidator before(DatePicker relationField) {
+	public DateValidation before(DatePicker relationField) {
 		return before(relationField,Boolean.TRUE);
 	}
 
-	public DateValidator after(DatePicker relationField, Boolean sameRelation) {
+	public DateValidation after(DatePicker relationField, Boolean sameRelation) {
 		this.sameRelation = sameRelation;
 		this.relationField = relationField;
 		this.beforeRelation = Boolean.FALSE;
 		return this;
 	}
 
-	public DateValidator after(DatePicker relationField) {
+	public DateValidation after(DatePicker relationField) {
 		return after(relationField, Boolean.TRUE);
 	}
 
 	public boolean validate(LocalDate oldValue, LocalDate newValue) {
 		boolean result = true;
 
-		vbox.getChildren().clear();
+		//vbox.getChildren().clear();
 
 		// Check if the value is null
 		if (notEmpty != null && newValue == null) {
-			addMsg(fieldName + " darf nicht leer sein!");
+			msg.set(fieldName + " darf nicht leer sein!");
 			result = false;
 		} else {
 			// Check if the date is a future date
 			if (future != null && future && newValue.compareTo(LocalDate.now()) < 0) {
-				addMsg(fieldName + " muss in der Zukunft liegen!");
+				msg.set(fieldName + " muss in der Zukunft liegen!");
 				result = false;
 			} else if (future != null && !future && newValue.compareTo(LocalDate.now()) > 0) {
-				addMsg(fieldName + " muss in der Vergangenheit liegen!");
+				msg.set(fieldName + " muss in der Vergangenheit liegen!");
 				result = false;
 			}
 		}
 
 		if (relationField != null && relationField.getValue() != null && newValue != null) {
 			if(beforeRelation && !sameRelation && (newValue.isAfter(relationField.getValue()) || newValue.isEqual(relationField.getValue()))) {
-				addMsg(fieldName + " muss vor " + relationFieldName + " sein!");
+				msg.set(fieldName + " muss vor " + relationFieldName + " sein!");
 				result = false;
 			} else if(beforeRelation && sameRelation && newValue.isAfter(relationField.getValue())) {
-				addMsg(fieldName + " muss vor oder gleich " + relationFieldName + " sein!");
+				msg.set(fieldName + " muss vor oder gleich " + relationFieldName + " sein!");
 				result = false;
 			} else if(!beforeRelation && !sameRelation && (newValue.isBefore(relationField.getValue()) || newValue.isEqual(relationField.getValue()))) {
-				addMsg(fieldName + " muss nach " + relationFieldName + " sein!");
+				msg.set(fieldName + " muss nach " + relationFieldName + " sein!");
 				result = false;
 			} else if(!beforeRelation && sameRelation && newValue.isBefore(relationField.getValue())) {
-				addMsg(fieldName + " muss vor oder gleich " + relationFieldName + " sein!");
+				msg.set(fieldName + " muss vor oder gleich " + relationFieldName + " sein!");
 				result = false;
 			}
 		}
 
 		// Hide or show the messages
-		if (result == true)
+		/*if (result == true)
 			popOver.hide();
 		else if (!popOver.isShowing()) {
 			popOver.setAutoHide(true);
 			popOver.show(datePicker);
-		}
+		}*/
 
 		return result;
 	}
 
-	public boolean validate() {
+	public boolean isValid() {
 		return validate(null, datePicker.getValue());
 	}
 }

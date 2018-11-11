@@ -25,8 +25,8 @@ public class ParticipationOverviewController extends OverviewController<Particip
 	public TableColumn<Participation, Boolean> participatedColumn;
 
 	// This controller can be person or participation centric
-	private Person person;
-	private Event event;
+	private Person person = new Person();
+	private Event event = new Event();
 
 	public ParticipationOverviewController() {
 		super(Participation.class, true);
@@ -44,8 +44,17 @@ public class ParticipationOverviewController extends OverviewController<Particip
 
 	@Override
 	public void preCreate(Participation participation) {
-		participation.setEvent(event);
-		participation.setPerson(person);
+		if(event != null) {
+			participation.setEvent(event);
+		} else {
+			participation.setEvent(new Event());
+		}
+
+		if(person != null) {
+			participation.setPerson(person);
+		} else {
+			participation.setPerson(new Person());
+		}
 	}
 
 	@Override

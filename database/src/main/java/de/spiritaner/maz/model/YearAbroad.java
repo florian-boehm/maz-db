@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  */
 @Entity
 @Audited

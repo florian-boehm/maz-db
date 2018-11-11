@@ -30,7 +30,7 @@ import java.util.*;
 /**
  * This class is a service class for accessing the user database through an entity manager
  *
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 2017.05.23
  */
 public class UserDatabase {

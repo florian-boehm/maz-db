@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 0.0.2
  */
 @Entity

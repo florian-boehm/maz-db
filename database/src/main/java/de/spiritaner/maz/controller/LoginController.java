@@ -44,7 +44,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 2017.05.25
  */
 public class LoginController implements Controller {

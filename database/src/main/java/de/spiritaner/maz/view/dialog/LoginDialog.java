@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 /**
  * This dialog shows a username field, password field and selector for the current database directory.
  *
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 2017.05.29
  */
 public class LoginDialog extends Scene {

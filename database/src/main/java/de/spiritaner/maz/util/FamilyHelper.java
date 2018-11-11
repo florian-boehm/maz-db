@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * This helper class compresses a list of persons to a list of families (or single persons)
  *
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 2017.06.03
  */
 public class FamilyHelper {

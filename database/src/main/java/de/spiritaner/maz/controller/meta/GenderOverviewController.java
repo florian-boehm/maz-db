@@ -12,8 +12,7 @@ public class GenderOverviewController extends MetadataOverviewController<Gender>
     }
 
     @Override
-    // TODO Extract strings
     public String getMetaName() {
-        return "Geschlecht";
+        return guiText.getString("gender");
     }
 }

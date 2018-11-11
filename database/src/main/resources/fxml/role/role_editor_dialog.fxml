@@ -32,8 +32,8 @@
 
 			<ButtonBar prefWidth="200.0" GridPane.rowIndex="6">
 				<buttons>
-					<Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#save" text="Anlegen" />
-					<Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#closeDialog" text="Abbrechen" />
+					<Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#save" text="%create" />
+					<Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#closeDialog" text="%cancel" />
 				</buttons>
 				<GridPane.margin>
 					<Insets top="10.0" />

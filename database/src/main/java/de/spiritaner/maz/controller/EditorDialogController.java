@@ -121,6 +121,7 @@ public abstract class EditorDialogController<T extends Identifiable> implements 
 					requestClose();
 				} catch (PersistenceException e) {
 					em.getTransaction().rollback();
+					e.printStackTrace();
 					logger.warn(e);
 				} finally {
 					em.close();

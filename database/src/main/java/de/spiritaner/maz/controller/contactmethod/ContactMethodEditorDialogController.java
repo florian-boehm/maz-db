@@ -10,8 +10,6 @@ import org.apache.log4j.Logger;
 @EditorDialog.Annotation(fxmlFile = "/fxml/contactmethod/contactmethod_editor_dialog.fxml", objDesc = "$contact_method")
 public class ContactMethodEditorDialogController extends EditorDialogController<ContactMethod> {
 
-	final static Logger logger = Logger.getLogger(ContactMethodEditorDialogController.class);
-
 	public GridPane personEditor;
 	public PersonEditorController personEditorController;
 	public GridPane contactMethodEditor;

@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 /**
  * The database application entry point
  *
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 2017.06.02
  */
 public class DatabaseApp extends Application {

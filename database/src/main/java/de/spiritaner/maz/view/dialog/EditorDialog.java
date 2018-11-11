@@ -60,6 +60,8 @@ public class EditorDialog<T extends EditorDialogController> {
 			stage.setMaxHeight(stage.getHeight());
 			stage.setMinHeight(stage.getHeight());
 			stage.setMinWidth(stage.getWidth());
+			stage.setHeight(stage.getMaxHeight());
+			stage.setWidth(stage.getMaxWidth());
 		});
 
 		stage.setOnCloseRequest(event -> {

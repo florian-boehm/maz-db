@@ -1,7 +1,7 @@
 package de.spiritaner.maz.controller.user;
 
 import de.spiritaner.maz.model.User;
-import de.spiritaner.maz.util.validator.TextValidator;
+import de.spiritaner.maz.util.validator.TextValidation;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
@@ -21,15 +21,15 @@ public class UserEditorController implements Initializable {
 	@FXML
 	private PasswordField passwordCheckField;
 
-	private TextValidator usernameFieldValidator;
-	private TextValidator passwordFieldValidator;
-	private TextValidator passwordCheckFieldValidator;
+	private TextValidation usernameFieldValidator;
+	private TextValidation passwordFieldValidator;
+	private TextValidation passwordCheckFieldValidator;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		usernameFieldValidator = TextValidator.create(usernameField).fieldName("Benutzername").min(3).max(16).notEmpty(true).removeAll(" ").justText().validateOnChange();
-		passwordFieldValidator = TextValidator.create(passwordField).fieldName("Passwort").min(8).notEmpty(true).removeAll(" ").validateOnChange();
-		passwordCheckFieldValidator = TextValidator.create(passwordCheckField).fieldName("Wiederholtes Passwort").equals(passwordField).validateOnChange();
+		usernameFieldValidator = TextValidation.create(usernameField, "Benutzername").min(3).max(16).notEmpty(true).removeAll(" ").justText().validateOnChange();
+		passwordFieldValidator = TextValidation.create(passwordField, "Passwort").min(8).notEmpty(true).removeAll(" ").validateOnChange();
+		passwordCheckFieldValidator = TextValidation.create(passwordCheckField, "Wiederholtes Passwort").equals(passwordField).validateOnChange();
 	}
 
 	public void setAll(User user) {
@@ -55,11 +55,11 @@ public class UserEditorController implements Initializable {
 	}
 
 	public boolean isValid() {
-		boolean usernameValid = usernameFieldValidator.validate();
+		boolean usernameValid = usernameFieldValidator.isValid();
 
 		// Just if the user wants to override the password, we have to check if the newly entered password is valid
-		boolean passwordValid = (!isPasswordOverwritten()) || passwordFieldValidator.validate();
-		boolean passwordCheckValid = (!isPasswordOverwritten()) || passwordCheckFieldValidator.validate();
+		boolean passwordValid = (!isPasswordOverwritten()) || passwordFieldValidator.isValid();
+		boolean passwordCheckValid = (!isPasswordOverwritten()) || passwordCheckFieldValidator.isValid();
 
 		return usernameValid && passwordValid && passwordCheckValid;
 	}

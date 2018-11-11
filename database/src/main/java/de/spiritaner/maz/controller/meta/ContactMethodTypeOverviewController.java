@@ -12,8 +12,7 @@ public class ContactMethodTypeOverviewController extends MetadataOverviewControl
     }
 
     @Override
-    // TODO Extract strings
     public String getMetaName() {
-        return "Kontaktart";
+        return guiText.getString("contact_method");
     }
 }

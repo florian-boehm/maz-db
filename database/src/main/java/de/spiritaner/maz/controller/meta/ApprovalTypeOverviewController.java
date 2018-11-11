@@ -2,6 +2,8 @@ package de.spiritaner.maz.controller.meta;
 
 import de.spiritaner.maz.model.meta.ApprovalType;
 
+import java.util.ResourceBundle;
+
 /**
  * Created by florian on 2/26/17.
  */
@@ -12,8 +14,7 @@ public class ApprovalTypeOverviewController extends MetadataOverviewController<A
     }
 
     @Override
-    // TODO Extract strings
     public String getMetaName() {
-        return "Einwilligung";
+        return guiText.getString("approval");
     }
 }

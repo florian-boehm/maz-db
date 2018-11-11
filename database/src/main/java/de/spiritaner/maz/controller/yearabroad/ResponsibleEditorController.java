@@ -6,18 +6,13 @@ import de.spiritaner.maz.model.Responsible;
 import de.spiritaner.maz.model.Site;
 import de.spiritaner.maz.model.meta.PersonGroup;
 import de.spiritaner.maz.util.database.CoreDatabase;
-import de.spiritaner.maz.util.validator.ComboBoxValidator;
-import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.util.validator.Selected;
 import de.spiritaner.maz.view.component.BindableComboBox;
 import de.spiritaner.maz.view.component.SimpleBindableComboBox;
-import de.spiritaner.maz.view.renderer.MetaClassListCell;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -37,23 +32,21 @@ public class ResponsibleEditorController extends EditorController {
 	public BindableComboBox<PersonGroup> personGroupComboBox;
 	public SimpleBindableComboBox<String> homeCountryComboBox;
 
-	private ComboBoxValidator<PersonGroup> personGroupValidator;
-
 	public void initialize(URL location, ResourceBundle resources) {
-		AutoBinder ab = new AutoBinder(this);
+		autoBinder.register(this);
 		site.addListener((observable, oldValue, newValue) -> {
-			ab.rebindAll();
+			autoBinder.rebindAll();
 			loadHomeCountries();
 			loadPersonGroups();
 			loadJobDescriptions();
 		});
-		responsible.addListener((observable, oldValue, newValue) -> ab.rebindAll());
+		responsible.addListener((observable, oldValue, newValue) -> autoBinder.rebindAll());
 
 		loadPersonGroups();
 		loadJobDescriptions();
 		loadHomeCountries();
 
-		personGroupValidator = new ComboBoxValidator<>(personGroupComboBox).fieldName("Personengruppe").isSelected(true).validateOnChange();
+		autoValidator.add(personGroupComboBox, new Selected(personGroupComboBox, guiText.getString("person_group")));
 	}
 
 	private void loadPersonGroups() {
@@ -91,10 +84,6 @@ public class ResponsibleEditorController extends EditorController {
 
 		jobDescriptionComboBox.getItems().clear();
 		jobDescriptionComboBox.getItems().addAll(FXCollections.observableArrayList(query.getResultList()));
-	}
-
-	public boolean isValid() {
-		return personGroupValidator.validate();
 	}
 
 	public void addNewPersonGroup(ActionEvent actionEvent) {

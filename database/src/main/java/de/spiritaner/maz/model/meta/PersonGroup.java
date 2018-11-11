@@ -9,7 +9,7 @@ import javax.persistence.NamedQuery;
 import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  */
 @Entity
 @Audited(targetAuditMode = NOT_AUDITED)

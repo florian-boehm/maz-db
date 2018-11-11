@@ -6,7 +6,7 @@ import javafx.scene.control.ListCell;
 import java.util.ResourceBundle;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 2017.05.25
  */
 public class DatabaseFolderRenderer extends ListCell<DatabaseFolder> {

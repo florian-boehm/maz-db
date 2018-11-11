@@ -142,7 +142,7 @@ public class User implements Identifiable {
 
 				unencryptedDatabaseKey = cipher.doFinal(encryptedDatabaseKey);
 			} catch (Exception e) {
-				// TODO handle correct
+				// TODO visit correct
 				logger.error(e);
 			}
 		}

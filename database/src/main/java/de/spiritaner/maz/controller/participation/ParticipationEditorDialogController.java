@@ -8,6 +8,7 @@ import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.Person;
 import de.spiritaner.maz.view.dialog.EditorDialog;
 import de.spiritaner.maz.view.dialog.OverviewDialog;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -31,15 +32,16 @@ public class ParticipationEditorDialogController extends EditorDialogController<
 
 	@Override
 	protected void bind(Participation participation) {
+		participationEditorController.participation.bindBidirectional(identifiable);
+
 		eventEditorController.event.bindBidirectional(participation.event);
 		eventEditorController.readOnly.bind(participation.event.isNotNull());
-		searchEventButton.disableProperty().bind(participation.event.isNotNull());
+		searchEventButton.disableProperty().bind(Bindings.createBooleanBinding(() -> participation.event.get().id.get() == 0L, participation.event));
 
 		personEditorController.person.bindBidirectional(participation.person);
+		//personEditorController.readOnly.bind(Bindings.createBooleanBinding(() -> participation.event.get().id.get() == 0L, participation.person));
 		personEditorController.readOnly.bind(participation.person.isNotNull());
-		searchPersonButton.disableProperty().bind(participation.person.isNotNull());
-
-		participationEditorController.participation.bindBidirectional(identifiable);
+		searchPersonButton.disableProperty().bind(Bindings.createBooleanBinding(() -> participation.event.get().id.get() == 0L, participation.event));
 	}
 
 	@Override

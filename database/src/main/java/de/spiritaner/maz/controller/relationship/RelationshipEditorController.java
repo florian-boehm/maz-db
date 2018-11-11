@@ -6,9 +6,8 @@ import de.spiritaner.maz.controller.meta.RelationshipTypeOverviewController;
 import de.spiritaner.maz.model.Relationship;
 import de.spiritaner.maz.model.meta.RelationshipType;
 import de.spiritaner.maz.util.database.CoreDatabase;
-import de.spiritaner.maz.util.validator.ComboBoxValidator;
-import de.spiritaner.maz.util.validator.TextValidator;
-import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.util.validator.Selected;
+import de.spiritaner.maz.util.validator.TextValidation;
 import de.spiritaner.maz.view.component.BindableComboBox;
 import de.spiritaner.maz.view.component.BindableTextField;
 import javafx.beans.property.ObjectProperty;
@@ -38,19 +37,19 @@ public class RelationshipEditorController extends EditorController {
 	public BindableComboBox<RelationshipType> inverseRelationshipTypeComboBox;
 	public Button addNewInverseRelationshipTypeButton;
 
-	private ComboBoxValidator<RelationshipType> relationshipTypeValidator;
-	private ComboBoxValidator<RelationshipType> inverseRelationshipTypeValidator;
-	private TextValidator toPersonFirstNameValidator;
-	private TextValidator toPersonFamilyNameValidator;
+	private Selected relationshipTypeValidator;
+	private Selected inverseRelationshipTypeValidator;
+	private TextValidation toPersonFirstNameValidator;
+	private TextValidation toPersonFamilyNameValidator;
 
 	public void initialize(URL location, ResourceBundle resources) {
-		AutoBinder ab = new AutoBinder(this);
-		relationship.addListener((observableValue, oldValue, newValue) -> ab.rebindAll());
+		autoBinder.register(this);
+		relationship.addListener((observableValue, oldValue, newValue) -> autoBinder.rebindAll());
 
-		relationshipTypeValidator = new ComboBoxValidator<>(relationshipTypeComboBox).fieldName("Beziehungsart").isSelected(true).validateOnChange();
-		inverseRelationshipTypeValidator = new ComboBoxValidator<>(inverseRelationshipTypeComboBox).fieldName("Beziehungsart").isSelected(true).validateOnChange();
-		toPersonFamilyNameValidator = TextValidator.create(toPersonFamilyNameField).fieldName("Nachname").notEmpty(true).validateOnChange();
-		toPersonFirstNameValidator = TextValidator.create(toPersonFirstNameField).fieldName("Vorname").notEmpty(true).validateOnChange();
+		relationshipTypeValidator = new Selected(relationshipTypeComboBox, "Beziehungsart");
+		inverseRelationshipTypeValidator = new Selected(inverseRelationshipTypeComboBox, "Beziehungsart");
+		toPersonFamilyNameValidator = TextValidation.create(toPersonFamilyNameField, guiText.getString("family_name")).notEmpty(true).validateOnChange();
+		toPersonFirstNameValidator = TextValidation.create(toPersonFirstNameField, guiText.getString("first_name")).notEmpty(true).validateOnChange();
 
 		personFromDatabaseToggleSwitch.selectedProperty().addListener((observable, oldValue, newValue) -> {
 			setPersonFromDatabase(newValue);
@@ -81,10 +80,10 @@ public class RelationshipEditorController extends EditorController {
 
 	@Override
 	public boolean isValid() {
-		boolean relationshipTypeValid = relationshipTypeValidator.validate();
-		boolean toPersonFirstNameValid = personFromDatabaseToggleSwitch.isSelected() || toPersonFirstNameValidator.validate();
-		boolean toPersonFamilyNameValid = personFromDatabaseToggleSwitch.isSelected() || toPersonFamilyNameValidator.validate();
-		boolean inverseRelationshipTypeValid = !(personFromDatabaseToggleSwitch.isSelected() && inverseRelationshipToggleSwitch.isSelected()) || inverseRelationshipTypeValidator.validate();
+		boolean relationshipTypeValid = relationshipTypeValidator.isValid();
+		boolean toPersonFirstNameValid = personFromDatabaseToggleSwitch.isSelected() || toPersonFirstNameValidator.isValid();
+		boolean toPersonFamilyNameValid = personFromDatabaseToggleSwitch.isSelected() || toPersonFamilyNameValidator.isValid();
+		boolean inverseRelationshipTypeValid = !(personFromDatabaseToggleSwitch.isSelected() && inverseRelationshipToggleSwitch.isSelected()) || inverseRelationshipTypeValidator.isValid();
 
 		return relationshipTypeValid && toPersonFirstNameValid && toPersonFamilyNameValid && inverseRelationshipTypeValid;
 	}

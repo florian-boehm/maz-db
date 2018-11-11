@@ -41,3 +41,8 @@
 .button:disabled {
     -fx-opacity: 0.0;
 }*/
+
+.validation_label{
+    -fx-text-fill: #B80024;
+    -fx-font-weight: bold;
+}

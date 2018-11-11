@@ -1,12 +1,7 @@
 package de.spiritaner.maz.util.validator;
 
-import de.spiritaner.maz.view.validation.Validator;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-import org.controlsfx.control.PopOver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,11 +9,8 @@ import java.util.Arrays;
 /**
  * Created by Florian on 8/11/2016.
  */
-public class TextValidator implements Validator {
+public class TextValidation extends Validation {
 
-	private PopOver popOver;
-	//	private Label msgLabel;
-	private VBox vbox;
 	private TextField textField;
 
 	private Integer minLenght;
@@ -29,36 +21,22 @@ public class TextValidator implements Validator {
 	private ArrayList<String> removeAll;
 	private TextField originalField;
 
-	private String fieldName;
-
-	private TextValidator() {
-		vbox = new VBox();
-		vbox.setAlignment(Pos.CENTER_LEFT);
-		vbox.setPadding(new Insets(2));
-//		msgLabel = new Label("");
-//		msgLabel.setStyle("-fx-text-fill: #B80024; -fx-font-weight: bold");
-//		msgLabel.setPadding(new Insets(4));
-
-		popOver = new PopOver();
-		popOver.setAutoHide(false);
-		popOver.setDetachable(false);
-		popOver.setContentNode(vbox);
+	public TextValidation(Node node, String fieldName) {
+		super(node, fieldName);
 	}
 
-	public static TextValidator create(TextField node) {
-		TextValidator result = new TextValidator();
+	@Override
+	public String toString() {
+		return "";
+	}
+
+	public static TextValidation create(TextField node, String fieldName) {
+		TextValidation result = new TextValidation(node, fieldName);
 		result.textField = node;
 		return result;
 	}
 
-	public void addMsg(String message) {
-		Label label = new Label(message);
-		label.setPadding(new Insets(2));
-		label.setStyle("-fx-text-fill: #B80024; -fx-font-weight: bold");
-		vbox.getChildren().add(label);
-	}
-
-	public TextValidator validateOnChange() {
+	public TextValidation validateOnChange() {
 		textField.textProperty().addListener((observable, oldValue, newValue) -> {
 			validate(oldValue, newValue);
 		});
@@ -66,42 +44,42 @@ public class TextValidator implements Validator {
 		return this;
 	}
 
-	public TextValidator min(Integer minLenght) {
+	public TextValidation min(Integer minLenght) {
 		this.minLenght = minLenght;
 		return this;
 	}
 
-	public TextValidator fieldName(String fieldName) {
+	public TextValidation fieldName(String fieldName) {
 		this.fieldName = fieldName;
 		return this;
 	}
 
-	public TextValidator notEmpty(Boolean notEmpty) {
+	public TextValidation notEmpty(Boolean notEmpty) {
 		this.notEmpty = notEmpty;
 		return this;
 	}
 
-	public TextValidator justText() {
+	public TextValidation justText() {
 		this.justText = true;
 		return this;
 	}
 
-	public TextValidator removeAll(String... remove) {
+	public TextValidation removeAll(String... remove) {
 		this.removeAll = new ArrayList<String>(Arrays.asList(remove));
 		return this;
 	}
 
-	public TextValidator max(Integer maxLength) {
+	public TextValidation max(Integer maxLength) {
 		this.maxLength = maxLength;
 		return this;
 	}
 
-	public TextValidator equals(TextField originalField) {
+	public TextValidation equals(TextField originalField) {
 		this.originalField = originalField;
 		return this;
 	}
 
-	public TextValidator justNumbers() {
+	public TextValidation justNumbers() {
 		this.justNumbers = true;
 		return this;
 	}
@@ -123,13 +101,11 @@ public class TextValidator implements Validator {
 			});
 		}
 
-		vbox.getChildren().clear();
-
 		if (justText != null && justText) {
 			String after = newText.replaceAll("[^a-zA-Z0-9-_]", "");
 			if (!after.equals(newText)) {
 				result = false;
-				addMsg(fieldName + " darf keine Sonderzeichen enthalten!");
+				msg.set(fieldName + " darf keine Sonderzeichen enthalten!");
 			}
 
 //			textField.setText(textField.getText().replaceAll("[^a-zA-Z0-9-_]",""));
@@ -139,51 +115,38 @@ public class TextValidator implements Validator {
 			String after = newText.replaceAll("[^0-9]", "");
 			if (!after.equals(newText)) {
 				result = false;
-				addMsg(fieldName + "darf nur Zahlen enthalten!");
+				msg.set(fieldName + "darf nur Zahlen enthalten!");
 			}
 		}
 
 		// Check if the text is shorter than allowed
 		if (minLenght != null && newText.length() < minLenght) {
-			addMsg(fieldName + " muss mindestens " + minLenght + " Zeichen lang sein!");
+			msg.set(fieldName + " muss mindestens " + minLenght + " Zeichen lang sein!");
 			result = false;
 		}
 
 		// Check if the text is longer than allowed
 		if (maxLength != null && newText.length() > maxLength) {
-			addMsg(fieldName + " darf nicht mehr als " + maxLength + " Zeichen lang sein!");
+			msg.set(fieldName + " darf nicht mehr als " + maxLength + " Zeichen lang sein!");
 			result = false;
 		}
 
 		// Check if the value is null
 		if (notEmpty != null && newText.trim().isEmpty()) {
-			addMsg(fieldName + " darf nicht leer sein!");
+			msg.set(fieldName + " darf nicht leer sein!");
 			result = false;
 		}
 
 		// Check if the value is null
 		if (originalField != null && !newText.equals(originalField.getText())) {
-			addMsg(fieldName + " stimmt nicht überein!");
-			result = false;Bindable
-		}
-
-		// Hide or show the messages
-		if (result) {
-			popOver.hide();
-		} else {
-			try {
-				if (!popOver.isShowing())
-					popOver.setAutoHide(true);
-					popOver.show(textField);
-			} catch (NullPointerException e) {
-				// TODO find a way to suppress the nullpointer exception that gets thrown when "setAll" sets the values and the text changes
-			}
+			msg.set(fieldName + " stimmt nicht überein!");
+			result = false;
 		}
 
 		return result;
 	}
 
-	public boolean validate() {
+	public boolean isValid() {
 		return validate(textField.getText(), textField.getText());
 	}
 }

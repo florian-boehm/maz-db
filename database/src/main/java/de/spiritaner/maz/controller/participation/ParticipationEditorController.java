@@ -5,15 +5,15 @@ import de.spiritaner.maz.controller.meta.ParticipationTypeOverviewController;
 import de.spiritaner.maz.model.Participation;
 import de.spiritaner.maz.model.meta.ParticipationType;
 import de.spiritaner.maz.util.database.CoreDatabase;
-import de.spiritaner.maz.util.validator.ComboBoxValidator;
-import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.util.validator.PopOverVisitor;
+import de.spiritaner.maz.util.validator.Selected;
+import de.spiritaner.maz.view.binding.BindableProperty;
 import de.spiritaner.maz.view.component.BindableComboBox;
 import de.spiritaner.maz.view.component.BindableToggleSwitch;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import java.net.URL;
@@ -22,22 +22,24 @@ import java.util.ResourceBundle;
 
 public class ParticipationEditorController extends EditorController {
 
-	final static Logger logger = Logger.getLogger(EventEditorController.class);
-
+	@BindableProperty
 	public ObjectProperty<Participation> participation = new SimpleObjectProperty<>();
 
 	public BindableComboBox<ParticipationType> participationTypeComboBox;
 	public Button addNewParticipationTypeButton;
 	public BindableToggleSwitch participatedToogleSwitch;
 
-	private ComboBoxValidator<ParticipationType> participantTypeValidator;
-
 	public void initialize(URL location, ResourceBundle resources) {
-		AutoBinder ab = new AutoBinder(this);
-		participation.addListener((observableValue, oldValue, newValue) -> ab.rebindAll());
+		// Bind all bindable fields to the bindable property
+		autoBinder.register(this);
+		participation.addListener((observableValue, oldValue, newValue) -> autoBinder.rebindAll());
 
-		participantTypeValidator = new ComboBoxValidator<>(participationTypeComboBox).fieldName("Funktion").validateOnChange();
+		// Change the validator visitor to PopOver and add Validations as well as change listeners
+		autoValidator.visitor = new PopOverVisitor();
+		autoValidator.add(new Selected(participationTypeComboBox, guiText.getString("role")));
+		autoValidator.validateOnChange(participationTypeComboBox);
 
+		// Custom format of some fields
 		loadParticipantType();
 	}
 
@@ -52,11 +54,5 @@ public class ParticipationEditorController extends EditorController {
 		new ParticipationTypeOverviewController().create(actionEvent);
 
 		loadParticipantType();
-	}
-
-	public boolean isValid() {
-		boolean participationTypeValid = participantTypeValidator.validate();
-
-		return participationTypeValid;
 	}
 }

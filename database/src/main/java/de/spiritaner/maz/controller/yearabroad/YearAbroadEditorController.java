@@ -3,23 +3,13 @@ package de.spiritaner.maz.controller.yearabroad;
 import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.model.EPNumber;
 import de.spiritaner.maz.model.YearAbroad;
-import de.spiritaner.maz.util.validator.DateValidator;
-import de.spiritaner.maz.util.validator.EPNumberValidator;
-import de.spiritaner.maz.util.validator.TextValidator;
-import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.util.validator.DateValidation;
+import de.spiritaner.maz.util.validator.Selected;
+import de.spiritaner.maz.util.validator.TextValidation;
 import de.spiritaner.maz.view.component.*;
-import de.spiritaner.maz.view.renderer.DatePickerFormatter;
 import de.spiritaner.maz.view.renderer.EPNumberCell;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import org.controlsfx.control.ToggleSwitch;
-import tornadofx.control.DateTimePicker;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -39,20 +29,20 @@ public class YearAbroadEditorController extends EditorController {
 	public BindableToggleSwitch weltwaertsPromotedToggleSwitch;
 	public SimpleBindableComboBox<EPNumber> epNumberComboBox;
 
-	private DateValidator arrivalDateValidator;
-	private DateValidator departureDateValidator;
-	private EPNumberValidator epNumberValidator;
-	private TextValidator wwMonthsValidator;
+	private DateValidation arrivalDateValidator;
+	private DateValidation departureDateValidator;
+	private Selected epNumberValidator;
+	private TextValidation wwMonthsValidator;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		AutoBinder ab = new AutoBinder(this);
-		yearAbroad.addListener((observable, oldValue, newValue) -> ab.rebindAll());
+		autoBinder.register(this);
+		yearAbroad.addListener((observable, oldValue, newValue) -> autoBinder.rebindAll());
 
-		arrivalDateValidator = DateValidator.create(arrivalDatePicker).fieldName("Rückreisedatum").relationFieldName("Abreisedatum").after(departureDatePicker).notEmpty(true).validateOnChange();
-		departureDateValidator = DateValidator.create(departureDatePicker).fieldName("Abreisedatum").notEmpty(true).validateOnChange();
-		epNumberValidator = new EPNumberValidator(epNumberComboBox).fieldName("EP-Nummer").isSelected(true).validateOnChange();
-		wwMonthsValidator = TextValidator.create(wwMonthsField).fieldName("Anzahl Monate (ww)").notEmpty(true).justNumbers().validateOnChange();
+		arrivalDateValidator = DateValidation.create(arrivalDatePicker,"Rückreisedatum").relationFieldName("Abreisedatum").after(departureDatePicker).notEmpty(true).validateOnChange();
+		departureDateValidator = DateValidation.create(departureDatePicker, "Abreisedatum").notEmpty(true).validateOnChange();
+		epNumberValidator = new Selected(epNumberComboBox, "EP-Nummer");
+		wwMonthsValidator = TextValidation.create(wwMonthsField, "Anzahl Monate (ww)").notEmpty(true).justNumbers().validateOnChange();
 
 		wwMonthsField.setDisable(true);
 
@@ -67,10 +57,10 @@ public class YearAbroadEditorController extends EditorController {
 
 	@Override
 	public boolean isValid() {
-		boolean departureDateValid = departureDateValidator.validate();
-		boolean arrivalDateValid = arrivalDateValidator.validate();
-		boolean epNumberValid = epNumberValidator.validate();
-		boolean wwMonthsValid = (wwMonthsField.isDisable()) || wwMonthsValidator.validate();
+		boolean departureDateValid = departureDateValidator.isValid();
+		boolean arrivalDateValid = arrivalDateValidator.isValid();
+		boolean epNumberValid = epNumberValidator.isValid();
+		boolean wwMonthsValid = (wwMonthsField.isDisable()) || wwMonthsValidator.isValid();
 
 		return departureDateValid && arrivalDateValid && epNumberValid && wwMonthsValid;
 	}

@@ -1,8 +1,6 @@
 package de.spiritaner.maz.view.binding;
 
 import de.spiritaner.maz.controller.EditorController;
-import de.spiritaner.maz.controller.residence.AddressEditorController;
-import de.spiritaner.maz.view.validation.AutoValidator;
 import javafx.beans.property.Property;
 import javafx.scene.Node;
 import org.apache.log4j.Logger;

@@ -9,21 +9,21 @@
           fx:controller="de.spiritaner.maz.controller.participation.EventEditorController">
     <children>
 
-        <Label maxHeight="1.7976931348623157E308" text="Name:" GridPane.hgrow="ALWAYS"/>
+        <ColonLabel maxHeight="1.7976931348623157E308" text="%name" GridPane.hgrow="ALWAYS"/>
 
         <BindableTextField val="event.name" fx:id="nameField" GridPane.columnIndex="1"/>
-        <Label text="Ort:" GridPane.rowIndex="1"/>
+        <ColonLabel text="%location" GridPane.rowIndex="1"/>
         <BindableTextField val="event.location" fx:id="locationField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <Label text="Von:" GridPane.rowIndex="2"/>
+        <ColonLabel text="%from_date" GridPane.rowIndex="2"/>
         <BindableDatePicker val="event.fromDate" fx:id="fromDatePicker" maxWidth="1.7976931348623157E308"
                             GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
                             GridPane.vgrow="NEVER"/>
-        <Label text="Bis:" GridPane.rowIndex="3"/>
+        <ColonLabel text="%to_date" GridPane.rowIndex="3"/>
         <BindableDatePicker val="event.toDate" fx:id="toDatePicker" maxWidth="1.7976931348623157E308"
                             showWeekNumbers="true"
                             GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3"
                             GridPane.vgrow="NEVER"/>
-        <Label text="Veranstaltungsart:" GridPane.rowIndex="4"/>
+        <ColonLabel text="%event_type" GridPane.rowIndex="4"/>
         <BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="NEVER">
             <center>
                 <BindableComboBox val="event.eventType" fx:id="eventTypeComboBox" maxWidth="1.7976931348623157E308"
@@ -43,7 +43,7 @@
             </right>
         </BorderPane>
 
-        <Label text="Beschreibung:" GridPane.rowIndex="5"/>
+        <ColonLabel text="%description" GridPane.rowIndex="5"/>
         <BindableTextArea val="event.description" fx:id="descriptionArea" prefHeight="200.0" prefWidth="200.0"
                           GridPane.columnIndex="1"
                           GridPane.rowIndex="5"/>

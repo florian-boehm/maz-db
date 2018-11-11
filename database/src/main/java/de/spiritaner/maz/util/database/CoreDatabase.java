@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Service class for accessing the database that stores productive data.
  *
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 2017.05.28
  */
 public class CoreDatabase {

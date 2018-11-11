@@ -10,7 +10,7 @@ import java.time.LocalDate;
 /**
  * The experience abroad, in German 'Mitlebezeit', is a smaller
  *
- * @author Florian Schwab
+ * @author Florian Böhm
  */
 @Entity
 @Audited

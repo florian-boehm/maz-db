@@ -2,23 +2,19 @@ package de.spiritaner.maz.controller.experienceabroad;
 
 import de.spiritaner.maz.controller.EditorController;
 import de.spiritaner.maz.model.ExperienceAbroad;
-import de.spiritaner.maz.util.validator.DateValidator;
-import de.spiritaner.maz.util.validator.TextValidator;
-import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.util.validator.*;
 import de.spiritaner.maz.view.binding.BindableProperty;
 import de.spiritaner.maz.view.component.BindableDatePicker;
 import de.spiritaner.maz.view.component.BindableTextArea;
 import de.spiritaner.maz.view.component.BindableTextField;
+import de.spiritaner.maz.view.renderer.DatePickerFormatter;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import org.apache.log4j.Logger;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ExperienceAbroadEditorController extends EditorController {
-
-	final static Logger logger = Logger.getLogger(ExperienceAbroadEditorController.class);
 
 	@BindableProperty
 	public ObjectProperty<ExperienceAbroad> experienceAbroad = new SimpleObjectProperty<>();
@@ -29,31 +25,25 @@ public class ExperienceAbroadEditorController extends EditorController {
 	public BindableDatePicker fromDatePicker;
 	public BindableDatePicker toDatePicker;
 
-	private TextValidator communityFieldValidator;
-	private TextValidator locationFieldValidator;
-	private DateValidator fromDateValidator;
-	private DateValidator toDateValidator;
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		AutoBinder ab = new AutoBinder(this);
+		// Bind all bindable fields to the bindable property
+		autoBinder.register(this);
+		experienceAbroad.addListener((observable, oldValue, newValue) -> super.autoBinder.rebindAll());
 
-		experienceAbroad.addListener((observable, oldValue, newValue) -> ab.rebindAll());
+		// Change the validator visitor to PopOver and add Validations as well as change listeners
+		autoValidator.visitor = new PopOverVisitor();
+		autoValidator.add(new NotEmpty(communityField, guiText.getString("community")));
+		autoValidator.add(new NotEmpty(locationField, guiText.getString("location")));
+		autoValidator.add(new NotEmpty(fromDatePicker, guiText.getString("from_date")));
+		autoValidator.add(new NotEmpty(toDatePicker, guiText.getString("to_date")));
+		autoValidator.add(new After(toDatePicker, guiText.getString("to_date"), fromDatePicker, guiText.getString("from_date"), false));
 
-		// TODO Extract strings
-		communityFieldValidator = TextValidator.create(communityField).fieldName("(Ordens-) Gemeinschaft").notEmpty(true).validateOnChange();
-		locationFieldValidator = TextValidator.create(locationField).fieldName("Ort").notEmpty(true).validateOnChange();
-		fromDateValidator = DateValidator.create(fromDatePicker).fieldName("Von-Datum").notEmpty(true).validateOnChange();
-		toDateValidator = DateValidator.create(toDatePicker).fieldName("Bis-Datum").notEmpty(true).after(fromDatePicker).relationFieldName("Von-Datum").validateOnChange();
-	}
+		// autoValidator.nodeValidations.add(new After(new NotEmpty(toDatePicker, guiText.getString("to_date")), fromDatePicker, guiText.getString("from_date")));
+		//autoValidator.add(toDatePicker, DateValidation.create(toDatePicker, guiText.getString("to_date")).notEmpty(true).after(fromDatePicker).relationFieldName(guiText.getString("from_date")));
 
-	@Override
-	public boolean isValid() {
-		boolean communityValid = communityFieldValidator.validate();
-		boolean toDateValid = toDateValidator.validate();
-		boolean locationValid = locationFieldValidator.validate();
-		boolean fromDateValid = fromDateValidator.validate();
-
-		return communityValid && toDateValid && locationValid && fromDateValid;
+		// Custom format of some fields
+		toDatePicker.setConverter(new DatePickerFormatter());
+		fromDatePicker.setConverter(new DatePickerFormatter());
 	}
 }

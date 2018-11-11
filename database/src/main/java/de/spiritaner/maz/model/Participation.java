@@ -56,7 +56,7 @@ public class Participation implements Identifiable {
 		return person;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="eventId", nullable = false)
 	public Event getEvent() {
 		return event.get();

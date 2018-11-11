@@ -12,8 +12,7 @@ public class EventTypeOverviewController extends MetadataOverviewController<Even
     }
 
     @Override
-    // TODO Extract strings
     public String getMetaName() {
-        return "Veranstaltungsart";
+        return guiText.getString("event_type");
     }
 }

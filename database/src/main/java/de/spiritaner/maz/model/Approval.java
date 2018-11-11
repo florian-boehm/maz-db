@@ -8,7 +8,7 @@ import org.hibernate.envers.Audited;
 import javax.persistence.*;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 0.0.1
  */
 @Entity

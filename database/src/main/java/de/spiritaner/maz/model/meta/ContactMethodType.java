@@ -10,7 +10,7 @@ import java.util.List;
 import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 0.0.1
  */
 @Entity

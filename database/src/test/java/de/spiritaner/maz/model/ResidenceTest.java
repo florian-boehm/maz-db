@@ -15,7 +15,7 @@ import javax.persistence.RollbackException;
 import java.time.LocalDate;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 0.0.1
  */
 @Test(sequential = true)

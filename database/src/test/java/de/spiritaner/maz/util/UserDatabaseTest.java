@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 0.0.1
  */
 public class UserDatabaseTest {

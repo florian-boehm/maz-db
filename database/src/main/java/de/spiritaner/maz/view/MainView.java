@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 2017.05.29
  */
 public class MainView extends Scene {

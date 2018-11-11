@@ -38,7 +38,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 2017.05.29
  */
 public class UpdateHelper {

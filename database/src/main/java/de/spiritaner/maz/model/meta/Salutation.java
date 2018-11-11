@@ -11,7 +11,7 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 /**
  * The salutation class is used for the T-V distinction. The level of politeness is necessary for the german language.
  *
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 0.0.1
  */
 @Entity

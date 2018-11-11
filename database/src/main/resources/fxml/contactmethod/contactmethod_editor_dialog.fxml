@@ -5,27 +5,27 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<ScrollPane fitToHeight="true" fitToWidth="true" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.contactmethod.ContactMethodEditorDialogController">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefWidth="380.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.contactmethod.ContactMethodEditorDialogController">
    <content>
       <AnchorPane>
       
       	<children>
       		<GridPane hgap="10.0" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      			<Headline fx:id="titleText" text="Kontaktweg bearbeiten/anlegen" GridPane.columnSpan="2147483647" GridPane.rowIndex="0" />
+      			<Headline fx:id="titleText" text="%contact_method" GridPane.columnSpan="2147483647" GridPane.rowIndex="0" />
       			<Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
       
-      			<Headline text="Person" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+      			<Headline text="%person" GridPane.columnIndex="0" GridPane.rowIndex="2" />
 				<fx:include fx:id="personEditor" source="../person/person_editor.fxml" GridPane.columnIndex="0" GridPane.rowIndex="3" />
 
 				<Separator prefWidth="200.0" GridPane.columnSpan="1" GridPane.rowIndex="4" />
 
-				<Headline text="Kontaktweg" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="5"/>
+				<Headline text="%contact_method" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="5"/>
 				<fx:include fx:id="contactMethodEditor" source="contactmethod_editor.fxml" GridPane.columnIndex="0" GridPane.rowIndex="6" />
 
       			<ButtonBar prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="7">
       				<buttons>
-      					<Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#save" text="Anlegen" />
-      					<Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#requestClose" text="Abbrechen" />
+      					<Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#save" text="%create" />
+      					<Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#requestClose" text="%cancel" />
       				</buttons>
       				<GridPane.margin>
       					<Insets top="10.0" />

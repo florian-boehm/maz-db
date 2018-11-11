@@ -5,8 +5,8 @@ import de.spiritaner.maz.controller.meta.ResidenceTypeOverviewController;
 import de.spiritaner.maz.model.Residence;
 import de.spiritaner.maz.model.meta.ResidenceType;
 import de.spiritaner.maz.util.database.CoreDatabase;
-import de.spiritaner.maz.util.validator.ComboBoxValidator;
-import de.spiritaner.maz.view.binding.AutoBinder;
+import de.spiritaner.maz.util.validator.PopOverVisitor;
+import de.spiritaner.maz.util.validator.Selected;
 import de.spiritaner.maz.view.component.BindableComboBox;
 import de.spiritaner.maz.view.component.BindableToggleSwitch;
 import javafx.beans.property.ObjectProperty;
@@ -28,14 +28,16 @@ public class ResidenceEditorController extends EditorController {
 	public BindableComboBox<ResidenceType> residenceTypeComboBox;
 	public BindableToggleSwitch postAddressToggleSwitch;
 
-	private ComboBoxValidator<ResidenceType> residenceTypeValidator;
-
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		AutoBinder ab = new AutoBinder(this);
-		residence.addListener((observableValue, oldValue, newValue) -> ab.rebindAll());
+		// Bind all bindable fields to the bindable property
+		autoBinder.register(this);
+		residence.addListener((observableValue, oldValue, newValue) -> autoBinder.rebindAll());
 
-		residenceTypeValidator = new ComboBoxValidator<>(residenceTypeComboBox).fieldName(guiText.getString("residence_type")).isSelected(true).validateOnChange();
+		// Change the validator visitor to PopOver and add Validations as well as change listeners
+		autoValidator.visitor = new PopOverVisitor();
+		autoValidator.add(new Selected(residenceTypeComboBox, guiText.getString("residence_type")));
+		autoValidator.validateOnChange(residenceTypeComboBox);
 
 		loadResidenceTypes();
 	}
@@ -51,10 +53,6 @@ public class ResidenceEditorController extends EditorController {
 		new ResidenceTypeOverviewController().create(actionEvent);
 
 		loadResidenceTypes();
-	}
-
-	public boolean isValid() {
-		return residenceTypeValidator.validate();
 	}
 
 	public BindableToggleSwitch getPreferredResidence() {

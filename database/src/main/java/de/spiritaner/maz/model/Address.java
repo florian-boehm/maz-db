@@ -11,7 +11,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 0.0.1
  */
 @Entity

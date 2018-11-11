@@ -12,8 +12,7 @@ public class DioceseOverviewController extends MetadataOverviewController<Dioces
     }
 
     @Override
-    // TODO Extract strings
     public String getMetaName() {
-        return "Diözese";
+        return guiText.getString("diocese");
     }
 }

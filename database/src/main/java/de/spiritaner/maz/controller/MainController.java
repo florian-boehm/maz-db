@@ -83,7 +83,7 @@ public class MainController implements Initializable, Controller {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("MaZ-Datenbank");
 		alert.setHeaderText("Informationen zur MaZ-Datebank");
-		alert.setContentText("Copyright (C) 2017 Florian Schwab\n" +
+		alert.setContentText("Copyright (C) 2017 Florian Böhm\n" +
 				  "\n" +
 				  "This program is free software: you can redistribute it and/or \nmodify" +
 				  "it under the terms of the GNU General Public License\nas published by" +

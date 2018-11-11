@@ -2,34 +2,33 @@
 
 <?import de.spiritaner.maz.view.component.BindableComboBox?>
 <?import de.spiritaner.maz.view.component.BindableToggleSwitch?>
+<?import de.spiritaner.maz.view.component.ColonLabel?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
-<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.111"
-          xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.spiritaner.maz.controller.participation.ParticipationEditorController">
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.spiritaner.maz.controller.participation.ParticipationEditorController">
     <children>
-        <Label text="Funktion:"/>
+        <ColonLabel text="%role" />
         <BorderPane GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="NEVER">
             <center>
-                <BindableComboBox val="participation.participationType" fx:id="participationTypeComboBox"
-                                  maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER"/>
+                <BindableComboBox fx:id="participationTypeComboBox" maxWidth="1.7976931348623157E308" val="participation.participationType" BorderPane.alignment="CENTER" />
             </center>
             <right>
-                <Button fx:id="addNewParticipationTypeButton" mnemonicParsing="false"
-                        onAction="#addNewParticipationType" text="+" BorderPane.alignment="CENTER"/>
+                <Button fx:id="addNewParticipationTypeButton" mnemonicParsing="false" onAction="#addNewParticipationType" text="+" BorderPane.alignment="CENTER" />
             </right>
         </BorderPane>
-        <BindableToggleSwitch val="participation.hasParticipated" fx:id="participatedToogleSwitch" text="Teilgenommen:"
-                              GridPane.columnSpan="2" GridPane.rowIndex="1"/>
+        <BindableToggleSwitch fx:id="participatedToogleSwitch" maxWidth="1.7976931348623157E308" text="%participated" val="participation.hasParticipated" GridPane.columnSpan="2" GridPane.rowIndex="1" />
     </children>
     <columnConstraints>
-        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0"/>
-        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS"/>
+        <ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="100.0" minWidth="100.0" />
+        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints/>
-        <RowConstraints/>
+        <RowConstraints />
+        <RowConstraints />
     </rowConstraints>
 
 </GridPane>

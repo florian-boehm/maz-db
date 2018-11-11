@@ -4,7 +4,7 @@ import de.spiritaner.maz.model.User;
 import de.spiritaner.maz.util.Settings;
 import de.spiritaner.maz.util.database.CoreDatabase;
 import de.spiritaner.maz.util.database.UserDatabase;
-import de.spiritaner.maz.util.validator.TextValidator;
+import de.spiritaner.maz.util.validator.TextValidation;
 import de.spiritaner.maz.view.dialog.ExceptionDialog;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * @author Florian Schwab
+ * @author Florian Böhm
  * @version 2017.05.28
  */
 public class InitController implements Initializable {
@@ -44,25 +44,25 @@ public class InitController implements Initializable {
     @FXML
     private Button setupButton;
 
-    private TextValidator usernameFieldValidator;
-    private TextValidator passwordFieldValidator;
-    private TextValidator passwordFieldCheckValidator;
+    private TextValidation usernameFieldValidator;
+    private TextValidation passwordFieldValidator;
+    private TextValidation passwordFieldCheckValidator;
 
     private Stage stage;
 
     private LoginController loginController;
 
     public void initialize(URL location, ResourceBundle resources) {
-        usernameFieldValidator = TextValidator.create(usernameField).fieldName("Benutzername").min(3).max(16).notEmpty(true).removeAll(" ").justText().validateOnChange();
-        passwordFieldValidator = TextValidator.create(passwordField).fieldName("Passwort").min(8).notEmpty(true).removeAll(" ").validateOnChange();
-        passwordFieldCheckValidator = TextValidator.create(passwordCheckField).fieldName("Wiederholtes Passwort").equals(passwordField).validateOnChange();
+        usernameFieldValidator = TextValidation.create(usernameField, "Benutzername").min(3).max(16).notEmpty(true).removeAll(" ").justText().validateOnChange();
+        passwordFieldValidator = TextValidation.create(passwordField, "Passwort").min(8).notEmpty(true).removeAll(" ").validateOnChange();
+        passwordFieldCheckValidator = TextValidation.create(passwordCheckField, "Wiederholtes Passwort").equals(passwordField).validateOnChange();
         maskerPane.setVisible(false);
     }
 
     public void setupDatabase(ActionEvent actionEvent) {
-        boolean usernameValid = usernameFieldValidator.validate();
-        boolean passwordValid = passwordFieldValidator.validate();
-        boolean passwordCheckValid = passwordFieldCheckValidator.validate();
+        boolean usernameValid = usernameFieldValidator.isValid();
+        boolean passwordValid = passwordFieldValidator.isValid();
+        boolean passwordCheckValid = passwordFieldCheckValidator.isValid();
 
         if (usernameValid && passwordValid && passwordCheckValid) {
             new Thread(() -> {

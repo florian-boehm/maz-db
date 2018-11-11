@@ -12,8 +12,7 @@ public class ReligionOverviewController extends MetadataOverviewController<Relig
     }
 
     @Override
-    // TODO Extract strings
     public String getMetaName() {
-        return "Religion";
+        return guiText.getString("religion");
     }
 }

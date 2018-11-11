@@ -36,7 +36,9 @@ public abstract class MetadataOverviewController<T extends MetaClass> extends Bo
 	@FXML private Button removeMetadata;
 	@FXML private Button editMetadata;
 
-	protected EntityManager em = CoreDatabase.getFactory().createEntityManager();
+	protected final EntityManager em = CoreDatabase.getFactory().createEntityManager();
+	protected final ResourceBundle guiText = ResourceBundle.getBundle("lang.gui");
+
 	private Class<T> cls;
 
 	public MetadataOverviewController(Class<T> cls) {
